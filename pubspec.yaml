@@ -73,11 +73,15 @@ flutter:
   fonts:
     - family: Quicksand
       fonts:
-        - asset: assets/fonts/Quicksand-Bold.ttf
-        - asset: assets/fonts/Quicksand-Light.ttf
-        - asset: assets/fonts/Quicksand-Medium.ttf
-        - asset: assets/fonts/Quicksand-Regular.ttf
-        - asset: assets/fonts/Quicksand-SemiBold.ttf
+        - asset: assets/fonts/Inter-Black.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+        - asset: assets/fonts/Inter-ExtraLight.ttf
+        - asset: assets/fonts/Inter-Light.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-SemiBold.ttf
+        - asset: assets/fonts/Inter-Thin.ttf
 
 flutter_intl:
   enabled: true

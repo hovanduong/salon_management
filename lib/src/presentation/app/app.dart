@@ -11,6 +11,7 @@ class Constants {
   static const String languageEnglish = 'en';
   static const String countryEnglish = 'US';
   static const String defaultLanguage = 'defaultLanguage';
+  static const String fonts = 'Inter';
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       key: key,
       debugShowCheckedModeBanner: false,
       navigatorObservers: [ConfigAnalytics.observer],
-      theme: ThemeData(fontFamily: 'Quicksand'),
+      theme: ThemeData(fontFamily: Constants.fonts),
       builder: (context, widget) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: widget!,

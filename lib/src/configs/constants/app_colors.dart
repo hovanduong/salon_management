@@ -10,7 +10,13 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color PRIMARY_PINK = Color.fromRGBO(213, 56, 123, 1);
 
-  static const Color SECONDARY_PINK = Color.fromRGBO(245, 113, 127, 1);
+  static const Color SECONDARY_PINK = Color.fromRGBO(62, 124, 120, 1);
+
+  static const Color PRIMARY_GREEN = Color.fromRGBO(47, 126, 121, 1);
+
+  static const Color SECONDARY_GREEN = Color.fromRGBO(62, 124, 120, 1);
+
+  static const Color LINEAR_GREEN = Color.fromRGBO(105, 174, 169, 1);
 
   static const Color COLOR_WHITE = Color.fromRGBO(255, 255, 255, 1);
 
