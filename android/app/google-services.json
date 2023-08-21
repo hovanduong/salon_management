@@ -1,49 +1,34 @@
 {
   "project_info": {
-    "project_number": "477302719227",
-    "project_id": "dating-dev-b76a6",
-    "storage_bucket": "dating-dev-b76a6.appspot.com"
+    "project_number": "6944142522",
+    "project_id": "spadev-15369",
+    "storage_bucket": "spadev-15369.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:477302719227:android:59ed6133800781bbade65e",
+        "mobilesdk_app_id": "1:6944142522:android:2c0b67bab469a5ecc33e83",
         "android_client_info": {
-          "package_name": "com.example.booking_app"
+          "package_name": "com.spa.app.managemen"
         }
       },
       "oauth_client": [
         {
-          "client_id": "477302719227-866t2fuudpegg1pa9se9skltj7spmmbl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.booking_app",
-            "certificate_hash": "4b1e539cf22ca47f335f0dcbc046298e91fb18ea"
-          }
-        },
-        {
-          "client_id": "477302719227-sng1tu3qr2nnn9aqe3ofh51djn9j7isf.apps.googleusercontent.com",
+          "client_id": "6944142522-de0bh0rjan61b7c9epqabbfnktpi582u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAV2HU0GLOKUYIAgUHhDnnP4NiNQKKNEQA"
+          "current_key": "AIzaSyBY7Q5Rs_DaxaT82a3AbbJepR_cV48KaQk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "477302719227-sng1tu3qr2nnn9aqe3ofh51djn9j7isf.apps.googleusercontent.com",
+              "client_id": "6944142522-de0bh0rjan61b7c9epqabbfnktpi582u.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "477302719227-025ijo01vmljf7m69e48uul667ul8iq6.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "dhy.company.booking.app"
-              }
             }
           ]
         }
