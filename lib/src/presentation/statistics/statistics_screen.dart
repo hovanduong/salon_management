@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../base/base.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'components/header_widget.dart';
+import 'components/navigationbar.dart';
 import 'components/transactions_widget.dart';
 import 'statistics.dart';
 
@@ -33,16 +32,46 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
 
   Widget buildStatisticsScreen() {
     return SafeArea(
-        child: Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: Column(children: [
-          buildHeaderWidget(),
-          buildBalance(),
-          buildTransactionsWidget(),
-        ]),
+      top: true,
+      child: Scaffold(
+        body: Column(
+          children: [
+            buildHeaderWidget(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    buildBalance(),
+                    buildTransactionsWidget(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: buildBar(),
       ),
-    ));
+    );
+  }
+
+  Widget buildBar() {
+    return Navigationbarrrr(
+      currentIndex: _viewModel!.currentIndex,
+      onTap: (index) {
+        // Xử lý khi người dùng chọn một tab trong BottomNavigationBar
+      },
+    );
+  }
+
+  Widget buildHeaderWidget() {
+    return const Padding(
+      padding: EdgeInsets.only(top: 30),
+      child: HeaderrWidget(),
+    );
+  }
+
+  Widget buildTransactionsWidget() {
+    return Transactions(data: _viewModel!.data);
   }
 
   Widget buildBalance() {
@@ -128,13 +157,5 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
         ),
       ),
     );
-  }
-
-  Widget buildHeaderWidget() {
-    return const HeaderrWidget();
-  }
-
-  Widget buildTransactionsWidget() {
-    return Transactions(data: _viewModel!.data);
   }
 }

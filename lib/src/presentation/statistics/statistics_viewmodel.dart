@@ -7,6 +7,7 @@ import '../../configs/configs.dart';
 class StatisticsViewModel extends BaseViewModel {
   List<ChartData> data = [];
   int touchedIndex = -1;
+  final int currentIndex = 0;
   dynamic init() {
     fetchData();
   }
