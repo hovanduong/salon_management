@@ -60,6 +60,8 @@ dependencies:
   intl_utils: ^2.8.3
   device_info_plus: ^9.0.3
   change_app_package_name: ^1.1.0
+  syncfusion_flutter_charts: ^22.2.9
+  fl_chart: ^0.63.0
 
 dev_dependencies:
   flutter_test:

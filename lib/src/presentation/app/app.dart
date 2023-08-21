@@ -5,6 +5,7 @@ import '../../intl/generated/l10n.dart';
 
 import '../routers.dart';
 import '../service_add/add_service.dart';
+import '../statistics/statistics_screen.dart';
 
 class Constants {
   static const String languageVietName = 'vi';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       //           ),
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
-      home: const ServiceAddScreen(),
+      home: const StaticticsScreen(),
     );
   }
 }
