@@ -12,12 +12,14 @@ import 'src/utils/utils.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
-  // ConfigCrashlytics.init();
+  ConfigCrashlytics.init();
   notificationInitialed();
-  // await ConfigPerformance.init();
+  await ConfigPerformance.init();
   await AppDeviceInfo.init();
   // await HttpRemote.init();
   runApp(const MyApp());
