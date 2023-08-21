@@ -11,49 +11,62 @@ class Transactions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-      child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Paragraph(
+                content: 'Transactions',
+                style: STYLE_LARGE_BIG,
+              ),
+            ),
           ),
-          child: SfCartesianChart(
-            plotAreaBorderWidth: 0,
-            tooltipBehavior: TooltipBehavior(
-              enable: true,
-              header: '',
-              canShowMarker: true,
-              format: 'point.y',
-            ),
-            borderColor: Colors.transparent,
-            primaryXAxis: CategoryAxis(
-              majorGridLines: const MajorGridLines(
-                color:
-                    Colors.transparent, // Thay đổi màu thành Colors.transparent
+          Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
               ),
-              axisLine: const AxisLine(color: Colors.transparent),
-            ),
-            primaryYAxis: NumericAxis(
-              majorGridLines: const MajorGridLines(
-                color:
-                    Colors.transparent, // Thay đổi màu thành Colors.transparent
-              ),
-              axisLine: const AxisLine(color: Colors.transparent),
-            ),
-            series: <ChartSeries>[
-              SplineSeries<ChartData, String>(
-                dataSource: data,
-                xValueMapper: (data, _) => data.x,
-                yValueMapper: (data, _) => data.y,
-                // markerSettings: const MarkerSettings(
-                //   isVisible: true,
-                //   shape: DataMarkerType.circle,
-                //   borderWidth: 2,
-                //   borderColor: Colors.white,
-                //   color: Colors.blue,
-                // ),
-              ),
-            ],
-          )),
+              child: SfCartesianChart(
+                plotAreaBorderWidth: 0,
+                tooltipBehavior: TooltipBehavior(
+                  enable: true,
+                  header: '',
+                  canShowMarker: true,
+                  format: 'point.y',
+                ),
+                borderColor: Colors.transparent,
+                primaryXAxis: CategoryAxis(
+                  majorGridLines: const MajorGridLines(
+                    color: Colors.transparent,
+                  ),
+                  axisLine: const AxisLine(color: Colors.transparent),
+                ),
+                primaryYAxis: NumericAxis(
+                  majorGridLines: const MajorGridLines(
+                    color: Colors.transparent,
+                  ),
+                  axisLine: const AxisLine(color: Colors.transparent),
+                ),
+                series: <ChartSeries>[
+                  SplineSeries<ChartData, String>(
+                    color: AppColors.FIELD_GREEN,
+                    dataSource: data,
+                    xValueMapper: (data, _) => data.x,
+                    yValueMapper: (data, _) => data.y,
+                    // markerSettings: const MarkerSettings(
+                    //   isVisible: true,
+                    //   shape: DataMarkerType.circle,
+                    //   borderWidth: 2,
+                    //   borderColor: Colors.white,
+                    //   color: Colors.blue,
+                    // ),
+                  ),
+                ],
+              )),
+        ],
+      ),
     );
   }
 }

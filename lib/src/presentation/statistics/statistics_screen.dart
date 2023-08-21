@@ -7,7 +7,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'components/header_widget.dart';
-import 'components/transactions_text_widget.dart';
 import 'components/transactions_widget.dart';
 import 'statistics.dart';
 
@@ -20,7 +19,6 @@ class StaticticsScreen extends StatefulWidget {
 
 class _StaticticsScreenState extends State<StaticticsScreen> {
   StatisticsViewModel? _viewModel;
-  int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,6 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
         child: Column(children: [
           buildHeaderWidget(),
           buildBalance(),
-          const TransactionsTextWidget(),
           buildTransactionsWidget(),
         ]),
       ),
@@ -64,15 +61,15 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
                 child: PieChart(
                   PieChartData(
                     pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      touchCallback: (event, pieTouchResponse) {
                         setState(() {
                           if (!event.isInterestedForInteractions ||
                               pieTouchResponse == null ||
                               pieTouchResponse.touchedSection == null) {
-                            touchedIndex = -1;
+                            _viewModel!.touchedIndex = -1;
                             return;
                           }
-                          touchedIndex = pieTouchResponse
+                          _viewModel!.touchedIndex = pieTouchResponse
                               .touchedSection!.touchedSectionIndex;
                         });
                       },
@@ -81,8 +78,8 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
                       show: false,
                     ),
                     sectionsSpace: 0,
-                    centerSpaceRadius: 30,
-                    sections: showingSections(),
+                    centerSpaceRadius: 20,
+                    sections: _viewModel!.showingSections(),
                   ),
                 ),
               ),
@@ -109,77 +106,28 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(showingSections()[0].value.toString()),
-                Text(showingSections()[1].value.toString()),
-                Text(showingSections()[2].value.toString()),
+                Paragraph(
+                  content: _viewModel!.showingSections()[0].value.toString(),
+                  style: STYLE_MEDIUM.copyWith(
+                    color: AppColors.PRIMARY_RED,
+                  ),
+                ),
+                Paragraph(
+                  content: _viewModel!.showingSections()[1].value.toString(),
+                  style: STYLE_MEDIUM.copyWith(color: AppColors.COLOR_GREY),
+                ),
+                Paragraph(
+                  content: _viewModel!.showingSections()[2].value.toString(),
+                  style: STYLE_MEDIUM.copyWith(
+                    color: AppColors.FIELD_GREEN,
+                  ),
+                ),
               ],
             ),
           ],
         ),
       ),
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    final List<double> sectionValues = [
-      253.6,
-      587.4,
-      729.7
-    ]; // Giá trị của các phần
-    final double totalValue =
-        sectionValues.reduce((a, b) => a + b); // Tính tổng giá trị của các phần
-
-    return List.generate(3, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      final percentage =
-          (sectionValues[i] / totalValue * 100).toStringAsFixed(0) + '%';
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppColors.FIELD_GREEN,
-            value: sectionValues[i],
-            title: percentage,
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.COLOR_WHITE,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppColors.LIGHT_ORANGE,
-            value: sectionValues[i],
-            title: percentage,
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.COLOR_WHITE,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppColors.COLOR_GREY,
-            value: sectionValues[i],
-            title: percentage,
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.COLOR_WHITE,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw 'Invalid index';
-      }
-    });
   }
 
   Widget buildHeaderWidget() {
