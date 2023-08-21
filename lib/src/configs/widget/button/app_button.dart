@@ -26,7 +26,7 @@ class AppButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              if (enableButton) AppColors.PRIMARY_PINK else AppColors.BLACK_200,
+              if (enableButton) AppColors.LINEAR_GREEN else AppColors.BLACK_200,
               if (enableButton)
                 AppColors.SECONDARY_PINK
               else

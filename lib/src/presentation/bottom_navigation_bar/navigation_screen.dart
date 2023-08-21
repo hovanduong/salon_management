@@ -38,12 +38,14 @@ class _NavigateScreenState extends State<NavigateScreen> {
       //   },
       // ),
       body: _viewModel!.screens[_viewModel!.selectIndex],
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(60),
-          topLeft: Radius.circular(60),
+      bottomNavigationBar: Container(
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(60),
+            topLeft: Radius.circular(60),
+          ),
+          child: _viewModel!.bottomNavigationBar(),
         ),
-        child: _viewModel!.bottomNavigationBar(),
       ),
     );
   }

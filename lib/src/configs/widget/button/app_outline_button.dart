@@ -24,7 +24,7 @@ class AppOutlineButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
         decoration: BoxDecoration(
           border: Border.all(
-            color: color ?? AppColors.PRIMARY_PINK,
+            color: color ?? AppColors.LINEAR_GREEN,
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(BorderRadiusSize.sizeSmall),
@@ -34,7 +34,7 @@ class AppOutlineButton extends StatelessWidget {
           content: content,
           textAlign: TextAlign.center,
           style: STYLE_MEDIUM.copyWith(
-            color: colorContent ?? AppColors.PRIMARY_PINK,
+            color: colorContent ?? AppColors.LINEAR_GREEN,
             fontWeight: FontWeight.bold,
           ),
         ),

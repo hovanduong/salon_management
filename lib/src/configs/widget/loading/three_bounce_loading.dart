@@ -6,7 +6,7 @@ import '../../constants/app_colors.dart';
 class ThreeBounceLoading extends StatefulWidget {
   const ThreeBounceLoading({
     Key? key,
-    this.color = AppColors.PRIMARY_PINK,
+    this.color = AppColors.PRIMARY_GREEN,
     this.size = 30.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1400),

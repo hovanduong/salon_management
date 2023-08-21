@@ -75,7 +75,7 @@ class _AppFormFieldState extends State<AppFormField> {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
               borderSide: const BorderSide(
-                color: AppColors.PRIMARY_PINK,
+                color: AppColors.FIELD_GREEN,
               ),
             ),
             enabledBorder: OutlineInputBorder(
