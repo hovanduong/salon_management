@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../base/base.dart';
-import '../home/home.dart';
 import '../service_list/service_list.dart';
 import '../update_profile/update_profile.dart';
 
@@ -14,7 +13,7 @@ class NavigateViewModel extends BaseViewModel {
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
 
   final screens = [
-    const HomeScreen(),
+    const ServiceListScreen(),
     const ServiceListScreen(),
     const UpdateProfileSreen(),
   ];
@@ -73,7 +72,7 @@ class NavigateViewModel extends BaseViewModel {
           case 0:
             return CupertinoTabView(
               navigatorKey: firstTabNavKey,
-              builder: (context) => HomeScreen(),
+              builder: (context) => ServiceListScreen(),
             );
           case 1:
             return CupertinoTabView(
@@ -97,7 +96,7 @@ class NavigateViewModel extends BaseViewModel {
           default:
             return CupertinoTabView(
               builder: (context) {
-                return const CupertinoPageScaffold(child: HomeScreen());
+                return const CupertinoPageScaffold(child: ServiceListScreen());
               },
             );
         }

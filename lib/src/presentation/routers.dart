@@ -4,7 +4,6 @@ import '../resource/model/user_model.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
 import 'create_password/create_password.dart';
-import 'home/home.dart';
 import 'home_detail/home_detail_screen.dart';
 import 'service_add/add_service.dart';
 import 'service_add/add_service_screen.dart';
@@ -75,13 +74,13 @@ class Routers {
           arguments: arguments,
         );
 
-      case home:
-        return animRoute(
-          const HomeScreen(),
-          beginOffset: right,
-          name: home,
-          arguments: arguments,
-        );
+      // case home:
+      //   return animRoute(
+      //     const HomeScreen(),
+      //     beginOffset: right,
+      //     name: home,
+      //     arguments: arguments,
+      //   );
 
       case homeDetails:
         return animRoute(

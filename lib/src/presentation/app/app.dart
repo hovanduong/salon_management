@@ -4,6 +4,7 @@ import '../../configs/firebase/analytics_firebase.dart';
 import '../../intl/generated/l10n.dart';
 
 import '../routers.dart';
+import '../service_add/add_service.dart';
 
 class Constants {
   static const String languageVietName = 'vi';
@@ -42,9 +43,9 @@ class MyApp extends StatelessWidget {
       //             _Contants.languageEnglish,
       //             _Contants.countryEnglish,
       //           ),
-      initialRoute: Routers.getStarted,
-      onGenerateRoute: Routers.generateRoute,
-      // home: const ServiceAddScreen(),
+      // initialRoute: Routers.getStarted,
+      // onGenerateRoute: Routers.generateRoute,
+      home: const ServiceAddScreen(),
     );
   }
 }
