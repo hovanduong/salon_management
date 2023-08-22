@@ -3,6 +3,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../../../configs/configs.dart';
+import '../../../configs/constants/app_space.dart';
+import '../../../configs/language/statistics_language.dart';
 import '../statistics.dart';
 
 class Transactions extends StatelessWidget {
@@ -11,22 +13,22 @@ class Transactions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeSmall),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeLarge),
               child: Paragraph(
-                content: 'Transactions',
+                content: StatisticsLanguage.transactions,
                 style: STYLE_LARGE_BIG,
               ),
             ),
           ),
-          Container(
+          DecoratedBox(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(BorderRadiusSize.sizeLarge),
               ),
               child: SfCartesianChart(
                 plotAreaBorderWidth: 0,

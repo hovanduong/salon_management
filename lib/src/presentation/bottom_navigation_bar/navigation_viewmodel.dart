@@ -3,104 +3,81 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../base/base.dart';
-import '../service_list/service_list.dart';
-import '../update_profile/update_profile.dart';
+import '../home_detail/home_detail.dart';
 
 class NavigateViewModel extends BaseViewModel {
-  int selectIndex = 0;
-  final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
-
-  final screens = [
-    const ServiceListScreen(),
-    const ServiceListScreen(),
-    const UpdateProfileSreen(),
-  ];
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  int currentIndex = 0;
 
   dynamic init() {}
 
-  CupertinoTabScaffold bottomNavigationBar() {
-    return CupertinoTabScaffold(
-      resizeToAvoidBottomInset: false,
-      tabBar: CupertinoTabBar(
-        onTap: (index) {
-          if (selectIndex == index) {
-            switch (index) {
-              case 0:
-                firstTabNavKey.currentState?.popUntil((r) => r.isFirst);
-                break;
-              case 1:
-                secondTabNavKey.currentState?.popUntil((r) => r.isFirst);
-                break;
-              case 2:
-                thirdTabNavKey.currentState?.popUntil((r) => r.isFirst);
-                break;
-            }
+  BottomNavigationBar bottomNavigationBar() {
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: (index) {
+        if (currentIndex == index) {
+          switch (index) {
+            case 0:
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeDetailScreen()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeDetailScreen()),
+              );
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeDetailScreen()),
+              );
+              break;
+            case 4:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeDetailScreen()),
+              );
+              break;
           }
-          selectIndex = index;
-          notifyListeners();
-        },
-        backgroundColor: AppColors.PRIMARY_LIGHT_PINK,
-        activeColor: AppColors.PRIMARY_PINK,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite),
-            label: 'Lịch hẹn',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.menu),
-            label: 'Thông báo',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
-      tabBuilder: (context, index) {
-        switch (index) {
-          case 0:
-            return CupertinoTabView(
-              navigatorKey: firstTabNavKey,
-              builder: (context) => ServiceListScreen(),
-            );
-          case 1:
-            return CupertinoTabView(
-              navigatorKey: secondTabNavKey,
-              builder: (context) {
-                return const CupertinoPageScaffold(child: ServiceListScreen());
-              },
-            );
-          case 2:
-            return CupertinoTabView(
-              builder: (context) {
-                return const CupertinoPageScaffold(child: ServiceListScreen());
-              },
-            );
-          case 3:
-            return CupertinoTabView(
-              builder: (context) {
-                return const CupertinoPageScaffold(child: UpdateProfileSreen());
-              },
-            );
-          default:
-            return CupertinoTabView(
-              builder: (context) {
-                return const CupertinoPageScaffold(child: ServiceListScreen());
-              },
-            );
         }
+        currentIndex = index;
+        notifyListeners();
       },
+      selectedItemColor: AppColors.FIELD_GREEN,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_filled),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.list),
+          label: 'Transactions',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.add_circle,
+            size: 40,
+            color: AppColors.FIELD_GREEN,
+          ),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_balance_wallet_outlined),
+          label: 'Wallet',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle),
+          label: 'Account',
+        ),
+      ],
     );
   }
 }

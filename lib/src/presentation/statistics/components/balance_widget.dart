@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../../../configs/configs.dart';
+import '../../../configs/constants/app_space.dart';
+import '../../../configs/language/statistics_language.dart';
 
 class BalanceWidget extends StatelessWidget {
   const BalanceWidget({
@@ -21,7 +23,8 @@ class BalanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: EdgeInsets.symmetric(
+          horizontal: SpaceBox.sizeSmall, vertical: SpaceBox.sizeLarge),
       child: AspectRatio(
         aspectRatio: 1.3,
         child: Column(
@@ -53,16 +56,22 @@ class BalanceWidget extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Paragraph(content: 'Available Balance'),
+            Paragraph(content: StatisticsLanguage.availableBalance),
             const SizedBox(
               height: 10,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text('Earning'),
-                Text('Spend'),
-                Text('Available'),
+                Paragraph(
+                  content: StatisticsLanguage.earning,
+                ),
+                Paragraph(
+                  content: StatisticsLanguage.spend,
+                ),
+                Paragraph(
+                  content: StatisticsLanguage.available,
+                ),
               ],
             ),
             const SizedBox(

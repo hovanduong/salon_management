@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
+import '../../../configs/constants/app_space.dart';
+import '../../../configs/language/statistics_language.dart';
 
 class HeaderWidget extends StatelessWidget {
   const HeaderWidget({super.key});
@@ -8,16 +10,16 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeSmall),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Icon(Icons.arrow_back_ios_new),
-          const Paragraph(
-            content: 'Statistics',
+          Paragraph(
+            content: StatisticsLanguage.statistics,
             style: STYLE_MEDIUM_BOLD,
           ),
-          Image.asset(AppImages.imagedowload), // chữ D viết hoa
+          Image.asset(AppImages.imageDowload), // chữ D viết hoa
         ],
       ),
     );

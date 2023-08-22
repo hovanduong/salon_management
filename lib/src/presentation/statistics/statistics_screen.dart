@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../configs/configs.dart';
+import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 import 'components/balance_widget.dart';
 import 'components/header_widget.dart';
-import 'components/navigationbar.dart';
+
 import 'components/transactions_widget.dart';
 import 'statistics.dart';
 
@@ -46,14 +45,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 child: Column(
                   children: [
                     buildBalanceWidget(),
-                    buildTransactionsWidget(), 
+                    buildTransactionsWidget(),
                   ],
                 ),
               ),
             ),
           ],
         ),
-        bottomNavigationBar: buildBar(), // xóa
       ),
     );
   }
@@ -70,17 +68,10 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     );
   }
 
-  Widget buildBar() {
-    return Navigationbarrrr(
-      currentIndex: _viewModel!.currentIndex,
-      onTap: (index) {},
-    );
-  }
-
   Widget buildHeaderWidget() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 30),
-      child: HeaderWidget(),
+    return Padding(
+      padding: EdgeInsets.only(top: SpaceBox.sizeLarge),
+      child: const HeaderWidget(),
     );
   }
 

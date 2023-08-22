@@ -12,14 +12,16 @@ class NavigateScreen extends StatefulWidget {
 }
 
 class _NavigateScreenState extends State<NavigateScreen> {
-
   NavigateViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) {
+        _viewModel = viewModel;
+        _viewModel!.init();
+      },
       builder: (context, viewModel, child) => buildNavigateScreen(),
     );
   }
@@ -30,23 +32,15 @@ class _NavigateScreenState extends State<NavigateScreen> {
       // extendBody: true,
       // body: Navigator(
       //   onGenerateRoute: (settings) {
-      //     return 
+      //     return
       //     MaterialPageRoute(
       //       builder: (context) => _viewModel!.screens[_viewModel!.index],
       //       settings: settings,
       //     );
       //   },
       // ),
-      body: _viewModel!.screens[_viewModel!.selectIndex],
-      bottomNavigationBar: Container(
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(60),
-            topLeft: Radius.circular(60),
-          ),
-          child: _viewModel!.bottomNavigationBar(),
-        ),
-      ),
+      // body: _viewModel!.screens[_viewModel!.currentIndex],
+      bottomNavigationBar: _viewModel!.bottomNavigationBar(),
     );
   }
 }

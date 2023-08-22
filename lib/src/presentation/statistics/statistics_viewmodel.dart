@@ -50,7 +50,7 @@ class StatisticsViewModel extends BaseViewModel {
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       final percentage =
-          (sectionValues[i] / totalValue * 100).toStringAsFixed(0) + '%';
+          '${(sectionValues[i] / totalValue * 100).toStringAsFixed(0)}%';
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -92,6 +92,7 @@ class StatisticsViewModel extends BaseViewModel {
             ),
           );
         default:
+          // ignore: only_throw_errors
           throw 'Invalid index';
       }
     });

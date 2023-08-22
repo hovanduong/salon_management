@@ -8,7 +8,7 @@ class AppImages {
 
   static const String icCheck = 'assets/icons/Check.svg';
 
-  static const String imagedowload = 'assets/images/download.png';
+  static const String imageDowload = 'assets/images/download.png';
 
   static const String icSuccessCheck = 'assets/icons/success-icon.svg';
 
