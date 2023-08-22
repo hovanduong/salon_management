@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
 
-class HeaderrWidget extends StatelessWidget {
-  const HeaderrWidget({super.key});
+class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -17,7 +17,7 @@ class HeaderrWidget extends StatelessWidget {
             content: 'Statistics',
             style: STYLE_MEDIUM_BOLD,
           ),
-          Image.asset(AppImages.imagedowload),
+          Image.asset(AppImages.imagedowload), // chữ D viết hoa
         ],
       ),
     );

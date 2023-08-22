@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       //           ),
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
-      home: const StaticticsScreen(),
+      home: const StatisticsScreen(),
     );
   }
 }

@@ -20,8 +20,22 @@ class StatisticsViewModel extends BaseViewModel {
       ChartData('23', 3000),
       ChartData('24', 2930),
       ChartData('25', 4000),
-      ChartData('26', 6000),
+      ChartData('27', 6000),
     ];
+    notifyListeners();
+  }
+
+  void handleTouchCallback(
+    FlTouchEvent event,
+    PieTouchResponse? pieTouchResponse,
+  ) {
+    if (!event.isInterestedForInteractions ||
+        pieTouchResponse == null ||
+        pieTouchResponse.touchedSection == null) {
+      touchedIndex = -1;
+    } else {
+      touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+    }
     notifyListeners();
   }
 

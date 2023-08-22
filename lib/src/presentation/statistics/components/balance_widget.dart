@@ -6,18 +6,18 @@ import '../../../configs/configs.dart';
 class BalanceWidget extends StatelessWidget {
   const BalanceWidget({
     super.key,
-    required this.available,
-    required this.spend,
-    required this.earning,
-    required this.touchCallback,
-    required this.showingSections,
+    this.available,
+    this.spend,
+    this.earning,
+    this.touchCallback,
+    this.showingSections,
   });
 
-  final showingSections;
-  final touchCallback;
-  final earning;
-  final spend;
-  final available;
+  final List<PieChartSectionData>? showingSections;
+  final Function(FlTouchEvent, PieTouchResponse?)? touchCallback;
+  final String? earning;
+  final String? spend;
+  final String? available;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,7 +36,7 @@ class BalanceWidget extends StatelessWidget {
                   PieChartData(
                     pieTouchData: PieTouchData(
                       touchCallback: (event, pieTouchResponse) {
-                        touchCallback;
+                        touchCallback!(event, pieTouchResponse);
                       },
                     ),
                     borderData: FlBorderData(
@@ -72,17 +72,17 @@ class BalanceWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Paragraph(
-                  content: earning,
+                  content: earning ?? '',
                   style: STYLE_MEDIUM.copyWith(
                     color: AppColors.PRIMARY_RED,
                   ),
                 ),
                 Paragraph(
-                  content: spend,
+                  content: spend ?? '',
                   style: STYLE_MEDIUM.copyWith(color: AppColors.COLOR_GREY),
                 ),
                 Paragraph(
-                  content: available,
+                  content: available ?? '',
                   style: STYLE_MEDIUM.copyWith(
                     color: AppColors.FIELD_GREEN,
                   ),
@@ -93,6 +93,5 @@ class BalanceWidget extends StatelessWidget {
         ),
       ),
     );
-    
   }
 }
