@@ -5,6 +5,7 @@ import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 
 import '../statistics/statistics.dart';
+import 'components/icon_tabs.dart';
 import 'navigation.dart';
 
 class NavigateScreen extends StatefulWidget {
@@ -31,31 +32,88 @@ class _NavigateScreenState extends State<NavigateScreen> {
 
   Widget buildNavigateScreen() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.FIELD_GREEN,
-        elevation: 0,
-        child: Container(
-          child: Icon(Icons.add),
-          decoration: const BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.all(
-              Radius.circular(100),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromARGB(98, 248, 247, 247),
-                spreadRadius: 20,
-                blurRadius: 20,
-                offset: Offset(0, 5),
-              ),
-            ],
+      floatingActionButton: SizedBox(
+        width: 65,
+        height: 65,
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: AppColors.FIELD_GREEN,
+          elevation: 10,
+          child: const Icon(
+            Icons.add,
+            size: 35,
           ),
         ),
       ),
-      bottomNavigationBar: _viewModel!.appBarNavigator(),
+      body: IndexedStack(
+        index: _viewModel!.selectedIndex,
+        children: [
+          if (_viewModel!.selectedIndex == 0)
+            const StatisticsScreen()
+          else
+            Container(),
+          if (_viewModel!.selectedIndex == 1) const SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 2) SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 3) const SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 4) SizedBox() else Container(),
+        ],
+      ),
+      bottomNavigationBar: appBarNavigator(),
     );
   }
 
+  BottomAppBar appBarNavigator() {
+    return BottomAppBar(
+      // color: const Color.fromARGB(255, 240, 241, 241),
+      height: 60,
+      shape: const CircularNotchedRectangle(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeSmall),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(0),
+                name: _viewModel!.selectedIndex == 0
+                    ? AppImages.icHome
+                    : AppImages.icHomeLine,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(1),
+                size: 25,
+                name: _viewModel!.selectedIndex == 1
+                    ? AppImages.icStatist
+                    : AppImages.icStatistLine,
+              ),
+            ),
+            const Expanded(flex: 1, child: SizedBox()),
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(2),
+                name: _viewModel!.selectedIndex == 2
+                    ? AppImages.icWallet
+                    : AppImages.icWalletLine,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(3),
+                name: _viewModel!.selectedIndex == 3
+                    ? AppImages.icProfile
+                    : AppImages.icProfileLine,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

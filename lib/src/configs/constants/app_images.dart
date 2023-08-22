@@ -39,4 +39,20 @@ class AppImages {
   static const String icBell = 'assets/icons/bell.svg';
 
   static const String icSetting = 'assets/icons/setting.svg';
+
+  static const String icProfileLine = 'assets/icons/profile_line.svg';
+
+  static const String icProfile = 'assets/icons/profile.svg';
+
+  static const String icHomeLine = 'assets/icons/home_line.svg';
+
+  static const String icHome = 'assets/icons/home.svg';
+
+  static const String icStatistLine = 'assets/icons/statist_line.svg';
+
+  static const String icStatist = 'assets/icons/statist.svg';
+
+  static const String icWalletLine = 'assets/icons/wallet_line.svg';
+
+  static const String icWallet = 'assets/icons/wallet.svg';
 }
