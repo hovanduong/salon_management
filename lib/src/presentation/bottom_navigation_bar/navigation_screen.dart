@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../configs/configs.dart';
+import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 
+import '../statistics/statistics.dart';
 import 'navigation.dart';
 
 class NavigateScreen extends StatefulWidget {
@@ -28,19 +31,31 @@ class _NavigateScreenState extends State<NavigateScreen> {
 
   Widget buildNavigateScreen() {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
-      // extendBody: true,
-      // body: Navigator(
-      //   onGenerateRoute: (settings) {
-      //     return
-      //     MaterialPageRoute(
-      //       builder: (context) => _viewModel!.screens[_viewModel!.index],
-      //       settings: settings,
-      //     );
-      //   },
-      // ),
-      // body: _viewModel!.screens[_viewModel!.currentIndex],
-      bottomNavigationBar: _viewModel!.bottomNavigationBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColors.FIELD_GREEN,
+        elevation: 0,
+        child: Container(
+          child: Icon(Icons.add),
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.all(
+              Radius.circular(100),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(98, 248, 247, 247),
+                spreadRadius: 20,
+                blurRadius: 20,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: _viewModel!.appBarNavigator(),
     );
   }
+
 }

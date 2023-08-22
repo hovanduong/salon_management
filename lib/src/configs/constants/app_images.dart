@@ -1,5 +1,10 @@
 class AppImages {
   AppImages._();
+
+  static const String imageHome = 'assets/images/home.png';
+  static const String imageUser = 'assets/images/user.png';
+  static const String imageVector = 'assets/images/vector.png';
+  static const String imageWallet = 'assets/images/wallet.png';
   static const String imageLogo = 'assets/images/logo3.png';
 
   static const String icArrowLeft = 'assets/icons/arrow-left.svg';
