@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../configs/firebase/analytics_firebase.dart';
 import '../../intl/generated/l10n.dart';
 
+import '../homepage/homepage.dart';
 import '../routers.dart';
 import '../service_add/add_service.dart';
 
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       //           ),
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
-      home: const ServiceAddScreen(),
+      home: const HomePageScreen(),
     );
   }
 }
