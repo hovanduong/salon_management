@@ -20,7 +20,7 @@ class StatisticsViewModel extends BaseViewModel {
       ChartData('23', 3000),
       ChartData('24', 2930),
       ChartData('25', 4000),
-      ChartData('26', 1000),
+      ChartData('26', 6000),
     ];
     notifyListeners();
   }

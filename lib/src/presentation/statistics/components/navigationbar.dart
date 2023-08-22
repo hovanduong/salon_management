@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../configs/configs.dart';
+
 class Navigationbarrrr extends StatelessWidget {
   const Navigationbarrrr({
     super.key,
@@ -13,22 +15,24 @@ class Navigationbarrrr extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
-      items: const [
+      selectedItemColor: AppColors.FIELD_GREEN,
+      type: BottomNavigationBarType.fixed,
+      items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.home_filled),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings_ethernet),
-          label: 'Search',
+          icon: Icon(Icons.list),
+          label: 'Transactions',
         ),
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.attach_money),
-        //   label: 'Search',
-        // ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          icon: Icon(Icons.account_balance_wallet_outlined),
+          label: 'Wallet',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle),
+          label: 'Account',
         ),
       ],
     );

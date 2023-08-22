@@ -4,6 +4,7 @@ import '../../configs/configs.dart';
 import '../base/base.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+import 'components/balance_widget.dart';
 import 'components/header_widget.dart';
 import 'components/navigationbar.dart';
 import 'components/transactions_widget.dart';
@@ -54,12 +55,30 @@ class _StaticticsScreenState extends State<StaticticsScreen> {
     );
   }
 
+  // Widget buildTest() {
+  //   return BalanceWidget(
+  //       available: _viewModel!.showingSections()[0].value.toString(),
+  //       spend: _viewModel!.showingSections()[1].value.toString(),
+  //       earning: _viewModel!.showingSections()[2].value.toString(),
+  //       touchCallback: (event, pieTouchResponse) {
+  //         setState(() {
+  //           if (!event.isInterestedForInteractions ||
+  //               pieTouchResponse == null ||
+  //               pieTouchResponse.touchedSection == null) {
+  //             _viewModel!.touchedIndex = -1;
+  //             return;
+  //           }
+  //           _viewModel!.touchedIndex =
+  //               pieTouchResponse.touchedSection!.touchedSectionIndex;
+  //         });
+  //       },
+  //       showingSections: _viewModel!.showingSections());
+  // }
+
   Widget buildBar() {
     return Navigationbarrrr(
       currentIndex: _viewModel!.currentIndex,
-      onTap: (index) {
-        // Xử lý khi người dùng chọn một tab trong BottomNavigationBar
-      },
+      onTap: (index) {},
     );
   }
 
