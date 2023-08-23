@@ -35,14 +35,118 @@ class _HomePageScreenState extends State<HomePageScreen> {
             children: [
               Container(
                 width: double.infinity,
-                height: 500,
+                height: 385,
               ),
               backgroundImage(),
               nameUser(),
               Money(),
             ],
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    TransactionsHistory(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Upword(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Transfer(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Paypal(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Youtube(),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    SendAgain(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset(
+                          AppImages.pngTransfer,
+                          width: 70,
+                          height: 70,
+                        ),
+                        Image.asset(
+                          AppImages.pngTransfer,
+                          width: 70,
+                          height: 70,
+                        ),
+                        Image.asset(
+                          AppImages.pngTransfer,
+                          width: 70,
+                          height: 70,
+                        ),
+                        Image.asset(
+                          AppImages.pngTransfer,
+                          width: 70,
+                          height: 70,
+                        ),
+                        Image.asset(
+                          AppImages.pngTransfer,
+                          width: 70,
+                          height: 70,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.FIELD_GREEN,
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 60,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Row(
+                children: [
+                  Icon(
+                    Icons.home,
+                    size: 50,
+                  ),
+                  SizedBox(width: 30),
+                  Icon(
+                    Icons.abc,
+                    size: 50,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.abc,
+                    size: 50,
+                  ),
+                  SizedBox(width: 30),
+                  Icon(
+                    Icons.person,
+                    size: 50,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -221,5 +325,211 @@ Widget Money() {
         ),
       ),
     ),
+  );
+}
+
+Widget TransactionsHistory() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Paragraph(
+        content: "Transactions History",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.BLACK_500,
+        ),
+      ),
+      Paragraph(
+        content: "See all",
+        style: STYLE_MEDIUM.copyWith(
+          color: AppColors.COLOR_GREY,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget Upword() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        children: [
+          Image.asset(
+            AppImages.pngUpWork,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: "Upwork",
+                style: STYLE_LARGE_BOLD.copyWith(
+                  color: AppColors.BLACK_500,
+                ),
+              ),
+              Paragraph(
+                content: "Today",
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_GREY,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      Paragraph(
+        content: "+ \$ 850.00",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.FIELD_GREEN,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget Transfer() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        children: [
+          Image.asset(
+            AppImages.pngTransfer,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: "Transfer",
+                style: STYLE_LARGE_BOLD.copyWith(
+                  color: AppColors.BLACK_500,
+                ),
+              ),
+              Paragraph(
+                content: "Yesterday",
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_GREY,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      Paragraph(
+        content: "- \$ 85.00",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.PRIMARY_RED,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget Paypal() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        children: [
+          Image.asset(
+            AppImages.pngPaypal,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: "Palpal",
+                style: STYLE_LARGE_BOLD.copyWith(
+                  color: AppColors.BLACK_500,
+                ),
+              ),
+              Paragraph(
+                content: "Jan 30,2022",
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_GREY,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      Paragraph(
+        content: "+ \$ 1,406.00",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.FIELD_GREEN,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget Youtube() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        children: [
+          Image.asset(
+            AppImages.pngYoutube,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: "Youtube",
+                style: STYLE_LARGE_BOLD.copyWith(
+                  color: AppColors.BLACK_500,
+                ),
+              ),
+              Paragraph(
+                content: "Jan 16, 2022",
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_GREY,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      Paragraph(
+        content: "- \$ 11.99",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.PRIMARY_RED,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget SendAgain() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Paragraph(
+        content: "Send Again",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.BLACK_500,
+        ),
+      ),
+      Paragraph(
+        content: "See all",
+        style: STYLE_MEDIUM.copyWith(
+          color: AppColors.COLOR_GREY,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ],
   );
 }

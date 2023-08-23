@@ -41,4 +41,12 @@ class AppImages {
   static const String icChevronDown = 'assets/icons/chevron-down.svg';
 
   static const String icDots = 'assets/icons/dots.svg';
+
+  static const String pngUpWork = 'assets/images/upwork.png';
+
+  static const String pngTransfer = 'assets/images/transfer.png';
+
+  static const String pngPaypal = 'assets/images/paypal.png';
+
+  static const String pngYoutube = 'assets/images/youtube.png';
 }
