@@ -39,7 +39,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
               backgroundImage(),
               nameUser(),
-              Money(),
+              money(),
             ],
           ),
           Padding(
@@ -48,57 +48,31 @@ class _HomePageScreenState extends State<HomePageScreen> {
               children: [
                 Column(
                   children: [
-                    TransactionsHistory(),
+                    transactionsHistory(),
                     const SizedBox(
                       height: 20,
                     ),
-                    Upword(),
+                    upWork(),
                     const SizedBox(
                       height: 20,
                     ),
-                    Transfer(),
+                    transfer(),
                     const SizedBox(
                       height: 20,
                     ),
-                    Paypal(),
+                    paypal(),
                     const SizedBox(
                       height: 20,
                     ),
-                    Youtube(),
+                    youtube(),
                     const SizedBox(
                       height: 35,
                     ),
-                    SendAgain(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Image.asset(
-                          AppImages.pngTransfer,
-                          width: 70,
-                          height: 70,
-                        ),
-                        Image.asset(
-                          AppImages.pngTransfer,
-                          width: 70,
-                          height: 70,
-                        ),
-                        Image.asset(
-                          AppImages.pngTransfer,
-                          width: 70,
-                          height: 70,
-                        ),
-                        Image.asset(
-                          AppImages.pngTransfer,
-                          width: 70,
-                          height: 70,
-                        ),
-                        Image.asset(
-                          AppImages.pngTransfer,
-                          width: 70,
-                          height: 70,
-                        ),
-                      ],
+                    sendAgain(),
+                    const SizedBox(
+                      height: 15,
                     ),
+                    listAvatar(),
                   ],
                 ),
               ],
@@ -113,40 +87,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        child: Container(
-          height: 60,
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Row(
-                children: [
-                  Icon(
-                    Icons.home,
-                    size: 50,
-                  ),
-                  SizedBox(width: 30),
-                  Icon(
-                    Icons.abc,
-                    size: 50,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.abc,
-                    size: 50,
-                  ),
-                  SizedBox(width: 30),
-                  Icon(
-                    Icons.person,
-                    size: 50,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
+        child: bottomAppBar(),
       ),
     );
   }
@@ -195,7 +136,7 @@ Widget nameUser() {
   );
 }
 
-Widget Money() {
+Widget money() {
   return Positioned(
     top: 150,
     child: Container(
@@ -328,7 +269,7 @@ Widget Money() {
   );
 }
 
-Widget TransactionsHistory() {
+Widget transactionsHistory() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -349,7 +290,7 @@ Widget TransactionsHistory() {
   );
 }
 
-Widget Upword() {
+Widget upWork() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -390,7 +331,7 @@ Widget Upword() {
   );
 }
 
-Widget Transfer() {
+Widget transfer() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -431,7 +372,7 @@ Widget Transfer() {
   );
 }
 
-Widget Paypal() {
+Widget paypal() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -472,7 +413,7 @@ Widget Paypal() {
   );
 }
 
-Widget Youtube() {
+Widget youtube() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -513,7 +454,7 @@ Widget Youtube() {
   );
 }
 
-Widget SendAgain() {
+Widget sendAgain() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -531,5 +472,71 @@ Widget SendAgain() {
         ),
       ),
     ],
+  );
+}
+
+Widget listAvatar() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      CircleAvatar(
+        radius: 30,
+        child: Image.asset(
+          AppImages.pngAvatar,
+        ),
+      ),
+      CircleAvatar(
+        radius: 30,
+        child: Image.asset(
+          AppImages.pngAvatar,
+        ),
+      ),
+      CircleAvatar(
+        radius: 30,
+        child: Image.asset(
+          AppImages.pngAvatar,
+        ),
+      ),
+      CircleAvatar(
+        radius: 30,
+        child: Image.asset(
+          AppImages.pngAvatar,
+        ),
+      ),
+      CircleAvatar(
+        radius: 30,
+        child: Image.asset(
+          AppImages.pngAvatar,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget bottomAppBar() {
+  return Container(
+    height: 60,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Row(
+          children: [
+            SvgPicture.asset(AppImages.icHome),
+            const SizedBox(width: 40),
+            SvgPicture.asset(AppImages.icBarChart),
+          ],
+        ),
+        const SizedBox(
+          width: 30,
+        ),
+        Row(
+          children: [
+            SvgPicture.asset(AppImages.icWallet),
+            const SizedBox(width: 40),
+            SvgPicture.asset(AppImages.icUser),
+          ],
+        )
+      ],
+    ),
   );
 }

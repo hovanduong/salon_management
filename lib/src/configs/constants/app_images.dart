@@ -49,4 +49,14 @@ class AppImages {
   static const String pngPaypal = 'assets/images/paypal.png';
 
   static const String pngYoutube = 'assets/images/youtube.png';
+
+  static const String icHome = 'assets/icons/home.svg';
+
+  static const String icBarChart = 'assets/icons/bar-chart.svg';
+
+  static const String icWallet = 'assets/icons/wallet.svg';
+
+  static const String icUser = 'assets/icons/user.svg';
+
+  static const String pngAvatar = 'assets/images/avatar.png';
 }
