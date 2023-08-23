@@ -96,5 +96,11 @@
     "validName": "Name must be more than 2 characters",
     "emptyVerificationCode": "",
     "validVerificationCode": "",
+    "statistics": "Statistics",
+    "transactions": "Transactions",
+    "earning": "Earning",
+    "spend": "Spend",
+    "available": "Available",
+    "availableBalance": "Available Balance",
     "lastLine": ""
 }

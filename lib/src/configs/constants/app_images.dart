@@ -1,5 +1,10 @@
 class AppImages {
   AppImages._();
+
+  static const String imageHome = 'assets/images/home.png';
+  static const String imageUser = 'assets/images/user.png';
+  static const String imageVector = 'assets/images/vector.png';
+  static const String imageWallet = 'assets/images/wallet.png';
   static const String imageLogo = 'assets/images/logo3.png';
 
   static const String icArrowLeft = 'assets/icons/arrow-left.svg';
@@ -8,30 +13,46 @@ class AppImages {
 
   static const String icCheck = 'assets/icons/Check.svg';
 
+  static const String imageDowload = 'assets/images/download.png';
 
+  static const String icSuccessCheck = 'assets/icons/success-icon.svg';
 
-    static const String icSuccessCheck = 'assets/icons/success-icon.svg';
+  static const String addImage = 'assets/images/add-image.png';
 
-  static const String addImage ='assets/images/add-image.png'; 
+  static const String workService = 'assets/icons/work-icon.svg';
 
-  static const String workService ='assets/icons/work-icon.svg'; 
+  static const String missSercice = 'assets/icons/miss-icon.svg';
 
-  static const String missSercice ='assets/icons/miss-icon.svg'; 
+  static const String bedService = 'assets/icons/bed-icon.svg';
 
-  static const String bedService = 'assets/icons/bed-icon.svg'; 
+  static const String winnerService = 'assets/icons/winner-icon.svg';
 
-  static const String winnerService = 'assets/icons/winner-icon.svg'; 
+  static const String flyService = 'assets/icons/fly-icon.svg';
+  static const String heartIcon = 'assets/icons/heart-icon.svg';
 
-  static const String flyService ='assets/icons/fly-icon.svg'; 
-  static const String heartIcon ='assets/icons/heart-icon.svg'; 
+  static const String editService = 'assets/icons/edit-service-icon.svg';
 
-  static const String editService ='assets/icons/edit-service-icon.svg'; 
-
-  static const String serviceDetails = 'assets/images/details-image.png'; 
+  static const String serviceDetails = 'assets/images/details-image.png';
 
   static const String imageGirl = 'assets/images/photo_girl.png';
 
   static const String icBell = 'assets/icons/bell.svg';
 
   static const String icSetting = 'assets/icons/setting.svg';
+
+  static const String icProfileLine = 'assets/icons/profile_line.svg';
+
+  static const String icProfile = 'assets/icons/profile.svg';
+
+  static const String icHomeLine = 'assets/icons/home_line.svg';
+
+  static const String icHome = 'assets/icons/home.svg';
+
+  static const String icStatistLine = 'assets/icons/statist_line.svg';
+
+  static const String icStatist = 'assets/icons/statist.svg';
+
+  static const String icWalletLine = 'assets/icons/wallet_line.svg';
+
+  static const String icWallet = 'assets/icons/wallet.svg';
 }

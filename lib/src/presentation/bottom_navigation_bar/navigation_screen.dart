@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../configs/configs.dart';
+import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 
+import '../statistics/statistics.dart';
+import 'components/icon_tabs.dart';
 import 'navigation.dart';
 
 class NavigateScreen extends StatefulWidget {
@@ -12,39 +16,102 @@ class NavigateScreen extends StatefulWidget {
 }
 
 class _NavigateScreenState extends State<NavigateScreen> {
-
   NavigateViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) {
+        _viewModel = viewModel;
+        _viewModel!.init();
+      },
       builder: (context, viewModel, child) => buildNavigateScreen(),
     );
   }
 
   Widget buildNavigateScreen() {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
-      // extendBody: true,
-      // body: Navigator(
-      //   onGenerateRoute: (settings) {
-      //     return 
-      //     MaterialPageRoute(
-      //       builder: (context) => _viewModel!.screens[_viewModel!.index],
-      //       settings: settings,
-      //     );
-      //   },
-      // ),
-      body: _viewModel!.screens[_viewModel!.selectIndex],
-      bottomNavigationBar: Container(
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(60),
-            topLeft: Radius.circular(60),
+      resizeToAvoidBottomInset: false,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        width: 65,
+        height: 65,
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: AppColors.FIELD_GREEN,
+          elevation: 10,
+          child: const Icon(
+            Icons.add,
+            size: 35,
           ),
-          child: _viewModel!.bottomNavigationBar(),
+        ),
+      ),
+      body: IndexedStack(
+        index: _viewModel!.selectedIndex,
+        children: [
+          if (_viewModel!.selectedIndex == 0)
+            const StatisticsScreen()
+          else
+            Container(),
+          if (_viewModel!.selectedIndex == 1) const SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 2) SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 3) const SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 4) SizedBox() else Container(),
+        ],
+      ),
+      bottomNavigationBar: appBarNavigator(),
+    );
+  }
+
+  BottomAppBar appBarNavigator() {
+    return BottomAppBar(
+      // color: const Color.fromARGB(255, 240, 241, 241),
+      height: 60,
+      shape: const CircularNotchedRectangle(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeSmall),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(0),
+                name: _viewModel!.selectedIndex == 0
+                    ? AppImages.icHome
+                    : AppImages.icHomeLine,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(1),
+                size: 25,
+                name: _viewModel!.selectedIndex == 1
+                    ? AppImages.icStatist
+                    : AppImages.icStatistLine,
+              ),
+            ),
+            const Expanded(flex: 1, child: SizedBox()),
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(2),
+                name: _viewModel!.selectedIndex == 2
+                    ? AppImages.icWallet
+                    : AppImages.icWalletLine,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconTabWidget(
+                onTap: () => _viewModel!.changeIndex(3),
+                name: _viewModel!.selectedIndex == 3
+                    ? AppImages.icProfile
+                    : AppImages.icProfileLine,
+              ),
+            ),
+          ],
         ),
       ),
     );
