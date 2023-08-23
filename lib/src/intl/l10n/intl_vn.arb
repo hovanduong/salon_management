@@ -96,6 +96,11 @@
     "validName": "Tên phải trên 2 kí tự",
     "emptyVerificationCode": "",
     "validVerificationCode": "",
+    "totalBalance": "Tổng số dư",
+    "income": "Thu nhập",
+    "expenses": "Chi phí",
+    "transactionHistory": "Lịch sử giao dịch",
+    "seeAll": "Xem hết",
+    "sendAgain": "Gửi lại",
     "lastLine": ""
 }
-

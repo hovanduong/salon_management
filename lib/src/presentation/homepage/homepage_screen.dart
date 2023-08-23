@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../configs/configs.dart';
-import '../../configs/constants/app_space.dart';
+import '../../configs/language/homepage_language.dart';
 import '../base/base.dart';
 import 'homepage_viewModel.dart';
 
@@ -35,7 +35,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             children: [
               Container(
                 width: double.infinity,
-                height: 385,
+                height: 365,
               ),
               backgroundImage(),
               nameUser(),
@@ -49,29 +49,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 Column(
                   children: [
                     transactionsHistory(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    upWork(), // build + name + widget
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    upWork(),
                     transfer(),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     paypal(),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     youtube(),
-                    const SizedBox(
-                      height: 35,
-                    ),
                     sendAgain(),
-                    const SizedBox(
-                      height: 15,
-                    ),
                     listAvatar(),
                   ],
                 ),
@@ -79,15 +61,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.FIELD_GREEN,
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        child: bottomAppBar(),
       ),
     );
   }
@@ -156,7 +129,7 @@ Widget money() {
             Row(
               children: [
                 Paragraph(
-                  content: "Total Balance",
+                  content: HomePageLanguage.totalBalance,
                   style: STYLE_MEDIUM.copyWith(
                     color: AppColors.COLOR_WHITE,
                     fontWeight: FontWeight.w500,
@@ -204,9 +177,9 @@ Widget money() {
                   width: 10,
                 ),
                 Paragraph(
-                  content: "Income",
+                  content: HomePageLanguage.inCome,
                   style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_GREY,
+                    color: AppColors.COLOR_WHITE,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -232,9 +205,9 @@ Widget money() {
                   width: 10,
                 ),
                 Paragraph(
-                  content: "Expenses",
+                  content: HomePageLanguage.expenses,
                   style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_GREY,
+                    color: AppColors.COLOR_WHITE,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -270,36 +243,80 @@ Widget money() {
 }
 
 Widget transactionsHistory() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Paragraph(
+          content: HomePageLanguage.transactionHistory,
+          style: STYLE_LARGE_BOLD.copyWith(
+            color: AppColors.BLACK_500,
+          ),
+        ),
+        Paragraph(
+          content: HomePageLanguage.seeAll,
+          style: STYLE_MEDIUM.copyWith(
+            color: AppColors.COLOR_GREY,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget upWork() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Paragraph(
-        content: "Transactions History",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.BLACK_500,
-        ),
+      Row(
+        children: [
+          Image.asset(
+            AppImages.pngUpWork,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: "Upwork",
+                style: STYLE_LARGE_BOLD.copyWith(
+                  color: AppColors.BLACK_500,
+                ),
+              ),
+              Paragraph(
+                content: "Today",
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_GREY,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       Paragraph(
-        content: "See all",
-        style: STYLE_MEDIUM.copyWith(
-          color: AppColors.COLOR_GREY,
-          fontWeight: FontWeight.w500,
+        content: "+ \$ 850.00",
+        style: STYLE_LARGE_BOLD.copyWith(
+          color: AppColors.FIELD_GREEN,
         ),
       ),
     ],
   );
 }
 
-Widget upWork() {
+Widget transfer() {
   return Padding(
-    padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeLarge),
+    padding: const EdgeInsets.symmetric(vertical: 10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
             Image.asset(
-              AppImages.pngUpWork,
+              AppImages.pngTransfer,
             ),
             const SizedBox(
               width: 5,
@@ -308,13 +325,13 @@ Widget upWork() {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Paragraph(
-                  content: "Upwork",
+                  content: "Transfer",
                   style: STYLE_LARGE_BOLD.copyWith(
                     color: AppColors.BLACK_500,
                   ),
                 ),
                 Paragraph(
-                  content: "Today",
+                  content: "Yesterday",
                   style: STYLE_MEDIUM.copyWith(
                     color: AppColors.COLOR_GREY,
                   ),
@@ -324,7 +341,51 @@ Widget upWork() {
           ],
         ),
         Paragraph(
-          content: "+ \$ 850.00",
+          content: "- \$ 85.00",
+          style: STYLE_LARGE_BOLD.copyWith(
+            color: AppColors.PRIMARY_RED,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget paypal() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.asset(
+              AppImages.pngPaypal,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Paragraph(
+                  content: "Palpal",
+                  style: STYLE_LARGE_BOLD.copyWith(
+                    color: AppColors.BLACK_500,
+                  ),
+                ),
+                Paragraph(
+                  content: "Jan 30,2022",
+                  style: STYLE_MEDIUM.copyWith(
+                    color: AppColors.COLOR_GREY,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Paragraph(
+          content: "+ \$ 1,406.00",
           style: STYLE_LARGE_BOLD.copyWith(
             color: AppColors.FIELD_GREEN,
           ),
@@ -334,147 +395,71 @@ Widget upWork() {
   );
 }
 
-Widget transfer() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          Image.asset(
-            AppImages.pngTransfer,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Paragraph(
-                content: "Transfer",
-                style: STYLE_LARGE_BOLD.copyWith(
-                  color: AppColors.BLACK_500,
-                ),
-              ),
-              Paragraph(
-                content: "Yesterday",
-                style: STYLE_MEDIUM.copyWith(
-                  color: AppColors.COLOR_GREY,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Paragraph(
-        content: "- \$ 85.00",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.PRIMARY_RED,
-        ),
-      ),
-    ],
-  );
-}
-
-Widget paypal() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          Image.asset(
-            AppImages.pngPaypal,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Paragraph(
-                content: "Palpal",
-                style: STYLE_LARGE_BOLD.copyWith(
-                  color: AppColors.BLACK_500,
-                ),
-              ),
-              Paragraph(
-                content: "Jan 30,2022",
-                style: STYLE_MEDIUM.copyWith(
-                  color: AppColors.COLOR_GREY,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Paragraph(
-        content: "+ \$ 1,406.00",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.FIELD_GREEN,
-        ),
-      ),
-    ],
-  );
-}
-
 Widget youtube() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          Image.asset(
-            AppImages.pngYoutube,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Paragraph(
-                content: "Youtube",
-                style: STYLE_LARGE_BOLD.copyWith(
-                  color: AppColors.BLACK_500,
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.asset(
+              AppImages.pngYoutube,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Paragraph(
+                  content: "Youtube",
+                  style: STYLE_LARGE_BOLD.copyWith(
+                    color: AppColors.BLACK_500,
+                  ),
                 ),
-              ),
-              Paragraph(
-                content: "Jan 16, 2022",
-                style: STYLE_MEDIUM.copyWith(
-                  color: AppColors.COLOR_GREY,
+                Paragraph(
+                  content: "Jan 16, 2022",
+                  style: STYLE_MEDIUM.copyWith(
+                    color: AppColors.COLOR_GREY,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Paragraph(
-        content: "- \$ 11.99",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.PRIMARY_RED,
+              ],
+            ),
+          ],
         ),
-      ),
-    ],
+        Paragraph(
+          content: "- \$ 11.99",
+          style: STYLE_LARGE_BOLD.copyWith(
+            color: AppColors.PRIMARY_RED,
+          ),
+        ),
+      ],
+    ),
   );
 }
 
 Widget sendAgain() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Paragraph(
-        content: "Send Again",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.BLACK_500,
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Paragraph(
+          content: HomePageLanguage.sendAgain,
+          style: STYLE_LARGE_BOLD.copyWith(
+            color: AppColors.BLACK_500,
+          ),
         ),
-      ),
-      Paragraph(
-        content: "See all",
-        style: STYLE_MEDIUM.copyWith(
-          color: AppColors.COLOR_GREY,
-          fontWeight: FontWeight.w500,
+        Paragraph(
+          content: HomePageLanguage.seeAll,
+          style: STYLE_MEDIUM.copyWith(
+            color: AppColors.COLOR_GREY,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
@@ -482,64 +467,71 @@ Widget listAvatar() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: [
-      CircleAvatar(
-        radius: 30,
+      Container(
+        width: 60,
+        height: 60,
+        decoration: const BoxDecoration(
+          color: Colors.amber,
+          borderRadius: BorderRadius.all(
+            Radius.circular(999),
+          ),
+        ),
         child: Image.asset(
           AppImages.pngAvatar,
         ),
       ),
-      CircleAvatar(
-        radius: 30,
+      Container(
+        width: 60,
+        height: 60,
+        decoration: const BoxDecoration(
+          color: Colors.amber,
+          borderRadius: BorderRadius.all(
+            Radius.circular(999),
+          ),
+        ),
         child: Image.asset(
           AppImages.pngAvatar,
         ),
       ),
-      CircleAvatar(
-        radius: 30,
+      Container(
+        width: 60,
+        height: 60,
+        decoration: const BoxDecoration(
+          color: Colors.amber,
+          borderRadius: BorderRadius.all(
+            Radius.circular(999),
+          ),
+        ),
         child: Image.asset(
           AppImages.pngAvatar,
         ),
       ),
-      CircleAvatar(
-        radius: 30,
+      Container(
+        width: 60,
+        height: 60,
+        decoration: const BoxDecoration(
+          color: Colors.amber,
+          borderRadius: BorderRadius.all(
+            Radius.circular(999),
+          ),
+        ),
         child: Image.asset(
           AppImages.pngAvatar,
         ),
       ),
-      CircleAvatar(
-        radius: 30,
+      Container(
+        width: 60,
+        height: 60,
+        decoration: const BoxDecoration(
+          color: Colors.amber,
+          borderRadius: BorderRadius.all(
+            Radius.circular(999),
+          ),
+        ),
         child: Image.asset(
           AppImages.pngAvatar,
         ),
       ),
     ],
-  );
-}
-
-Widget bottomAppBar() {
-  return Container(
-    height: 60,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Row(
-          children: [
-            SvgPicture.asset(AppImages.icHome),
-            const SizedBox(width: 40),
-            SvgPicture.asset(AppImages.icBarChart),
-          ],
-        ),
-        const SizedBox(
-          width: 30,
-        ),
-        Row(
-          children: [
-            SvgPicture.asset(AppImages.icWallet),
-            const SizedBox(width: 40),
-            SvgPicture.asset(AppImages.icUser),
-          ],
-        )
-      ],
-    ),
   );
 }

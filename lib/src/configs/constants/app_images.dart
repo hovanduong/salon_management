@@ -58,5 +58,5 @@ class AppImages {
 
   static const String icUser = 'assets/icons/user.svg';
 
-  static const String pngAvatar = 'assets/images/avatar.png';
+  static const String pngAvatar = 'assets/images/avatar.jpg';
 }
