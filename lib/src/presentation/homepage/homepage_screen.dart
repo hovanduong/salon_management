@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'homepage_viewModel.dart';
 
@@ -25,7 +26,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  @override
   Widget buildHomePage() {
     return Scaffold(
       body: Column(
@@ -52,7 +52,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    upWork(),
+                    upWork(), // build + name + widget
                     const SizedBox(
                       height: 20,
                     ),
@@ -291,43 +291,46 @@ Widget transactionsHistory() {
 }
 
 Widget upWork() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          Image.asset(
-            AppImages.pngUpWork,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Paragraph(
-                content: "Upwork",
-                style: STYLE_LARGE_BOLD.copyWith(
-                  color: AppColors.BLACK_500,
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeLarge),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.asset(
+              AppImages.pngUpWork,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Paragraph(
+                  content: "Upwork",
+                  style: STYLE_LARGE_BOLD.copyWith(
+                    color: AppColors.BLACK_500,
+                  ),
                 ),
-              ),
-              Paragraph(
-                content: "Today",
-                style: STYLE_MEDIUM.copyWith(
-                  color: AppColors.COLOR_GREY,
+                Paragraph(
+                  content: "Today",
+                  style: STYLE_MEDIUM.copyWith(
+                    color: AppColors.COLOR_GREY,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Paragraph(
-        content: "+ \$ 850.00",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.FIELD_GREEN,
+              ],
+            ),
+          ],
         ),
-      ),
-    ],
+        Paragraph(
+          content: "+ \$ 850.00",
+          style: STYLE_LARGE_BOLD.copyWith(
+            color: AppColors.FIELD_GREEN,
+          ),
+        ),
+      ],
+    ),
   );
 }
 
