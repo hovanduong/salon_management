@@ -3,7 +3,15 @@
 import '../../intl/generated/l10n.dart';
 
 class ServiceAddLanguage {
+  
+  static final chooseTime = S.current.chooseTime;
+  static final chooseDay = S.current.chooseDay;
 
+  static final enterPhoneNumber = S.current.enterPhoneNumber;
+  static final phoneNumber = S.current.phoneNumber;
+  static final enterAddress = S.current.enterAddress;
+
+  static final address = S.current.address;
   static final serviceAdd = S.current.serviceAdd;
 
   static final serviceName = S.current.serviceName;
@@ -28,7 +36,7 @@ class ServiceAddLanguage {
   static final onlyNumberOfTime = S.current.onlyNumberOfTime;
 
   static final choosePhoto = S.current.choosePhoto;
-  
+
   static final confirm = S.current.confirm;
 
   static final cancel = S.current.cancel;

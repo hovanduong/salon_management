@@ -102,6 +102,9 @@
     "spend": "Chi tiêu",
     "available": "Có sẵn",
     "availableBalance": "Số dư khả dụng",
+    "enterAddress": "Nhập địa chỉ",
+    "chooseTime": "Chọn giờ",
+    "chooseDay": "Chọn Ngày",
     "lastLine": ""
 }
 

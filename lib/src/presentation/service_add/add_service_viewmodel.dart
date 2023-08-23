@@ -80,16 +80,16 @@ class ServiceAddViewModel extends BaseViewModel {
 
   void checkPhoneInput() {
     if (phoneController.text.isEmpty) {
-      onTopic = false;
+      onPhone = false;
       phoneErrorMsg = 'rỗng';
     } else if (phoneCkeckText.hasMatch(phoneController.text)) {
-      onTopic = false;
+      onPhone = false;
       phoneErrorMsg = 'Không nhập chữ cái và kí tự đặt biệt';
     } else if (phoneCkeckQuantity.hasMatch(phoneController.text)) {
-      onTopic = false;
+      onPhone = false;
       phoneErrorMsg = 'nhập sai định dạng';
     } else {
-      onTopic = true;
+      onPhone = true;
       phoneErrorMsg = '';
     }
     notifyListeners();
@@ -229,12 +229,10 @@ class ServiceAddViewModel extends BaseViewModel {
 
   void enableConfirmButton() {
     if (onTopic &&
-        onMoney &&
-        onTime &&
+        onPhone &&
         onDescription &&
         topicNameController.text.isNotEmpty &&
-        moneyController.text.isNotEmpty &&
-        timeController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty) {
       enableButton = true;
     } else {
@@ -262,4 +260,28 @@ class ServiceAddViewModel extends BaseViewModel {
         firstDate: DateTime(1990),
         lastDate: DateTime(2100),
       );
+
+  List<Contact> contacts = [
+    Contact(phoneNumber: "0123456789", name: "Nguyễn Văn A"),
+    Contact(phoneNumber: "0987654321", name: "Trần Thị B"),
+    // Thêm các số điện thoại và tên khác vào đây
+  ];
+
+  String getContactName(String phoneNumber) {
+    for (var contact in contacts) {
+      if (contact.phoneNumber == phoneNumber) {
+        return contact.name;
+      }
+    }
+    return "Không tìm thấy số điện thoại";
+  }
+
+  void checkName() {}
+}
+
+class Contact {
+  String phoneNumber;
+  String name;
+
+  Contact({required this.phoneNumber, required this.name});
 }

@@ -4,6 +4,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'add_service.dart';
+import 'components/date_time_widget.dart';
 
 class ServiceAddScreen extends StatefulWidget {
   const ServiceAddScreen({super.key});
@@ -58,6 +59,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                   buildServiceDescription(),
                   buildAddress(),
                   buildDateTime(),
+                  // builDateTimeT(),
                   // buildChoosePhoto(),
                   buildConfirmButton(),
                   buildCancelText(),
@@ -70,27 +72,54 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
+  // Widget builDateTimeT() {
+  //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
+
+  //   final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
+  //   return DateTimeWidget(
+  //     onPressedDay: _viewModel!.updateDate(),
+  //     onPressedTime: _viewModel!.updateTime(),
+  //     day:
+  //         '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}',
+  //     time: '$hours:$minutes',
+  //   );
+  // }
+
   Widget buildDateTime() {
     final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
 
     final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
     return Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Paragraph(
-              content: 'Choose date',
+              content: ServiceAddLanguage.chooseTime,
               fontWeight: FontWeight.w600,
             ),
             Paragraph(
-              content: 'Choose time',
+              content: ServiceAddLanguage.chooseDay,
               fontWeight: FontWeight.w600,
-            )
+            ),
           ],
         ),
         Row(
           children: [
+            Expanded(
+                child: ElevatedButton(
+              onPressed: () async {
+                await _viewModel!.updateTime();
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
+              ),
+              child: Text('$hours:$minutes'),
+            )),
+            SizedBox(
+              width: SpaceBox.sizeMedium,
+            ),
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
@@ -104,20 +133,6 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                     '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}'),
               ),
             ),
-            SizedBox(
-              width: SpaceBox.sizeMedium,
-            ),
-            Expanded(
-                child: ElevatedButton(
-              onPressed: () async {
-                await _viewModel!.updateTime();
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
-              ),
-              child: Text('$hours:$minutes'),
-            ))
           ],
         ),
       ],
@@ -139,22 +154,23 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Widget buildServicePhone() {
     return AppFormField(
-      hintText: 'Enter Service Phone',
-      labelText: 'Service Phone',
+      hintText: ServiceAddLanguage.enterPhoneNumber,
+      labelText: ServiceAddLanguage.phoneNumber,
       validator: _viewModel!.phoneErrorMsg,
       textEditingController: _viewModel!.phoneController,
       onChanged: (value) {
-        _viewModel!.checkPhoneInput();
+        _viewModel!
+          ..checkPhoneInput()
+          ..enableConfirmButton()
+          ..getContactName(value);
       },
     );
   }
 
   Widget buildAddress() {
     return AppFormField(
-      hintText: 'Enter Address',
-      labelText: 'Address',
-      validator: _viewModel!.phoneErrorMsg,
-      textEditingController: _viewModel!.phoneController,
+      hintText: ServiceAddLanguage.enterAddress,
+      labelText: ServiceAddLanguage.address,
       onChanged: (value) {},
     );
   }

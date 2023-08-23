@@ -102,5 +102,8 @@
     "spend": "Spend",
     "available": "Available",
     "availableBalance": "Available Balance",
+    "enterAddress": "Enter Address",
+    "chooseTime": "Choose time",
+    "chooseDay": "Choose date",
     "lastLine": ""
 }
