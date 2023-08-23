@@ -5,7 +5,6 @@ import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'add_service.dart';
 
-
 class ServiceAddScreen extends StatefulWidget {
   const ServiceAddScreen({super.key});
 
@@ -51,11 +50,15 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  buildServicePhone(),
                   buildServiceTopic(),
+
                   buildServiceMoney(),
-                  buildServiceTime(),
+                  // buildServiceTime(),
                   buildServiceDescription(),
-                  buildChoosePhoto(),
+                  buildAddress(),
+                  buildDateTime(),
+                  // buildChoosePhoto(),
                   buildConfirmButton(),
                   buildCancelText(),
                 ],
@@ -64,6 +67,60 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildDateTime() {
+    final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
+
+    final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
+    return Column(
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Paragraph(
+              content: 'Choose date',
+              fontWeight: FontWeight.w600,
+            ),
+            Paragraph(
+              content: 'Choose time',
+              fontWeight: FontWeight.w600,
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _viewModel!.updateDate();
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
+                ),
+                child: Text(
+                    '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}'),
+              ),
+            ),
+            SizedBox(
+              width: SpaceBox.sizeMedium,
+            ),
+            Expanded(
+                child: ElevatedButton(
+              onPressed: () async {
+                await _viewModel!.updateTime();
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
+              ),
+              child: Text('$hours:$minutes'),
+            ))
+          ],
+        ),
+      ],
     );
   }
 
@@ -77,6 +134,28 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         onTap: () => Navigator.pop(context),
         title: ServiceAddLanguage.serviceAdd,
       ),
+    );
+  }
+
+  Widget buildServicePhone() {
+    return AppFormField(
+      hintText: 'Enter Service Phone',
+      labelText: 'Service Phone',
+      validator: _viewModel!.phoneErrorMsg,
+      textEditingController: _viewModel!.phoneController,
+      onChanged: (value) {
+        _viewModel!.checkPhoneInput();
+      },
+    );
+  }
+
+  Widget buildAddress() {
+    return AppFormField(
+      hintText: 'Enter Address',
+      labelText: 'Address',
+      validator: _viewModel!.phoneErrorMsg,
+      textEditingController: _viewModel!.phoneController,
+      onChanged: (value) {},
     );
   }
 
@@ -121,27 +200,27 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
-  Widget buildServiceTime() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeVerySmall,
-      ),
-      child: AppFormField(
-        counterText: '',
-        maxLenght: 2,
-        validator: _viewModel!.timeErrorMsg,
-        labelText: ServiceAddLanguage.timeSpendTogether,
-        hintText: ServiceAddLanguage.enterAmountOfTime,
-        keyboardType: TextInputType.datetime,
-        textEditingController: _viewModel!.timeController,
-        onChanged: (value) {
-          _viewModel!
-            ..checkTimeInput()
-            ..enableConfirmButton();
-        },
-      ),
-    );
-  }
+  // Widget buildServiceTime() {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(
+  //       vertical: SizeToPadding.sizeVerySmall,
+  //     ),
+  //     child: AppFormField(
+  //       counterText: '',
+  //       maxLenght: 2,
+  //       validator: _viewModel!.timeErrorMsg,
+  //       labelText: ServiceAddLanguage.timeSpendTogether,
+  //       hintText: ServiceAddLanguage.enterAmountOfTime,
+  //       keyboardType: TextInputType.datetime,
+  //       textEditingController: _viewModel!.timeController,
+  //       onChanged: (value) {
+  //         _viewModel!
+  //           ..checkTimeInput()
+  //           ..enableConfirmButton();
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget buildServiceDescription() {
     return Padding(
@@ -163,17 +242,17 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
-  Widget buildChoosePhoto() {
-    return Row(
-      children: [
-       _viewModel!.choosePhoto()
-      ],
-    );
-  }
+  // Widget buildChoosePhoto() {
+  //   return Row(
+  //     children: [
+  //      _viewModel!.choosePhoto()
+  //     ],
+  //   );
+  // }
 
   Widget buildConfirmButton() {
     return Padding(
-      padding:  EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeMedium * 2,
       ),
       child: AppButton(
@@ -190,9 +269,9 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Widget buildCancelText() {
     return InkWell(
-      onTap: 
-      // () {},
-      () => Navigator.pop(context),
+      onTap:
+          // () {},
+          () => Navigator.pop(context),
       child: Paragraph(
         content: ServiceAddLanguage.cancel,
         style: STYLE_MEDIUM_BOLD.copyWith(

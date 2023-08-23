@@ -12,24 +12,30 @@ import 'components/photo_picker_widget.dart';
 class ServiceAddViewModel extends BaseViewModel {
   File? imageFile;
 
-  TimeOfDay pickedTime = const TimeOfDay(hour: 00, minute: 00);
+  DateTime dateTime = DateTime.now();
+
   String selectedTimeText = '';
 
+  final phoneController = TextEditingController();
   final topicNameController = TextEditingController();
   final moneyController = TextEditingController();
   final timeController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  bool onPhone = true;
   bool onTopic = true;
   bool onMoney = true;
   bool onTime = true;
   bool onDescription = true;
 
+  String? phoneErrorMsg;
   String? topicErrorMsg;
   String? moneyErrorMsg;
   String? timeErrorMsg;
   String? descriptionErrorMsg;
 
+  final phoneCkeckText = RegExp(r'[a-zA-Z!@#$%^&*()]');
+  final phoneCkeckQuantity = RegExp(r'^(\d{0,9}|\d{11,})$');
   final specialCharsCheck = RegExp(r'[`~!@#$%^&*()"-=_+{};:\|.,/?]');
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
@@ -38,6 +44,56 @@ class ServiceAddViewModel extends BaseViewModel {
   bool isImageUploaded = false;
 
   dynamic init() {}
+
+  Future<void> updateDate() async {
+    final date = await pickDate();
+    if (date == null) {
+      return;
+    }
+    final newDateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      dateTime.hour,
+      dateTime.minute,
+    );
+    dateTime = newDateTime;
+    notifyListeners();
+  }
+
+  Future<void> updateTime() async {
+    final time = await pickTime();
+    if (time == null) {
+      return;
+    }
+    final newDateTime = DateTime(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+      time.hour,
+      time.minute,
+    );
+
+    dateTime = newDateTime;
+    notifyListeners();
+  }
+
+  void checkPhoneInput() {
+    if (phoneController.text.isEmpty) {
+      onTopic = false;
+      phoneErrorMsg = 'rỗng';
+    } else if (phoneCkeckText.hasMatch(phoneController.text)) {
+      onTopic = false;
+      phoneErrorMsg = 'Không nhập chữ cái và kí tự đặt biệt';
+    } else if (phoneCkeckQuantity.hasMatch(phoneController.text)) {
+      onTopic = false;
+      phoneErrorMsg = 'nhập sai định dạng';
+    } else {
+      onTopic = true;
+      phoneErrorMsg = '';
+    }
+    notifyListeners();
+  }
 
   void checkTopicInput() {
     if (topicNameController.text.isEmpty) {
@@ -194,4 +250,16 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Future<void> onServiceList(BuildContext context) =>
       Navigator.pushNamed(context, Routers.serviceList);
+
+  Future<TimeOfDay?> pickTime() => showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: dateTime.hour, minute: dateTime.minute),
+      );
+
+  Future<DateTime?> pickDate() => showDatePicker(
+        context: context,
+        initialDate: dateTime,
+        firstDate: DateTime(1990),
+        lastDate: DateTime(2100),
+      );
 }
