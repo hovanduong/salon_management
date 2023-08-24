@@ -121,7 +121,8 @@ Widget headerContentTransaction() {
                 left: SizeToPadding.sizeVerySmall,
                 right: SizeToPadding.sizeVerySmall),
             child: Paragraph(
-              content: HomePageLanguage.inCome,
+              // content: HomePageLanguage.inCome,
+              content: 'inCome',
               style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
             ),
           ),
@@ -213,7 +214,8 @@ Widget bodyContentTransactions() {
               padding:
                   EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
               child: Paragraph(
-                content: HomePageLanguage.inCome,
+                // content: HomePageLanguage.inCome,
+                content: 'inCome',
                 style:
                     STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
               ),
