@@ -59,7 +59,18 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> {
                         Radius.circular(BorderRadiusSize.sizeLarge),
                       ),
                     ),
-                    child: headerContentTransaction(),
+                    child: Column(
+                      children: [
+                        buildUpWorkPNGWidget(),
+                        buildInComeWidget(),
+                        buildPriceWidget(),
+                        buildContentBill(),
+                        SizedBox(
+                          height: SpaceBox.sizeMedium,
+                        ),
+                        outlineButton(),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -99,84 +110,118 @@ Widget headerTransaction() {
   );
 }
 
-Widget headerContentTransaction() {
-  return Column(
-    children: [
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryBig),
-        child: Image.asset(AppImages.pngUpWork),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.BLACK_200,
-            borderRadius: BorderRadius.all(
-              Radius.circular(BorderRadiusSize.sizeLarge),
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(
-                top: SizeToPadding.sizeVeryVerySmall,
-                bottom: SizeToPadding.sizeVeryVerySmall,
-                left: SizeToPadding.sizeVerySmall,
-                right: SizeToPadding.sizeVerySmall),
-            child: Paragraph(
-              // content: HomePageLanguage.inCome,
-              content: 'inCome',
-              style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
-            ),
-          ),
+Widget buildUpWorkPNGWidget() {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryBig),
+    child: Image.asset(AppImages.pngUpWork),
+  );
+}
+
+Widget buildInComeWidget() {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+    child: Container(
+      decoration: BoxDecoration(
+        color: AppColors.BLACK_200,
+        borderRadius: BorderRadius.all(
+          Radius.circular(BorderRadiusSize.sizeLarge),
         ),
       ),
-      Paragraph(
-        content: "\$ 850.00",
-        style: STYLE_LARGE_BIG.copyWith(color: AppColors.BLACK_500),
+      child: Padding(
+        padding: EdgeInsets.only(
+            top: SizeToPadding.sizeVeryVerySmall,
+            bottom: SizeToPadding.sizeVeryVerySmall,
+            left: SizeToPadding.sizeVerySmall,
+            right: SizeToPadding.sizeVerySmall),
+        child: Paragraph(
+          content: TransactionDetailsLanguage.income,
+          style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
+        ),
       ),
-      buildContentBill(),
-      line(),
-      SizedBox(
-        height: SpaceBox.sizeMedium,
-      ),
-      bodyContentCost(),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: BorderRadiusSize.sizeLarge),
-        child: line(),
-      ),
-      bodySum(),
-      outlineButton(),
-    ],
+    ),
+  );
+}
+
+Widget buildPriceWidget() {
+  return Paragraph(
+    content: "\$ 850.00",
+    style: STYLE_LARGE_BIG.copyWith(color: AppColors.BLACK_500),
   );
 }
 
 Widget buildContentBill() {
   return Column(
     children: [
+      buildTransactionDetailsWidget(),
       buildStatusWidget(),
       buildFormWidget(),
+      buildTimeWidget(),
+      buildDateWidget(),
+      buildLineWidget(),
+      buildEarningsWidget(),
+      buildFeeWidget(),
+      buildLineWidget(),
+      buildTotalWidget(),
     ],
+  );
+}
+
+Widget buildTransactionDetailsWidget() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Paragraph(
+          content: TransactionDetailsLanguage.transactionDetails,
+          style: STYLE_MEDIUM_BOLD.copyWith(),
+        ),
+        SvgPicture.asset(
+          AppImages.icChevronDown,
+          color: AppColors.BLACK_500,
+          width: 25,
+          height: 25,
+        ),
+      ],
+    ),
   );
 }
 
 Widget buildStatusWidget() {
   return ItemTransactionDetailsWidget(
-    title: 'Status',
-    content: 'Income',
-    colorContent: AppColors.PRIMARY_GREEN,
+    title: TransactionDetailsLanguage.status,
+    content: TransactionDetailsLanguage.income,
+    colorContent: AppColors.FIELD_GREEN,
   );
 }
 
 Widget buildFormWidget() {
   return ItemTransactionDetailsWidget(
-    title: 'Form',
-    content: 'Update Erroe',
-    colorContent: AppColors.BLACK_500,
+    title: TransactionDetailsLanguage.from,
+    content: 'Upwork Escrow',
   );
 }
 
-Widget line() {
+Widget buildTimeWidget() {
+  return ItemTransactionDetailsWidget(
+    title: TransactionDetailsLanguage.time,
+    content: '10:00 AM',
+  );
+}
+
+Widget buildDateWidget() {
+  return ItemTransactionDetailsWidget(
+    title: TransactionDetailsLanguage.date,
+    content: 'Feb 30,2022',
+  );
+}
+
+Widget buildLineWidget() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeVeryBig),
+    padding: EdgeInsets.symmetric(
+      horizontal: SizeToPadding.sizeVeryBig,
+      vertical: SizeToPadding.sizeBig,
+    ),
     child: Container(
       width: double.infinity,
       height: 1,
@@ -188,93 +233,24 @@ Widget line() {
   );
 }
 
-Widget bodyContentCost() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeVeryBig),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeToPadding.sizeVeryVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.earnings,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeToPadding.sizeVeryVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.fee,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeToPadding.sizeVeryVerySmall),
-              child: Paragraph(
-                content: "\$ 870.00",
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.BLACK_500),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeToPadding.sizeVeryVerySmall),
-              child: Paragraph(
-                content: "- \$ 20.00",
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.BLACK_500),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
+Widget buildEarningsWidget() {
+  return ItemTransactionDetailsWidget(
+    title: TransactionDetailsLanguage.earnings,
+    content: '\$ 870.00',
   );
 }
 
-Widget bodySum() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeVeryBig),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeToPadding.sizeVeryVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.total,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeToPadding.sizeVeryVerySmall),
-              child: Paragraph(
-                content: "\$ 850.00",
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.BLACK_500),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
+Widget buildFeeWidget() {
+  return ItemTransactionDetailsWidget(
+    title: TransactionDetailsLanguage.fee,
+    content: '- \$ 20.00',
+  );
+}
+
+Widget buildTotalWidget() {
+  return ItemTransactionDetailsWidget(
+    title: TransactionDetailsLanguage.total,
+    content: '\$ 850.00',
   );
 }
 

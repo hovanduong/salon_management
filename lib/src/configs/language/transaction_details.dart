@@ -3,6 +3,8 @@ import '../../intl/generated/l10n.dart';
 class TransactionDetailsLanguage {
   static final transactionDetails = S.current.transactionDetails;
 
+  static final income = S.current.inCome;
+
   static final status = S.current.status;
 
   static final from = S.current.from;

@@ -4,31 +4,40 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
 class ItemTransactionDetailsWidget extends StatelessWidget {
-  const ItemTransactionDetailsWidget({
-    super.key,
-    this.title,
-    this.colorContent,
-    this.content,
-    this.textStyle,
-  });
+  const ItemTransactionDetailsWidget(
+      {super.key,
+      this.title,
+      this.colorContent,
+      this.colorTitle,
+      this.content,
+      this.textStyleTitle,
+      this.textStyleContent});
   final String? title;
   final String? content;
   final Color? colorContent;
-  final TextStyle? textStyle;
+  final Color? colorTitle;
+  final TextStyle? textStyleTitle;
+  final TextStyle? textStyleContent;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVeryBig,
-        vertical: SizeToPadding.sizeVerySmall,
+        vertical: SizeToPadding.sizeVeryVerySmall,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Paragraph(content: title ?? ''),
+          Paragraph(
+            content: title ?? '',
+            style: textStyleTitle ??
+                STYLE_MEDIUM_BOLD.copyWith(
+                  color: colorContent ?? AppColors.COLOR_GREY,
+                ),
+          ),
           Paragraph(
             content: content ?? '',
-            style: textStyle ??
+            style: textStyleContent ??
                 STYLE_MEDIUM_BOLD.copyWith(
                   color: colorContent ?? AppColors.BLACK_500,
                 ),
