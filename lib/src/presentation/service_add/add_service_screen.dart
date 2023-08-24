@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -57,7 +58,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                   // buildServiceTopic(),
                   buildName(),
                   buildService(),
-                  buildServiceMoney(),
+                  buildMoney(),
                   // buildServiceTime(),
                   buildServiceDescription(),
                   buildAddress(),
@@ -81,6 +82,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         PopupMenuButton<String>(
           onSelected: (value) {
             _viewModel!.addService(value);
+            _viewModel!.calculateTotalPrice(value);
           },
           itemBuilder: (context) => <PopupMenuEntry<String>>[
             const PopupMenuItem<String>(
@@ -198,7 +200,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Widget buildName() {
     return NameFieldWidget(
-      name: _viewModel!.name,
+      name: 'Name',
+      nameController: _viewModel!.nameController,
     );
   }
 
@@ -234,48 +237,60 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     return AppFormField(
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
-      onChanged: (value) {},
+      textEditingController: _viewModel!.addressController,
+      onChanged: (value) {
+        _viewModel!.enableConfirmButton();
+      },
     );
   }
 
-  Widget buildServiceTopic() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeVerySmall,
-      ),
-      child: AppFormField(
-        maxLenght: 20,
-        counterText: '',
-        validator: _viewModel!.topicErrorMsg,
-        textEditingController: _viewModel!.topicNameController,
-        labelText: ServiceAddLanguage.serviceName,
-        hintText: _viewModel!.name,
-        onChanged: (value) {
-          _viewModel!.enableConfirmButton();
-        },
-      ),
+  // Widget buildServiceTopic() {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(
+  //       vertical: SizeToPadding.sizeVerySmall,
+  //     ),
+  //     child: AppFormField(
+  //       maxLenght: 20,
+  //       counterText: '',
+  //       validator: _viewModel!.topicErrorMsg,
+  //       textEditingController: _viewModel!.topicNameController,
+  //       labelText: ServiceAddLanguage.serviceName,
+  //       hintText: _viewModel!.name,
+  //       onChanged: (value) {
+  //         _viewModel!.enableConfirmButton();
+  //       },
+  //     ),
+  //   );
+  // }
+  Widget buildMoney() {
+    return NameFieldWidget(
+      name: 'Money',
+      nameController: _viewModel!.moneyController,
+      // onChanged: _viewModel!.calculateTotalPrice( _viewModel!.moneyController)
     );
   }
-
-  Widget buildServiceMoney() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeVerySmall,
-      ),
-      child: AppFormField(
-        validator: _viewModel!.moneyErrorMsg,
-        textEditingController: _viewModel!.moneyController,
-        labelText: ServiceAddLanguage.amountOfMoney,
-        hintText: ServiceAddLanguage.enterAmountOfMoney,
-        keyboardType: TextInputType.number,
-        onChanged: (value) {
-          _viewModel!
-            ..checkMoneyInput()
-            ..enableConfirmButton();
-        },
-      ),
-    );
-  }
+  // Widget buildServiceMoney() {
+  //   final numberFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+  //   final formattedTotalPrice =
+  //       numberFormat.format(_viewModel!.calculateTotalPrice());
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(
+  //       vertical: SizeToPadding.sizeVerySmall,
+  //     ),
+  //     child: AppFormField(
+  //       validator: _viewModel!.moneyErrorMsg,
+  //       textEditingController: _viewModel!.moneyController,
+  //       labelText: ServiceAddLanguage.amountOfMoney,
+  //       hintText: 'Tổng thành tiền: $formattedTotalPrice',
+  //       keyboardType: TextInputType.number,
+  //       onChanged: (value) {
+  //         _viewModel!
+  //             // ..checkMoneyInput()
+  //             .enableConfirmButton();
+  //       },
+  //     ),
+  //   );
+  // }
 
   // Widget buildServiceTime() {
   //   return Padding(

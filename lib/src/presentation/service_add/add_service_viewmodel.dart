@@ -12,16 +12,17 @@ import 'components/photo_picker_widget.dart';
 class ServiceAddViewModel extends BaseViewModel {
   File? imageFile;
 
-  String name = '';
   DateTime dateTime = DateTime.now();
 
   String selectedTimeText = '';
   List<String> selectedServices = [];
+
+  TextEditingController nameController = TextEditingController();
   final phoneController = TextEditingController();
-  final topicNameController = TextEditingController();
-  final moneyController = TextEditingController();
+  TextEditingController moneyController = TextEditingController();
   final timeController = TextEditingController();
   final descriptionController = TextEditingController();
+  final addressController = TextEditingController();
 
   bool onAddress = true;
   bool onPhone = true;
@@ -107,53 +108,53 @@ class ServiceAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void checkTopicInput() {
-    if (topicNameController.text.isEmpty) {
-      onTopic = false;
-      topicErrorMsg = ServiceAddLanguage.emptyNameError;
-    } else if (specialCharsCheck.hasMatch(topicNameController.text)) {
-      onTopic = false;
-      topicErrorMsg = ServiceAddLanguage.specialCharsError;
-    } else if (numberCheck.hasMatch(topicNameController.text)) {
-      onTopic = false;
-      topicErrorMsg = ServiceAddLanguage.specialCharsError;
-    } else if (topicNameController.text.length < 6) {
-      onTopic = false;
-      topicErrorMsg = ServiceAddLanguage.serviceNameMinLenght;
-    } else {
-      onTopic = true;
-      topicErrorMsg = '';
-    }
-    notifyListeners();
-  }
+  // void checkTopicInput() {
+  //   if (topicNameController.text.isEmpty) {
+  //     onTopic = false;
+  //     topicErrorMsg = ServiceAddLanguage.emptyNameError;
+  //   } else if (specialCharsCheck.hasMatch(topicNameController.text)) {
+  //     onTopic = false;
+  //     topicErrorMsg = ServiceAddLanguage.specialCharsError;
+  //   } else if (numberCheck.hasMatch(topicNameController.text)) {
+  //     onTopic = false;
+  //     topicErrorMsg = ServiceAddLanguage.specialCharsError;
+  //   } else if (topicNameController.text.length < 6) {
+  //     onTopic = false;
+  //     topicErrorMsg = ServiceAddLanguage.serviceNameMinLenght;
+  //   } else {
+  //     onTopic = true;
+  //     topicErrorMsg = '';
+  //   }
+  //   notifyListeners();
+  // }
 
-  void checkMoneyInput() {
-    if (moneyController.text.isEmpty) {
-      onMoney = false;
-      moneyErrorMsg = ServiceAddLanguage.emptyMoneyError;
-    } else if (!moneyCharsCheck.hasMatch(moneyController.text)) {
-      moneyErrorMsg = ServiceAddLanguage.onlyDenominations;
-      onMoney = false;
-    } else {
-      moneyErrorMsg = '';
-      onMoney = true;
-    }
-    notifyListeners();
-  }
+  // void checkMoneyInput() {
+  //   if (moneyController.text.isEmpty) {
+  //     onMoney = false;
+  //     moneyErrorMsg = ServiceAddLanguage.emptyMoneyError;
+  //   } else if (!moneyCharsCheck.hasMatch(moneyController.text)) {
+  //     moneyErrorMsg = ServiceAddLanguage.onlyDenominations;
+  //     onMoney = false;
+  //   } else {
+  //     moneyErrorMsg = '';
+  //     onMoney = true;
+  //   }
+  //   notifyListeners();
+  // }
 
-  void checkTimeInput() {
-    if (timeController.text.isEmpty) {
-      onTime = false;
-      timeErrorMsg = ServiceAddLanguage.emptyTimeError;
-    } else if (!moneyCharsCheck.hasMatch(timeController.text)) {
-      timeErrorMsg = ServiceAddLanguage.onlyNumberOfTime;
-      onTime = false;
-    } else {
-      timeErrorMsg = '';
-      onTime = true;
-    }
-    notifyListeners();
-  }
+  // void checkTimeInput() {
+  //   if (timeController.text.isEmpty) {
+  //     onTime = false;
+  //     timeErrorMsg = ServiceAddLanguage.emptyTimeError;
+  //   } else if (!moneyCharsCheck.hasMatch(timeController.text)) {
+  //     timeErrorMsg = ServiceAddLanguage.onlyNumberOfTime;
+  //     onTime = false;
+  //   } else {
+  //     timeErrorMsg = '';
+  //     onTime = true;
+  //   }
+  //   notifyListeners();
+  // }
 
   void checkDescriptionInput() {
     if (descriptionController.text.isEmpty) {
@@ -169,46 +170,46 @@ class ServiceAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> getImage(ImageSource? source) async {
-    final file = await ImagePicker().pickImage(source: source!);
+  // Future<void> getImage(ImageSource? source) async {
+  //   final file = await ImagePicker().pickImage(source: source!);
 
-    if (file?.path != null) {
-      imageFile = File(file!.path);
-      isImageUploaded = false;
-      notifyListeners();
-    }
-  }
+  //   if (file?.path != null) {
+  //     imageFile = File(file!.path);
+  //     isImageUploaded = false;
+  //     notifyListeners();
+  //   }
+  // }
 
-  GestureDetector choosePhoto() {
-    return GestureDetector(
-      onTap: () => getImage(ImageSource.gallery),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Paragraph(
-            content: ServiceAddLanguage.choosePhoto,
-            style: STYLE_MEDIUM_BOLD,
-          ),
-          SizedBox(height: SpaceBox.sizeSmall),
-          if (imageFile != null)
-            PhotoPickerWidget(
-              decorationImage: DecorationImage(
-                image: FileImage(imageFile!),
-                fit: BoxFit.cover,
-              ),
-            )
-          else
-            const PhotoPickerWidget(
-              icon: Icon(
-                Icons.add,
-                color: AppColors.PRIMARY_PINK,
-                size: 40,
-              ),
-            )
-        ],
-      ),
-    );
-  }
+  // GestureDetector choosePhoto() {
+  //   return GestureDetector(
+  //     onTap: () => getImage(ImageSource.gallery),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Paragraph(
+  //           content: ServiceAddLanguage.choosePhoto,
+  //           style: STYLE_MEDIUM_BOLD,
+  //         ),
+  //         SizedBox(height: SpaceBox.sizeSmall),
+  //         if (imageFile != null)
+  //           PhotoPickerWidget(
+  //             decorationImage: DecorationImage(
+  //               image: FileImage(imageFile!),
+  //               fit: BoxFit.cover,
+  //             ),
+  //           )
+  //         else
+  //           const PhotoPickerWidget(
+  //             icon: Icon(
+  //               Icons.add,
+  //               color: AppColors.PRIMARY_PINK,
+  //               size: 40,
+  //             ),
+  //           )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   //  GestureDetector(
   //         onTap: () => _viewModel!.getImage(ImageSource.gallery),
@@ -242,9 +243,12 @@ class ServiceAddViewModel extends BaseViewModel {
   void enableConfirmButton() {
     if (onPhone &&
         onAddress &&
+        onMoney &&
         onDescription &&
         phoneController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty) {
+        descriptionController.text.isNotEmpty &&
+        moneyController.text.isNotEmpty &&
+        addressController.text.isNotEmpty) {
       enableButton = true;
     } else {
       enableButton = false;
@@ -284,7 +288,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
     for (final contact in contacts) {
       if (phoneNumber == contact.phoneNumber) {
-        name = contact.name;
+        nameController.text = contact.name;
         notifyListeners();
         found = true;
         break;
@@ -292,8 +296,30 @@ class ServiceAddViewModel extends BaseViewModel {
     }
 
     if (!found) {
-      name = 'Không tìm thấy';
+      nameController.text = 'Không tìm thấy';
       notifyListeners();
+    }
+  }
+
+  void calculateTotalPrice(String selectedService) {
+    double totalPrice = 0.0;
+    for (String service in selectedServices) {
+      totalPrice += calculatePrice(service);
+    }
+    moneyController.text = totalPrice.toStringAsFixed(2);
+    ;
+  }
+
+  double calculatePrice(String serviceName) {
+    switch (serviceName) {
+      case 'Dịch vụ 1':
+        return 100000;
+      case 'Dịch vụ 2':
+        return 200000;
+      case 'Dịch vụ 3':
+        return 300000;
+      default:
+        return 0;
     }
   }
 }
