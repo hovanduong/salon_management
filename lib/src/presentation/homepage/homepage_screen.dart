@@ -5,6 +5,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
 import '../base/base.dart';
+import 'components/item_history_list_widget.dart';
 import 'homepage_viewModel.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -268,175 +269,40 @@ Widget transactionsHistory() {
 }
 
 Widget upWork() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          Image.asset(
-            AppImages.pngUpWork,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Paragraph(
-                content: "Upwork",
-                style: STYLE_LARGE_BOLD.copyWith(
-                  color: AppColors.BLACK_500,
-                ),
-              ),
-              Paragraph(
-                content: "Today",
-                style: STYLE_MEDIUM.copyWith(
-                  color: AppColors.COLOR_GREY,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Paragraph(
-        content: "+ \$ 850.00",
-        style: STYLE_LARGE_BOLD.copyWith(
-          color: AppColors.FIELD_GREEN,
-        ),
-      ),
-    ],
+  return const ItemHistoryListWidget(
+    image: AppImages.icHome,
+    title: 'UpWork',
+    date: 'Today',
+    money: '+ \$ 850.00',
   );
 }
 
 Widget transfer() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Image.asset(
-              AppImages.pngTransfer,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Paragraph(
-                  content: "Transfer",
-                  style: STYLE_LARGE_BOLD.copyWith(
-                    color: AppColors.BLACK_500,
-                  ),
-                ),
-                Paragraph(
-                  content: "Yesterday",
-                  style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_GREY,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Paragraph(
-          content: "- \$ 85.00",
-          style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.PRIMARY_RED,
-          ),
-        ),
-      ],
-    ),
+  return const ItemHistoryListWidget(
+    image: AppImages.icHome,
+    title: 'Transfer',
+    date: 'Yesterday',
+    money: '- \$ 85.00',
+    colorMoney: AppColors.PRIMARY_RED,
   );
 }
 
 Widget paypal() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Image.asset(
-              AppImages.pngPaypal,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Paragraph(
-                  content: "Palpal",
-                  style: STYLE_LARGE_BOLD.copyWith(
-                    color: AppColors.BLACK_500,
-                  ),
-                ),
-                Paragraph(
-                  content: "Jan 30,2022",
-                  style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_GREY,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Paragraph(
-          content: "+ \$ 1,406.00",
-          style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.FIELD_GREEN,
-          ),
-        ),
-      ],
-    ),
+  return const ItemHistoryListWidget(
+    image: AppImages.icHome,
+    title: 'Paypal',
+    date: 'Jan 30, 2022',
+    money: '+ \$ 1,406.00',
   );
 }
 
 Widget youtube() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Image.asset(
-              AppImages.pngYoutube,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Paragraph(
-                  content: "Youtube",
-                  style: STYLE_LARGE_BOLD.copyWith(
-                    color: AppColors.BLACK_500,
-                  ),
-                ),
-                Paragraph(
-                  content: "Jan 16, 2022",
-                  style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_GREY,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Paragraph(
-          content: "- \$ 11.99",
-          style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.PRIMARY_RED,
-          ),
-        ),
-      ],
-    ),
+  return const ItemHistoryListWidget(
+    image: AppImages.icHome,
+    title: 'UpWork',
+    date: 'Jan 16, 2022',
+    money: '- \$ 11.99',
+    colorMoney: AppColors.PRIMARY_RED,
   );
 }
 
