@@ -23,7 +23,7 @@ class ServiceFieldWidget extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: onRemove,
-                child: Icon(
+                child: const Icon(
                   Icons.remove,
                   color: Colors.red,
                 ),
@@ -38,17 +38,15 @@ class ServiceFieldWidget extends StatelessWidget {
                 color: AppColors.FIELD_GREEN,
               ),
             ),
-            child: Expanded(
-              child: TextField(
-                enabled: false,
-                decoration: InputDecoration(
-                  hintText: nameService,
-                  hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: SizeToPadding.sizeSmall,
-                    horizontal: SizeToPadding.sizeMedium,
-                  ),
+            child: TextField(
+              enabled: false,
+              decoration: InputDecoration(
+                hintText: nameService,
+                hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: SizeToPadding.sizeSmall,
+                  horizontal: SizeToPadding.sizeMedium,
                 ),
               ),
             ),

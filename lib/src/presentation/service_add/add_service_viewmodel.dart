@@ -1,21 +1,21 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-
+import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
-import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import '../routers.dart';
-import 'components/photo_picker_widget.dart';
 
 class ServiceAddViewModel extends BaseViewModel {
   File? imageFile;
-
+  String searchText = '';
   DateTime dateTime = DateTime.now();
 
   String selectedTimeText = '';
   List<String> selectedServices = [];
+
+  List<Contact> searchResults = [];
+  bool isListViewVisible = true;
+  TextEditingController searchTextController = TextEditingController();
 
   TextEditingController nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -46,7 +46,21 @@ class ServiceAddViewModel extends BaseViewModel {
   bool enableButton = false;
   bool isImageUploaded = false;
 
-  dynamic init() {}
+  dynamic init() {
+    test();
+  }
+
+  void test() {
+    phoneController.addListener(() {
+      searchText = phoneController.text;
+      searchResults = getContactSuggestions(searchText);
+    });
+    notifyListeners();
+  }
+
+  void dis() {
+    phoneController.dispose();
+  }
 
   Future<void> updateDate() async {
     final date = await pickDate();
@@ -91,22 +105,22 @@ class ServiceAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void checkPhoneInput() {
-    if (phoneController.text.isEmpty) {
-      onPhone = false;
-      phoneErrorMsg = 'rỗng';
-    } else if (phoneCkeckText.hasMatch(phoneController.text)) {
-      onPhone = false;
-      phoneErrorMsg = 'Không nhập chữ cái và kí tự đặt biệt';
-    } else if (phoneCkeckQuantity.hasMatch(phoneController.text)) {
-      onPhone = false;
-      phoneErrorMsg = 'nhập sai định dạng';
-    } else {
-      onPhone = true;
-      phoneErrorMsg = '';
-    }
-    notifyListeners();
-  }
+  // void checkPhoneInput() {
+  //   if (phoneController.text.isEmpty) {
+  //     onPhone = false;
+  //     phoneErrorMsg = 'rỗng';
+  //   } else if (phoneCkeckText.hasMatch(phoneController.text)) {
+  //     onPhone = false;
+  //     phoneErrorMsg = 'Không nhập chữ cái và kí tự đặt biệt';
+  //   } else if (phoneCkeckQuantity.hasMatch(phoneController.text)) {
+  //     onPhone = false;
+  //     phoneErrorMsg = 'nhập sai định dạng';
+  //   } else {
+  //     onPhone = true;
+  //     phoneErrorMsg = '';
+  //   }
+  //   notifyListeners();
+  // }
 
   // void checkTopicInput() {
   //   if (topicNameController.text.isEmpty) {
@@ -280,7 +294,29 @@ class ServiceAddViewModel extends BaseViewModel {
     Contact(phoneNumber: "0123456789", name: "Nguyễn Văn A"),
     Contact(phoneNumber: "0987654321", name: "Trần Thị B"),
     Contact(phoneNumber: "0774423626", name: "Lê Thanh Hòa"),
+    Contact(phoneNumber: "0774423624", name: "Lê Thanh Hà"),
   ];
+
+  List<Contact> getContactSuggestions(String searchText) {
+    final results = contacts
+        .where((contact) =>
+            contact.phoneNumber.contains(searchText) ||
+            contact.name.contains(searchText))
+        .toList();
+
+    print(results);
+
+    return results;
+  }
+
+  void updatePhoneNumber(String selectedPhoneNumber) {
+    phoneController.text = selectedPhoneNumber;
+    searchText = selectedPhoneNumber;
+    searchResults = getContactSuggestions(searchText);
+    findName();
+    isListViewVisible = true;
+    notifyListeners();
+  }
 
   void findName() {
     final phoneNumber = phoneController.text;

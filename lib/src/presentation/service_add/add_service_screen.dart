@@ -40,37 +40,43 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
   //NOTE: MAIN WIDGET
   Widget buildserviceAdd() {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildAppbar(),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: SizeToPadding.sizeMedium,
-                horizontal: SizeToPadding.sizeMedium,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildServicePhone(),
-                  // Text(_viewModel!.contactName),
-                  // buildServiceTopic(),
-                  buildName(),
-                  buildService(),
-                  buildMoney(),
-                  // buildServiceTime(),
-                  buildServiceDescription(),
-                  buildAddress(),
-                  buildDateTime(),
-                  // builDateTimeT(),
-                  // buildChoosePhoto(),
-                  buildConfirmButton(),
-                  buildCancelText(),
-                ],
-              ),
-            )
-          ],
+      top: true,
+      bottom: false,
+      right: false,
+      left: false,
+      child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildAppbar(),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: SizeToPadding.sizeMedium,
+                  horizontal: SizeToPadding.sizeMedium,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildServicePhone(),
+                    // Text(_viewModel!.contactName),
+                    // buildServiceTopic(),
+                    buildName(),
+                    buildService(),
+                    buildMoney(),
+                    // buildServiceTime(),
+                    buildServiceDescription(),
+                    buildAddress(),
+                    buildDateTime(),
+                    // builDateTimeT(),
+                    // buildChoosePhoto(),
+                    buildConfirmButton(),
+                    buildCancelText(),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -219,17 +225,46 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
   }
 
   Widget buildServicePhone() {
-    return AppFormField(
-      hintText: ServiceAddLanguage.enterPhoneNumber,
-      labelText: ServiceAddLanguage.phoneNumber,
-      validator: _viewModel!.phoneErrorMsg,
-      textEditingController: _viewModel!.phoneController,
-      onChanged: (value) {
-        _viewModel!
-          ..checkPhoneInput()
-          ..enableConfirmButton()
-          ..findName();
-      },
+    return Column(
+      children: [
+        AppFormField(
+          hintText: ServiceAddLanguage.enterPhoneNumber,
+          labelText: ServiceAddLanguage.phoneNumber,
+          validator: _viewModel!.phoneErrorMsg,
+          textEditingController: _viewModel!.phoneController,
+          onChanged: (value) {
+            if (value.isNotEmpty) {
+              _viewModel!.isListViewVisible = true;
+              _viewModel!.searchResults =
+                  _viewModel!.getContactSuggestions(value);
+            } else {
+              _viewModel!.isListViewVisible = false;
+              _viewModel!.searchResults.clear();
+            }
+            _viewModel!
+              // ..checkPhoneInput()
+              ..enableConfirmButton()
+              ..findName();
+          },
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: _viewModel!.isListViewVisible
+              ? _viewModel!.searchResults.length
+              : 0,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(_viewModel!.searchResults[index].name),
+              subtitle: Text(_viewModel!.searchResults[index].phoneNumber),
+              onTap: () {
+                _viewModel!.updatePhoneNumber(
+                    _viewModel!.searchResults[index].phoneNumber);
+                _viewModel!.isListViewVisible = false;
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 

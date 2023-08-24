@@ -34,18 +34,16 @@ class NameFieldWidget extends StatelessWidget {
                 color: AppColors.FIELD_GREEN,
               ),
             ),
-            child: Expanded(
-              child: TextField(
-                enabled: false,
-                controller: nameController,
-                style: const TextStyle(color: AppColors.BLACK_500),
-                decoration: InputDecoration(
-                  hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: SizeToPadding.sizeSmall,
-                    horizontal: SizeToPadding.sizeMedium,
-                  ),
+            child: TextField(
+              enabled: false,
+              controller: nameController,
+              style: const TextStyle(color: AppColors.BLACK_500),
+              decoration: InputDecoration(
+                hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: SizeToPadding.sizeSmall,
+                  horizontal: SizeToPadding.sizeMedium,
                 ),
               ),
             ),
