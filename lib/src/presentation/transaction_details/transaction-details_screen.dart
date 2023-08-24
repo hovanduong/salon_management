@@ -7,6 +7,7 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../configs/language/transaction_details.dart';
 import '../base/base.dart';
+import 'components/item_transaction_details_widget.dart';
 import 'components/outlinebutton_widget.dart';
 import 'transaction-details_viewmodel.dart';
 
@@ -132,7 +133,7 @@ Widget headerContentTransaction() {
         content: "\$ 850.00",
         style: STYLE_LARGE_BIG.copyWith(color: AppColors.BLACK_500),
       ),
-      bodyContentTransactions(),
+      buildContentBill(),
       line(),
       SizedBox(
         height: SpaceBox.sizeMedium,
@@ -148,106 +149,28 @@ Widget headerContentTransaction() {
   );
 }
 
-Widget bodyContentTransactions() {
-  return Padding(
-    padding: EdgeInsets.all(SizeToPadding.sizeVeryBig),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Paragraph(
-              content: TransactionDetailsLanguage.transactionDetails,
-              style: STYLE_LARGE_BOLD.copyWith(),
-            ),
-            SizedBox(
-              height: Size.sizeSmall,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.status,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.from,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.time,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: TransactionDetailsLanguage.date,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_GREY),
-              ),
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            SvgPicture.asset(
-              AppImages.icChevronDown,
-              color: AppColors.BLACK_500,
-              width: Size.sizeSmallMedium,
-              height: Size.sizeSmallMedium,
-            ),
-            SizedBox(
-              height: Size.sizeSmall,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                // content: HomePageLanguage.inCome,
-                content: 'inCome',
-                style:
-                    STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: "Upwork Escrow",
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.BLACK_500),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: "10:00 AM",
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.BLACK_500),
-              ),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-              child: Paragraph(
-                content: "Feb 30,2022",
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.BLACK_500),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
+Widget buildContentBill() {
+  return Column(
+    children: [
+      buildStatusWidget(),
+      buildFormWidget(),
+    ],
+  );
+}
+
+Widget buildStatusWidget() {
+  return ItemTransactionDetailsWidget(
+    title: 'Status',
+    content: 'Income',
+    colorContent: AppColors.PRIMARY_GREEN,
+  );
+}
+
+Widget buildFormWidget() {
+  return ItemTransactionDetailsWidget(
+    title: 'Form',
+    content: 'Update Erroe',
+    colorContent: AppColors.BLACK_500,
   );
 }
 
