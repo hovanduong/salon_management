@@ -12,16 +12,18 @@ import 'components/photo_picker_widget.dart';
 class ServiceAddViewModel extends BaseViewModel {
   File? imageFile;
 
+  String name = '';
   DateTime dateTime = DateTime.now();
 
   String selectedTimeText = '';
-
+  List<String> selectedServices = [];
   final phoneController = TextEditingController();
   final topicNameController = TextEditingController();
   final moneyController = TextEditingController();
   final timeController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  bool onAddress = true;
   bool onPhone = true;
   bool onTopic = true;
   bool onMoney = true;
@@ -75,6 +77,16 @@ class ServiceAddViewModel extends BaseViewModel {
     );
 
     dateTime = newDateTime;
+    notifyListeners();
+  }
+
+  void addService(service) {
+    selectedServices.add(service);
+    notifyListeners();
+  }
+
+  void removeService(String service) {
+    selectedServices.remove(service);
     notifyListeners();
   }
 
@@ -228,10 +240,9 @@ class ServiceAddViewModel extends BaseViewModel {
   //       ),
 
   void enableConfirmButton() {
-    if (onTopic &&
-        onPhone &&
+    if (onPhone &&
+        onAddress &&
         onDescription &&
-        topicNameController.text.isNotEmpty &&
         phoneController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty) {
       enableButton = true;
@@ -264,19 +275,27 @@ class ServiceAddViewModel extends BaseViewModel {
   List<Contact> contacts = [
     Contact(phoneNumber: "0123456789", name: "Nguyễn Văn A"),
     Contact(phoneNumber: "0987654321", name: "Trần Thị B"),
-    // Thêm các số điện thoại và tên khác vào đây
+    Contact(phoneNumber: "0774423626", name: "Lê Thanh Hòa"),
   ];
 
-  String getContactName(String phoneNumber) {
-    for (var contact in contacts) {
-      if (contact.phoneNumber == phoneNumber) {
-        return contact.name;
+  void findName() {
+    final phoneNumber = phoneController.text;
+    var found = false;
+
+    for (final contact in contacts) {
+      if (phoneNumber == contact.phoneNumber) {
+        name = contact.name;
+        notifyListeners();
+        found = true;
+        break;
       }
     }
-    return "Không tìm thấy số điện thoại";
-  }
 
-  void checkName() {}
+    if (!found) {
+      name = 'Không tìm thấy';
+      notifyListeners();
+    }
+  }
 }
 
 class Contact {

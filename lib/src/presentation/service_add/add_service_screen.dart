@@ -4,7 +4,8 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'add_service.dart';
-import 'components/date_time_widget.dart';
+import 'components/name_field_widget.dart';
+import 'components/service_field_widget.dart';
 
 class ServiceAddScreen extends StatefulWidget {
   const ServiceAddScreen({super.key});
@@ -52,8 +53,10 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   buildServicePhone(),
-                  buildServiceTopic(),
-
+                  // Text(_viewModel!.contactName),
+                  // buildServiceTopic(),
+                  buildName(),
+                  buildService(),
                   buildServiceMoney(),
                   // buildServiceTime(),
                   buildServiceDescription(),
@@ -72,6 +75,60 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
+  Widget buildService() {
+    return Column(
+      children: [
+        PopupMenuButton<String>(
+          onSelected: (value) {
+            _viewModel!.addService(value);
+          },
+          itemBuilder: (context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem<String>(
+              value: 'Dịch vụ 1',
+              child: Paragraph(content: 'Dịch vụ 1'),
+            ),
+            const PopupMenuItem<String>(
+              value: 'Dịch vụ 2',
+              child: Paragraph(content: 'Dịch vụ 2'),
+            ),
+            const PopupMenuItem<String>(
+              value: 'Dịch vụ 3',
+              child: Paragraph(content: 'Dịch vụ 3'),
+            ),
+          ],
+          child: Padding(
+            padding: EdgeInsets.only(bottom: SpaceBox.sizeMedium),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Paragraph(
+                  content: 'Chọn dịch vụ',
+                  fontWeight: FontWeight.w600,
+                ),
+                Icon(
+                  Icons.add_circle,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _viewModel!.selectedServices
+              .map(
+                (service) => ServiceFieldWidget(
+                  nameService: service,
+                  onRemove: () {
+                    _viewModel!.removeService(service);
+                  },
+                ),
+              )
+              .toList(),
+        ),
+      ],
+    );
+  }
   // Widget builDateTimeT() {
   //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
 
@@ -139,6 +196,12 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
+  Widget buildName() {
+    return NameFieldWidget(
+      name: _viewModel!.name,
+    );
+  }
+
   Widget buildAppbar() {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -162,7 +225,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         _viewModel!
           ..checkPhoneInput()
           ..enableConfirmButton()
-          ..getContactName(value);
+          ..findName();
       },
     );
   }
@@ -186,11 +249,9 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         validator: _viewModel!.topicErrorMsg,
         textEditingController: _viewModel!.topicNameController,
         labelText: ServiceAddLanguage.serviceName,
-        hintText: ServiceAddLanguage.enterServiceName,
+        hintText: _viewModel!.name,
         onChanged: (value) {
-          _viewModel!
-            ..checkTopicInput()
-            ..enableConfirmButton();
+          _viewModel!.enableConfirmButton();
         },
       ),
     );
