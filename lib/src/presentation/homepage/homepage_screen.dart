@@ -5,7 +5,8 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
 import '../base/base.dart';
-import 'components/item_history_list_widget.dart';
+import 'component/build_avatar.dart';
+import 'component/component.dart';
 import 'homepage_viewModel.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -28,377 +29,247 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildHomePage() {
-    return Scaffold(
-      body: Column(
-        children: [
-          Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 365,
-              ),
-              backgroundImage(),
-              nameUser(),
-              buildMoneyWidget(),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    transactionsHistory(),
-                    upWork(),
-                    transfer(),
-                    paypal(),
-                    youtube(),
-                    sendAgain(),
-                    listAvatar(),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+  Widget backgroundImage() {
+    return Image.asset(
+      AppImages.backgroundHomePage,
+    );
+  }
+
+  Widget buildGreeting(){
+    return Paragraph(
+      content: 'Good afternoon,',
+      style: STYLE_MEDIUM.copyWith(
+        color: AppColors.COLOR_WHITE,
+        fontWeight: FontWeight.w500,
       ),
     );
   }
-}
 
-Widget backgroundImage() {
-  return Image.asset(
-    AppImages.backgroundHomePage,
-  );
-}
+  Widget buildUserName(){
+    return Paragraph(
+      content: 'Enjelin Morgeana',
+      style: STYLE_BIG.copyWith(
+        color: AppColors.COLOR_WHITE,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
 
-Widget nameUser() {
-  return Positioned(
-    top: 60,
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeVeryBig),
+  Widget nameUser() {
+    return Positioned(
+      top: SpaceBox.sizeBig*2.2,
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Paragraph(
-                content: HomePageLanguage.goodAfternoon,
-                style: STYLE_MEDIUM.copyWith(
-                  color: AppColors.COLOR_WHITE,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: SpaceBox.sizeVerySmall),
-              Paragraph(
-                content: "Enjelin Morgeana",
-                style: STYLE_BIG.copyWith(
-                  color: AppColors.COLOR_WHITE,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              buildGreeting(),
+              const SizedBox(height: 5),
+              buildUserName(),
             ],
           ),
-          const SizedBox(
-            width: 140,
-          ),
+          SizedBox(width: SizeToPadding.sizeBig*7,),
           SvgPicture.asset(AppImages.icBellWhite),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget buildMoneyWidget() {
-  return Positioned(
-    top: 150,
-    child: Container(
-      width: 371,
-      height: 202,
-      decoration: const BoxDecoration(
-        color: AppColors.PRIMARY_GREEN,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget buildHeaderCard(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Paragraph(
-                  content: HomePageLanguage.totalBalance,
-                  style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_WHITE,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SvgPicture.asset(AppImages.icChevronDown),
-                const SizedBox(
-                  width: 180,
-                ),
-                SvgPicture.asset(AppImages.icDots),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
             Paragraph(
-              content: ("\$ 2,548.00"),
-              style: STYLE_VERY_BIG.copyWith(
+              content: HomePageLanguage.totalBalance,
+              style: STYLE_MEDIUM.copyWith(
                 color: AppColors.COLOR_WHITE,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 0.15),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(999),
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_downward_sharp,
-                    color: AppColors.COLOR_WHITE,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Paragraph(
-                  content: HomePageLanguage.inCome,
-                  style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_WHITE,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(
-                  width: 120,
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 0.15),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(999),
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_upward_sharp,
-                    color: AppColors.COLOR_WHITE,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Paragraph(
-                  content: HomePageLanguage.expenses,
-                  style: STYLE_MEDIUM.copyWith(
-                    color: AppColors.COLOR_WHITE,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Paragraph(
-                  content: ("\$ 1,840.00"),
-                  style: STYLE_LARGE_BIG.copyWith(
-                    color: AppColors.COLOR_WHITE,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Paragraph(
-                  content: ("\$ 284.00"),
-                  style: STYLE_LARGE_BIG.copyWith(
-                    color: AppColors.COLOR_WHITE,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
+            SvgPicture.asset(AppImages.icChevronDown),
           ],
         ),
-      ),
-    ),
-  );
-}
+        SvgPicture.asset(AppImages.icDots),
+      ],
+    );
+  }
 
-Widget transactionsHistory() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    child: Row(
+  Widget buildMoney(){
+    return Padding(
+      padding: EdgeInsets.only(bottom: SpaceBox.sizeBig, top: SpaceBox.sizeVerySmall),
+      child: Paragraph(
+        content: r'$ 2,548.00',
+        style: STYLE_VERY_BIG.copyWith(
+          color: AppColors.COLOR_WHITE,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget buildIncome(){
+    return StatusCardMoney(
+      content: HomePageLanguage.inCome,
+      icon: Icons.arrow_downward_sharp,
+      money: r'$ 1,840.00',
+    );
+  }
+
+  Widget buildExpenses(){
+    return StatusCardMoney(
+      content: HomePageLanguage.expenses,
+      icon: Icons.arrow_upward,
+      money: r'$ 284.00',
+      crossAxisAlignment: CrossAxisAlignment.end,
+    );
+  }
+
+  Widget buildIncomeAndExpenses(){
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Paragraph(
-          content: HomePageLanguage.transactionHistory,
-          style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.BLACK_500,
-          ),
-        ),
-        Paragraph(
-          content: HomePageLanguage.seeAll,
-          style: STYLE_MEDIUM.copyWith(
-            color: AppColors.COLOR_GREY,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        buildIncome(),
+        buildExpenses()
       ],
-    ),
-  );
-}
+    );
+  }
 
-Widget upWork() {
-  return const ItemHistoryListWidget(
-    image: AppImages.icHome,
-    title: 'UpWork',
-    date: 'Today',
-    money: '+ \$ 850.00',
-  );
-}
+  Widget buildCardMoney() {
+    return Positioned(
+      top: 150,
+      child: Container(
+        width: 371,
+        height: 202,
+        decoration: const BoxDecoration(
+          color: AppColors.PRIMARY_GREEN,
+          borderRadius: BorderRadius.all(Radius.circular(20),),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(SpaceBox.sizeLarge),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildHeaderCard(),
+              buildMoney(),
+              buildIncomeAndExpenses(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-Widget transfer() {
-  return const ItemHistoryListWidget(
-    image: AppImages.icHome,
-    title: 'Transfer',
-    date: 'Yesterday',
-    money: '- \$ 85.00',
-    colorMoney: AppColors.PRIMARY_RED,
-  );
-}
-
-Widget paypal() {
-  return const ItemHistoryListWidget(
-    image: AppImages.icHome,
-    title: 'Paypal',
-    date: 'Jan 30, 2022',
-    money: '+ \$ 1,406.00',
-  );
-}
-
-Widget youtube() {
-  return const ItemHistoryListWidget(
-    image: AppImages.icHome,
-    title: 'UpWork',
-    date: 'Jan 16, 2022',
-    money: '- \$ 11.99',
-    colorMoney: AppColors.PRIMARY_RED,
-  );
-}
-
-Widget sendAgain() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget buildHeader(){
+    return Stack(
+      alignment: Alignment.topCenter,
       children: [
-        Paragraph(
-          content: HomePageLanguage.sendAgain,
-          style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.BLACK_500,
-          ),
+        const SizedBox(
+          width: double.infinity,
+          height: 365,
         ),
-        Paragraph(
-          content: HomePageLanguage.seeAll,
-          style: STYLE_MEDIUM.copyWith(
-            color: AppColors.COLOR_GREY,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        backgroundImage(),
+        nameUser(),
+        buildCardMoney(),
       ],
-    ),
-  );
-}
+    );
+  }
 
-Widget listAvatar() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      Container(
-        width: 60,
-        height: 60,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.all(
-            Radius.circular(999),
-          ),
-        ),
-        child: Image.asset(
-          AppImages.pngAvatar,
-        ),
-      ),
-      Container(
-        width: 60,
-        height: 60,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.all(
-            Radius.circular(999),
-          ),
-        ),
-        child: Image.asset(
-          AppImages.pngAvatar,
+  Widget transactionsHistory() {
+    return SectionTitle(
+      titleLeft: HomePageLanguage.transactionHistory,
+      titleRight: HomePageLanguage.seeAll,
+    );
+  }
+
+  Widget listAvatar() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
+      child: SizedBox(
+        width: double.maxFinite,
+        height: SpaceBox.sizeBig*2.4,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 5,
+          itemBuilder: (context, index) => const BuildAvatar()
         ),
       ),
-      Container(
-        width: 60,
-        height: 60,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.all(
-            Radius.circular(999),
+    );
+  }
+
+  Widget upWork() {
+    return const Transaction(
+      image: AppImages.pngUpWork,
+      money: r'+ $ 850.00',
+      subtile: 'Today',
+      title: 'Upwork',
+    );
+  }
+
+  Widget transfer() {
+    return const Transaction(
+      image: AppImages.pngTransfer,
+      money: r'- $ 85.00',
+      subtile: 'Yesterday',
+      title: 'Transfer',
+    );
+  }
+
+  Widget paypal() {
+    return const Transaction(
+      image: AppImages.pngPaypal,
+      money:  r'+ $ 1,406.00',
+      subtile: 'Jan 30,2022',
+      title: 'Palpal',
+    );
+  }
+
+  Widget youtube() {
+    return const Transaction(
+      image: AppImages.pngYoutube,
+      money:  r'- $ 11.99',
+      subtile: 'Jan 16, 2022',
+      title: 'Youtube',
+    );
+  }
+
+  Widget sendAgain() {
+    return SectionTitle(
+      titleLeft: HomePageLanguage.sendAgain,
+      titleRight: HomePageLanguage.seeAll,
+    );
+  }
+
+  Widget buildBody(){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeLarge,),
+      child: Column(
+        children: [
+          Column(
+            children: [
+              transactionsHistory(),
+              upWork(),
+              transfer(),
+              paypal(),
+              youtube(),
+              sendAgain(),
+              listAvatar(),
+            ],
           ),
-        ),
-        child: Image.asset(
-          AppImages.pngAvatar,
-        ),
+        ],
       ),
-      Container(
-        width: 60,
-        height: 60,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.all(
-            Radius.circular(999),
-          ),
-        ),
-        child: Image.asset(
-          AppImages.pngAvatar,
-        ),
+    );
+  }
+
+  Widget buildHomePage() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          buildHeader(),
+          buildBody(),
+        ],
       ),
-      Container(
-        width: 60,
-        height: 60,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.all(
-            Radius.circular(999),
-          ),
-        ),
-        child: Image.asset(
-          AppImages.pngAvatar,
-        ),
-      ),
-    ],
-  );
+    );
+  }
 }
