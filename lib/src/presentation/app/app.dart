@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       // onGenerateRoute: Routers.generateRoute,
 
 
-      home: const NavigateScreen(),
+      home: const HomePageScreen(),
 
     );
   }
