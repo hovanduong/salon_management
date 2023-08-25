@@ -12,4 +12,6 @@ class HomePageLanguage {
   static final seeAll = S.current.seeAll;
 
   static final sendAgain = S.current.sendAgian;
+
+  static final goodAfternoon = S.current.goodAfternoon;
 }
