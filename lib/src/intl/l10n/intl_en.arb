@@ -116,5 +116,12 @@
     "total": "Total",
     "downloadReceipt": "Download Receipt",
     "goodAfternoon": "Good afternoon",
+    "inviteFriend": "Invite Friends",
+    "accountInfo": "Account info",
+    "personalProfile": "Personal profile",
+    "messageCenter": "Message center",
+    "loginAndSecurity": "Login and security",
+    "dataAndPrivacy": "Data and privacy",
+    "profile": "Profile",
     "lastLine": ""
 }
