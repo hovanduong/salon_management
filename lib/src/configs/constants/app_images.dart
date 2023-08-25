@@ -13,7 +13,6 @@ class AppImages {
 
   static const String icCheck = 'assets/icons/Check.svg';
 
-
   static const String icSuccessCheck = 'assets/icons/success-icon.svg';
 
   static const String addImage = 'assets/images/add-image.png';
@@ -40,7 +39,6 @@ class AppImages {
   static const String icBell = 'assets/icons/bell.svg';
 
   static const String icSetting = 'assets/icons/setting.svg';
-
 
   static const String backgroundHomePage =
       'assets/images/backgroundHomePage.png';

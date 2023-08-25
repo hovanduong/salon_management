@@ -96,20 +96,25 @@
     "validName": "Tên phải trên 2 kí tự",
     "emptyVerificationCode": "",
     "validVerificationCode": "",
-
     "totalBalance": "Tổng số dư",
     "income": "Thu nhập",
     "expenses": "Chi phí",
     "transactionHistory": "Lịch sử giao dịch",
     "seeAll": "Xem hết",
     "sendAgain": "Gửi lại",
-
     "statistics": "Thống kê",
     "transactions": "Giao dịch",
     "earning": "Thu nhập",
     "spend": "Chi tiêu",
     "available": "Có sẵn",
     "availableBalance": "Số dư khả dụng",
-
+    "transactionDetails": "Chi tiết giao dịch",
+    "status": "Trạng thái",
+    "from": "Từ",
+    "earnings": "Thu nhập",
+    "downloadReceipt": "Tải biên lai",
+    "fee": "Fee",
+    "total": "Total",
+    "goodAfternoon": "Chào buổi chiều",
     "lastLine": ""
 }
