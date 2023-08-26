@@ -78,4 +78,16 @@ class AppImages {
   static const String icStatist = 'assets/icons/statist.svg';
 
   static const String icWalletLine = 'assets/icons/wallet_line.svg';
+
+  static const String icDiamond = 'assets/icons/diamond.svg';
+
+  static const String icPerson = 'assets/icons/person.svg';
+
+  static const String icPeople = 'assets/icons/people.svg';
+
+  static const String icMessage = 'assets/icons/message.svg';
+
+  static const String icSecurity = 'assets/icons/security.svg';
+
+  static const String icPrivacy = 'assets/icons/privacy.svg';
 }

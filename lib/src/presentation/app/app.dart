@@ -7,6 +7,7 @@ import '../homepage/homepage.dart';
 
 import '../bottom_navigation_bar/navigation.dart';
 
+import '../profile/profile_screen.dart';
 import '../routers.dart';
 import '../service_add/add_service.dart';
 import '../statistics/statistics_screen.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
 
-      home: const HomePageScreen(),
+      home: const ProfileScreen(),
     );
   }
 }
