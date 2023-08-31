@@ -108,6 +108,11 @@
     "spend": "Chi tiêu",
     "available": "Có sẵn",
     "availableBalance": "Số dư khả dụng",
+
+    "enterAddress": "Nhập địa chỉ",
+    "chooseTime": "Chọn giờ",
+    "chooseDay": "Chọn Ngày",
+
     "transactionDetails": "Chi tiết giao dịch",
     "status": "Trạng thái",
     "from": "Từ",
@@ -123,5 +128,6 @@
     "loginAndSecurity": "Đăng nhập và bảo mật",
     "dataAndPrivacy": "Bảo mật và riêng tư",
     "profile": "Hồ sơ",
+
     "lastLine": ""
 }
