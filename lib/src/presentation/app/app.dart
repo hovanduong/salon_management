@@ -3,10 +3,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../configs/firebase/analytics_firebase.dart';
 import '../../intl/generated/l10n.dart';
 
+import '../homepage/homepage.dart';
+
 import '../bottom_navigation_bar/navigation.dart';
+
+import '../profile/profile_screen.dart';
 import '../routers.dart';
 import '../service_add/add_service.dart';
 import '../statistics/statistics_screen.dart';
+import '../transaction_details/transaction-details_screen.dart';
 
 class Constants {
   static const String languageVietName = 'vi';
@@ -47,7 +52,9 @@ class MyApp extends StatelessWidget {
       //           ),
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
+
       home: const ServiceAddScreen(),
+
     );
   }
 }
