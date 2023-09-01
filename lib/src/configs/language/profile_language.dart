@@ -1,7 +1,7 @@
 import '../../intl/generated/l10n.dart';
 
 class ProfileLanguage {
-  static final inviteFriends = S.current.inviteFriends;
+  static final inviteFriends = S.current.inviteFriend;
 
   static final accountInfo = S.current.accountInfo;
 

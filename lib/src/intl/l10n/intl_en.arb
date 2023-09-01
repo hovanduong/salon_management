@@ -108,11 +108,9 @@
     "spend": "Spend",
     "available": "Available",
     "availableBalance": "Available Balance",
-
     "enterAddress": "Enter Address",
     "chooseTime": "Choose time",
     "chooseDay": "Choose date",
-
     "transactionDetails": "Transaction Details",
     "status": "Status",
     "from": "From",
