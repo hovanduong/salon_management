@@ -122,10 +122,9 @@
     "inviteFriend": "Invite Friends",
     "accountInfo": "Account info",
     "personalProfile": "Personal profile",
-    "messageCenter": "Message center",
+    "category": "Category",
     "loginAndSecurity": "Login and security",
     "dataAndPrivacy": "Data and privacy",
     "profile": "Profile",
-
     "lastLine": ""
 }

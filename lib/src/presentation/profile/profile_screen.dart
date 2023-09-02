@@ -158,7 +158,7 @@ Widget buildPersonalProfileWidget() {
 Widget buildMessageCenterWidget() {
   return SettingProfileListWidget(
     image: AppImages.icMessage,
-    title: ProfileLanguage.messageCenter,
+    title: ProfileLanguage.category,
   );
 }
 
