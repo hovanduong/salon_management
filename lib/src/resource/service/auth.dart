@@ -37,7 +37,7 @@ class AuthApi {
   Future<Result<Service, Exception>> detailsService({String? id}) async {
     try {
       final response = await HttpRemote.get(
-        url: '/services/$id',
+        url: '/api/my-service/$id',
       );
       switch (response?.statusCode) {
         case 200:
@@ -56,7 +56,7 @@ class AuthApi {
   Future<Result<List<Service>, Exception>> getService() async {
     try {
       final response = await HttpRemote.get(
-        url: '/services',
+        url: '/api/my-service',
       );
       switch (response?.statusCode) {
         case 200:
@@ -152,7 +152,7 @@ class AuthApi {
   Future<Result<bool, Exception>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/auth/register',
+        url: '/api/auth/register',
         body: {
           'firstName': params!.user!.firstName,
           'lastName': params.user!.lastName,
@@ -176,7 +176,7 @@ class AuthApi {
   Future<Result<String, Exception>> login(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/auth/login',
+        url: '/api/auth/login',
         body: {
           'phone': params!.phone,
           'password': params.password,
