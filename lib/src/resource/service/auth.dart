@@ -73,7 +73,9 @@ class AuthApi {
   }
 
   Future<Result<bool, Exception>> sendOTP(
-      AuthParams? params, BuildContext context,) async {
+    AuthParams? params,
+    BuildContext context,
+  ) async {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -86,12 +88,15 @@ class AuthApi {
           },
           codeSent: (verificationId, resendToken) {
             LoadingDialog.hideLoadingDialog(context);
-            Navigator.pushNamed(context, Routers.verification,
-                arguments: RegisterArguments(
-                  pass: params.password,
-                  verificationId: verificationId,
-                  userModel: params.user,
-                ),);
+            Navigator.pushNamed(
+              context,
+              Routers.verification,
+              arguments: RegisterArguments(
+                pass: params.password,
+                verificationId: verificationId,
+                userModel: params.user,
+              ),
+            );
           },
           codeAutoRetrievalTimeout: (verificationId) {},
           timeout: const Duration(seconds: 60),
@@ -104,7 +109,8 @@ class AuthApi {
   }
 
   Future<Result<bool, Exception>> checkPhoneNumberExists(
-      AuthParams? params,) async {
+    AuthParams? params,
+  ) async {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
