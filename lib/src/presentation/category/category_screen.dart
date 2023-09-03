@@ -32,11 +32,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final List<Category> categories = [
     Category('ID', Icons.add),
     Category('Name', Icons.add),
-    Category('UserID', Icons.add),
-    Category('My Services', Icons.add),
-    Category('Create AT', Icons.add),
-    Category('Update AT', Icons.add),
-    Category('Delete AT', Icons.add),
   ];
 
   Widget buildCategory() {
@@ -52,10 +47,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: ListTile(
+            child: ExpansionTile(
               title: Text(categories[index].name),
-              trailing: Icon(categories[index].icon),
-              onTap: () {},
+              children: [
+                // Hiển thị nội dung danh mục ở đây
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(categories[index].name),
+                        Icon(categories[index].icon),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },
