@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,13 +23,13 @@ class AuthParams {
     this.lastName,
     this.middleName,
     this.password,
-    this.phone,
+    this.phoneNumber,
   });
   final String? firstName;
   final String? lastName;
   final String? middleName;
   final String? birthDate;
-  final String? phone;
+  final String? phoneNumber;
   final String? password;
   final UserModel? user;
 }
@@ -116,7 +117,7 @@ class AuthApi {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         final data = await FirebaseFirestore.instance
             .collection('phone')
-            .where('phone', isEqualTo: params!.phone)
+            .where('phone', isEqualTo: params!.phoneNumber)
             .get();
         final phone = data.docs.map((e) => e.data());
         if (phone.isNotEmpty) {
@@ -178,8 +179,8 @@ class AuthApi {
       final response = await HttpRemote.post(
         url: '/api/auth/login',
         body: {
-          'phone': params!.phone,
-          'password': params.password,
+          'phoneNumber': '0944010499',
+          'password': params!.password,
         },
       );
       switch (response?.statusCode) {
