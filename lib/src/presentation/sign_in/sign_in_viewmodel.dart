@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
@@ -120,9 +122,9 @@ class SignInViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.login(
       AuthParams(
-        phone: phone,
+        phoneNumber: phone,
         password: password,
-      ),
+      )
     );
 
     final value = switch (result) {

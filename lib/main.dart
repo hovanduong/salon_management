@@ -21,7 +21,7 @@ Future<void> main() async {
   notificationInitialed();
   await ConfigPerformance.init();
   await AppDeviceInfo.init();
-  // await HttpRemote.init();
+  await HttpRemote.init();
   runApp(const MyApp());
   await trace.stop();
 }

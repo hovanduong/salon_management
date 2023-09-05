@@ -87,7 +87,7 @@ class SignUpViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.checkPhoneNumberExists(
       AuthParams(
-        phone: phone,
+        phoneNumber: phone,
       ),
     );
 
@@ -96,10 +96,10 @@ class SignUpViewModel extends BaseViewModel {
       Failure(exception: final exception) => exception,
     };
 
-    if(!AppValid.isNetWork(value)){
+    if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
-    }else if (value is Exception) {
+    } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);
       showOpenDialog(context);
     } else {

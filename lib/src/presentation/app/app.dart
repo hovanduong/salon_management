@@ -10,6 +10,8 @@ import '../bottom_navigation_bar/navigation.dart';
 import '../profile/profile_screen.dart';
 import '../routers.dart';
 import '../service_add/add_service.dart';
+import '../sign_in/sign_in.dart';
+import '../sign_up/sign_up_screen.dart';
 import '../statistics/statistics_screen.dart';
 import '../transaction_details/transaction-details_screen.dart';
 
@@ -53,8 +55,7 @@ class MyApp extends StatelessWidget {
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
 
-      home: const ServiceAddScreen(),
-
+      home: const SignInScreen(),
     );
   }
 }
