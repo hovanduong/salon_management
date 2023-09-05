@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,13 +23,13 @@ class AuthParams {
     this.lastName,
     this.middleName,
     this.password,
-    this.phone,
+    this.phoneNumber,
   });
   final String? firstName;
   final String? lastName;
   final String? middleName;
   final String? birthDate;
-  final String? phone;
+  final String? phoneNumber;
   final String? password;
   final UserModel? user;
 }
@@ -37,7 +38,7 @@ class AuthApi {
   Future<Result<Service, Exception>> detailsService({String? id}) async {
     try {
       final response = await HttpRemote.get(
-        url: '/services/$id',
+        url: '/api/my-service/$id',
       );
       switch (response?.statusCode) {
         case 200:
@@ -56,7 +57,7 @@ class AuthApi {
   Future<Result<List<Service>, Exception>> getService() async {
     try {
       final response = await HttpRemote.get(
-        url: '/services',
+        url: '/api/my-service',
       );
       switch (response?.statusCode) {
         case 200:
@@ -116,7 +117,7 @@ class AuthApi {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         final data = await FirebaseFirestore.instance
             .collection('phone')
-            .where('phone', isEqualTo: params!.phone)
+            .where('phone', isEqualTo: params!.phoneNumber)
             .get();
         final phone = data.docs.map((e) => e.data());
         if (phone.isNotEmpty) {
@@ -154,7 +155,7 @@ class AuthApi {
   Future<Result<bool, Exception>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/auth/register',
+        url: '/api/auth/register',
         body: {
           'firstName': params!.user!.firstName,
           'lastName': params.user!.lastName,
@@ -178,14 +179,14 @@ class AuthApi {
   Future<Result<String, Exception>> login(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/auth/login',
+        url: '/api/auth/login',
         body: {
-          'phone': params!.phone,
+          'phoneNumber': params!.phoneNumber,
           'password': params.password,
         },
       );
       switch (response?.statusCode) {
-        case 200:
+        case 201:
           final jsonMap = json.decode(response!.body);
           final accessToken = jsonMap['data']['accessToken'];
           return Success(accessToken);
