@@ -1,13 +1,13 @@
 import '../../intl/generated/l10n.dart';
 
 class ProfileLanguage {
-  static final inviteFriends = S.current.inviteFriend;
+  static final inviteFriends = S.current.inviteFriends;
 
   static final accountInfo = S.current.accountInfo;
 
   static final personalProfile = S.current.personalProfile;
 
-  static final messageCenter = S.current.messageCenter;
+  static final category = S.current.category;
 
   static final loginAndSecurity = S.current.loginAndSecurity;
 

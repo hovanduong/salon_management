@@ -132,14 +132,16 @@ class AuthApi {
     }
   }
 
-  Future<Result<UserModel, Exception>> profile() async {
+  Future<Result<UserModel, Exception>> category() async {
     try {
       final response = await HttpRemote.get(
-        url: '/auth/profile',
+        url: '/api/category?pageSize=10&page=1',
       );
+      print('${response?.statusCode}');
       switch (response?.statusCode) {
         case 200:
-          final data = json.encode(json.decode(response!.body)['data']);
+          final data =
+              json.encode(json.decode(response!.body)['data']['items']);
           final user = UserModelFactory.create(data);
           return Success(user);
         default:

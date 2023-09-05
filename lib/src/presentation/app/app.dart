@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../configs/firebase/analytics_firebase.dart';
 import '../../intl/generated/l10n.dart';
 
+import '../category/category_screen.dart';
 import '../homepage/homepage.dart';
 
 import '../bottom_navigation_bar/navigation.dart';
@@ -55,7 +57,7 @@ class MyApp extends StatelessWidget {
       // initialRoute: Routers.getStarted,
       // onGenerateRoute: Routers.generateRoute,
 
-      home: const SignInScreen(),
+      home: CategoryScreen(),
     );
   }
 }
