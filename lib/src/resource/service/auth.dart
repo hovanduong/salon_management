@@ -179,12 +179,12 @@ class AuthApi {
       final response = await HttpRemote.post(
         url: '/api/auth/login',
         body: {
-          'phoneNumber': '0944010499',
-          'password': params!.password,
+          'phoneNumber': params!.phoneNumber,
+          'password': params.password,
         },
       );
       switch (response?.statusCode) {
-        case 200:
+        case 201:
           final jsonMap = json.decode(response!.body);
           final accessToken = jsonMap['data']['accessToken'];
           return Success(accessToken);
