@@ -3,21 +3,22 @@ import 'package:flutter/material.dart';
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
-class DropButtonWidget extends StatelessWidget {
-  const DropButtonWidget({
-    super.key,
-    this.list,
-    this.onChanged,
-    this.dropValue,
-    this.labelText,
-    this.validator,
-  });
+class ChooseServiceWidget extends StatelessWidget {
+  const ChooseServiceWidget(
+      {super.key,
+      this.list,
+      this.onChanged,
+      this.dropValue,
+      this.labelText,
+      this.validator,
+      this.onRemove});
 
   final List<String>? list;
   final Function(Object)? onChanged;
   final Object? dropValue;
   final String? labelText;
   final String? validator;
+  final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +26,19 @@ class DropButtonWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Paragraph(
               content: labelText ?? '',
               fontWeight: FontWeight.w600,
             ),
-            Text('data')
+            GestureDetector(
+              onTap: onRemove,
+              child: const Icon(
+                Icons.remove_circle,
+                color: Colors.red,
+              ),
+            ),
           ],
         ),
         SizedBox(

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
+import '../booking/components/dropbutton_widget.dart';
 import 'add_service.dart';
 import 'components/name_field_widget.dart';
 import 'components/service_field_widget.dart';
@@ -62,7 +63,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                     // Text(_viewModel!.contactName),
                     // buildServiceTopic(),
                     buildName(),
-                    buildService(),
+                    buildServicee(),
                     buildMoney(),
                     // buildServiceTime(),
                     buildServiceDescription(),
@@ -82,61 +83,87 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
-  Widget buildService() {
+  Widget buildServicee() {
     return Column(
       children: [
-        PopupMenuButton<String>(
-          onSelected: (value) {
-            _viewModel!.addService(value);
-            _viewModel!.calculateTotalPrice(value);
-          },
-          itemBuilder: (context) => <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
-              value: 'Dịch vụ 1',
-              child: Paragraph(content: 'Dịch vụ 1'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Paragraph(
+              content: 'Chọn dịch vụ',
+              fontWeight: FontWeight.w600,
             ),
-            const PopupMenuItem<String>(
-              value: 'Dịch vụ 2',
-              child: Paragraph(content: 'Dịch vụ 2'),
-            ),
-            const PopupMenuItem<String>(
-              value: 'Dịch vụ 3',
-              child: Paragraph(content: 'Dịch vụ 3'),
+            GestureDetector(
+              onTap: _viewModel!.addNewField,
+              child: const Icon(
+                Icons.add_circle,
+                color: Colors.green,
+              ),
             ),
           ],
-          child: Padding(
-            padding: EdgeInsets.only(bottom: SpaceBox.sizeMedium),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Paragraph(
-                  content: 'Chọn dịch vụ',
-                  fontWeight: FontWeight.w600,
-                ),
-                Icon(
-                  Icons.add_circle,
-                  color: Colors.green,
-                ),
-              ],
-            ),
-          ),
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _viewModel!.selectedServices
-              .map(
-                (service) => ServiceFieldWidget(
-                  nameService: service,
-                  onRemove: () {
-                    _viewModel!.removeService(service);
-                  },
-                ),
-              )
-              .toList(),
+          children: _viewModel!.fields,
         ),
       ],
     );
   }
+
+  // Widget buildService() {
+  //   return Column(
+  //     children: [
+  //       PopupMenuButton<String>(
+  //         onSelected: (value) {
+  //           _viewModel!.addService(value);
+  //           _viewModel!.calculateTotalPrice(value);
+  //         },
+  //         itemBuilder: (context) => <PopupMenuEntry<String>>[
+  //           const PopupMenuItem<String>(
+  //             value: 'Dịch vụ 1',
+  //             child: Paragraph(content: 'Dịch vụ 1'),
+  //           ),
+  //           const PopupMenuItem<String>(
+  //             value: 'Dịch vụ 2',
+  //             child: Paragraph(content: 'Dịch vụ 2'),
+  //           ),
+  //           const PopupMenuItem<String>(
+  //             value: 'Dịch vụ 3',
+  //             child: Paragraph(content: 'Dịch vụ 3'),
+  //           ),
+  //         ],
+  //         child: Padding(
+  //           padding: EdgeInsets.only(bottom: SpaceBox.sizeMedium),
+  //           child: const Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               Paragraph(
+  //                 content: 'Chọn dịch vụ',
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //               Icon(
+  //                 Icons.add_circle,
+  //                 color: Colors.green,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: _viewModel!.selectedServices
+  //             .map(
+  //               (service) => ServiceFieldWidget(
+  //                 nameService: service,
+  //                 onRemove: () {
+  //                   _viewModel!.removeService(service);
+  //                 },
+  //               ),
+  //             )
+  //             .toList(),
+  //       ),
+  //     ],
+  //   );
+  // }
   // Widget builDateTimeT() {
   //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
 
@@ -232,14 +259,18 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
           labelText: ServiceAddLanguage.phoneNumber,
           validator: _viewModel!.phoneErrorMsg,
           textEditingController: _viewModel!.phoneController,
+          onTap: () {
+            _viewModel!.changeIsListViewVisible(false);
+          },
           onChanged: (value) {
-            if (value.isNotEmpty) {
+            print(value);
+            if (value.isNotEmpty && value != null) {
               _viewModel!.isListViewVisible = true;
               _viewModel!.searchResults =
                   _viewModel!.getContactSuggestions(value);
             } else {
-              _viewModel!.isListViewVisible = false;
-              _viewModel!.searchResults.clear();
+              _viewModel!.isListViewVisible = true;
+              //  _viewModel!.searchResults.clear();
             }
             _viewModel!
               // ..checkPhoneInput()
@@ -247,6 +278,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               ..findName();
           },
         ),
+        // if (_viewModel!.isListViewVisible &&
+        //     _viewModel!.searchResults.isNotEmpty)
         ListView.builder(
           shrinkWrap: true,
           itemCount: _viewModel!.isListViewVisible
@@ -254,8 +287,16 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               : 0,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(_viewModel!.searchResults[index].name),
-              subtitle: Text(_viewModel!.searchResults[index].phoneNumber),
+              title: Paragraph(
+                content: _viewModel!.searchResults[index].name,
+                style: STYLE_MEDIUM,
+                fontWeight: FontWeight.w600,
+              ),
+              subtitle: Paragraph(
+                content: _viewModel!.searchResults[index].phoneNumber,
+                style: STYLE_MEDIUM,
+                fontWeight: FontWeight.w600,
+              ),
               onTap: () {
                 _viewModel!.updatePhoneNumber(
                     _viewModel!.searchResults[index].phoneNumber);
