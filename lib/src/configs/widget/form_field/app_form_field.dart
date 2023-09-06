@@ -19,7 +19,9 @@ class AppFormField extends StatefulWidget {
     this.maxLenght,
     this.maxLines,
     this.counterText,
+    this.onTap,
   });
+final Function()? onTap;
   final String? hintText;
   final String? labelText;
   final String? validator;
@@ -62,6 +64,7 @@ class _AppFormFieldState extends State<AppFormField> {
           keyboardType: widget.keyboardType,
           controller: widget.textEditingController,
           onChanged: widget.onChanged,
+          onTap: widget.onTap,
           obscureText: hiddenPassword,
           decoration: InputDecoration(
             counterText: widget.counterText,

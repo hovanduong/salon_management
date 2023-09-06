@@ -136,7 +136,7 @@ Widget buildInviteFriendsWidget() {
     padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
     child: SettingProfileListWidget(
       image: AppImages.icDiamond,
-      title: ProfileLanguage.inviteFriends,
+      // title: ProfileLanguage.inviteFriends,
     ),
   );
 }

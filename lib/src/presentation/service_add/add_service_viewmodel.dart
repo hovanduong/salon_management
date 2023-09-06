@@ -3,9 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../base/base.dart';
+import '../booking/components/dropbutton_widget.dart';
 import '../routers.dart';
+import 'components/choose_service_widget.dart';
 
 class ServiceAddViewModel extends BaseViewModel {
+  List<String> list = <String>[
+    'chọn dịch vụ',
+    'abc',
+    'xyz',
+    'đi cháy phố',
+    'đi hẹn hò',
+    'đi chơi xuyên đêm'
+  ];
+  final List<Widget> fields = [];
+  String? messageService;
+
+  late Object dropValue = list.first;
   File? imageFile;
   String searchText = '';
   DateTime dateTime = DateTime.now();
@@ -14,7 +28,7 @@ class ServiceAddViewModel extends BaseViewModel {
   List<String> selectedServices = [];
 
   List<Contact> searchResults = [];
-  bool isListViewVisible = true;
+  bool isListViewVisible = false;
   TextEditingController searchTextController = TextEditingController();
 
   TextEditingController nameController = TextEditingController();
@@ -48,6 +62,54 @@ class ServiceAddViewModel extends BaseViewModel {
 
   dynamic init() {
     test();
+  }
+
+  void changeIsListViewVisible(bool isSelectPhone) {
+    if (isSelectPhone) {
+      isListViewVisible = false;
+    } else {
+      isListViewVisible = true;
+    }
+    notifyListeners();
+  }
+
+  void setDropValue(Object value) {
+    dropValue = value.toString();
+
+    calculateTotalPrice();
+    notifyListeners();
+  }
+
+  void validService() {
+    if (dropValue == list.first) {
+      messageService = 'BookingLanguage.validService';
+    } else {
+      messageService = '';
+    }
+    notifyListeners();
+  }
+
+  void removeField(int index) {
+    fields.removeAt(index);
+    notifyListeners();
+  }
+
+  void addNewField() {
+    fields.add(
+      ChooseServiceWidget(
+        list: list,
+        onChanged: (value) {
+          setDropValue(value);
+          validService();
+        },
+        labelText: HomeLanguage.service,
+        dropValue: null,
+        onRemove: () {
+          removeField(fields.length - 1);
+        },
+      ),
+    );
+    notifyListeners();
   }
 
   void test() {
@@ -337,23 +399,33 @@ class ServiceAddViewModel extends BaseViewModel {
     }
   }
 
-  void calculateTotalPrice(String selectedService) {
-    double totalPrice = 0.0;
-    for (String service in selectedServices) {
-      totalPrice += calculatePrice(service);
-    }
-    moneyController.text = totalPrice.toStringAsFixed(2);
-    ;
+  double totalPrice = 0.0;
+  void calculateTotalPrice() {
+    totalPrice += calculatePrice(dropValue);
+    moneyController.text = totalPrice.toString();
   }
 
-  double calculatePrice(String serviceName) {
-    switch (serviceName) {
-      case 'Dịch vụ 1':
+  // void calculateTotalPrice(String selectedService) {
+  //   var totalPrice = 0;
+  //   for (final service in dropValue) {
+  //     totalPrice += calculatePrice(service) as int;
+  //   }
+  //   moneyController.text = totalPrice.toStringAsFixed(2);
+
+  // }
+
+  double calculatePrice(Object dropValue) {
+    switch (dropValue) {
+      case 'abc':
         return 100000;
-      case 'Dịch vụ 2':
+      case 'xyz':
         return 200000;
-      case 'Dịch vụ 3':
+      case 'đi cháy phố':
         return 300000;
+      case 'đi hẹn hò':
+        return 400000;
+      case 'đi chơi xuyên đêm':
+        return 500000;
       default:
         return 0;
     }
