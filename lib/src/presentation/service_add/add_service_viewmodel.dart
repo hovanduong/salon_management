@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../base/base.dart';
+import '../booking/components/dropbutton_widget.dart';
 import '../routers.dart';
 import 'components/choose_service_widget.dart';
 
@@ -18,6 +19,7 @@ class ServiceAddViewModel extends BaseViewModel {
   String? messageService;
 
   late Object dropValue = list.first;
+
   String searchText = '';
   DateTime dateTime = DateTime.now();
 
@@ -25,6 +27,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   List<Contact> searchResults = [];
   bool isListViewVisible = false;
+
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
+import '../booking/components/dropbutton_widget.dart';
 import 'add_service.dart';
 import 'components/build_service_widget.dart';
 import 'components/name_field_widget.dart';
@@ -42,6 +43,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       bottom: false,
       right: false,
       left: false,
+
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,10 +70,12 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               ),
             )
           ],
+
         ),
       ),
     );
   }
+
 
   Widget buildService() {
     return BuildServiceWidget(
@@ -79,6 +83,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       fields: _viewModel!.fields,
     );
   }
+
 
   // Widget buildDateTimee() {
   //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
@@ -178,18 +183,24 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
           },
           onChanged: (value) {
             print(value);
+
             if (value.isNotEmpty) {
+
               _viewModel!.isListViewVisible = true;
               _viewModel!.searchResults =
                   _viewModel!.getContactSuggestions(value);
             } else {
               _viewModel!.isListViewVisible = true;
+
+
             }
             _viewModel!
               ..enableConfirmButton()
               ..findName();
           },
         ),
+        // if (_viewModel!.isListViewVisible &&
+        //     _viewModel!.searchResults.isNotEmpty)
         ListView.builder(
           shrinkWrap: true,
           itemCount: _viewModel!.isListViewVisible
