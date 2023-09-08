@@ -36,7 +36,9 @@ class DateTimeWidget extends StatelessWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                  onPressed: () => onPressedDay,
+                  onPressed: () async {
+                    await onPressedDay;
+                  },
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
@@ -50,7 +52,9 @@ class DateTimeWidget extends StatelessWidget {
             ),
             Expanded(
                 child: ElevatedButton(
-                    onPressed: () => onPressedTime,
+                    onPressed: () async {
+                      await onPressedTime;
+                    },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           AppColors.FIELD_GREEN),

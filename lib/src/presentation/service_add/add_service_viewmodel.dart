@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../base/base.dart';
 import '../booking/components/dropbutton_widget.dart';
@@ -20,20 +19,19 @@ class ServiceAddViewModel extends BaseViewModel {
   String? messageService;
 
   late Object dropValue = list.first;
-  File? imageFile;
+
   String searchText = '';
   DateTime dateTime = DateTime.now();
 
-  String selectedTimeText = '';
   List<String> selectedServices = [];
 
   List<Contact> searchResults = [];
   bool isListViewVisible = false;
-  TextEditingController searchTextController = TextEditingController();
 
-  TextEditingController nameController = TextEditingController();
+
+  final nameController = TextEditingController();
   final phoneController = TextEditingController();
-  TextEditingController moneyController = TextEditingController();
+  final moneyController = TextEditingController();
   final timeController = TextEditingController();
   final descriptionController = TextEditingController();
   final addressController = TextEditingController();
@@ -58,7 +56,6 @@ class ServiceAddViewModel extends BaseViewModel {
   final moneyCharsCheck = RegExp(r'^\d+$');
 
   bool enableButton = false;
-  bool isImageUploaded = false;
 
   dynamic init() {
     test();
@@ -167,71 +164,6 @@ class ServiceAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  // void checkPhoneInput() {
-  //   if (phoneController.text.isEmpty) {
-  //     onPhone = false;
-  //     phoneErrorMsg = 'rỗng';
-  //   } else if (phoneCkeckText.hasMatch(phoneController.text)) {
-  //     onPhone = false;
-  //     phoneErrorMsg = 'Không nhập chữ cái và kí tự đặt biệt';
-  //   } else if (phoneCkeckQuantity.hasMatch(phoneController.text)) {
-  //     onPhone = false;
-  //     phoneErrorMsg = 'nhập sai định dạng';
-  //   } else {
-  //     onPhone = true;
-  //     phoneErrorMsg = '';
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void checkTopicInput() {
-  //   if (topicNameController.text.isEmpty) {
-  //     onTopic = false;
-  //     topicErrorMsg = ServiceAddLanguage.emptyNameError;
-  //   } else if (specialCharsCheck.hasMatch(topicNameController.text)) {
-  //     onTopic = false;
-  //     topicErrorMsg = ServiceAddLanguage.specialCharsError;
-  //   } else if (numberCheck.hasMatch(topicNameController.text)) {
-  //     onTopic = false;
-  //     topicErrorMsg = ServiceAddLanguage.specialCharsError;
-  //   } else if (topicNameController.text.length < 6) {
-  //     onTopic = false;
-  //     topicErrorMsg = ServiceAddLanguage.serviceNameMinLenght;
-  //   } else {
-  //     onTopic = true;
-  //     topicErrorMsg = '';
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void checkMoneyInput() {
-  //   if (moneyController.text.isEmpty) {
-  //     onMoney = false;
-  //     moneyErrorMsg = ServiceAddLanguage.emptyMoneyError;
-  //   } else if (!moneyCharsCheck.hasMatch(moneyController.text)) {
-  //     moneyErrorMsg = ServiceAddLanguage.onlyDenominations;
-  //     onMoney = false;
-  //   } else {
-  //     moneyErrorMsg = '';
-  //     onMoney = true;
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void checkTimeInput() {
-  //   if (timeController.text.isEmpty) {
-  //     onTime = false;
-  //     timeErrorMsg = ServiceAddLanguage.emptyTimeError;
-  //   } else if (!moneyCharsCheck.hasMatch(timeController.text)) {
-  //     timeErrorMsg = ServiceAddLanguage.onlyNumberOfTime;
-  //     onTime = false;
-  //   } else {
-  //     timeErrorMsg = '';
-  //     onTime = true;
-  //   }
-  //   notifyListeners();
-  // }
-
   void checkDescriptionInput() {
     if (descriptionController.text.isEmpty) {
       onDescription = false;
@@ -245,76 +177,6 @@ class ServiceAddViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-
-  // Future<void> getImage(ImageSource? source) async {
-  //   final file = await ImagePicker().pickImage(source: source!);
-
-  //   if (file?.path != null) {
-  //     imageFile = File(file!.path);
-  //     isImageUploaded = false;
-  //     notifyListeners();
-  //   }
-  // }
-
-  // GestureDetector choosePhoto() {
-  //   return GestureDetector(
-  //     onTap: () => getImage(ImageSource.gallery),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Paragraph(
-  //           content: ServiceAddLanguage.choosePhoto,
-  //           style: STYLE_MEDIUM_BOLD,
-  //         ),
-  //         SizedBox(height: SpaceBox.sizeSmall),
-  //         if (imageFile != null)
-  //           PhotoPickerWidget(
-  //             decorationImage: DecorationImage(
-  //               image: FileImage(imageFile!),
-  //               fit: BoxFit.cover,
-  //             ),
-  //           )
-  //         else
-  //           const PhotoPickerWidget(
-  //             icon: Icon(
-  //               Icons.add,
-  //               color: AppColors.PRIMARY_PINK,
-  //               size: 40,
-  //             ),
-  //           )
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  //  GestureDetector(
-  //         onTap: () => _viewModel!.getImage(ImageSource.gallery),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Paragraph(
-  //               content: serviceAddLanguage.serviceAddChoosePhoto,
-  //               style: STYLE_MEDIUM_BOLD,
-  //             ),
-  //             SizedBox(height: SpaceBox.sizeSmall),
-  //             if (_viewModel!.imageFile != null)
-  //               PhotoPickerWidget(
-  //                 decorationImage: DecorationImage(
-  //                   image: FileImage(_viewModel!.imageFile!),
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               )
-  //             else
-  //               const PhotoPickerWidget(
-  //                 icon: Icon(
-  //                   Icons.add,
-  //                   color: AppColors.PRIMARY_PINK,
-  //                   size: 40,
-  //                 ),
-  //               )
-  //           ],
-  //         ),
-  //       ),
 
   void enableConfirmButton() {
     if (onPhone &&
@@ -353,10 +215,10 @@ class ServiceAddViewModel extends BaseViewModel {
       );
 
   List<Contact> contacts = [
-    Contact(phoneNumber: "0123456789", name: "Nguyễn Văn A"),
-    Contact(phoneNumber: "0987654321", name: "Trần Thị B"),
-    Contact(phoneNumber: "0774423626", name: "Lê Thanh Hòa"),
-    Contact(phoneNumber: "0774423624", name: "Lê Thanh Hà"),
+    Contact(phoneNumber: '0123456789', name: 'Nguyễn Văn A'),
+    Contact(phoneNumber: '0987654321', name: 'Trần Thị B'),
+    Contact(phoneNumber: '0774423626', name: 'Lê Thanh Hòa'),
+    Contact(phoneNumber: '0774423624', name: 'Lê Thanh Hà'),
   ];
 
   List<Contact> getContactSuggestions(String searchText) {
@@ -404,15 +266,6 @@ class ServiceAddViewModel extends BaseViewModel {
     totalPrice += calculatePrice(dropValue);
     moneyController.text = totalPrice.toString();
   }
-
-  // void calculateTotalPrice(String selectedService) {
-  //   var totalPrice = 0;
-  //   for (final service in dropValue) {
-  //     totalPrice += calculatePrice(service) as int;
-  //   }
-  //   moneyController.text = totalPrice.toStringAsFixed(2);
-
-  // }
 
   double calculatePrice(Object dropValue) {
     switch (dropValue) {
