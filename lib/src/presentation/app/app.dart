@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../configs/firebase/analytics_firebase.dart';
 import '../../intl/generated/l10n.dart';
 
+import '../add_service_category/add_service_category.dart';
 import '../category/category_screen.dart';
 import '../homepage/homepage.dart';
 
@@ -54,10 +55,10 @@ class MyApp extends StatelessWidget {
       //             _Contants.languageEnglish,
       //             _Contants.countryEnglish,
       //           ),
-      // initialRoute: Routers.getStarted,
-      // onGenerateRoute: Routers.generateRoute,
+      initialRoute: Routers.getStarted,
+      onGenerateRoute: Routers.generateRoute,
 
-      home: ServiceAddScreen(),
+      // home: const AddServiceCategoriesScreen(),
     );
   }
 }

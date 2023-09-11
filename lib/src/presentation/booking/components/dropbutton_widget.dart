@@ -24,32 +24,24 @@ class DropButtonWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Paragraph(
-              content: labelText ?? '',
-              fontWeight: FontWeight.w600,
-            ),
-            Text('data')
-          ],
+        Paragraph(
+          content: labelText ?? '',
+          fontWeight: FontWeight.w600,
         ),
         SizedBox(
           height: SpaceBox.sizeVerySmall,
         ),
         DropdownButtonFormField(
-          items: list
-              ?.map(
-                (value) => DropdownMenuItem(
-                  value: value,
-                  child: Paragraph(
-                    content: value,
-                    style: STYLE_MEDIUM.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+          items: list?.map((value) => DropdownMenuItem(
+              value: value,
+              child: Paragraph(
+                content: value,
+                style: STYLE_MEDIUM.copyWith(
+                  fontWeight: FontWeight.w500,
                 ),
-              )
-              .toList(),
+              ),
+            ),
+          ).toList(),
           onChanged: (value) {
             onChanged!(value!);
           },
