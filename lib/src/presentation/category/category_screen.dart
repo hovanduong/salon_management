@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'category_viewmodel.dart';
+import 'component/component.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -196,13 +196,49 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
+  Widget buildItemFloating(){
+    return Column(
+      children: [
+        BuildFloatingButton(
+          heroTag: 'btn1',
+          content: 'Add Service',
+          iconData: Icons.add,
+          onPressed: (){_viewModel!.goToAddServiceCategory(context);},
+        ),
+        BuildFloatingButton(
+          heroTag: 'btn2',
+          content: 'Add Category',
+          iconData: Icons.add,
+          onPressed: (){showAddCategory(context, null);},
+        ),
+      ],
+    );
+  }
+
   Widget buildCategory() {
     return SafeArea(
-      child: Column(
-        children: [
-          buildHeader(),
-          buildBody(),
-        ],
+      child: Scaffold(
+        body: Column(
+          children: [
+            buildHeader(),
+            buildBody(),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!_viewModel!.isIconFloatingButton) buildItemFloating() 
+            else Container(),
+            BuildFloatingButton(
+              heroTag: 'btn',
+              iconData: _viewModel!.isIconFloatingButton
+                ? Icons.menu
+                : Icons.close,
+              onPressed: (){_viewModel!.setIconFloating();},
+            )
+          ],
+        )
       )
     );
   }

@@ -11,18 +11,23 @@ class CategoryViewModel extends BaseViewModel {
   AuthApi authApi= AuthApi();
   List<CategoryModel> listCategory=[];
   List<bool> listIconCategory= [];
-  bool isIconDown= true;
+  bool isIconFloatingButton= true;
   TextEditingController category = TextEditingController();
   Future<void> init() async{
     await getCategory();
     notifyListeners();
   }
 
-  Future<void> goToAddService(BuildContext context)
-    => AppRouter.goToAddService(context);
+  Future<void> goToAddServiceCategory(BuildContext context)
+    => AppRouter.goToAddServiceCategory(context);
 
   void setIcon(int index){
     listIconCategory[index] = !listIconCategory[index];
+    notifyListeners();
+  }
+
+  void setIconFloating(){
+    isIconFloatingButton = !isIconFloatingButton;
     notifyListeners();
   }
 
