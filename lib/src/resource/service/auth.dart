@@ -12,26 +12,31 @@ import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
+import '../model/category_model.dart';
 import '../model/user_model.dart';
 import 'service.dart';
 
 class AuthParams {
   const AuthParams({
+    this.id,
     this.user,
     this.birthDate,
-    this.firstName,
+    this.name,
     this.lastName,
     this.middleName,
     this.password,
     this.phoneNumber,
+    this.category,
   });
-  final String? firstName;
+  final int? id;
+  final String? name;
   final String? lastName;
   final String? middleName;
   final String? birthDate;
   final String? phoneNumber;
   final String? password;
   final UserModel? user;
+  final CategoryModel? category;
 }
 
 class AuthApi {
@@ -132,18 +137,76 @@ class AuthApi {
     }
   }
 
-  Future<Result<UserModel, Exception>> category() async {
+  Future<Result<List<CategoryModel>, Exception>> getCategory() async {
     try {
       final response = await HttpRemote.get(
         url: '/api/category?pageSize=10&page=1',
       );
-      print('${response?.statusCode}');
+      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
+          final jsonMap= json.decode(response!.body);
           final data =
-              json.encode(json.decode(response!.body)['data']['items']);
-          final user = UserModelFactory.create(data);
-          return Success(user);
+              json.encode(jsonMap['data']['items']);
+          final listCategory = CategoryModelFactory.createList(data);
+          return Success(listCategory);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> deleteCategory(int id) async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/api/category/$id',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> putCategory(AuthParams? params) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/api/category/${params!.id}',
+        body: {
+          'name': params.name
+        }
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+   Future<Result<bool, Exception>> postCategory(String? name) async {
+    try {
+      final response = await HttpRemote.post(
+        url: '/api/category',
+        body: {
+          'name': name
+        }
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 201:
+          return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }

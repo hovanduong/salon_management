@@ -11,13 +11,16 @@ class SettingProfileListWidget extends StatelessWidget {
     this.colorTitle,
     this.title,
     this.textStyleTitle,
-    this.colorImage,
+    this.colorImage, this.onTap, 
+    this.isOntap= false,
   });
   final String? image;
   final Color? colorImage;
   final Color? colorTitle;
   final TextStyle? textStyleTitle;
   final String? title;
+  final Function()? onTap;
+  final bool isOntap;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,20 +28,27 @@ class SettingProfileListWidget extends StatelessWidget {
         horizontal: SizeToPadding.sizeVeryBig,
         vertical: SizeToPadding.sizeSmall / 1.1,
       ),
-      child: Row(
-        children: [
-          if (image != null) SvgPicture.asset(image!, color: colorImage),
-          SizedBox(
-            width: SpaceBox.sizeBig,
-          ),
-          Paragraph(
-            content: title ?? '',
-            style: textStyleTitle ??
-                STYLE_MEDIUM_BOLD.copyWith(
-                  color: colorTitle ?? AppColors.BLACK_500,
-                ),
-          )
-        ],
+      child: GestureDetector(
+        onTap: (){
+          if(isOntap==true){
+            onTap!();
+          }
+        },
+        child: Row(
+          children: [
+            if (image != null) SvgPicture.asset(image!, color: colorImage),
+            SizedBox(
+              width: SpaceBox.sizeBig,
+            ),
+            Paragraph(
+              content: title ?? '',
+              style: textStyleTitle ??
+                  STYLE_MEDIUM_BOLD.copyWith(
+                    color: colorTitle ?? AppColors.BLACK_500,
+                  ),
+            )
+          ],
+        ),
       ),
     );
   }
