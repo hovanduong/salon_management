@@ -19,7 +19,8 @@ class AppFormField extends StatefulWidget {
     this.maxLenght,
     this.maxLines,
     this.counterText,
-    this.onTap,
+    this.onTap, 
+    this.iconButton,
   });
 final Function()? onTap;
   final String? hintText;
@@ -33,6 +34,7 @@ final Function()? onTap;
   final int? maxLenght;
   final int? maxLines;
   final String? counterText;
+  final IconButton? iconButton;
   @override
   State<AppFormField> createState() => _AppFormFieldState();
 }
@@ -100,6 +102,7 @@ class _AppFormFieldState extends State<AppFormField> {
                     ),
                   )
                 : null,
+                prefixIcon: widget.iconButton
           ),
         ),
         SizedBox(

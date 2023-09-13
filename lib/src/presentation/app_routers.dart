@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../resource/model/service_model.dart';
 import 'add_service_category/add_service_category.dart';
 import 'category/category.dart';
+import 'category_add/category_add.dart';
 import 'home_detail/home_detail_screen.dart';
 import 'service_add/add_service.dart';
 import 'service_details/service_details.dart';
@@ -45,6 +46,13 @@ class AppRouter {
         context,
         CupertinoPageRoute(
           builder: (context) => const AddServiceCategoriesScreen(),
+        ),
+      );
+
+  static Future<void> goToCategoryAdd(BuildContext context) => Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const CategoryAddScreen(),
         ),
       );
 }

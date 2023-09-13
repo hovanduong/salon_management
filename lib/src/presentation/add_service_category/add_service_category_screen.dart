@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../configs/bottom_sheet_multiple/bottom_sheet_multiple.dart';
+import '../../configs/bottom_sheet_multiple/bottom_sheet_radio.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
@@ -25,12 +27,30 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     );
   }
 
-  Widget buildHeader(){
-    return CustomerAppBar(
-      title: ServiceAddLanguage.serviceAdd,
-      onTap: (){
-        Navigator.pop(context);
-      },
+  Widget buildAppBar(){
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeToPadding.sizeVerySmall,
+        vertical: Size.sizeMedium
+      ),
+      child: ListTile(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,)
+        ),
+        title: Paragraph(
+          content: ServiceAddLanguage.serviceAdd,
+          style: STYLE_LARGE_BOLD.copyWith(
+            color: AppColors.COLOR_WHITE
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget backgroundImage() {
+    return Image.asset(
+      AppImages.backgroundHomePage,
     );
   }
 
@@ -72,11 +92,11 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
       child: ListView.builder(
         itemCount: _viewModel!.list.isEmpty? 0: _viewModel!.list.length,
         itemBuilder: (context, index) => CheckboxListTile(
-          value: _viewModel!.isCheck?[index], 
+          value: _viewModel!.listIsCheck?[index], 
           onChanged: (value) {
             _viewModel!.updateStatusIsCheck(index);
             set(() {
-            _viewModel!.isCheck![index]= value!;
+            _viewModel!.listIsCheck![index]= value!;
             });
           },
           activeColor: AppColors.PRIMARY_GREEN,
@@ -90,7 +110,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     _viewModel!.createListIsCheck();
     showModalBottomSheet(
       showDragHandle: true,
-      isScrollControlled: true,
+      // isScrollControlled: true,
       context: context,
       builder: (context) => StatefulBuilder(builder: (context, setState) {
         return Column(
@@ -102,7 +122,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
                 enableButton: true,
                 content: UpdateProfileLanguage.submit,
                 onTap: () {
-                  _viewModel!.setListIsCheck();
+                  _viewModel!..setListIsCheck()..onSubmit();
                   Navigator.pop(context);
                 },
               ),
@@ -125,7 +145,8 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
           icon: const Icon(Icons.add_circle), 
           color: AppColors.PRIMARY_GREEN,
           onPressed: (){
-            showAddCategory(context);
+            // showAddCategory(context);
+            showSelectProvinces(context);
           },
         )
       ],
@@ -135,10 +156,10 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
   Widget buildIconRemove(int index){
     return Positioned(
       bottom: 23,
-      right: -5,
+      right: -13,
       child: IconButton(
         onPressed: (){
-          _viewModel!.removeCategory(index);
+          _viewModel!..removeCategory(index)..onSubmit();
         }, 
         icon: const Icon(Icons.highlight_remove, size: 15, 
           color: AppColors.COLOR_WHITE,)
@@ -176,9 +197,10 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
       height: 100,
       child: GridView.builder(
         itemCount: _viewModel!.selectedCategory!.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 2.2
+          childAspectRatio: 1.8,
+          crossAxisSpacing: SpaceBox.sizeSmall,
         ), 
         itemBuilder: (context, index) => buildSelectedCategory(index),
       ),
@@ -195,15 +217,39 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     );
   }
 
-  Widget buildAddServcieCategoriesScreen(){
-    return SingleChildScrollView(
-      child: SafeArea(
+  void showSelectProvinces(_) {
+    showModalBottomSheet(
+      context: context, 
+      builder: (context) => BottomSheetSingleRadio(
+        titleContent: 'Chon Category',
+        listItems: _viewModel!.mapCategory,
+        initValues: _viewModel!.categoryId,
+        // changeColor: _viewModel!.isColorProvinces,
+        // onSearch: (value) {
+        // },
+        onTapSubmit: (value) {
+          if (value != _viewModel!.categoryId) {
+            _viewModel!.changeValueProvinces(value);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget buildCardField(){
+    return Positioned(
+      top: 150,
+      child: Container(
+        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
+        decoration: BoxDecoration(
+          color: AppColors.COLOR_WHITE,
+          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
+        ),
         child: Padding(
-          padding: EdgeInsets.all(SpaceBox.sizeBig),
+          padding: EdgeInsets.all(SpaceBox.sizeLarge),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildHeader(),
               buildFieldNameService(),
               buildFieldPrice(),
               buildFieldCategory(),
@@ -211,6 +257,25 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
               buildButtonApp(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildAddServcieCategoriesScreen(){
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            const SizedBox(
+              width: double.maxFinite,
+              height: double.maxFinite,
+            ),
+            backgroundImage(),
+            buildAppBar(),
+            buildCardField(),
+          ],
         ),
       ),
     );

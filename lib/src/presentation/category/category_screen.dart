@@ -27,53 +27,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildFieldCategory(){
-    return SizedBox(
-      height: SpaceBox.sizeBig*3.8,
-      child: AppFormField(
-        hintText: 'Enter Category',
-        textEditingController: _viewModel!.category,
-      ),
-    );
-  }
-
-  dynamic showAddCategory(_, int? id) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          elevation: 20,
-          title: const Paragraph(content: 'Add Category',),
-          content: buildFieldCategory(),
-          actions: [
-            AppButton(
-              width: 70,
-              enableButton: true,
-              content: 'No',
-              onTap: () {
-                _viewModel!.category.text = '';
-                Navigator.pop(context);
-              },
-            ),
-            AppButton(
-              width: 70,
-              enableButton: true,
-              content: 'yes',
-              onTap: () {
-                id==null? _viewModel!.postCategory(_viewModel!.category.text)
-                : _viewModel!.putCategory(_viewModel!.category.text, id,);
-                _viewModel!.category.text = '';
-                _viewModel!.getCategory();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget buildHeader(){
     return Container(
       margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
@@ -209,7 +162,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           heroTag: 'btn2',
           content: 'Add Category',
           iconData: Icons.add,
-          onPressed: (){showAddCategory(context, null);},
+          onPressed: (){_viewModel!.goToAddCategory(context);},
         ),
       ],
     );

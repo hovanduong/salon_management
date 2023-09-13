@@ -21,6 +21,9 @@ class CategoryViewModel extends BaseViewModel {
   Future<void> goToAddServiceCategory(BuildContext context)
     => AppRouter.goToAddServiceCategory(context);
 
+  Future<void> goToAddCategory(BuildContext context)
+    => AppRouter.goToCategoryAdd(context);
+
   void setIcon(int index){
     listIconCategory[index] = !listIconCategory[index];
     notifyListeners();
@@ -124,24 +127,6 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> deleteCategory(int id) async {
     final result = await authApi.deleteCategory(id);
-
-    final value = switch (result) {
-      Success(value: final isTrue) => isTrue,
-      Failure(exception: final exception) => exception,
-    };
-
-    if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
-    } else if (value is Exception) {
-      showErrorDiaglog(context);
-    } else {
-      showSuccessDiaglog(context);
-    }
-    notifyListeners();
-  }
-
-  Future<void> postCategory(String name) async {
-    final result = await authApi.postCategory(name);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,
