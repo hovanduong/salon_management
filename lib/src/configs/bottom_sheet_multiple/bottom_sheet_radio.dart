@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../resource/model/radio_model.dart';
 import '../configs.dart';
 
 class BottomSheetSingleRadio extends StatefulWidget {
@@ -16,7 +17,7 @@ class BottomSheetSingleRadio extends StatefulWidget {
   final String? titleContent;
   final String? titleButton;
   final Map<dynamic, dynamic> listItems;
-  final dynamic initValues;
+  final List<int>? initValues;
   final ValueChanged<dynamic>? onTapSubmit;
   final bool isSecondText;
 
@@ -26,21 +27,22 @@ class BottomSheetSingleRadio extends StatefulWidget {
 
 class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
   List<RadioModel> listRadioData = [];
-  dynamic selectValue;
+  List<RadioModel> selectValue = [];
 
   @override
   void initState() {
     super.initState();
+    print(widget.initValues);
     if (widget.initValues != null) {
       widget.listItems.entries.forEach((e) {
-        if (widget.initValues.toString() == e.key) {
+        if (widget.initValues == e.key || widget.initValues!.contains(e.key)) {
           listRadioData.add(RadioModel(
             isSelected: true,
             id: e.key,
             secondTitle: "${e.value[1]}",
             text: e.value,
           ));
-          selectValue = widget.initValues;
+          // selectValue = widget.initValues;
         } else {
           listRadioData.add(RadioModel(
             isSelected: false,
@@ -56,7 +58,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
           isSelected: false,
           id: e.key,
           secondTitle: "${e.value[1]}",
-          text:  e.value,
+          text: e.value,
         ));
       });
     }
@@ -94,9 +96,15 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
                           // splashColor: theme.getColor(ThemeColor.gainsboro),
                           onTap: () {
                             setState(() {
-
-                              listRadioData[i].isSelected = !listRadioData[i].isSelected;
-                              selectValue = widget.listItems.keys.toList()[i];
+                              listRadioData[i].isSelected =
+                                  !listRadioData[i].isSelected;
+                              // selectValue.forEach((element) {
+                              //   if(element.id == listRadioData[i].id){
+                              //     return;
+                              //   }else{
+                              //     selectValue.add(listRadioData[i]);
+                              //   }
+                              // });
                             });
                           },
                           child: RadioItem(
@@ -114,8 +122,14 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
               onTap: () => Navigator.pop(context),
               child: InkWell(
                 onTap: () {
+                  listRadioData.forEach((i) {
+                    if (i.isSelected == true) {
+                      selectValue.add(i);
+                    }
+                  });
                   Navigator.pop(context);
                   widget.onTapSubmit!(selectValue);
+                  setState(() {});
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(
@@ -231,18 +245,4 @@ class RadioItem extends StatelessWidget {
       ],
     );
   }
-}
-
-class RadioModel {
-  RadioModel({
-    required this.isSelected,
-    this.id,
-    this.secondTitle = "",
-    this.text,
-  });
-
-  bool isSelected;
-  dynamic id;
-  String? text;
-  String? secondTitle;
 }

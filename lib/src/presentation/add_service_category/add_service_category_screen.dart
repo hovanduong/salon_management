@@ -92,11 +92,11 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
       child: ListView.builder(
         itemCount: _viewModel!.list.isEmpty? 0: _viewModel!.list.length,
         itemBuilder: (context, index) => CheckboxListTile(
-          value: _viewModel!.listIsCheck?[index], 
+          value: _viewModel!.listIsCheck[index], 
           onChanged: (value) {
             _viewModel!.updateStatusIsCheck(index);
             set(() {
-            _viewModel!.listIsCheck![index]= value!;
+            _viewModel!.listIsCheck[index]= value!;
             });
           },
           activeColor: AppColors.PRIMARY_GREEN,
@@ -122,7 +122,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
                 enableButton: true,
                 content: UpdateProfileLanguage.submit,
                 onTap: () {
-                  _viewModel!..setListIsCheck()..onSubmit();
+                  _viewModel!.onSubmit();
                   Navigator.pop(context);
                 },
               ),
@@ -144,7 +144,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
         IconButton(
           icon: const Icon(Icons.add_circle), 
           color: AppColors.PRIMARY_GREEN,
-          onPressed: (){
+          onPressed: () async{
             // showAddCategory(context);
             showSelectProvinces(context);
           },
@@ -182,7 +182,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
             borderRadius: BorderRadius.circular(SpaceBox.sizeSmall)
           ),
           child: Paragraph(
-            content: _viewModel!.selectedCategory![index],
+            content: _viewModel!.selectedCategory![index].text,
             color: AppColors.COLOR_WHITE,
             overflow: TextOverflow.ellipsis,
           ),
@@ -228,9 +228,8 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
         // onSearch: (value) {
         // },
         onTapSubmit: (value) {
-          if (value != _viewModel!.categoryId) {
-            _viewModel!.changeValueProvinces(value);
-          }
+
+            _viewModel!..changeValueProvinces(value)..setCategoryId();
         },
       ),
     );

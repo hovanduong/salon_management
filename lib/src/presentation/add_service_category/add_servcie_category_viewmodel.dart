@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/category_model.dart';
+import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -15,24 +16,42 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
   String messageErorrNameService='';
   String messageErorrPrice='';
   AuthApi serviceApi= AuthApi();
-  List<String>? selectedCategory=[];
-  List<bool>? listIsCheck=[];
+  List<RadioModel> selectedCategory=[];
+  List<bool> listIsCheck=[];
   AuthApi authApi = AuthApi();
   Map<int, String> mapProvinces = {};
-  int? categoryId;
+  List<int> categoryId=[];
   bool isColorProvinces = false;
 
   Future<void> init() async{
     await getCategory();
     await initMapCategory();
+  }
+
+  Future<void> changeValueProvinces(List<RadioModel> value) async {
+    selectedCategory =value;
+    // await clearDatAgencies();
     notifyListeners();
   }
 
-  Future<void> changeValueProvinces(MapEntry<dynamic, dynamic> value) async {
-    categoryId = value.key;
-    print(value.key);
-    selectedCategory!.add(value.value);
-    // await clearDatAgencies();
+  Future<void> setCategory() async{
+    if(selectedCategory.isNotEmpty){
+      selectedCategory.forEach((element) { 
+        listCategory.forEach((element) {
+          mapCategory.addAll({element.id!: '${element.name}'},);
+        });
+      });
+    }
+    notifyListeners();
+  }
+
+  Future<void> setCategoryId() async{
+    if(selectedCategory.isNotEmpty){
+      selectedCategory.forEach((element) { 
+        categoryId.add(element.id);
+      });
+    }
+    print(categoryId);
     notifyListeners();
   }
   
@@ -48,36 +67,37 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     listCategory.forEach((element) {
       mapCategory.addAll({element.id!: '${element.name}'},);
     });
+    print(mapCategory);
     notifyListeners();
   }
 
   void updateStatusIsCheck(int index){
-    listIsCheck![index] = !listIsCheck![index]; 
+    listIsCheck[index] = !listIsCheck[index]; 
     notifyListeners();
   }
 
   void removeCategory(int index){
-    selectedCategory!.removeAt(index);
+    selectedCategory.removeAt(index);
     notifyListeners();
   }
 
   void createListIsCheck(){
-    listIsCheck?.clear();
+    listIsCheck.clear();
     for(var i=0; i<listCategory.length; i++){
-      listIsCheck!.add(false);
+      listIsCheck.add(false);
     }
     notifyListeners();
   }
 
-  void setListIsCheck(){
-    selectedCategory?.clear();
-    for(var i=0; i<listIsCheck!.length; i++){
-      if(listIsCheck![i]==true){
-        selectedCategory!.add(list[i]);
-      }
-    }
-    notifyListeners();
-  }
+  // void setListIsCheck(){
+  //   selectedCategory?.clear();
+  //   for(var i=0; i<listIsCheck!.length; i++){
+  //     if(listIsCheck![i]==true){
+  //       selectedCategory!.add(list[i]);
+  //     }
+  //   }
+  //   notifyListeners();
+  // }
 
   void validNameService(String? value) {
     if (value == null || value.isEmpty) {
@@ -102,7 +122,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
   void onSubmit() {
     if (messageErorrNameService == '' && nameServiceController.text!='' 
       && priceController.text!='' && messageErorrPrice == ''
-      && selectedCategory!.isNotEmpty) {
+      && selectedCategory.isNotEmpty) {
       enableSubmit = true;
     } else {
       enableSubmit = false;
@@ -168,7 +188,8 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
       showErrorDiaglog(context);
     } else {
       listCategory = value as List<CategoryModel>;
-      createListIsCheck();
+          notifyListeners();
+
     }
     notifyListeners();
   }
