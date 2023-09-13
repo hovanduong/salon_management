@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
+import '../../../resource/model/my_servcie_model.dart';
+import '../../../resource/model/service_model.dart';
 
 class ChooseServiceWidget extends StatelessWidget {
   const ChooseServiceWidget(
@@ -13,7 +15,7 @@ class ChooseServiceWidget extends StatelessWidget {
       this.validator,
       this.onRemove});
 
-  final List<String>? list;
+  final List<MyServicceModel>? list;
   final Function(Object)? onChanged;
   final Object? dropValue;
   final String? labelText;
@@ -48,9 +50,9 @@ class ChooseServiceWidget extends StatelessWidget {
           items: list
               ?.map(
                 (value) => DropdownMenuItem(
-                  value: value,
+                  value: value.name,
                   child: Paragraph(
-                    content: value,
+                    content: value.name,
                     style: STYLE_MEDIUM.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
