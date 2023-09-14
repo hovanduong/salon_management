@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../resource/model/category_model.dart';
-import '../../resource/model/my_servcie_model.dart';
+import '../../resource/model/my_category_model.dart';
+import '../../resource/model/my_service_model.dart';
 import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_valid.dart';
@@ -166,7 +166,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
   Future<void> postService() async {
     final result = await authApi.postService(
       AuthParams(
-        myServicceModel: MyServicceModel(
+        myServiceModel: MyServiceModel(
           name: nameServiceController.text,
           money: priceController.text
         ),

@@ -7,6 +7,7 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/http_remote.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -111,11 +112,11 @@ class SignInViewModel extends BaseViewModel {
   }
 
   void setEvenAnalytics(String? phoneNumber) {
-    ConfigAnalytics.signIn(phoneNumber!);
+    // ConfigAnalytics.signIn(phoneNumber!);
   }
 
   void setSignInScreen() {
-    ConfigAnalytics.setCurrentScreen(Constants.signInScreen);
+    // ConfigAnalytics.setCurrentScreen(Constants.signInScreen);
   }
 
   Future<void> onLogin({String? phone, String? password}) async {
@@ -124,7 +125,7 @@ class SignInViewModel extends BaseViewModel {
       AuthParams(
         phoneNumber: phone,
         password: password,
-      )
+      ),
     );
 
     final value = switch (result) {
@@ -143,6 +144,7 @@ class SignInViewModel extends BaseViewModel {
       setEvenAnalytics(phone);
       setSignInScreen();
       await saveToken(value.toString());
+      await HttpRemote.init();
       await goToHome();
     }
   }

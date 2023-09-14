@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
-import '../../../resource/model/my_servcie_model.dart';
-import '../../../resource/model/service_model.dart';
+import '../../../resource/model/my_service_model.dart';
 
 class ChooseServiceWidget extends StatelessWidget {
   const ChooseServiceWidget(
@@ -15,7 +14,7 @@ class ChooseServiceWidget extends StatelessWidget {
       this.validator,
       this.onRemove});
 
-  final List<MyServicceModel>? list;
+  final List<MyServiceModel>? list;
   final Function(Object)? onChanged;
   final Object? dropValue;
   final String? labelText;

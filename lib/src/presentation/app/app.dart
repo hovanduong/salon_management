@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       key: key,
       debugShowCheckedModeBanner: false,
-      navigatorObservers: [ConfigAnalytics.observer],
+      // navigatorObservers: [ConfigAnalytics.observer],
       theme: ThemeData(fontFamily: Constants.fonts),
       builder: (context, widget) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),

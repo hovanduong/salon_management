@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-class MyServicceModel {
+class MyServiceModel {
   int? id;
   String? name;
   int? userId;
@@ -11,7 +11,7 @@ class MyServicceModel {
   String? money;
   String? updateAt;
 
-  MyServicceModel({
+  MyServiceModel({
     this.id,
     this.name,
     this.money,
@@ -23,7 +23,7 @@ class MyServicceModel {
 }
 
 abstract class MyServiceFactory {
-  static List<MyServicceModel> createList(String jsonString) {
+  static List<MyServiceModel> createList(String jsonString) {
     final rawModels = jsonDecode(jsonString) as List;
     final models = rawModels
         .map((rawModel) => MyServiceFactory._fromJson(rawModel))
@@ -31,19 +31,19 @@ abstract class MyServiceFactory {
     return models;
   }
 
-  static MyServicceModel create(String jsonString) {
+  static MyServiceModel create(String jsonString) {
     final jsonMap = jsonDecode(jsonString);
     final myService = _fromJson(jsonMap);
     return myService;
   }
 
-  static String toJson(MyServicceModel model) {
+  static String toJson(MyServiceModel model) {
     final data = _toMap(model);
     return json.encode(data);
   }
 
   static Map<String, dynamic> _toMap(
-    MyServicceModel myService,
+    MyServiceModel myService,
   ) {
     final data = <String, dynamic>{};
     data['name'] = myService.name;
@@ -55,9 +55,9 @@ abstract class MyServiceFactory {
     return data;
   }
 
-  static MyServicceModel _fromJson(Map<String, dynamic> json) {
-    final myService = MyServicceModel()
-      ..id=json['id']
+  static MyServiceModel _fromJson(Map<String, dynamic> json) {
+    final myService = MyServiceModel()
+      ..id = json['id']
       ..name = json['name']
       ..userId = json['userId']
       ..deletedAt = json['deletedAt']

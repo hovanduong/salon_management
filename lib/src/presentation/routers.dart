@@ -4,7 +4,6 @@ import '../resource/model/user_model.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
 import 'create_password/create_password.dart';
-import 'home_detail/home_detail_screen.dart';
 import 'service_add/add_service.dart';
 import 'service_add/add_service_screen.dart';
 import 'service_details/service_details_screen.dart';
@@ -46,6 +45,7 @@ class Routers {
   static const String editService = '/editService';
   static const String signUp = '/signUp';
   static const String navigation = '/navigation';
+  
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -82,13 +82,13 @@ class Routers {
       //     arguments: arguments,
       //   );
 
-      case homeDetails:
-        return animRoute(
-          const HomeDetailScreen(),
-          beginOffset: right,
-          name: homeDetails,
-          arguments: arguments,
-        );
+      // case homeDetails:
+      //   return animRoute(
+      //     const HomeDetailScreen(),
+      //     beginOffset: right,
+      //     name: homeDetails,
+      //     arguments: arguments,
+      //   );
 
       case updateProfile:
         return animRoute(

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_customer_model.dart';
-import '../../resource/model/my_servcie_model.dart';
-import '../../resource/model/service_model.dart';
+import '../../resource/model/my_service_model.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -22,7 +21,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   List<String> selectedServices = [];
 
-  List<MyCostomerModel> searchResults = [];
+  List<MyCustomerModel> searchResults = [];
   bool isListViewVisible = false;
 
   final nameController = TextEditingController();
@@ -45,8 +44,8 @@ class ServiceAddViewModel extends BaseViewModel {
   String? timeErrorMsg;
   String? descriptionErrorMsg;
 
-  List<MyServicceModel> myService = [];
-  List<MyCostomerModel> myCustumer = [];
+  List<MyServiceModel> myService = [];
+  List<MyCustomerModel> myCustumer = [];
 
   final phoneCkeckText = RegExp(r'[a-zA-Z!@#$%^&*()]');
   final phoneCkeckQuantity = RegExp(r'^(\d{0,9}|\d{11,})$');
@@ -80,7 +79,7 @@ class ServiceAddViewModel extends BaseViewModel {
       // showOpenDialog(context);
     } else {
       // LoadingDialog.hideLoadingDialog(context);
-      myService = value as List<MyServicceModel>;
+      myService = value as List<MyServiceModel>;
     }
     notifyListeners();
   }
@@ -102,7 +101,7 @@ class ServiceAddViewModel extends BaseViewModel {
       // showOpenDialog(context);
     } else {
       // LoadingDialog.hideLoadingDialog(context);
-      myCustumer = value as List<MyCostomerModel>;
+      myCustumer = value as List<MyCustomerModel>;
     }
     notifyListeners();
   }
@@ -267,7 +266,7 @@ class ServiceAddViewModel extends BaseViewModel {
   //   Contact(phoneNumber: '0774423624', name: 'Lê Thanh Hà'),
   // ];
 
-  List<MyCostomerModel> getContactSuggestions(String searchText) {
+  List<MyCustomerModel> getContactSuggestions(String searchText) {
     final results = myCustumer
         .where((myCustumer) =>
             myCustumer.phoneNumber!.contains(searchText) ||

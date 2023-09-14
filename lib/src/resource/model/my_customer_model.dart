@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-class MyCostomerModel {
+class MyCustomerModel {
   int? id;
   String? phoneNumber;
   String? fullName;
@@ -12,7 +12,7 @@ class MyCostomerModel {
   String? deletedAt;
   String? updateAt;
   String? createdAt;
-  MyCostomerModel({
+  MyCustomerModel({
     this.id,
     this.phoneNumber,
     this.fullName,
@@ -25,53 +25,52 @@ class MyCostomerModel {
   });
 }
 
-abstract class MyCostomerModelFactory {
-  static List<MyCostomerModel> createList(String jsonString) {
+abstract class MyCustomerModelFactory {
+  static List<MyCustomerModel> createList(String jsonString) {
     final rawModels = jsonDecode(jsonString) as List;
     final models = rawModels
-        .map((rawModel) => MyCostomerModelFactory._fromJson(rawModel))
+        .map((rawModel) => MyCustomerModelFactory._fromJson(rawModel))
         .toList();
     return models;
   }
 
-  static MyCostomerModel create(String jsonString) {
+  static MyCustomerModel create(String jsonString) {
     final jsonMap = jsonDecode(jsonString);
-    final myCostomerModel = _fromJson(jsonMap);
-    return myCostomerModel;
+    final myCustomerModel = _fromJson(jsonMap);
+    return myCustomerModel;
   }
 
-  static String toJson(MyCostomerModel model) {
+  static String toJson(MyCustomerModel model) {
     final data = _toMap(model);
     return json.encode(data);
   }
 
   static Map<String, dynamic> _toMap(
-    MyCostomerModel myCostomer,
+    MyCustomerModel myCustomer,
   ) {
     final data = <String, dynamic>{};
-    data['phoneNumber'] = myCostomer.phoneNumber;
-    data['fullName'] = myCostomer.fullName;
-    data['gender'] = myCostomer.gender;
-    data['email'] = myCostomer.email;
-    data['userId'] = myCostomer.userId;
-    data['createdAt'] = myCostomer.createdAt;
-    data['deletedAt'] = myCostomer.deletedAt;
-    data['updateAt'] = myCostomer.updateAt;
-
+    data['phoneNumber'] = myCustomer.phoneNumber;
+    data['fullName'] = myCustomer.fullName;
+    data['gender'] = myCustomer.gender;
+    data['email'] = myCustomer.email;
+    data['userId'] = myCustomer.userId;
+    data['createdAt'] = myCustomer.createdAt;
+    data['deletedAt'] = myCustomer.deletedAt;
+    data['updateAt'] = myCustomer.updateAt;
     return data;
   }
 
-  static MyCostomerModel _fromJson(Map<String, dynamic> jsons) {
-    final myCostomer = MyCostomerModel()
-      ..id = jsons['id']
-      ..phoneNumber = jsons['phoneNumber']
-      ..fullName = jsons['fullName']
-      ..gender = jsons['gender']
-      ..email = jsons['email']
-      ..userId = jsons['userId']
-      ..createdAt = jsons['createdAt']
-      ..deletedAt = jsons['deletedAt']
-      ..updateAt = jsons['updateAt'];
-    return myCostomer;
+  static MyCustomerModel _fromJson(Map<String, dynamic> json) {
+    final myCustomer = MyCustomerModel()
+      ..id = json['id']
+      ..phoneNumber = json['phoneNumber']
+      ..fullName = json['fullName']
+      ..gender = json['gender']
+      ..email = json['email']
+      ..userId = json['userId']
+      ..createdAt = json['createdAt']
+      ..deletedAt = json['deletedAt']
+      ..updateAt = json['updateAt'];
+    return myCustomer;
   }
 }

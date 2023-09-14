@@ -10,7 +10,7 @@ class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
   @override
-   @override
+  @override
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
@@ -27,19 +27,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildHeader(){
+  Widget buildHeader() {
     return Container(
       margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
-        ]
-      ),
+      decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
+        BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+      ]),
       child: Padding(
         padding: EdgeInsets.all(SizeToPadding.sizeSmall),
         child: CustomerAppBar(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
           title: 'Category',
@@ -48,60 +45,58 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildCardService(int index, int serviceIndex){
+  Widget buildCardService(int index, int serviceIndex) {
     return Container(
       margin: EdgeInsets.only(
-        bottom: SpaceBox.sizeSmall, 
-        right: SpaceBox.sizeMedium),
+          bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium),
       decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_300, blurRadius: SpaceBox.sizeVerySmall)
-        ]
-      ),
+          color: AppColors.COLOR_WHITE,
+          borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.BLACK_300, blurRadius: SpaceBox.sizeVerySmall)
+          ]),
       child: ListTile(
         title: Paragraph(
-          content: _viewModel!.listCategory[index].myService?[serviceIndex].name,
-          style: STYLE_SMALL.copyWith(
-            fontWeight: FontWeight.w500
-          ),
+          content:
+              _viewModel!.listCategory[index].myService?[serviceIndex].name,
+          style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
         ),
         subtitle: Paragraph(
-          content: _viewModel!.listCategory[index].myService?[serviceIndex].money,
+          content:
+              _viewModel!.listCategory[index].myService?[serviceIndex].money,
           style: STYLE_SMALL.copyWith(
-            fontWeight: FontWeight.w500,
-            color: AppColors.BLACK_300
-          ),
+              fontWeight: FontWeight.w500, color: AppColors.BLACK_300),
         ),
       ),
     );
   }
 
-  Widget buildListService(int index){
+  Widget buildListService(int index) {
     return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _viewModel!.listCategory[index].myService?.length,
-      itemBuilder: (context, serviceIndex) => buildCardService(index, serviceIndex)
-    );
+        shrinkWrap: true,
+        itemCount: _viewModel!.listCategory[index].myService?.length,
+        itemBuilder: (context, serviceIndex) =>
+            buildCardService(index, serviceIndex));
   }
 
-  Widget buildItemCategory(int index){
+  Widget buildItemCategory(int index) {
     return GestureDetector(
-      onTap: () {
-        _viewModel!.setIcon(index);
-      },
-      child: Icon(
-        _viewModel!.listIconCategory[index] == true ? Icons.arrow_drop_down_circle
-        : Icons.remove_circle, color: AppColors.PRIMARY_GREEN,)
-    );
+        onTap: () {
+          _viewModel!.setIcon(index);
+        },
+        child: Icon(
+          _viewModel!.listIconCategory[index] == true
+              ? Icons.arrow_drop_down_circle
+              : Icons.remove_circle,
+          color: AppColors.PRIMARY_GREEN,
+        ));
   }
 
-  Widget buildTitleCategory(int index){
+  Widget buildTitleCategory(int index) {
     return Padding(
       padding: EdgeInsets.only(
-        right: SizeToPadding.sizeSmall,
-        bottom: SizeToPadding.sizeMedium),
+          right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -118,29 +113,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildContentCategoryWidget(int index) {
     return Padding(
       padding: EdgeInsets.only(
-        top: SizeToPadding.sizeMedium,
-        left: SizeToPadding.sizeSmall),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildTitleCategory(index),
-          if (_viewModel!.listIconCategory[index] == false) 
-            buildListService(index) 
-          else Container(),
-        ]
-      ),
+          top: SizeToPadding.sizeMedium, left: SizeToPadding.sizeSmall),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        buildTitleCategory(index),
+        if (_viewModel!.listIconCategory[index] == false)
+          buildListService(index)
+        else
+          Container(),
+      ]),
     );
   }
 
-  Widget buildBody(){
+  Widget buildBody() {
     return Expanded(
       child: DecoratedBox(
-          decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          boxShadow: [
-            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
-          ]
-        ),
+        decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
+          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+        ]),
         child: ListView.builder(
           itemCount: _viewModel!.listCategory.length,
           itemBuilder: (context, index) => buildContentCategoryWidget(index),
@@ -149,20 +138,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildItemFloating(){
+  Widget buildItemFloating() {
     return Column(
       children: [
         BuildFloatingButton(
           heroTag: 'btn1',
           content: 'Add Service',
           iconData: Icons.add,
-          onPressed: (){_viewModel!.goToAddServiceCategory(context);},
+          // onPressed: (){_viewModel!.goToAddServiceCategory(context);},
         ),
         BuildFloatingButton(
           heroTag: 'btn2',
           content: 'Add Category',
           iconData: Icons.add,
-          onPressed: (){_viewModel!.goToAddCategory(context);},
+          // onPressed: (){_viewModel!.goToAddCategory(context);},
         ),
       ],
     );
@@ -181,18 +170,21 @@ class _CategoryScreenState extends State<CategoryScreen> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (!_viewModel!.isIconFloatingButton) buildItemFloating() 
-            else Container(),
+            if (!_viewModel!.isIconFloatingButton)
+              buildItemFloating()
+            else
+              Container(),
             BuildFloatingButton(
               heroTag: 'btn',
-              iconData: _viewModel!.isIconFloatingButton
-                ? Icons.menu
-                : Icons.close,
-              onPressed: (){_viewModel!.setIconFloating();},
+              iconData:
+                  _viewModel!.isIconFloatingButton ? Icons.menu : Icons.close,
+              onPressed: () {
+                _viewModel!.setIconFloating();
+              },
             )
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }

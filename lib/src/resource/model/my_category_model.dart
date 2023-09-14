@@ -1,8 +1,7 @@
 // ignore_for_file: unnecessary_lambdas
 import 'dart:convert';
 
-import 'my_servcie_model.dart';
-
+import 'my_service_model.dart';
 
 class CategoryModel {
   int? id;
@@ -10,7 +9,7 @@ class CategoryModel {
   int? userId;
   String? deletedAt;
   String? createdAt;
-  List<MyServicceModel>? myService;
+  List<MyServiceModel>? myService;
 
   CategoryModel({
     this.id,
@@ -50,18 +49,22 @@ abstract class CategoryModelFactory {
     data['userId'] = categoryModel.userId;
     data['deletedAt'] = categoryModel.deletedAt;
     data['createdAt'] = categoryModel.createdAt;
-    data['myService'] = categoryModel.myService;
+    //  data['myService'] = categoryModel.myService != null
+    //     ? jsonDecode(MyServiceFactory.toJson(categoryModel.myService!))
+    //     : null;
     return data;
   }
 
-  static CategoryModel _fromJson(Map<String, dynamic> jsons) {
+  static CategoryModel _fromJson(Map<String, dynamic> json) {
     final category = CategoryModel()
-      ..id=jsons['id']
-      ..name = jsons['name']
-      ..userId = jsons['userId']
-      ..deletedAt = jsons['deletedAt']
-      ..createdAt = jsons['createdAt']
-      ..myService= MyServiceFactory.createList(json.encode(jsons['myServices']));
+      ..id = json['id']
+      ..name = json['name']
+      ..userId = json['userId']
+      ..myService = json['myService'] != null
+          ? MyServiceFactory.createList(jsonEncode(json['myService']))
+          : null
+      ..deletedAt = json['deletedAt']
+      ..createdAt = json['createdAt'];
     return category;
   }
 }
