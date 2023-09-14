@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
+import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
 import 'component/build_avatar.dart';
 import 'component/component.dart';
@@ -29,10 +30,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget backgroundImage() {
-    return Image.asset(
-      AppImages.backgroundHomePage,
-    );
+  Widget background() {
+    return const CustomBackGround();
   }
 
   Widget buildGreeting(){
@@ -142,7 +141,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
       child: Container(
         width: 371,
         height: 202,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(color: AppColors.BLACK_500, blurRadius: SpaceBox.sizeVerySmall)
+          ],
           color: AppColors.PRIMARY_GREEN,
           borderRadius: BorderRadius.all(Radius.circular(20),),
         ),
@@ -169,7 +171,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           width: double.infinity,
           height: 365,
         ),
-        backgroundImage(),
+        background(),
         nameUser(),
         buildCardMoney(),
       ],

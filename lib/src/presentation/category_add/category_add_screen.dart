@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
 import 'category_add.dart';
 
@@ -46,10 +47,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     );
   }
 
-  Widget backgroundImage() {
-    return Image.asset(
-      AppImages.backgroundHomePage,
-    );
+  Widget background() {
+    return const CustomBackGround();
   }
 
   Widget buildFieldCategory(){
@@ -87,6 +86,9 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
       child: Container(
         width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall)
+          ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
         ),
@@ -114,7 +116,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
               width: double.maxFinite,
               height: double.maxFinite,
             ),
-            backgroundImage(),
+            background(),
             buildAppBar(),
             buildCardField(),
           ],

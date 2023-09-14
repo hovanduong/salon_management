@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/widget/bottom_sheet_multiple/bottom_sheet_radio.dart';
+import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
 import 'add_servcie_category_viewmodel.dart';
 
@@ -47,10 +48,8 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     );
   }
 
-  Widget backgroundImage() {
-    return Image.asset(
-      AppImages.backgroundHomePage,
-    );
+  Widget background() {
+    return const CustomBackGround();
   }
 
   Widget buildFieldNameService(){
@@ -194,6 +193,9 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
       child: Container(
         width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall)
+          ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
         ),
@@ -224,7 +226,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
               width: double.maxFinite,
               height: double.maxFinite,
             ),
-            backgroundImage(),
+            background(),
             buildAppBar(),
             buildCardField(),
           ],
