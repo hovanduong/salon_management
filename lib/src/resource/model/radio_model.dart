@@ -3,11 +3,11 @@ class RadioModel {
     required this.isSelected,
     this.id,
     this.secondTitle = "",
-    this.text,
+    this.name,
   });
 
   bool isSelected;
   dynamic id;
-  String? text;
+  String? name;
   String? secondTitle;
 }

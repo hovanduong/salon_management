@@ -13,6 +13,7 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
 import '../model/category_model.dart';
+import '../model/my_servcie_model.dart';
 import '../model/user_model.dart';
 import 'service.dart';
 
@@ -27,6 +28,8 @@ class AuthParams {
     this.password,
     this.phoneNumber,
     this.category,
+    this.myServicceModel,
+    this.listCategory,
   });
   final int? id;
   final String? name;
@@ -37,6 +40,8 @@ class AuthParams {
   final String? password;
   final UserModel? user;
   final CategoryModel? category;
+  final MyServicceModel? myServicceModel;
+  final List<int>? listCategory;
 }
 
 class AuthApi {
@@ -201,6 +206,28 @@ class AuthApi {
         url: '/api/category',
         body: {
           'name': name
+        }
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 201:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> postService(AuthParams? params) async {
+    try {
+      final response = await HttpRemote.post(
+        url: '/api/my-service',
+        body: {
+          'name': params!.myServicceModel!.name,
+          'money': params.myServicceModel!.money,
+          'categories': params.listCategory
         }
       );
       print(response?.statusCode);
