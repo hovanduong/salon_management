@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/profile_language.dart';
+import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
 import 'components/setting_profile_list_widget.dart';
 import 'profile_viewmodel.dart';
@@ -27,10 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   
-  Widget buildBackgroundImageWidget() {
-    return Image.asset(
-      AppImages.backgroundHomePage,
-    );
+  Widget buildBackground() {
+    return const CustomBackGround();
   }
 
   Widget buildHeaderWidget() {
@@ -180,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   height: 365,
                 ),
-                buildBackgroundImageWidget(),
+                buildBackground(),
                 buildHeaderWidget(),
                 buildAvatarWidget(),
               ],

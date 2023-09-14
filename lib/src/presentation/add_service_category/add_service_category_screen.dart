@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../configs/bottom_sheet_multiple/bottom_sheet_multiple.dart';
-import '../../configs/bottom_sheet_multiple/bottom_sheet_radio.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/widget/bottom_sheet_multiple/bottom_sheet_radio.dart';
+import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
 import 'add_servcie_category_viewmodel.dart';
 
@@ -48,10 +48,8 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     );
   }
 
-  Widget backgroundImage() {
-    return Image.asset(
-      AppImages.backgroundHomePage,
-    );
+  Widget background() {
+    return const CustomBackGround();
   }
 
   Widget buildFieldNameService(){
@@ -85,54 +83,6 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     );
   }
 
-  Widget buildChooseCategory(Function(void Function()) set){
-    return SizedBox(
-      height: 500,
-      width: double.maxFinite,
-      child: ListView.builder(
-        itemCount: _viewModel!.list.isEmpty? 0: _viewModel!.list.length,
-        itemBuilder: (context, index) => CheckboxListTile(
-          value: _viewModel!.listIsCheck[index], 
-          onChanged: (value) {
-            _viewModel!.updateStatusIsCheck(index);
-            set(() {
-            _viewModel!.listIsCheck[index]= value!;
-            });
-          },
-          activeColor: AppColors.PRIMARY_GREEN,
-          title: Paragraph(content: _viewModel!.list[index],),
-        ),
-      ),
-    );
-  }
-
-  dynamic showAddCategory(_){
-    _viewModel!.createListIsCheck();
-    showModalBottomSheet(
-      showDragHandle: true,
-      // isScrollControlled: true,
-      context: context,
-      builder: (context) => StatefulBuilder(builder: (context, setState) {
-        return Column(
-          children: [
-            buildChooseCategory(setState),
-            Padding(
-              padding: EdgeInsets.all(SizeToPadding.sizeBig),
-              child: AppButton(
-                enableButton: true,
-                content: UpdateProfileLanguage.submit,
-                onTap: () {
-                  _viewModel!.onSubmit();
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        );
-      },)
-    );
-  }
-
   Widget buildFieldCategory(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,7 +96,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
           color: AppColors.PRIMARY_GREEN,
           onPressed: () async{
             // showAddCategory(context);
-            showSelectProvinces(context);
+            showSelectCategory(context);
           },
         )
       ],
@@ -156,12 +106,12 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
   Widget buildIconRemove(int index){
     return Positioned(
       bottom: 23,
-      right: -13,
+      right: -14,
       child: IconButton(
         onPressed: (){
-          _viewModel!..removeCategory(index)..onSubmit();
+          _viewModel!..removeCategory(index)..onSubmit()..setCategoryId();
         }, 
-        icon: const Icon(Icons.highlight_remove, size: 15, 
+        icon: const Icon(Icons.highlight_remove, size: 20, 
           color: AppColors.COLOR_WHITE,)
       ),
     );
@@ -182,7 +132,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
             borderRadius: BorderRadius.circular(SpaceBox.sizeSmall)
           ),
           child: Paragraph(
-            content: _viewModel!.selectedCategory![index].text,
+            content: _viewModel!.selectedCategory[index].name,
             color: AppColors.COLOR_WHITE,
             overflow: TextOverflow.ellipsis,
           ),
@@ -196,7 +146,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     return SizedBox(
       height: 100,
       child: GridView.builder(
-        itemCount: _viewModel!.selectedCategory!.length,
+        itemCount: _viewModel!.selectedCategory.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 1.8,
@@ -212,24 +162,26 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
       enableButton: _viewModel!.enableSubmit,
       content: UpdateProfileLanguage.submit,
       onTap: () {
-        
+        _viewModel!.postService();
       },
     );
   }
 
-  void showSelectProvinces(_) {
+  void showSelectCategory(_) {
     showModalBottomSheet(
       context: context, 
+      isDismissible: true,
+      isScrollControlled: true,
       builder: (context) => BottomSheetSingleRadio(
         titleContent: 'Chon Category',
         listItems: _viewModel!.mapCategory,
         initValues: _viewModel!.categoryId,
         // changeColor: _viewModel!.isColorProvinces,
         // onSearch: (value) {
+        //   _viewModel!.onSearchCategory(value);
         // },
         onTapSubmit: (value) {
-
-            _viewModel!..changeValueProvinces(value)..setCategoryId();
+            _viewModel!..changeValueCategory(value)..setCategoryId()..onSubmit();
         },
       ),
     );
@@ -241,6 +193,9 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
       child: Container(
         width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall)
+          ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
         ),
@@ -271,7 +226,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
               width: double.maxFinite,
               height: double.maxFinite,
             ),
-            backgroundImage(),
+            background(),
             buildAppBar(),
             buildCardField(),
           ],

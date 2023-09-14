@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../configs.dart';
-import '../constants/app_space.dart';
+
+import '../../configs.dart';
+import '../../constants/app_space.dart';
 
 class BottomSheetSingle extends StatefulWidget {
   const BottomSheetSingle({
