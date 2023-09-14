@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Routers.getStarted,
       onGenerateRoute: Routers.generateRoute,
 
-      // home: const AddServiceCategoriesScreen(),
+      // home: const ServiceAddScreen(),
     );
   }
 }

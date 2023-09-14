@@ -13,6 +13,7 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
 import '../model/category_model.dart';
+import '../model/my_customer_model.dart';
 import '../model/my_servcie_model.dart';
 import '../model/user_model.dart';
 import 'service.dart';
@@ -64,17 +65,36 @@ class AuthApi {
     }
   }
 
-  Future<Result<List<Service>, Exception>> getService() async {
+  Future<Result<List<MyServicceModel>, Exception>> getService() async {
     try {
       final response = await HttpRemote.get(
-        url: '/api/my-service',
+        url: '/api/my-service?pageSize=10&page=1',
       );
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['rows']);
-          final service = ServiceFactory.createList(data);
+          final data = json.encode(jsonMap['data']['items']);
+          final service = MyServiceFactory.createList(data);
           return Success(service);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<MyCostomerModel>, Exception>> getMyCustomer() async {
+    try {
+      final response = await HttpRemote.get(
+        url: '/api/my-customer?pageSize=10&page=1',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
+          final myCustumer = MyCostomerModelFactory.createList(data);
+          return Success(myCustumer);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -150,9 +170,8 @@ class AuthApi {
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
-          final jsonMap= json.decode(response!.body);
-          final data =
-              json.encode(jsonMap['data']['items']);
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
           final listCategory = CategoryModelFactory.createList(data);
           return Success(listCategory);
         default:
@@ -183,11 +202,7 @@ class AuthApi {
   Future<Result<bool, Exception>> putCategory(AuthParams? params) async {
     try {
       final response = await HttpRemote.put(
-        url: '/api/category/${params!.id}',
-        body: {
-          'name': params.name
-        }
-      );
+          url: '/api/category/${params!.id}', body: {'name': params.name});
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
@@ -200,14 +215,10 @@ class AuthApi {
     }
   }
 
-   Future<Result<bool, Exception>> postCategory(String? name) async {
+  Future<Result<bool, Exception>> postCategory(String? name) async {
     try {
-      final response = await HttpRemote.post(
-        url: '/api/category',
-        body: {
-          'name': name
-        }
-      );
+      final response =
+          await HttpRemote.post(url: '/api/category', body: {'name': name});
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
