@@ -106,12 +106,12 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
   Widget buildIconRemove(int index){
     return Positioned(
       bottom: 23,
-      right: -13,
+      right: -14,
       child: IconButton(
         onPressed: (){
           _viewModel!..removeCategory(index)..onSubmit()..setCategoryId();
         }, 
-        icon: const Icon(Icons.highlight_remove, size: 15, 
+        icon: const Icon(Icons.highlight_remove, size: 20, 
           color: AppColors.COLOR_WHITE,)
       ),
     );

@@ -168,7 +168,6 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
           Padding(
             padding: EdgeInsets.all(SizeToPadding.sizeMedium),
             child: AppButton(
-              width: 150,
               content: widget.titleButton,
               enableButton: enableButton,
               onTap: (){
