@@ -13,7 +13,7 @@ class MyBookingModel {
   String? status;
   String? note;
   int? invoiceId;
-  List<MyServiceModel>? myService;
+  List<MyServiceModel>? myServices;
   MyCustomerModel? myCustomer;
   String? deletedAt;
   String? createdAt;
@@ -27,7 +27,7 @@ class MyBookingModel {
     this.status,
     this.note,
     this.invoiceId,
-    this.myService,
+    this.myServices,
     this.deletedAt,
     this.createdAt,
   });
@@ -79,7 +79,7 @@ abstract class MyBookingModelFactory {
       ..myCustomer = json['myCustomer'] != null
           ? MyCustomerModelFactory.create(jsonEncode(json['myService']))
           : null
-      ..myService = json['myService'] != null
+      ..myServices = json['myService'] != null
           ? MyServiceFactory.createList(jsonEncode(json['myService']))
           : null
       ..deletedAt = json['deletedAt']
