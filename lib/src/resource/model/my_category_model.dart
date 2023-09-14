@@ -9,7 +9,7 @@ class CategoryModel {
   int? userId;
   String? deletedAt;
   String? createdAt;
-  List<MyServiceModel>? myService;
+  List<MyServiceModel>? myServices;
 
   CategoryModel({
     this.id,
@@ -17,7 +17,7 @@ class CategoryModel {
     this.userId,
     this.deletedAt,
     this.createdAt,
-    this.myService,
+    this.myServices,
   });
 }
 
@@ -60,8 +60,8 @@ abstract class CategoryModelFactory {
       ..id = json['id']
       ..name = json['name']
       ..userId = json['userId']
-      ..myService = json['myService'] != null
-          ? MyServiceFactory.createList(jsonEncode(json['myService']))
+      ..myServices = json['myService'] != null
+          ? MyServiceFactory.createList(jsonEncode(json['myServices']))
           : null
       ..deletedAt = json['deletedAt']
       ..createdAt = json['createdAt'];

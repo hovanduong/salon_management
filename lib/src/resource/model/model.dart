@@ -1,3 +1,4 @@
+export 'invoice_model.dart';
 export 'my_category_model.dart';
 export 'my_customer_model.dart';
 export 'my_service_model.dart';

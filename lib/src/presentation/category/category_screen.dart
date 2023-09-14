@@ -59,12 +59,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: ListTile(
         title: Paragraph(
           content:
-              _viewModel!.listCategory[index].myService?[serviceIndex].name,
+              _viewModel!.listCategory[index].myServices?[serviceIndex].name,
           style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
         ),
         subtitle: Paragraph(
           content:
-              _viewModel!.listCategory[index].myService?[serviceIndex].money,
+              _viewModel!.listCategory[index].myServices?[serviceIndex].money,
           style: STYLE_SMALL.copyWith(
               fontWeight: FontWeight.w500, color: AppColors.BLACK_300),
         ),
@@ -75,7 +75,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildListService(int index) {
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: _viewModel!.listCategory[index].myService?.length,
+        itemCount: _viewModel!.listCategory[index].myServices?.length,
         itemBuilder: (context, serviceIndex) =>
             buildCardService(index, serviceIndex));
   }

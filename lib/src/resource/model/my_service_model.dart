@@ -2,13 +2,18 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
+import 'model.dart';
+
 class MyServiceModel {
   int? id;
   String? name;
   int? userId;
+  String? money;
+  List<CategoryModel>? categories;
   String? deletedAt;
   String? createdAt;
-  String? money;
   String? updateAt;
 
   MyServiceModel({
@@ -16,6 +21,7 @@ class MyServiceModel {
     this.name,
     this.money,
     this.userId,
+    this.categories,
     this.createdAt,
     this.updateAt,
     this.deletedAt,
@@ -60,9 +66,12 @@ abstract class MyServiceFactory {
       ..id = json['id']
       ..name = json['name']
       ..userId = json['userId']
+      ..money = json['money']
+      ..categories = json['categories'] != null
+          ? CategoryModelFactory.createList(jsonEncode(json['categories']))
+          : null
       ..deletedAt = json['deletedAt']
       ..createdAt = json['createdAt']
-      ..money = json['money']
       ..updateAt = json['updateAt'];
     return myService;
   }
