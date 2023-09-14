@@ -43,7 +43,6 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       bottom: false,
       right: false,
       left: false,
-
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,12 +69,10 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               ),
             )
           ],
-
         ),
       ),
     );
   }
-
 
   Widget buildService() {
     return BuildServiceWidget(
@@ -83,7 +80,6 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       fields: _viewModel!.fields,
     );
   }
-
 
   // Widget buildDateTimee() {
   //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
@@ -185,14 +181,11 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
             print(value);
 
             if (value.isNotEmpty) {
-
               _viewModel!.isListViewVisible = true;
               _viewModel!.searchResults =
                   _viewModel!.getContactSuggestions(value);
             } else {
               _viewModel!.isListViewVisible = true;
-
-
             }
             _viewModel!
               ..enableConfirmButton()
@@ -209,7 +202,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
           itemBuilder: (context, index) {
             return ListTile(
               title: Paragraph(
-                content: _viewModel!.searchResults[index].name,
+                content: _viewModel!.searchResults[index].fullName,
                 style: STYLE_MEDIUM,
                 fontWeight: FontWeight.w600,
               ),
@@ -220,7 +213,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               ),
               onTap: () {
                 _viewModel!.updatePhoneNumber(
-                    _viewModel!.searchResults[index].phoneNumber);
+                    _viewModel!.searchResults[index].phoneNumber!);
                 _viewModel!.isListViewVisible = false;
               },
             );

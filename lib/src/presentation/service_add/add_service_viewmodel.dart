@@ -1,33 +1,29 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/my_customer_model.dart';
+import '../../resource/model/my_servcie_model.dart';
+import '../../resource/model/service_model.dart';
+import '../../resource/service/auth.dart';
+import '../../utils/app_valid.dart';
 import '../base/base.dart';
-import '../booking/components/dropbutton_widget.dart';
+
 import '../routers.dart';
 import 'components/choose_service_widget.dart';
 
 class ServiceAddViewModel extends BaseViewModel {
-  List<String> list = <String>[
-    'chọn dịch vụ',
-    'abc',
-    'xyz',
-    'đi cháy phố',
-    'đi hẹn hò',
-    'đi chơi xuyên đêm'
-  ];
   final List<Widget> fields = [];
   String? messageService;
 
-  late Object dropValue = list.first;
+  late Object dropValue = myService.first;
 
   String searchText = '';
   DateTime dateTime = DateTime.now();
 
   List<String> selectedServices = [];
 
-  List<Contact> searchResults = [];
+  List<MyCostomerModel> searchResults = [];
   bool isListViewVisible = false;
-
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -49,6 +45,9 @@ class ServiceAddViewModel extends BaseViewModel {
   String? timeErrorMsg;
   String? descriptionErrorMsg;
 
+  List<MyServicceModel> myService = [];
+  List<MyCostomerModel> myCustumer = [];
+
   final phoneCkeckText = RegExp(r'[a-zA-Z!@#$%^&*()]');
   final phoneCkeckQuantity = RegExp(r'^(\d{0,9}|\d{11,})$');
   final specialCharsCheck = RegExp(r'[`~!@#$%^&*()"-=_+{};:\|.,/?]');
@@ -56,9 +55,56 @@ class ServiceAddViewModel extends BaseViewModel {
   final moneyCharsCheck = RegExp(r'^\d+$');
 
   bool enableButton = false;
-
-  dynamic init() {
+  AuthApi authApi = AuthApi();
+  Future<void> init() async {
     test();
+    await fechService();
+    await fechCustomer();
+    notifyListeners();
+  }
+
+  Future<void> fechService() async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await authApi.getService();
+
+    final value = switch (result) {
+      Success(value: final accessToken) => accessToken,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      // LoadingDialog.hideLoadingDialog(context);
+      // showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      // showOpenDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      myService = value as List<MyServicceModel>;
+    }
+    notifyListeners();
+  }
+
+  Future<void> fechCustomer() async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await authApi.getMyCustomer();
+
+    final value = switch (result) {
+      Success(value: final accessToken) => accessToken,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      // LoadingDialog.hideLoadingDialog(context);
+      // showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      // showOpenDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      myCustumer = value as List<MyCostomerModel>;
+    }
+    notifyListeners();
   }
 
   void changeIsListViewVisible(bool isSelectPhone) {
@@ -78,7 +124,7 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validService() {
-    if (dropValue == list.first) {
+    if (dropValue == myService.first) {
       messageService = 'BookingLanguage.validService';
     } else {
       messageService = '';
@@ -94,13 +140,13 @@ class ServiceAddViewModel extends BaseViewModel {
   void addNewField() {
     fields.add(
       ChooseServiceWidget(
-        list: list,
+        list: myService,
         onChanged: (value) {
           setDropValue(value);
           validService();
         },
         labelText: HomeLanguage.service,
-        dropValue: null,
+        // dropValue: null,
         onRemove: () {
           removeField(fields.length - 1);
         },
@@ -214,18 +260,18 @@ class ServiceAddViewModel extends BaseViewModel {
         lastDate: DateTime(2100),
       );
 
-  List<Contact> contacts = [
-    Contact(phoneNumber: '0123456789', name: 'Nguyễn Văn A'),
-    Contact(phoneNumber: '0987654321', name: 'Trần Thị B'),
-    Contact(phoneNumber: '0774423626', name: 'Lê Thanh Hòa'),
-    Contact(phoneNumber: '0774423624', name: 'Lê Thanh Hà'),
-  ];
+  // List<Contact> contacts = [
+  //   Contact(phoneNumber: '0123456789', name: 'Nguyễn Văn A'),
+  //   Contact(phoneNumber: '0987654321', name: 'Trần Thị B'),
+  //   Contact(phoneNumber: '0774423626', name: 'Lê Thanh Hòa'),
+  //   Contact(phoneNumber: '0774423624', name: 'Lê Thanh Hà'),
+  // ];
 
-  List<Contact> getContactSuggestions(String searchText) {
-    final results = contacts
-        .where((contact) =>
-            contact.phoneNumber.contains(searchText) ||
-            contact.name.contains(searchText))
+  List<MyCostomerModel> getContactSuggestions(String searchText) {
+    final results = myCustumer
+        .where((myCustumer) =>
+            myCustumer.phoneNumber!.contains(searchText) ||
+            myCustumer.fullName!.contains(searchText))
         .toList();
 
     print(results);
@@ -246,9 +292,9 @@ class ServiceAddViewModel extends BaseViewModel {
     final phoneNumber = phoneController.text;
     var found = false;
 
-    for (final contact in contacts) {
+    for (final contact in myCustumer) {
       if (phoneNumber == contact.phoneNumber) {
-        nameController.text = contact.name;
+        nameController.text = contact.fullName!;
         notifyListeners();
         found = true;
         break;
@@ -285,9 +331,9 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 }
 
-class Contact {
-  String phoneNumber;
-  String name;
+// class Contact {
+//   String phoneNumber;
+//   String name;
 
-  Contact({required this.phoneNumber, required this.name});
-}
+//   Contact({required this.phoneNumber, required this.name});
+// }
