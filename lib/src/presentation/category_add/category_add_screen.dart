@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
+import '../../resource/model/my_category_model.dart';
 import '../base/base.dart';
 import 'category_add.dart';
 
@@ -19,9 +20,11 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dataCategory= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
       viewModel: CategoryAddViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel= viewModel?..init(),
+      onViewModelReady: (viewModel) => _viewModel= 
+        viewModel?..init(dataCategory as CategoryModel?),
       builder: (context, viewModel, child) => buildAddCategoriesScreen(),
     );
   }
@@ -38,7 +41,9 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
           icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
         ),
         title: Paragraph(
-          content: 'Add Category',
+          content: _viewModel!.categoryModel != null 
+            ? 'Edit Category'
+            : 'Add Category' ,
           style: STYLE_LARGE_BOLD.copyWith(
             color: AppColors.COLOR_WHITE,
           ),
@@ -55,14 +60,14 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
-        labelText: 'Catrgory',
+        labelText: 'Category',
         textEditingController: _viewModel!.categoryController,
         hintText: 'Enter Category',
         onChanged: (value) {
           _viewModel!..validCategory(value)
           ..onSubmit();
         },
-        validator: _viewModel!.messageErorrCategory,
+        validator: _viewModel!.messageErrorCategory,
         isSpace: true, 
       ),
     );
@@ -72,10 +77,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     return AppButton(
       enableButton: _viewModel!.enableButton,
       content: UpdateProfileLanguage.submit,
-      onTap: () async{
-        await _viewModel!.postCategory(_viewModel!.categoryController.text);
-        _viewModel!..categoryController.text=''
-        ..onSubmit();
+      onTap: () {
+        _viewModel!.setSourceButton();
       },
     );
   }

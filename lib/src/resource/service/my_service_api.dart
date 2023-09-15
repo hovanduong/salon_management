@@ -46,5 +46,20 @@ class MyServiceApi {
     }
   }
 
-
+  Future<Result<bool, Exception>> deleteService(int id) async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/my-service/$id',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 }

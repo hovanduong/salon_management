@@ -1,2 +1,2 @@
 export 'category_screen.dart';
-export 'category_viewmodel.dart';
+export 'category_view_model.dart';

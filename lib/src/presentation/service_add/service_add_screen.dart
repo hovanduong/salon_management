@@ -5,25 +5,25 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
-import 'add_servcie_category_viewmodel.dart';
+import 'service_add_view_model.dart';
 
-class AddServiceCategoriesScreen extends StatefulWidget {
-  const AddServiceCategoriesScreen({super.key});
+class ServiceAddScreen extends StatefulWidget {
+  const ServiceAddScreen({super.key});
 
   @override
-  State<AddServiceCategoriesScreen> createState() => _AddServiceCategoriesScreenState();
+  State<ServiceAddScreen> createState() => _ServiceAddScreenState();
 }
 
-class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen> {
+class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
-  AddServiceCategoriesViewModel? _viewModel;
+  ServiceAddViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: AddServiceCategoriesViewModel(), 
+      viewModel: ServiceAddViewModel(), 
       onViewModelReady: (viewModel) => _viewModel= viewModel?..init(),
-      builder: (context, viewModel, child) => buildAddServcieCategoriesScreen(),
+      builder: (context, viewModel, child) => buildAddServiceCategoriesScreen(),
     );
   }
 
@@ -63,7 +63,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
           _viewModel!..validNameService(value)
           ..onSubmit();
         },
-        validator: _viewModel!.messageErorrNameService,
+        validator: _viewModel!.messageErrorNameService,
         isSpace: true, 
       ),
     );
@@ -78,7 +78,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
         _viewModel!..validPrice(value)
         ..onSubmit();
       },
-      validator: _viewModel!.messageErorrPrice,
+      validator: _viewModel!.messageErrorPrice,
       isSpace: true, 
     );
   }
@@ -175,10 +175,6 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
         titleContent: 'Chon Category',
         listItems: _viewModel!.mapCategory,
         initValues: _viewModel!.categoryId,
-        // changeColor: _viewModel!.isColorProvinces,
-        // onSearch: (value) {
-        //   _viewModel!.onSearchCategory(value);
-        // },
         onTapSubmit: (value) {
             _viewModel!..changeValueCategory(value)..setCategoryId()..onSubmit();
         },
@@ -215,7 +211,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     );
   }
 
-  Widget buildAddServcieCategoriesScreen(){
+  Widget buildAddServiceCategoriesScreen(){
     return SingleChildScrollView(
       child: SafeArea(
         child: Stack(

@@ -60,7 +60,7 @@ abstract class CategoryModelFactory {
       ..id = json['id']
       ..name = json['name']
       ..userId = json['userId']
-      ..myServices = json['myService'] != null
+      ..myServices = json['myServices'] != null
           ? MyServiceFactory.createList(jsonEncode(json['myServices']))
           : null
       ..deletedAt = json['deletedAt']

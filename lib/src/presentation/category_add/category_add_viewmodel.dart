@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../intl/generated/l10n.dart';
+import '../../resource/model/my_category_model.dart';
+import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -9,23 +13,30 @@ import '../base/base.dart';
 class CategoryAddViewModel extends BaseViewModel{
   bool enableButton=false;
   TextEditingController categoryController = TextEditingController();
-  String? messageErorrCategory;
+  String? messageErrorCategory;
   CategoryApi categoryApi= CategoryApi();
-  dynamic init(){}
+  CategoryModel? categoryModel;
+  Future<void> init(CategoryModel? data)async{
+    if(data != null){
+      categoryModel=data;
+      categoryController.text= categoryModel!.name.toString();
+      enableButton=true;
+    }
+  }
 
   void validCategory(String? value) {
     if (value == null || value.isEmpty) {
-      messageErorrCategory= ServiceAddLanguage.emptyNameError;
+      messageErrorCategory= ServiceAddLanguage.emptyNameError;
     }else if(value.length<2){
-      messageErorrCategory=S.current.validName;
+      messageErrorCategory=S.current.validName;
     }else{
-      messageErorrCategory='';
+      messageErrorCategory='';
     }
     notifyListeners();
   }
 
   void onSubmit() {
-    if (messageErorrCategory == '' && categoryController.text!='') {
+    if (messageErrorCategory == '' && categoryController.text!='') {
       enableButton = true;
     } else {
       enableButton = false;
@@ -50,10 +61,22 @@ class CategoryAddViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showErrorDiaglog(_){
+  Future<void> setSourceButton() async{
+    if(categoryModel != null){
+      print('update');
+      await putCategory();
+    }else{
+      await postCategory(categoryController.text);
+      categoryController.text='';
+      onSubmit();
+    }
+  }
+
+  dynamic showErrorDialog(_){
     showDialog(
       context: context,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -77,6 +100,10 @@ class CategoryAddViewModel extends BaseViewModel{
     );
   }
 
+  void closeDialog(BuildContext context){
+    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+  }
+
   Future<void> postCategory(String name) async {
     final result = await categoryApi.postCategory(name);
 
@@ -88,7 +115,26 @@ class CategoryAddViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
+    } else {
+      showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putCategory() async {
+    final result = await categoryApi.putCategory(
+      AuthParams(id: categoryModel!.id, name: categoryModel!.name),);
+
+    final value = switch (result) {
+      Success(value: final isTrue) => isTrue,
+      Failure(exception: final exception) => exception,
+    };
+
+   if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      showErrorDialog(context);
     } else {
       showSuccessDiaglog(context);
     }

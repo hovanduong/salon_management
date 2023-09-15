@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../resource/model/model.dart';
 import '../base/base.dart';
-import 'category_viewmodel.dart';
+import 'category_view_model.dart';
 import 'components/floating_button_widget.dart';
+import 'components/slidable_action_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -46,29 +48,37 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildCardService(int index, int serviceIndex) {
-    return Container(
-      margin: EdgeInsets.only(
-          bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium,),
-      decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
-          boxShadow: [
-            BoxShadow(
-                color: AppColors.BLACK_300, blurRadius: SpaceBox.sizeVerySmall,)
-          ],),
-      child: ListTile(
-        title: Paragraph(
-          content:
-              _viewModel!.listCategory[index].myServices?[serviceIndex].name,
-          style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
+    final idService= _viewModel!.listCategory[index].myServices?[serviceIndex].id;
+    return Padding(
+      padding:EdgeInsets.only(
+            bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium,),
+      child: SlidableActionWidget(
+        onTapButtonFirst: (context) => _viewModel!.deleteService(idService!),
+        onTapButtonSecond: (context) 
+          => _viewModel!.goToUpdateServiceCategory(context,),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+              color: AppColors.COLOR_WHITE,
+              borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
+              boxShadow: [
+                BoxShadow(
+                    color: AppColors.BLACK_300, blurRadius: SpaceBox.sizeVerySmall,)
+              ],),
+          child: ListTile(
+            title: Paragraph(
+              content:
+                  _viewModel!.listCategory[index].myServices?[serviceIndex].name,
+              style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
+            ),
+            subtitle: Paragraph(
+              content:
+                  _viewModel!.listCategory[index].myServices?[serviceIndex].money,
+              style: STYLE_SMALL.copyWith(
+                  fontWeight: FontWeight.w500, color: AppColors.BLACK_300,),
+            ),
+          ),
         ),
-        subtitle: Paragraph(
-          content:
-              _viewModel!.listCategory[index].myServices?[serviceIndex].money,
-          style: STYLE_SMALL.copyWith(
-              fontWeight: FontWeight.w500, color: AppColors.BLACK_300,),
-        ),
-      ),
+      )
     );
   }
 
@@ -83,26 +93,39 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildItemCategory(int index) {
     return GestureDetector(
         onTap: () {
-          _viewModel!.setIcon(index);
+           _viewModel!.setIcon(index);
         },
         child: Icon(
           _viewModel!.listIconCategory[index] == true
               ? Icons.arrow_drop_down_circle
-              : Icons.remove_circle,
-          color: AppColors.PRIMARY_GREEN,
+              : Icons.remove_circle, 
+          color: AppColors.PRIMARY_GREEN, size: 27,
         ),);
   }
 
   Widget buildTitleCategory(int index) {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium,),
+    final id= _viewModel!.listCategory[index].id;
+    final name= _viewModel!.listCategory[index].name;
+    return SlidableActionWidget(
+      onTapButtonFirst: (context) => _viewModel!.deleteCategory(id!),
+      onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
+        context: context, categoryModel: CategoryModel(
+          id: id,
+          name: name
+        )
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Paragraph(
-            content: _viewModel!.listCategory[index].name,
-            style: STYLE_LARGE_BOLD,
+          Container(
+            padding:  EdgeInsets.only(
+              right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium,
+              top: SizeToPadding.sizeMedium
+            ),
+            child: Paragraph(
+              content: _viewModel!.listCategory[index].name,
+              style: STYLE_LARGE_BOLD,
+            ),
           ),
           buildItemCategory(index),
         ],
@@ -111,17 +134,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildContentCategoryWidget(int index) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: SizeToPadding.sizeMedium, left: SizeToPadding.sizeSmall,),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        buildTitleCategory(index),
-        if (_viewModel!.listIconCategory[index] == false)
-          buildListService(index)
-        else
-          Container(),
-      ],),
-    );
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      buildTitleCategory(index),
+      if (_viewModel!.listIconCategory[index] == false)
+        buildListService(index)
+      else
+        Container(),
+    ],);
   }
 
   Widget buildBody() {
@@ -130,9 +149,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
         decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
           BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
         ],),
-        child: ListView.builder(
-          itemCount: _viewModel!.listCategory.length,
-          itemBuilder: (context, index) => buildContentCategoryWidget(index),
+        child: Padding(
+          padding: EdgeInsets.only(top: SizeToPadding.sizeMedium,
+            left: SizeToPadding.sizeSmall, right: SizeToPadding.sizeVerySmall),
+          child: ListView.builder(
+            itemCount: _viewModel!.listCategory.length,
+            itemBuilder: (context, index) => buildContentCategoryWidget(index),
+          ),
         ),
       ),
     );
@@ -151,7 +174,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           heroTag: 'btn2',
           content: 'Add Category',
           iconData: Icons.add,
-          onPressed: (){_viewModel!.goToAddCategory(context);},
+          onPressed: (){_viewModel!.goToAddCategory(context: context);},
         ),
       ],
     );

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
-import 'add_service_category/add_service_category.dart';
+import 'service_add/service_add.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
 import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'create_password/create_password.dart';
+import 'service_update/service_update.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
 import 'update_profile/update_profile.dart';
@@ -39,7 +40,7 @@ class Routers {
   static const String addService = '/addService';
   static const String serviceList = '/serviceList';
   static const String serviceDetails = '/serviceDetails';
-  static const String editService = '/editService';
+  static const String updateService = '/updateService';
   static const String signUp = '/signUp';
   static const String navigation = '/navigation';
   static const String category= '/category';
@@ -79,20 +80,27 @@ class Routers {
       //     name: homeDetails,
       //     arguments: arguments,
       //   );
+      case updateService:
+        return animRoute(
+          const ServiceUpdateScreen(),
+          beginOffset: right,
+          name: updateService,
+          arguments: arguments,
+        );
+
+      case addService:
+        return animRoute(
+          const ServiceAddScreen(),
+          beginOffset: right,
+          name: addService,
+          arguments: arguments,
+        );
 
       case category:
         return animRoute(
           const CategoryScreen(),
           beginOffset: right,
           name: category,
-          arguments: arguments,
-        );
-
-      case addService:
-        return animRoute(
-          const AddServiceCategoriesScreen(),
-          beginOffset: right,
-          name: addService,
           arguments: arguments,
         );
 
