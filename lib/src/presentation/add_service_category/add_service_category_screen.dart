@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/widget/bottom_sheet_multiple/bottom_sheet_radio.dart';
+import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
 import 'add_servcie_category_viewmodel.dart';
