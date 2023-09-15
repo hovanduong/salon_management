@@ -3,13 +3,15 @@ import '../../configs/configs.dart';
 import '../../resource/model/my_customer_model.dart';
 import '../../resource/model/my_service_model.dart';
 import '../../resource/service/auth.dart';
+import '../../resource/service/my_customer_api.dart';
+import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
 import 'components/choose_service_widget.dart';
 
-class ServiceAddViewModel extends BaseViewModel {
+class BookingViewModel extends BaseViewModel {
   final List<Widget> fields = [];
   String? messageService;
 
@@ -54,6 +56,8 @@ class ServiceAddViewModel extends BaseViewModel {
 
   bool enableButton = false;
   AuthApi authApi = AuthApi();
+  MyServiceApi myServiceApi = MyServiceApi();
+  MyCustomerApi myCustomerApi = MyCustomerApi();
   Future<void> init() async {
     test();
     await fetchService();
@@ -63,7 +67,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Future<void> fetchService() async {
     // LoadingDialog.showLoadingDialog(context);
-    final result = await authApi.getService();
+    final result = await myServiceApi.getService();
 
     final value = switch (result) {
       Success(value: final accessToken) => accessToken,
@@ -85,7 +89,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Future<void> fetchCustomer() async {
     // LoadingDialog.showLoadingDialog(context);
-    final result = await authApi.getMyCustomer();
+    final result = await myCustomerApi.getMyCustomer();
 
     final value = switch (result) {
       Success(value: final accessToken) => accessToken,
@@ -198,7 +202,7 @@ class ServiceAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void addService(service) {
+  void addService(String service) {
     selectedServices.add(service);
     notifyListeners();
   }
@@ -267,9 +271,11 @@ class ServiceAddViewModel extends BaseViewModel {
 
   List<MyCustomerModel> getContactSuggestions(String searchText) {
     final results = myCustumer
-        .where((myCustumer) =>
-            myCustumer.phoneNumber!.contains(searchText) ||
-            myCustumer.fullName!.contains(searchText),)
+        .where(
+          (myCustumer) =>
+              myCustumer.phoneNumber!.contains(searchText) ||
+              myCustumer.fullName!.contains(searchText),
+        )
         .toList();
 
     print(results);

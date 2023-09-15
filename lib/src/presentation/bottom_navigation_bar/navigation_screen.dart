@@ -6,7 +6,7 @@ import '../base/base.dart';
 
 import '../homepage/homepage_screen.dart';
 import '../profile/profile_screen.dart';
-import '../service_add/add_service.dart';
+import '../booking/booking.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
 
@@ -57,7 +57,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
           else
             Container(),
           if (_viewModel!.selectedIndex == 1)
-            const ServiceAddScreen()
+            const BookingScreen()
           else
             Container(),
           if (_viewModel!.selectedIndex == 2) const SizedBox() else Container(),
