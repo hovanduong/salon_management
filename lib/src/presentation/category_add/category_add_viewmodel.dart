@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../intl/generated/l10n.dart';
-import '../../resource/service/auth.dart';
+import '../../resource/service/category_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
@@ -10,7 +10,7 @@ class CategoryAddViewModel extends BaseViewModel{
   bool enableButton=false;
   TextEditingController categoryController = TextEditingController();
   String? messageErorrCategory;
-  AuthApi authApi= AuthApi();
+  CategoryApi categoryApi= CategoryApi();
   dynamic init(){}
 
   void validCategory(String? value) {
@@ -78,7 +78,7 @@ class CategoryAddViewModel extends BaseViewModel{
   }
 
   Future<void> postCategory(String name) async {
-    final result = await authApi.postCategory(name);
+    final result = await categoryApi.postCategory(name);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,

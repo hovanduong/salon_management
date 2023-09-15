@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../resource/model/radio_model.dart';
 import '../../configs.dart';
 import '../../constants/app_space.dart';
 
@@ -30,6 +31,8 @@ class BottomSheetSingle extends StatefulWidget {
 class _BottomSheetSingleState extends State<BottomSheetSingle> {
   late int? selectValue;
   late Map<int, String> listItems;
+  List<RadioModel> foundSearch=[];
+  List<RadioModel> listData=[];
   @override
   void initState() {
     // if (widget.isAll) {
@@ -38,6 +41,13 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
     //   listItems = widget.listItems;
     // }
     listItems = widget.listItems;
+    widget.listItems.entries.forEach((e) {
+      listData.add(RadioModel(
+        id: e.key,
+        name: e.value,
+      ),);
+    });
+    foundSearch = listData;
     selectValue = widget.initValues;
     super.initState();
   }
@@ -93,7 +103,8 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
               ),
               hintText: 'Tìm kiếm',
               onChanged: (value) {
-                widget.onSearch!(value);
+                // widget.onSearch!(value);
+                onSearch(value);
                 setState(() {});
               },
             ),
@@ -104,13 +115,15 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
             thickness: 1,
           ),
           Expanded(
-            child: listItems.isEmpty
+            child: foundSearch.isEmpty
                 ? const Center(child: Paragraph(content: 'Rỗng'))
                 : ListView.builder(
-                    itemCount: listItems.length,
+                    itemCount: foundSearch.length,
                     itemBuilder: (context, i) {
-                      final name = listItems.entries.toList()[i].value;
-                      final key = listItems.entries.toList()[i].key;
+                      final name = foundSearch[i].name;
+                      final key = foundSearch[i].id;
+                      // final name= foundSearch[i].entries.last;
+                      // final key= foundSearch[i].entries.first;
                       return InkWell(
                         // splashColor: AppColors.BLACK_200,
                         onTap: () {
@@ -172,6 +185,31 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
         ],
       ),
     );
+  }
+
+  Future<void> filterData(String searchCategory) async {
+    var listSearchCategory = <RadioModel>[];
+    listSearchCategory = listData
+      .where(
+        (element) => element.name!.toLowerCase()
+            .contains(searchCategory),
+      )
+      .toList();
+      setState(() {
+        foundSearch=listSearchCategory;
+      });
+  }
+
+  Future<void> onSearch(String value) async{
+    if(value.isEmpty){
+      setState(() {
+        foundSearch = listData;  
+      });
+    }else{
+      final searchCategory = value.toLowerCase();
+      // _timer = Timer(const Duration(milliseconds: 100), () async {});
+      await filterData(searchCategory);
+    }
   }
 
   @override

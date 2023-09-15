@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
+import 'add_service_category/add_service_category.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
+import 'category/category_screen.dart';
+import 'category_add/category_add.dart';
 import 'create_password/create_password.dart';
-import 'booking/booking.dart';
-import 'booking/booking_screen.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
 import 'update_profile/update_profile.dart';
@@ -41,6 +42,8 @@ class Routers {
   static const String editService = '/editService';
   static const String signUp = '/signUp';
   static const String navigation = '/navigation';
+  static const String category= '/category';
+  static const String addCategory= '/addCategory';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -76,6 +79,30 @@ class Routers {
       //     name: homeDetails,
       //     arguments: arguments,
       //   );
+
+      case category:
+        return animRoute(
+          const CategoryScreen(),
+          beginOffset: right,
+          name: category,
+          arguments: arguments,
+        );
+
+      case addService:
+        return animRoute(
+          const AddServiceCategoriesScreen(),
+          beginOffset: right,
+          name: addService,
+          arguments: arguments,
+        );
+
+      case addCategory:
+        return animRoute(
+          const CategoryAddScreen(),
+          beginOffset: right,
+          name: addCategory,
+          arguments: arguments,
+        );
 
       case updateProfile:
         return animRoute(

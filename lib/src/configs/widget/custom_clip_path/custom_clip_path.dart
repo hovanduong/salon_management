@@ -17,8 +17,8 @@ class CustomBackGround extends StatelessWidget {
             colors: [
               AppColors.FIELD_GREEN,
               AppColors.PRIMARY_GREEN
-            ],
-          ),
+            ]
+          )
         ),
       ),
     );
@@ -27,16 +27,24 @@ class CustomBackGround extends StatelessWidget {
 
 class CustomClipPath extends CustomClipper<Path> {
   @override
+  @override
   Path getClip(Size size) {
-    final h= size.height;
-    final w= size.width;
+    final roundingHeight = size.height * 3 / 30;
+    final filledRectangle =
+        Rect.fromLTRB(0, 0, size.width, size.height - roundingHeight);
+    final roundingRectangle = Rect.fromLTRB(
+        0, size.height - roundingHeight * 2, size.width , size.height);
+
     final path = Path();
-    path..lineTo(0 , h)
-    ..quadraticBezierTo(w*0.5, h-50, w, h);
-    path.lineTo(w, 0);
+    path.addRect(filledRectangle);
+    path.arcTo(roundingRectangle, 50, 10, true);
     path.close();
+
     return path;
   }
+
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
 }

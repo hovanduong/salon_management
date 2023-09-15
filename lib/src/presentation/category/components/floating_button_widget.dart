@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
-class BuildFloatingButton extends StatelessWidget {
-  const BuildFloatingButton({
+class FloatingButtonWidget extends StatelessWidget {
+  const FloatingButtonWidget({
     super.key, this.onPressed, 
     this.content='', this.iconData, 
     this.heroTag,

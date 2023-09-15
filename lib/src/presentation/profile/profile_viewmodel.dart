@@ -7,5 +7,5 @@ class ProfileViewModel extends BaseViewModel {
   dynamic init() {}
 
   Future<void> goToCategory(BuildContext context)
-    => Navigator.pushNamed(context, Routers.createPassword);
+    => Navigator.pushNamed(context, Routers.category);
 }

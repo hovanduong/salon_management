@@ -95,7 +95,6 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
           icon: const Icon(Icons.add_circle), 
           color: AppColors.PRIMARY_GREEN,
           onPressed: () async{
-            // showAddCategory(context);
             showSelectCategory(context);
           },
         )
