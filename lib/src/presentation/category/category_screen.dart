@@ -4,7 +4,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'category_viewmodel.dart';
-import 'component/component.dart';
+import 'components/floating_button_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -32,7 +32,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
       decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
         BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
-      ]),
+      ],),
       child: Padding(
         padding: EdgeInsets.all(SizeToPadding.sizeSmall),
         child: CustomerAppBar(
@@ -48,14 +48,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildCardService(int index, int serviceIndex) {
     return Container(
       margin: EdgeInsets.only(
-          bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium),
+          bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium,),
       decoration: BoxDecoration(
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
           boxShadow: [
             BoxShadow(
-                color: AppColors.BLACK_300, blurRadius: SpaceBox.sizeVerySmall)
-          ]),
+                color: AppColors.BLACK_300, blurRadius: SpaceBox.sizeVerySmall,)
+          ],),
       child: ListTile(
         title: Paragraph(
           content:
@@ -66,7 +66,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           content:
               _viewModel!.listCategory[index].myServices?[serviceIndex].money,
           style: STYLE_SMALL.copyWith(
-              fontWeight: FontWeight.w500, color: AppColors.BLACK_300),
+              fontWeight: FontWeight.w500, color: AppColors.BLACK_300,),
         ),
       ),
     );
@@ -77,7 +77,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         shrinkWrap: true,
         itemCount: _viewModel!.listCategory[index].myServices?.length,
         itemBuilder: (context, serviceIndex) =>
-            buildCardService(index, serviceIndex));
+            buildCardService(index, serviceIndex),);
   }
 
   Widget buildItemCategory(int index) {
@@ -90,13 +90,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ? Icons.arrow_drop_down_circle
               : Icons.remove_circle,
           color: AppColors.PRIMARY_GREEN,
-        ));
+        ),);
   }
 
   Widget buildTitleCategory(int index) {
     return Padding(
       padding: EdgeInsets.only(
-          right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium),
+          right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -113,14 +113,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildContentCategoryWidget(int index) {
     return Padding(
       padding: EdgeInsets.only(
-          top: SizeToPadding.sizeMedium, left: SizeToPadding.sizeSmall),
+          top: SizeToPadding.sizeMedium, left: SizeToPadding.sizeSmall,),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         buildTitleCategory(index),
         if (_viewModel!.listIconCategory[index] == false)
           buildListService(index)
         else
           Container(),
-      ]),
+      ],),
     );
   }
 
@@ -129,7 +129,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: DecoratedBox(
         decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
           BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
-        ]),
+        ],),
         child: ListView.builder(
           itemCount: _viewModel!.listCategory.length,
           itemBuilder: (context, index) => buildContentCategoryWidget(index),
@@ -139,7 +139,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItemFloating() {
-    return Column(
+    return const Column(
       children: [
         BuildFloatingButton(
           heroTag: 'btn1',

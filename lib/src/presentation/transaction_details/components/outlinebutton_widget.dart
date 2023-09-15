@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/transaction_details.dart';
-import '../../../configs/widget/widget.dart';
 
 class OutlineButtonWidget extends StatelessWidget {
   const OutlineButtonWidget({

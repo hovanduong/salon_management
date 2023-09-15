@@ -12,7 +12,7 @@ class ChooseServiceWidget extends StatelessWidget {
       this.dropValue,
       this.labelText,
       this.validator,
-      this.onRemove});
+      this.onRemove,});
 
   final List<MyServiceModel>? list;
   final Function(Object)? onChanged;

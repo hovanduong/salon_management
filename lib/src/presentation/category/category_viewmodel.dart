@@ -144,7 +144,7 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> putCategory(String name, int id) async {
     final result = await authApi.putCategory(
-      AuthParams(name: name, id: id));
+      AuthParams(name: name, id: id),);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,

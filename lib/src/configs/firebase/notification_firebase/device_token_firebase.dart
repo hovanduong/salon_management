@@ -1,7 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 
-import '../../../utils/utils.dart';
 
 class DeviceToken {
   static Future<void> setToken() async {

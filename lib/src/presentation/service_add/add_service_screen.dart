@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
-import '../booking/components/dropbutton_widget.dart';
 import 'add_service.dart';
 import 'components/build_service_widget.dart';
 import 'components/name_field_widget.dart';
@@ -122,7 +121,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                     MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
               ),
               child: Paragraph(content: '$hours:$minutes'),
-            )),
+            ),),
             SizedBox(
               width: SpaceBox.sizeMedium,
             ),
@@ -137,7 +136,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                 ),
                 child: Paragraph(
                     content:
-                        '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}'),
+                        '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}',),
               ),
             ),
           ],
@@ -213,7 +212,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
               ),
               onTap: () {
                 _viewModel!.updatePhoneNumber(
-                    _viewModel!.searchResults[index].phoneNumber!);
+                    _viewModel!.searchResults[index].phoneNumber!,);
                 _viewModel!.isListViewVisible = false;
               },
             );

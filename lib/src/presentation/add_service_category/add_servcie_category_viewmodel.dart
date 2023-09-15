@@ -117,7 +117,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showErrorDiaglog(_){
+  dynamic showErrorDialog(_){
     showDialog(
       context: context,
       builder: (context) {
@@ -129,7 +129,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showSuccessDiaglog(_){
+  dynamic showSuccessDiglot(_){
     showDialog(
       context: context,
       builder: (context) {
@@ -156,7 +156,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
     } else {
       listCategory = value as List<CategoryModel>;
     }
@@ -168,10 +168,10 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
       AuthParams(
         myServiceModel: MyServiceModel(
           name: nameServiceController.text,
-          money: priceController.text
+          money: priceController.text,
         ),
-        listCategory: categoryId
-      )
+        listCategory: categoryId,
+      ),
     );
 
     final value = switch (result) {
@@ -182,9 +182,9 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
     } else {
-      showSuccessDiaglog(context);
+      showSuccessDiglot(context);
     }
     notifyListeners();
   }

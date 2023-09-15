@@ -7,7 +7,7 @@ class BuildFloatingButton extends StatelessWidget {
   const BuildFloatingButton({
     super.key, this.onPressed, 
     this.content='', this.iconData, 
-    this.heroTag
+    this.heroTag,
   });
 
   final Function()? onPressed;
@@ -26,12 +26,12 @@ class BuildFloatingButton extends StatelessWidget {
             padding: EdgeInsets.all(Size.sizeSmall),
             decoration: BoxDecoration(
               color: AppColors.SECONDARY_GREEN,
-              borderRadius: BorderRadius.circular(SpaceBox.sizeSmall)
+              borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
             ),
             child: Paragraph(
               content: content,
               style: STYLE_SMALL_BOLD.copyWith(
-                color: AppColors.COLOR_WHITE
+                color: AppColors.COLOR_WHITE,
               ),
             ),
           ) else Container(),

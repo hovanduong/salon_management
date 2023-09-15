@@ -11,7 +11,7 @@ class ItemTransactionDetailsWidget extends StatelessWidget {
       this.colorTitle,
       this.content,
       this.textStyleTitle,
-      this.textStyleContent});
+      this.textStyleContent,});
   final String? title;
   final String? content;
   final Color? colorContent;

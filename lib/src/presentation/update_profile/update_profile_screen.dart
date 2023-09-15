@@ -7,7 +7,7 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/widget/select_date/select_date.dart';
 import '../../utils/city_vietnam.dart';
 import '../base/base.dart';
-import 'component/select_field_widget.dart';
+import 'components/select_field_widget.dart';
 import 'update_profile.dart';
 
 class UpdateProfileSreen extends StatefulWidget {

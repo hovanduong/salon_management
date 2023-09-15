@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -8,7 +7,7 @@ import '../../../configs/language/statistics_language.dart';
 import '../statistics.dart';
 
 class Transactions extends StatelessWidget {
-  const Transactions({super.key, required this.data});
+  const Transactions({required this.data, super.key});
   final List<ChartData> data;
   @override
   Widget build(BuildContext context) {
@@ -66,7 +65,7 @@ class Transactions extends StatelessWidget {
                     // ),
                   ),
                 ],
-              )),
+              ),),
         ],
       ),
     );

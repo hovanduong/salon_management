@@ -6,7 +6,7 @@ import '../../../configs/constants/app_space.dart';
 class StatusCardMoney extends StatelessWidget {
   const StatusCardMoney({super.key, 
     this.content, this.icon, this.money, 
-    this.crossAxisAlignment= CrossAxisAlignment.start});
+    this.crossAxisAlignment= CrossAxisAlignment.start,});
 
   final String? content;
   final IconData? icon;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
-import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_customer_model.dart';
 import '../../resource/model/my_service_model.dart';
 import '../../resource/service/auth.dart';
@@ -47,8 +46,8 @@ class ServiceAddViewModel extends BaseViewModel {
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustumer = [];
 
-  final phoneCkeckText = RegExp(r'[a-zA-Z!@#$%^&*()]');
-  final phoneCkeckQuantity = RegExp(r'^(\d{0,9}|\d{11,})$');
+  final phoneCheckText = RegExp(r'[a-zA-Z!@#$%^&*()]');
+  final phoneCheckQuantity = RegExp(r'^(\d{0,9}|\d{11,})$');
   final specialCharsCheck = RegExp(r'[`~!@#$%^&*()"-=_+{};:\|.,/?]');
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
@@ -57,12 +56,12 @@ class ServiceAddViewModel extends BaseViewModel {
   AuthApi authApi = AuthApi();
   Future<void> init() async {
     test();
-    await fechService();
-    await fechCustomer();
+    await fetchService();
+    await fetchCustomer();
     notifyListeners();
   }
 
-  Future<void> fechService() async {
+  Future<void> fetchService() async {
     // LoadingDialog.showLoadingDialog(context);
     final result = await authApi.getService();
 
@@ -84,7 +83,7 @@ class ServiceAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> fechCustomer() async {
+  Future<void> fetchCustomer() async {
     // LoadingDialog.showLoadingDialog(context);
     final result = await authApi.getMyCustomer();
 
@@ -270,7 +269,7 @@ class ServiceAddViewModel extends BaseViewModel {
     final results = myCustumer
         .where((myCustumer) =>
             myCustumer.phoneNumber!.contains(searchText) ||
-            myCustumer.fullName!.contains(searchText))
+            myCustumer.fullName!.contains(searchText),)
         .toList();
 
     print(results);
@@ -306,7 +305,7 @@ class ServiceAddViewModel extends BaseViewModel {
     }
   }
 
-  double totalPrice = 0.0;
+  double totalPrice = 0;
   void calculateTotalPrice() {
     totalPrice += calculatePrice(dropValue);
     moneyController.text = totalPrice.toString();

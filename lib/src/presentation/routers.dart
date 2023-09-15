@@ -6,13 +6,9 @@ import 'bottom_navigation_bar/navigation_screen.dart';
 import 'create_password/create_password.dart';
 import 'service_add/add_service.dart';
 import 'service_add/add_service_screen.dart';
-import 'service_details/service_details_screen.dart';
-import 'service_edit/edit_service_screen.dart';
-import 'service_list/service_list_screen.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
 import 'update_profile/update_profile.dart';
-import 'verification_code/verification_code_screen.dart';
 
 class TemplateArguments {
   TemplateArguments(this.data, this.created);
@@ -45,7 +41,6 @@ class Routers {
   static const String editService = '/editService';
   static const String signUp = '/signUp';
   static const String navigation = '/navigation';
-  
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -61,14 +56,6 @@ class Routers {
       case navigation:
         return animRoute(
           const NavigateScreen(),
-          beginOffset: right,
-          name: verification,
-          arguments: arguments,
-        );
-
-      case verification:
-        return animRoute(
-          const VerificationScreen(),
           beginOffset: right,
           name: verification,
           arguments: arguments,
@@ -121,29 +108,6 @@ class Routers {
           name: addService,
           arguments: arguments,
         );
-
-      case editService:
-        return animRoute(
-          const EditServiceScreen(),
-          beginOffset: right,
-          name: editService,
-          arguments: arguments,
-        );
-      case serviceList:
-        return animRoute(
-          const ServiceListScreen(),
-          beginOffset: right,
-          name: serviceList,
-          arguments: arguments,
-        );
-      case serviceDetails:
-        return animRoute(
-          const ServiceDetailsScreen(),
-          beginOffset: right,
-          name: serviceDetails,
-          arguments: arguments,
-        );
-
       case signUp:
         return animRoute(
           const SignUpScreen(),

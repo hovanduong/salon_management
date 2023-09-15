@@ -2,7 +2,7 @@ class RadioModel {
   RadioModel({
     required this.isSelected,
     this.id,
-    this.secondTitle = "",
+    this.secondTitle = '',
     this.name,
   });
 

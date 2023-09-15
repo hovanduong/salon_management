@@ -17,8 +17,8 @@ class CustomBackGround extends StatelessWidget {
             colors: [
               AppColors.FIELD_GREEN,
               AppColors.PRIMARY_GREEN
-            ]
-          )
+            ],
+          ),
         ),
       ),
     );

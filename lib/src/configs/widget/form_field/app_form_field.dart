@@ -102,7 +102,7 @@ class _AppFormFieldState extends State<AppFormField> {
                     ),
                   )
                 : null,
-                prefixIcon: widget.iconButton
+                prefixIcon: widget.iconButton,
           ),
         ),
         SizedBox(

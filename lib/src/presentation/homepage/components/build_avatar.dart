@@ -5,7 +5,7 @@ import '../../../configs/constants/app_space.dart';
 
 class BuildAvatar extends StatelessWidget {
   const BuildAvatar({super.key,
-    this.avatar=AppImages.pngAvatar});
+    this.avatar=AppImages.pngAvatar,});
 
   final String avatar;
 

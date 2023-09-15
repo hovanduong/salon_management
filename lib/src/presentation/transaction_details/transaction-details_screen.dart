@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/language/homepage_language.dart';
 import '../../configs/language/transaction_details.dart';
 import '../base/base.dart';
 import 'components/item_transaction_details_widget.dart';
@@ -120,7 +118,7 @@ Widget buildUpWorkPNGWidget() {
 Widget buildInComeWidget() {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-    child: Container(
+    child: DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.BLACK_200,
         borderRadius: BorderRadius.all(
@@ -132,7 +130,7 @@ Widget buildInComeWidget() {
             top: SizeToPadding.sizeVeryVerySmall,
             bottom: SizeToPadding.sizeVeryVerySmall,
             left: SizeToPadding.sizeVerySmall,
-            right: SizeToPadding.sizeVerySmall),
+            right: SizeToPadding.sizeVerySmall,),
         child: Paragraph(
           content: TransactionDetailsLanguage.income,
           style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
@@ -144,7 +142,7 @@ Widget buildInComeWidget() {
 
 Widget buildPriceWidget() {
   return Paragraph(
-    content: "\$ 850.00",
+    content: r'$ 850.00',
     style: STYLE_LARGE_BIG.copyWith(color: AppColors.BLACK_500),
   );
 }
@@ -236,21 +234,21 @@ Widget buildLineWidget() {
 Widget buildEarningsWidget() {
   return ItemTransactionDetailsWidget(
     title: TransactionDetailsLanguage.earnings,
-    content: '\$ 870.00',
+    content: r'$ 870.00',
   );
 }
 
 Widget buildFeeWidget() {
   return ItemTransactionDetailsWidget(
     title: TransactionDetailsLanguage.fee,
-    content: '- \$ 20.00',
+    content: r'- $ 20.00',
   );
 }
 
 Widget buildTotalWidget() {
   return ItemTransactionDetailsWidget(
     title: TransactionDetailsLanguage.total,
-    content: '\$ 850.00',
+    content: r'$ 850.00',
   );
 }
 

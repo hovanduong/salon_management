@@ -4,8 +4,7 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
 class BuildListCategories extends StatefulWidget {
-  const BuildListCategories({super.key, 
-    this.category, this.selectedCategory});
+  const BuildListCategories({super.key, this.category, this.selectedCategory});
 
   final List? category;
   final List? selectedCategory;
@@ -15,23 +14,23 @@ class BuildListCategories extends StatefulWidget {
 }
 
 class _BuildListCategoriesState extends State<BuildListCategories> {
+  List<bool> isCheck = [];
 
-  List<bool> isCheck=[];
-
-  Widget buildCategories(int index){
+  Widget buildCategories(int index) {
     return CheckboxListTile(
-      value: isCheck[index], 
+      value: isCheck[index],
       onChanged: (value) {
-        setState(() {
-          isCheck[index] = value!;
-        });
+        isCheck[index] = value!;
+        setState(() {});
       },
       activeColor: AppColors.PRIMARY_GREEN,
-      title: Paragraph(content: widget.category?[index] ?? '',),
+      title: Paragraph(
+        content: widget.category?[index] ?? '',
+      ),
     );
   }
 
-  Widget buildButton(){
+  Widget buildButton() {
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeBig),
       child: AppButton(
@@ -39,8 +38,8 @@ class _BuildListCategoriesState extends State<BuildListCategories> {
         content: UpdateProfileLanguage.submit,
         onTap: () {
           widget.selectedCategory?.clear();
-          for(var i=0; i<isCheck.length; i++){
-            if(isCheck[i]==true){
+          for (var i = 0; i < isCheck.length; i++) {
+            if (isCheck[i] == true) {
               widget.selectedCategory!.add(widget.category![i]);
             }
           }
@@ -52,14 +51,14 @@ class _BuildListCategoriesState extends State<BuildListCategories> {
 
   @override
   Widget build(BuildContext context) {
-    for(var i=0; i<widget.category!.length; i++){
+    for (var i = 0; i < widget.category!.length; i++) {
       isCheck.add(false);
     }
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: widget.category!.isEmpty? 0: widget.category!.length,
+            itemCount: widget.category!.isEmpty ? 0 : widget.category!.length,
             itemBuilder: (context, index) => buildCategories(index),
           ),
         ),

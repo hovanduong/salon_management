@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +15,6 @@ import '../model/my_category_model.dart';
 import '../model/my_customer_model.dart';
 import '../model/my_service_model.dart';
 import '../model/user_model.dart';
-import 'service.dart';
 
 class AuthParams {
   const AuthParams({
@@ -202,7 +200,7 @@ class AuthApi {
   Future<Result<bool, Exception>> putCategory(AuthParams? params) async {
     try {
       final response = await HttpRemote.put(
-          url: '/category/${params!.id}', body: {'name': params.name});
+          url: '/category/${params!.id}', body: {'name': params.name},);
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
@@ -237,7 +235,7 @@ class AuthApi {
         'name': params!.myServiceModel!.name,
         'money': params.myServiceModel!.money,
         'categories': params.listCategory
-      });
+      },);
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
