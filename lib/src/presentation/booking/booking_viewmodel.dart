@@ -1,4 +1,7 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../../resource/model/my_customer_model.dart';
 import '../../resource/model/my_service_model.dart';
@@ -20,7 +23,7 @@ class BookingViewModel extends BaseViewModel {
   String searchText = '';
   DateTime dateTime = DateTime.now();
 
-  List<String> selectedServices = [];
+  List<String>? selectedServices = [];
 
   List<MyCustomerModel> searchResults = [];
   bool isListViewVisible = false;
@@ -53,13 +56,15 @@ class BookingViewModel extends BaseViewModel {
   final specialCharsCheck = RegExp(r'[`~!@#$%^&*()"-=_+{};:\|.,/?]');
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
-
+  int? index;
+  String? prices;
+  String? services;
   bool enableButton = false;
   AuthApi authApi = AuthApi();
   MyServiceApi myServiceApi = MyServiceApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
   Future<void> init() async {
-    test();
+    findPhone();
     await fetchService();
     await fetchCustomer();
     notifyListeners();
@@ -109,6 +114,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+
   void changeIsListViewVisible(bool isSelectPhone) {
     if (isSelectPhone) {
       isListViewVisible = false;
@@ -118,10 +124,50 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setDropValue(Object value) {
+  void setDropValue(dynamic value) {
     dropValue = value.toString();
-
     calculateTotalPrice();
+    notifyListeners();
+  }
+
+  double totalPrice = 0;
+  void calculateTotalPrice() {
+    final currencyFormatter =
+        NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
+
+    totalPrice = calculateTotalPriceByName(dropValue, myService);
+    final totalPriceT = currencyFormatter.format(totalPrice);
+    moneyController.text = totalPriceT;
+  }
+
+  double calculateTotalPriceByName(
+      dynamic selectedName, List<MyServiceModel> myService) {
+    final selectedItems =
+        myService.where((item) => item.name == selectedName).toList();
+
+    for (final item in selectedItems) {
+      totalPrice += double.parse(item.money!);
+    }
+
+    return totalPrice;
+  }
+
+  void addNewField() {
+    fields.add(
+      ChooseServiceWidget(
+        list: myService,
+        onChanged: (value) {
+          setDropValue(value);
+
+          validService();
+        },
+        labelText: HomeLanguage.service,
+        // dropValue: null,
+        onRemove: () {
+          removeField(fields.length - 1);
+        },
+      ),
+    );
     notifyListeners();
   }
 
@@ -135,29 +181,25 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void removeField(int index) {
+    MyServiceModel? removedItem;
+
+    for (final item in myService) {
+      if (item.name == dropValue) {
+        removedItem = item;
+        break;
+      }
+    }
+
+    if (removedItem != null) {
+      totalPrice -= double.parse(removedItem.money!);
+      moneyController.text = totalPrice.toString();
+    }
+
     fields.removeAt(index);
     notifyListeners();
   }
 
-  void addNewField() {
-    fields.add(
-      ChooseServiceWidget(
-        list: myService,
-        onChanged: (value) {
-          setDropValue(value);
-          validService();
-        },
-        labelText: HomeLanguage.service,
-        // dropValue: null,
-        onRemove: () {
-          removeField(fields.length - 1);
-        },
-      ),
-    );
-    notifyListeners();
-  }
-
-  void test() {
+  void findPhone() {
     phoneController.addListener(() {
       searchText = phoneController.text;
       searchResults = getContactSuggestions(searchText);
@@ -202,15 +244,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void addService(String service) {
-    selectedServices.add(service);
-    notifyListeners();
-  }
 
-  void removeService(String service) {
-    selectedServices.remove(service);
-    notifyListeners();
-  }
 
   void checkDescriptionInput() {
     if (descriptionController.text.isEmpty) {
@@ -262,12 +296,6 @@ class BookingViewModel extends BaseViewModel {
         lastDate: DateTime(2100),
       );
 
-  // List<Contact> contacts = [
-  //   Contact(phoneNumber: '0123456789', name: 'Nguyễn Văn A'),
-  //   Contact(phoneNumber: '0987654321', name: 'Trần Thị B'),
-  //   Contact(phoneNumber: '0774423626', name: 'Lê Thanh Hòa'),
-  //   Contact(phoneNumber: '0774423624', name: 'Lê Thanh Hà'),
-  // ];
 
   List<MyCustomerModel> getContactSuggestions(String searchText) {
     final results = myCustumer
@@ -310,34 +338,5 @@ class BookingViewModel extends BaseViewModel {
       notifyListeners();
     }
   }
-
-  double totalPrice = 0;
-  void calculateTotalPrice() {
-    totalPrice += calculatePrice(dropValue);
-    moneyController.text = totalPrice.toString();
-  }
-
-  double calculatePrice(Object dropValue) {
-    switch (dropValue) {
-      case 'abc':
-        return 100000;
-      case 'xyz':
-        return 200000;
-      case 'đi cháy phố':
-        return 300000;
-      case 'đi hẹn hò':
-        return 400000;
-      case 'đi chơi xuyên đêm':
-        return 500000;
-      default:
-        return 0;
-    }
-  }
 }
 
-// class Contact {
-//   String phoneNumber;
-//   String name;
-
-//   Contact({required this.phoneNumber, required this.name});
-// }
