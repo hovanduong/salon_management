@@ -5,6 +5,7 @@ import '../../resource/model/my_category_model.dart';
 import '../../resource/model/my_service_model.dart';
 import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
+import '../../resource/service/category_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -17,7 +18,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel {
   bool enableSubmit = false;
   String messageErorrNameService = '';
   String messageErorrPrice = '';
-  AuthApi serviceApi = AuthApi();
+  CategoryApi categoryApi = CategoryApi();
   List<RadioModel> selectedCategory = [];
   List<bool> listIsCheck = [];
   AuthApi authApi = AuthApi();
@@ -151,7 +152,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel {
 
   Future<void> getCategory() async {
     listCategory.clear();
-    final result = await authApi.getCategory();
+    final result = await categoryApi.getCategory();
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,

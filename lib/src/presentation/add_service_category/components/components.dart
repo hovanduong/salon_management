@@ -1,1 +1,1 @@
-export 'build_categories.dart';
+export 'categories_widget.dart';

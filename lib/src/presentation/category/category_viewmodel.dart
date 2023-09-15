@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/auth.dart';
+import '../../resource/service/category_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class CategoryViewModel extends BaseViewModel {
-  AuthApi authApi= AuthApi();
+  CategoryApi categoryApi= CategoryApi();
   List<CategoryModel> listCategory=[];
   List<bool> listIconCategory= [];
   bool isIconFloatingButton= true;
@@ -17,11 +19,11 @@ class CategoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  // Future<void> goToAddServiceCategory(BuildContext context)
-  //   => AppRouter.goToAddServiceCategory(context);
+  Future<void> goToAddServiceCategory(BuildContext context)
+    => Navigator.pushNamed(context, Routers.addService);
 
-  // Future<void> goToAddCategory(BuildContext context)
-  //   => AppRouter.goToCategoryAdd(context);
+  Future<void> goToAddCategory(BuildContext context)
+    => Navigator.pushNamed(context, Routers.addCategory);
 
   void setIcon(int index){
     listIconCategory[index] = !listIconCategory[index];
@@ -106,7 +108,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> getCategory() async {
-    final result = await authApi.getCategory();
+    final result = await categoryApi.getCategory();
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -125,7 +127,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> deleteCategory(int id) async {
-    final result = await authApi.deleteCategory(id);
+    final result = await categoryApi.deleteCategory(id);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,
@@ -143,7 +145,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> putCategory(String name, int id) async {
-    final result = await authApi.putCategory(
+    final result = await categoryApi.putCategory(
       AuthParams(name: name, id: id),);
 
     final value = switch (result) {

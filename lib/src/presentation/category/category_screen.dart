@@ -139,19 +139,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItemFloating() {
-    return const Column(
+    return Column(
       children: [
-        BuildFloatingButton(
+        FloatingButtonWidget(
           heroTag: 'btn1',
           content: 'Add Service',
           iconData: Icons.add,
-          // onPressed: (){_viewModel!.goToAddServiceCategory(context);},
+          onPressed: (){_viewModel!.goToAddServiceCategory(context);},
         ),
-        BuildFloatingButton(
+        FloatingButtonWidget(
           heroTag: 'btn2',
           content: 'Add Category',
           iconData: Icons.add,
-          // onPressed: (){_viewModel!.goToAddCategory(context);},
+          onPressed: (){_viewModel!.goToAddCategory(context);},
         ),
       ],
     );
@@ -174,7 +174,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               buildItemFloating()
             else
               Container(),
-            BuildFloatingButton(
+            FloatingButtonWidget(
               heroTag: 'btn',
               iconData:
                   _viewModel!.isIconFloatingButton ? Icons.menu : Icons.close,

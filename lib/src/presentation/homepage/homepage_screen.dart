@@ -97,7 +97,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   Widget buildMoney(){
     return Padding(
-      padding: EdgeInsets.only(bottom: SpaceBox.sizeBig, top: SpaceBox.sizeVerySmall),
+      padding: EdgeInsets.only(
+        bottom: SpaceBox.sizeBig, 
+        top: SpaceBox.sizeVerySmall,
+      ),
       child: Paragraph(
         content: r'$ 2,548.00',
         style: STYLE_VERY_BIG.copyWith(
@@ -130,7 +133,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         buildIncome(),
-        buildExpenses()
+        buildExpenses(),
       ],
     );
   }
@@ -143,7 +146,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
         height: 202,
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(color: AppColors.BLACK_500, blurRadius: SpaceBox.sizeVerySmall)
+            BoxShadow(
+              color: AppColors.BLACK_500, blurRadius: SpaceBox.sizeVerySmall,
+            ),
           ],
           color: AppColors.PRIMARY_GREEN,
           borderRadius: const BorderRadius.all(Radius.circular(20),),

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
-class BuildListCategories extends StatefulWidget {
-  const BuildListCategories({super.key, this.category, this.selectedCategory});
+class ListCategoryWidget extends StatefulWidget {
+  const ListCategoryWidget({super.key, this.category, this.selectedCategory});
 
   final List? category;
   final List? selectedCategory;
 
   @override
-  State<BuildListCategories> createState() => _BuildListCategoriesState();
+  State<ListCategoryWidget> createState() => _ListCategoryWidgetState();
 }
 
-class _BuildListCategoriesState extends State<BuildListCategories> {
+class _ListCategoryWidgetState extends State<ListCategoryWidget> {
   List<bool> isCheck = [];
 
   Widget buildCategories(int index) {
