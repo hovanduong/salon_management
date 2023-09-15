@@ -5,6 +5,7 @@ import 'dart:convert';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/model.dart';
+import 'auth.dart';
 
 class MyServiceApi {
   Future<Result<List<MyServiceModel>, Exception>> getService() async {
@@ -25,4 +26,25 @@ class MyServiceApi {
       return Failure(e);
     }
   }
+
+    Future<Result<bool, Exception>> postService(AuthParams? params) async {
+    try {
+      final response = await HttpRemote.post(url: '/my-service', body: {
+        'name': params!.myServiceModel!.name,
+        'money': params.myServiceModel!.money,
+        'categories': params.listCategory
+      },);
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 201:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+
 }

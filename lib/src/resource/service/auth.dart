@@ -63,43 +63,8 @@ class AuthApi {
   //   }
   // }
 
-  Future<Result<List<MyServiceModel>, Exception>> getService() async {
-    try {
-      final response = await HttpRemote.get(
-        url: '/my-service?pageSize=10&page=1',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final service = MyServiceFactory.createList(data);
-          return Success(service);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
 
-  Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer() async {
-    try {
-      final response = await HttpRemote.get(
-        url: '/my-customer?pageSize=10&page=1',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final myCustomer = MyCustomerModelFactory.createList(data);
-          return Success(myCustomer);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
+
 
   Future<Result<bool, Exception>> sendOTP(
     AuthParams? params,
@@ -229,24 +194,6 @@ class AuthApi {
     }
   }
 
-  Future<Result<bool, Exception>> postService(AuthParams? params) async {
-    try {
-      final response = await HttpRemote.post(url: '/my-service', body: {
-        'name': params!.myServiceModel!.name,
-        'money': params.myServiceModel!.money,
-        'categories': params.listCategory
-      },);
-      print(response?.statusCode);
-      switch (response?.statusCode) {
-        case 201:
-          return const Success(true);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
 
   Future<Result<bool, Exception>> signUp(AuthParams? params) async {
     try {

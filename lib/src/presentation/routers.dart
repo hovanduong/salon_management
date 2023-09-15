@@ -4,8 +4,8 @@ import '../resource/model/user_model.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
 import 'create_password/create_password.dart';
-import 'service_add/add_service.dart';
-import 'service_add/add_service_screen.dart';
+import 'booking/booking.dart';
+import 'booking/booking_screen.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
 import 'update_profile/update_profile.dart';
@@ -101,13 +101,6 @@ class Routers {
           arguments: arguments,
         );
 
-      case addService:
-        return animRoute(
-          const ServiceAddScreen(),
-          beginOffset: right,
-          name: addService,
-          arguments: arguments,
-        );
       case signUp:
         return animRoute(
           const SignUpScreen(),

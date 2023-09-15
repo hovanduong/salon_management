@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
-import 'add_service.dart';
+import 'booking.dart';
 import 'components/build_service_widget.dart';
 import 'components/name_field_widget.dart';
 
-class ServiceAddScreen extends StatefulWidget {
-  const ServiceAddScreen({super.key});
+class BookingScreen extends StatefulWidget {
+  const BookingScreen({super.key});
 
   @override
-  State<ServiceAddScreen> createState() => _ServiceAddScreenState();
+  State<BookingScreen> createState() => _ServiceAddScreenState();
 }
 
-class _ServiceAddScreenState extends State<ServiceAddScreen> {
+class _ServiceAddScreenState extends State<BookingScreen> {
   // NOTE: Change language "vi" "en"
 
   // @override
@@ -24,12 +24,12 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
   //   );
   // }
 
-  ServiceAddViewModel? _viewModel;
+  BookingViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
-    return BaseWidget<ServiceAddViewModel>(
-      viewModel: ServiceAddViewModel(),
+    return BaseWidget<BookingViewModel>(
+      viewModel: BookingViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) => buildserviceAdd(),
     );

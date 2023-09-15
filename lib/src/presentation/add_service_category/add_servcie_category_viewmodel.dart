@@ -5,39 +5,40 @@ import '../../resource/model/my_category_model.dart';
 import '../../resource/model/my_service_model.dart';
 import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
+import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
-class AddServiceCategoriesViewModel extends BaseViewModel{
-  TextEditingController nameServiceController= TextEditingController();
-  TextEditingController priceController= TextEditingController();
+class AddServiceCategoriesViewModel extends BaseViewModel {
+  TextEditingController nameServiceController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   List<CategoryModel> listCategory = <CategoryModel>[];
-  Map<int, String> mapCategory ={};
+  Map<int, String> mapCategory = {};
   bool enableSubmit = false;
-  String messageErorrNameService='';
-  String messageErorrPrice='';
-  AuthApi serviceApi= AuthApi();
-  List<RadioModel> selectedCategory=[];
-  List<bool> listIsCheck=[];
+  String messageErorrNameService = '';
+  String messageErorrPrice = '';
+  AuthApi serviceApi = AuthApi();
+  List<RadioModel> selectedCategory = [];
+  List<bool> listIsCheck = [];
   AuthApi authApi = AuthApi();
-  List<int> categoryId=[];
+  List<int> categoryId = [];
   bool isColorProvinces = false;
-
-  Future<void> init() async{
+  MyServiceApi myServiceApi = MyServiceApi();
+  Future<void> init() async {
     await getCategory();
     await initMapCategory();
   }
 
   Future<void> changeValueCategory(List<RadioModel> value) async {
     selectedCategory.clear();
-    selectedCategory =value;
+    selectedCategory = value;
     // await clearDatAgencies();
     notifyListeners();
   }
 
   // Future<void> setCategory() async{
   //   if(selectedCategory.isNotEmpty){
-  //     selectedCategory.forEach((element) { 
+  //     selectedCategory.forEach((element) {
   //       listCategory.forEach((element) {
   //         mapCategory.addAll({element.id!: '${element.name}'},);
   //       });
@@ -46,53 +47,57 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
   //   notifyListeners();
   // }
 
-  Future<void> setCategoryId() async{
+  Future<void> setCategoryId() async {
     categoryId.clear();
-    if(selectedCategory.isNotEmpty){
-      selectedCategory.forEach((element) { 
+    if (selectedCategory.isNotEmpty) {
+      selectedCategory.forEach((element) {
         categoryId.add(element.id!);
       });
     }
     notifyListeners();
   }
 
-  Future<void> initMapCategory() async{
+  Future<void> initMapCategory() async {
     listCategory.forEach((element) {
-      mapCategory.addAll({element.id!: '${element.name}'},);
+      mapCategory.addAll(
+        {element.id!: '${element.name}'},
+      );
     });
     print(mapCategory);
     notifyListeners();
   }
 
-  void removeCategory(int index){
+  void removeCategory(int index) {
     selectedCategory.removeAt(index);
     notifyListeners();
   }
 
   void validNameService(String? value) {
     if (value == null || value.isEmpty) {
-      messageErorrNameService= ServiceAddLanguage.emptyNameError;
-    }else if(value.length<6){
-      messageErorrNameService=ServiceAddLanguage.serviceNameMinLenght;
-    }else{
-      messageErorrNameService='';
+      messageErorrNameService = ServiceAddLanguage.emptyNameError;
+    } else if (value.length < 6) {
+      messageErorrNameService = ServiceAddLanguage.serviceNameMinLenght;
+    } else {
+      messageErorrNameService = '';
     }
     notifyListeners();
   }
 
   void validPrice(String? value) {
     if (value == null || value.isEmpty) {
-      messageErorrPrice= ServiceAddLanguage.emptyMoneyError;
-    }else{
-      messageErorrPrice='';
+      messageErorrPrice = ServiceAddLanguage.emptyMoneyError;
+    } else {
+      messageErorrPrice = '';
     }
     notifyListeners();
   }
 
   void onSubmit() {
-    if (messageErorrNameService == '' && nameServiceController.text!='' 
-      && priceController.text!='' && messageErorrPrice == ''
-      && selectedCategory.isNotEmpty) {
+    if (messageErorrNameService == '' &&
+        nameServiceController.text != '' &&
+        priceController.text != '' &&
+        messageErorrPrice == '' &&
+        selectedCategory.isNotEmpty) {
       enableSubmit = true;
     } else {
       enableSubmit = false;
@@ -117,7 +122,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showErrorDialog(_){
+  dynamic showErrorDialog(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -129,7 +134,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showSuccessDiglot(_){
+  dynamic showSuccessDiglot(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -164,7 +169,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
   }
 
   Future<void> postService() async {
-    final result = await authApi.postService(
+    final result = await myServiceApi.postService(
       AuthParams(
         myServiceModel: MyServiceModel(
           name: nameServiceController.text,
