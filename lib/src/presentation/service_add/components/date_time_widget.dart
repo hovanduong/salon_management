@@ -45,7 +45,7 @@ class DateTimeWidget extends StatelessWidget {
                   ),
                   child: Paragraph(
                     content: day,
-                  )),
+                  ),),
             ),
             SizedBox(
               width: SpaceBox.sizeMedium,
@@ -57,11 +57,11 @@ class DateTimeWidget extends StatelessWidget {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          AppColors.FIELD_GREEN),
+                          AppColors.FIELD_GREEN,),
                     ),
                     child: Paragraph(
                       content: time,
-                    )))
+                    ),),)
           ],
         ),
       ],

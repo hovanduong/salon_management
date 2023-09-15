@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../resource/model/category_model.dart';
-import '../../resource/model/my_servcie_model.dart';
+import '../../resource/model/my_category_model.dart';
+import '../../resource/model/my_service_model.dart';
 import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_valid.dart';
@@ -117,7 +117,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showErrorDiaglog(_){
+  dynamic showErrorDialog(_){
     showDialog(
       context: context,
       builder: (context) {
@@ -129,7 +129,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showSuccessDiaglog(_){
+  dynamic showSuccessDiglot(_){
     showDialog(
       context: context,
       builder: (context) {
@@ -156,7 +156,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
     } else {
       listCategory = value as List<CategoryModel>;
     }
@@ -166,12 +166,12 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
   Future<void> postService() async {
     final result = await authApi.postService(
       AuthParams(
-        myServicceModel: MyServicceModel(
+        myServiceModel: MyServiceModel(
           name: nameServiceController.text,
-          money: priceController.text
+          money: priceController.text,
         ),
-        listCategory: categoryId
-      )
+        listCategory: categoryId,
+      ),
     );
 
     final value = switch (result) {
@@ -182,9 +182,9 @@ class AddServiceCategoriesViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
     } else {
-      showSuccessDiaglog(context);
+      showSuccessDiglot(context);
     }
     notifyListeners();
   }

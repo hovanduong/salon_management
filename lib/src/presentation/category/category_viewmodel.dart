@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../resource/model/category_model.dart';
+import '../../resource/model/my_category_model.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_valid.dart';
-import '../app_routers.dart';
 import '../base/base.dart';
 
 class CategoryViewModel extends BaseViewModel {
@@ -18,11 +17,11 @@ class CategoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> goToAddServiceCategory(BuildContext context)
-    => AppRouter.goToAddServiceCategory(context);
+  // Future<void> goToAddServiceCategory(BuildContext context)
+  //   => AppRouter.goToAddServiceCategory(context);
 
-  Future<void> goToAddCategory(BuildContext context)
-    => AppRouter.goToCategoryAdd(context);
+  // Future<void> goToAddCategory(BuildContext context)
+  //   => AppRouter.goToCategoryAdd(context);
 
   void setIcon(int index){
     listIconCategory[index] = !listIconCategory[index];
@@ -145,7 +144,7 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> putCategory(String name, int id) async {
     final result = await authApi.putCategory(
-      AuthParams(name: name, id: id));
+      AuthParams(name: name, id: id),);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,

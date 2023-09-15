@@ -31,17 +31,17 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVerySmall,
-        vertical: Size.sizeMedium
+        vertical: Size.sizeMedium,
       ),
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,)
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
         ),
         title: Paragraph(
           content: ServiceAddLanguage.serviceAdd,
           style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.COLOR_WHITE
+            color: AppColors.COLOR_WHITE,
           ),
         ),
       ),
@@ -112,7 +112,7 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
           _viewModel!..removeCategory(index)..onSubmit()..setCategoryId();
         }, 
         icon: const Icon(Icons.highlight_remove, size: 20, 
-          color: AppColors.COLOR_WHITE,)
+          color: AppColors.COLOR_WHITE,),
       ),
     );
   }
@@ -125,11 +125,11 @@ class _AddServiceCategoriesScreenState extends State<AddServiceCategoriesScreen>
           margin: EdgeInsets.only(bottom: SizeToPadding.sizeLarge),
           padding: EdgeInsets.symmetric(
             horizontal: SpaceBox.sizeMedium, 
-            vertical: SpaceBox.sizeSmall
+            vertical: SpaceBox.sizeSmall,
           ),
           decoration: BoxDecoration(
             color: AppColors.PRIMARY_GREEN,
-            borderRadius: BorderRadius.circular(SpaceBox.sizeSmall)
+            borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
           ),
           child: Paragraph(
             content: _viewModel!.selectedCategory[index].name,

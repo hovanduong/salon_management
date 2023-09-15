@@ -6,8 +6,8 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
-import 'component/build_avatar.dart';
-import 'component/component.dart';
+import 'components/build_avatar.dart';
+import 'components/components.dart';
 import 'homepage_viewModel.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -146,7 +146,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             BoxShadow(color: AppColors.BLACK_500, blurRadius: SpaceBox.sizeVerySmall)
           ],
           color: AppColors.PRIMARY_GREEN,
-          borderRadius: BorderRadius.all(Radius.circular(20),),
+          borderRadius: const BorderRadius.all(Radius.circular(20),),
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
@@ -194,7 +194,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: 5,
-          itemBuilder: (context, index) => const BuildAvatar()
+          itemBuilder: (context, index) => const BuildAvatar(),
         ),
       ),
     );

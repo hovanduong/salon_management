@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: SizeToPadding.sizeVeryBig,
-          vertical: SizeToPadding.sizeVeryBig 
+          vertical: SizeToPadding.sizeVeryBig, 
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

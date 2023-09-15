@@ -1,22 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import '../../configs/firebase/analytics_firebase.dart';
+
 import '../../intl/generated/l10n.dart';
-
-import '../add_service_category/add_service_category.dart';
-import '../category/category_screen.dart';
-import '../homepage/homepage.dart';
-
-import '../bottom_navigation_bar/navigation.dart';
-
-import '../profile/profile_screen.dart';
 import '../routers.dart';
-import '../service_add/add_service.dart';
-import '../sign_in/sign_in.dart';
-import '../sign_up/sign_up_screen.dart';
-import '../statistics/statistics_screen.dart';
-import '../transaction_details/transaction-details_screen.dart';
 
 class Constants {
   static const String languageVietName = 'vi';
@@ -34,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       key: key,
       debugShowCheckedModeBanner: false,
-      navigatorObservers: [ConfigAnalytics.observer],
+      // navigatorObservers: [ConfigAnalytics.observer],
       theme: ThemeData(fontFamily: Constants.fonts),
       builder: (context, widget) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),

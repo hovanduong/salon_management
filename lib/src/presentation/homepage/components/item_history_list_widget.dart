@@ -10,7 +10,7 @@ class ItemHistoryListWidget extends StatelessWidget {
       this.title,
       this.date,
       this.money,
-      this.colorMoney});
+      this.colorMoney,});
   final String? image;
   final String? title;
   final String? date;

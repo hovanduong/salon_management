@@ -8,10 +8,9 @@ import '../../constants/app_space.dart';
 
 class BottomSheetSingleRadio extends StatefulWidget {
   const BottomSheetSingleRadio({
-    Key? key,
+    required this.listItems, Key? key,
     this.titleContent = '',
     this.titleButton = 'Hoàn thành',
-    required this.listItems,
     this.onTapSubmit,
     this.initValues,
     this.isSecondText = true, 
@@ -49,7 +48,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
             id: e.key,
             // secondTitle: "${e.value[1]}",
             name: e.value,
-          ));
+          ),);
           // selectValue = widget.initValues;
         } else {
           listRadioData.add(RadioModel(
@@ -57,7 +56,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
             id: e.key,
             // secondTitle: "${e.value[1]}",
             name: e.value,
-          ));
+          ),);
         }
       });
     } else {
@@ -67,7 +66,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
           id: e.key,
           // secondTitle: "${e.value[1]}",
           name: e.value,
-        ));
+        ),);
       });
     }
     setEnableButton();
@@ -118,7 +117,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
               iconButton: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.search),
-                color: AppColors.BLACK_300
+                color: AppColors.BLACK_300,
                 // widget.changeColor!
                 //     ? AppColors.PRIMARY_PINK
                     // : AppColors.BLACK_300,
@@ -164,7 +163,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
                           ),
                         );
                       },
-                    )),
+                    ),),
           Padding(
             padding: EdgeInsets.all(SizeToPadding.sizeMedium),
             child: AppButton(
@@ -231,9 +230,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
 
 class RadioItem extends StatelessWidget {
   const RadioItem({
-    Key? key,
-    required this.item,
-    required this.isSecond,
+    required this.item, required this.isSecond, Key? key,
   }) : super(key: key);
   final bool isSecond;
   final RadioModel item;

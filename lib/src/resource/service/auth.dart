@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,11 +11,10 @@ import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
-import '../model/category_model.dart';
+import '../model/my_category_model.dart';
 import '../model/my_customer_model.dart';
-import '../model/my_servcie_model.dart';
+import '../model/my_service_model.dart';
 import '../model/user_model.dart';
-import 'service.dart';
 
 class AuthParams {
   const AuthParams({
@@ -29,7 +27,7 @@ class AuthParams {
     this.password,
     this.phoneNumber,
     this.category,
-    this.myServicceModel,
+    this.myServiceModel,
     this.listCategory,
   });
   final int? id;
@@ -41,34 +39,34 @@ class AuthParams {
   final String? password;
   final UserModel? user;
   final CategoryModel? category;
-  final MyServicceModel? myServicceModel;
+  final MyServiceModel? myServiceModel;
   final List<int>? listCategory;
 }
 
 class AuthApi {
-  Future<Result<Service, Exception>> detailsService({String? id}) async {
-    try {
-      final response = await HttpRemote.get(
-        url: '/api/my-service/$id',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']);
-          final serviceDetails = ServiceFactory.create(data);
-          return Success(serviceDetails);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
+  // Future<Result<Service, Exception>> detailsService({String? id}) async {
+  //   try {
+  //     final response = await HttpRemote.get(
+  //       url: '/my-service/$id',
+  //     );
+  //     switch (response?.statusCode) {
+  //       case 200:
+  //         final jsonMap = json.decode(response!.body);
+  //         final data = json.encode(jsonMap['data']);
+  //         final serviceDetails = ServiceFactory.create(data);
+  //         return Success(serviceDetails);
+  //       default:
+  //         return Failure(Exception(response!.reasonPhrase));
+  //     }
+  //   } on Exception catch (e) {
+  //     return Failure(e);
+  //   }
+  // }
 
-  Future<Result<List<MyServicceModel>, Exception>> getService() async {
+  Future<Result<List<MyServiceModel>, Exception>> getService() async {
     try {
       final response = await HttpRemote.get(
-        url: '/api/my-service?pageSize=10&page=1',
+        url: '/my-service?pageSize=10&page=1',
       );
       switch (response?.statusCode) {
         case 200:
@@ -84,17 +82,17 @@ class AuthApi {
     }
   }
 
-  Future<Result<List<MyCostomerModel>, Exception>> getMyCustomer() async {
+  Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer() async {
     try {
       final response = await HttpRemote.get(
-        url: '/api/my-customer?pageSize=10&page=1',
+        url: '/my-customer?pageSize=10&page=1',
       );
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
-          final myCustumer = MyCostomerModelFactory.createList(data);
-          return Success(myCustumer);
+          final myCustomer = MyCustomerModelFactory.createList(data);
+          return Success(myCustomer);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -165,7 +163,7 @@ class AuthApi {
   Future<Result<List<CategoryModel>, Exception>> getCategory() async {
     try {
       final response = await HttpRemote.get(
-        url: '/api/category?pageSize=10&page=1',
+        url: '/category?pageSize=10&page=1',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
@@ -185,7 +183,7 @@ class AuthApi {
   Future<Result<bool, Exception>> deleteCategory(int id) async {
     try {
       final response = await HttpRemote.delete(
-        url: '/api/category/$id',
+        url: '/category/$id',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
@@ -202,7 +200,7 @@ class AuthApi {
   Future<Result<bool, Exception>> putCategory(AuthParams? params) async {
     try {
       final response = await HttpRemote.put(
-          url: '/api/category/${params!.id}', body: {'name': params.name});
+          url: '/category/${params!.id}', body: {'name': params.name},);
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
@@ -218,7 +216,7 @@ class AuthApi {
   Future<Result<bool, Exception>> postCategory(String? name) async {
     try {
       final response =
-          await HttpRemote.post(url: '/api/category', body: {'name': name});
+          await HttpRemote.post(url: '/category', body: {'name': name});
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
@@ -233,14 +231,11 @@ class AuthApi {
 
   Future<Result<bool, Exception>> postService(AuthParams? params) async {
     try {
-      final response = await HttpRemote.post(
-        url: '/api/my-service',
-        body: {
-          'name': params!.myServicceModel!.name,
-          'money': params.myServicceModel!.money,
-          'categories': params.listCategory
-        }
-      );
+      final response = await HttpRemote.post(url: '/my-service', body: {
+        'name': params!.myServiceModel!.name,
+        'money': params.myServiceModel!.money,
+        'categories': params.listCategory
+      },);
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
@@ -280,7 +275,7 @@ class AuthApi {
   Future<Result<String, Exception>> login(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/api/auth/login',
+        url: '/auth/login',
         body: {
           'phoneNumber': params!.phoneNumber,
           'password': params.password,

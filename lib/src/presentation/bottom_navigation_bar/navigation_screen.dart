@@ -7,7 +7,6 @@ import '../base/base.dart';
 import '../homepage/homepage_screen.dart';
 import '../profile/profile_screen.dart';
 import '../service_add/add_service.dart';
-import '../statistics/statistics.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
 
@@ -61,12 +60,12 @@ class _NavigateScreenState extends State<NavigateScreen> {
             const ServiceAddScreen()
           else
             Container(),
-          if (_viewModel!.selectedIndex == 2) SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 2) const SizedBox() else Container(),
           if (_viewModel!.selectedIndex == 3)
             const ProfileScreen()
           else
             Container(),
-          if (_viewModel!.selectedIndex == 4) SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 4) const SizedBox() else Container(),
         ],
       ),
       bottomNavigationBar: appBarNavigator(),

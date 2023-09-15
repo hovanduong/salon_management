@@ -24,7 +24,7 @@ class BalanceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: SpaceBox.sizeSmall, vertical: SpaceBox.sizeLarge),
+          horizontal: SpaceBox.sizeSmall, vertical: SpaceBox.sizeLarge,),
       child: AspectRatio(
         aspectRatio: 1.3,
         child: Column(
@@ -52,7 +52,7 @@ class BalanceWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const Paragraph(content: "248.57", style: STYLE_LARGE_BOLD),
+            const Paragraph(content: '248.57', style: STYLE_LARGE_BOLD),
             const SizedBox(
               height: 5,
             ),
