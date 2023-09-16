@@ -27,6 +27,8 @@ class MyServiceApi {
     }
   }
 
+
+
     Future<Result<bool, Exception>> postService(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(url: '/my-service', body: {
