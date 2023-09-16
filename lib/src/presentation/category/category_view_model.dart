@@ -1,15 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
+import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
 class CategoryViewModel extends BaseViewModel {
   CategoryApi categoryApi= CategoryApi();
+  MyServiceApi myServiceApi = MyServiceApi();
   List<CategoryModel> listCategory=[];
   List<bool> listIconCategory= [];
   bool isIconFloatingButton= true;
@@ -22,11 +26,15 @@ class CategoryViewModel extends BaseViewModel {
   Future<void> goToAddServiceCategory(BuildContext context)
     => Navigator.pushNamed(context, Routers.addService);
 
-  Future<void> goToAddCategory(BuildContext context)
-    => Navigator.pushNamed(context, Routers.addCategory);
+  Future<void> goToUpdateServiceCategory(BuildContext context)
+    => Navigator.pushNamed(context, Routers.updateService);
+
+  Future<void> goToAddCategory(
+    {required BuildContext context, CategoryModel? categoryModel,})
+    => Navigator.pushNamed(context, Routers.addCategory, arguments: categoryModel);
 
   void setIcon(int index){
-    listIconCategory[index] = !listIconCategory[index];
+    listIconCategory[index]=!listIconCategory[index];
     notifyListeners();
   }
 
@@ -56,6 +64,7 @@ class CategoryViewModel extends BaseViewModel {
     showDialog(
       context: context,
       builder: (context) {
+        closeDialog(context);
         return WarningDialog(
           image: AppImages.icPlus,
           title: 'Are you sure!',
@@ -73,10 +82,11 @@ class CategoryViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showErrorDiaglog(_){
+  dynamic showErrorDialog(_){
     showDialog(
       context: context,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -89,22 +99,25 @@ class CategoryViewModel extends BaseViewModel {
     showDialog(
       context: context,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
-          onTap: () {
-            Navigator.pop(context);
-          },
         );
       },
     );
   }
 
   void setListIcon(){
+    listIconCategory.clear();
     for(var i=0; i<listCategory.length; i++){
       listIconCategory.add(true);
     }
     notifyListeners();
+  }
+
+  void closeDialog(BuildContext context){
+    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   Future<void> getCategory() async {
@@ -118,7 +131,7 @@ class CategoryViewModel extends BaseViewModel {
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
     } else {
       listCategory = value as List<CategoryModel>;
       setListIcon();
@@ -137,9 +150,11 @@ class CategoryViewModel extends BaseViewModel {
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
+      await getCategory();
     } else {
       showSuccessDiaglog(context);
+      await getCategory();
     }
     notifyListeners();
   }
@@ -156,9 +171,29 @@ class CategoryViewModel extends BaseViewModel {
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDiaglog(context);
+      showErrorDialog(context);
     } else {
       showSuccessDiaglog(context);
+      await getCategory();
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteService(int id) async {
+    final result = await myServiceApi.deleteService(id);
+
+    final value = switch (result) {
+      Success(value: final isTrue) => isTrue,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      showErrorDialog(context);
+    } else {
+      showSuccessDiaglog(context);
+      await getCategory();
     }
     notifyListeners();
   }

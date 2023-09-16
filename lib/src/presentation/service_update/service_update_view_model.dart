@@ -10,14 +10,14 @@ import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
-class AddServiceCategoriesViewModel extends BaseViewModel {
+class ServiceUpdateViewModel extends BaseViewModel {
   TextEditingController nameServiceController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   List<CategoryModel> listCategory = <CategoryModel>[];
   Map<int, String> mapCategory = {};
   bool enableSubmit = false;
-  String messageErorrNameService = '';
-  String messageErorrPrice = '';
+  String messageErrorNameService = '';
+  String messageErrorPrice = '';
   CategoryApi categoryApi = CategoryApi();
   List<RadioModel> selectedCategory = [];
   List<bool> listIsCheck = [];
@@ -75,29 +75,29 @@ class AddServiceCategoriesViewModel extends BaseViewModel {
 
   void validNameService(String? value) {
     if (value == null || value.isEmpty) {
-      messageErorrNameService = ServiceAddLanguage.emptyNameError;
-    } else if (value.length < 6) {
-      messageErorrNameService = ServiceAddLanguage.serviceNameMinLenght;
+      messageErrorNameService = ServiceAddLanguage.emptyNameError;
+    } else if (value.length < 2) {
+      messageErrorNameService = ServiceAddLanguage.serviceNameMinLength;
     } else {
-      messageErorrNameService = '';
+      messageErrorNameService = '';
     }
     notifyListeners();
   }
 
   void validPrice(String? value) {
     if (value == null || value.isEmpty) {
-      messageErorrPrice = ServiceAddLanguage.emptyMoneyError;
+      messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
     } else {
-      messageErorrPrice = '';
+      messageErrorPrice = '';
     }
     notifyListeners();
   }
 
   void onSubmit() {
-    if (messageErorrNameService == '' &&
+    if (messageErrorNameService == '' &&
         nameServiceController.text != '' &&
         priceController.text != '' &&
-        messageErorrPrice == '' &&
+        messageErrorPrice == '' &&
         selectedCategory.isNotEmpty) {
       enableSubmit = true;
     } else {
@@ -135,7 +135,7 @@ class AddServiceCategoriesViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showSuccessDiglot(_) {
+  dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -190,7 +190,11 @@ class AddServiceCategoriesViewModel extends BaseViewModel {
     } else if (value is Exception) {
       showErrorDialog(context);
     } else {
-      showSuccessDiglot(context);
+      nameServiceController.text='';
+      priceController.text='';
+      selectedCategory.clear();
+      categoryId.clear();
+      showSuccessDialog(context);
     }
     notifyListeners();
   }
