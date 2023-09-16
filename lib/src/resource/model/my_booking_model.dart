@@ -6,7 +6,7 @@ import 'model.dart';
 
 class MyBookingModel {
   int? id;
-  double? total;
+  num? total;
   int? userId;
   String? address;
   String? date;

@@ -9,9 +9,9 @@ class InvoiceModel {
   int? userId;
   String? code;
   String? status;
-  double? discount;
+  num? discount;
   String? paymentStatus;
-  String? total;
+  num? total;
   String? myBookingId;
   String? deletedAt;
   String? createdAt;
