@@ -72,7 +72,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             subtitle: Paragraph(
               content:
-                  _viewModel!.listCategory[index].myServices?[serviceIndex].money,
+                  _viewModel!.listCategory[index].myServices?[serviceIndex].money.toString(),
               style: STYLE_SMALL.copyWith(
                   fontWeight: FontWeight.w500, color: AppColors.BLACK_300,),
             ),
