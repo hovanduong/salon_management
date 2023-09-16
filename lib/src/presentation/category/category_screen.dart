@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../resource/model/model.dart';
+import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'category_view_model.dart';
 import 'components/floating_button_widget.dart';
@@ -49,6 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildCardService(int index, int serviceIndex) {
     final idService= _viewModel!.listCategory[index].myServices?[serviceIndex].id;
+    final money= _viewModel!.listCategory[index].myServices?[serviceIndex].money;
     return Padding(
       padding:EdgeInsets.only(
             bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium,),
@@ -72,7 +74,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             subtitle: Paragraph(
               content:
-                  _viewModel!.listCategory[index].myServices?[serviceIndex].money,
+                  AppCurrencyFormat.formatMoneyVND(
+                    money ?? 0),
               style: STYLE_SMALL.copyWith(
                   fontWeight: FontWeight.w500, color: AppColors.BLACK_300,),
             ),

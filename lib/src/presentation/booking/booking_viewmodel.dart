@@ -146,7 +146,7 @@ class BookingViewModel extends BaseViewModel {
         myService.where((item) => item.name == selectedName).toList();
 
     for (final item in selectedItems) {
-      totalPrice += double.parse(item.money!);
+      totalPrice += double.parse(item.money.toString());
     }
 
     return totalPrice;
@@ -191,7 +191,7 @@ class BookingViewModel extends BaseViewModel {
     }
 
     if (removedItem != null) {
-      totalPrice -= double.parse(removedItem.money!);
+      totalPrice -= double.parse(removedItem.money.toString());
       moneyController.text = totalPrice.toString();
     }
 

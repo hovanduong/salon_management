@@ -174,7 +174,7 @@ class ServiceUpdateViewModel extends BaseViewModel {
       AuthParams(
         myServiceModel: MyServiceModel(
           name: nameServiceController.text,
-          money: priceController.text,
+          money: double.parse(priceController.text.trim()) ,
         ),
         listCategory: categoryId,
       ),

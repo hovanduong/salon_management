@@ -6,7 +6,7 @@ import 'model.dart';
 
 class MyBookingModel {
   int? id;
-  String? money;
+  num? total;
   int? userId;
   String? address;
   String? date;
@@ -20,7 +20,7 @@ class MyBookingModel {
 
   MyBookingModel({
     this.id,
-    this.money,
+    this.total,
     this.userId,
     this.address,
     this.date,
@@ -57,7 +57,7 @@ abstract class MyBookingModelFactory {
     MyBookingModel myBookingModel,
   ) {
     final data = <String, dynamic>{};
-    data['money'] = myBookingModel.money;
+    data['total'] = myBookingModel.total;
     data['userId'] = myBookingModel.userId;
     data['deletedAt'] = myBookingModel.deletedAt;
     data['createdAt'] = myBookingModel.createdAt;
@@ -70,7 +70,7 @@ abstract class MyBookingModelFactory {
   static MyBookingModel _fromJson(Map<String, dynamic> json) {
     final myBooking = MyBookingModel()
       ..id = json['id']
-      ..money = json['money']
+      ..total = json['total']
       ..userId = json['userId']
       ..address = json['address']
       ..date = json['date']

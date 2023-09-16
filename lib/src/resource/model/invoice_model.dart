@@ -9,9 +9,9 @@ class InvoiceModel {
   int? userId;
   String? code;
   String? status;
-  String? discount;
+  num? discount;
   String? paymentStatus;
-  String? total;
+  num? total;
   String? myBookingId;
   String? deletedAt;
   String? createdAt;
@@ -24,6 +24,12 @@ class InvoiceModel {
     this.deletedAt,
     this.createdAt,
     this.myBooking,
+    this.discount,
+    this.status,
+    this.code,
+    this.myBookingId,
+    this.paymentStatus,
+    this.total,
   });
 }
 
@@ -64,6 +70,13 @@ abstract class InvoiceModelFactory {
       ..id = json['id']
       ..name = json['name']
       ..userId = json['userId']
+      ..code = json['code']
+      ..userId = json['userId']
+      ..discount = json['discount']
+      ..status = json['status']
+      ..paymentStatus = json['paymentStatus']
+      ..total = json['total']
+      ..myBookingId = json['myBookingId']
       ..myBooking = json['myBooking'] != null
           ? MyBookingModelFactory.create(jsonEncode(json['myBooking']))
           : null

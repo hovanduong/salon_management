@@ -9,7 +9,7 @@ class MyServiceModel {
   int? id;
   String? name;
   int? userId;
-  String? money;
+  num? money;
   List<CategoryModel>? categories;
   String? deletedAt;
   String? createdAt;

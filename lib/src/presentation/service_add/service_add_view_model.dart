@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
@@ -174,7 +176,7 @@ class ServiceAddViewModel extends BaseViewModel {
       AuthParams(
         myServiceModel: MyServiceModel(
           name: nameServiceController.text,
-          money: priceController.text,
+          money: double.parse(priceController.text.trim()) ,
         ),
         listCategory: categoryId,
       ),
