@@ -102,57 +102,24 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
-  Widget buildIconRemove(int index){
-    return Positioned(
-      bottom: 23,
-      right: -14,
-      child: IconButton(
-        onPressed: (){
-          _viewModel!..removeCategory(index)..onSubmit()..setCategoryId();
-        }, 
-        icon: const Icon(Icons.highlight_remove, size: 20, 
-          color: AppColors.COLOR_WHITE,),
-      ),
-    );
-  }
-
   Widget buildSelectedCategory(int index){
-    return Stack(
-      children: [
-        Container(
-          width: 110,
-          margin: EdgeInsets.only(bottom: SizeToPadding.sizeLarge),
-          padding: EdgeInsets.symmetric(
-            horizontal: SpaceBox.sizeMedium, 
-            vertical: SpaceBox.sizeSmall,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.PRIMARY_GREEN,
-            borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
-          ),
-          child: Paragraph(
-            content: _viewModel!.selectedCategory[index].name,
-            color: AppColors.COLOR_WHITE,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        buildIconRemove(index),
-      ],
+    return Chip(
+      label: Paragraph(
+        content: _viewModel!.selectedCategory[index].name,
+        style: STYLE_MEDIUM_BOLD,
+        overflow: TextOverflow.ellipsis,
+      ),
+      onDeleted: () => _viewModel!..removeCategory(index)
+        ..onSubmit()..setCategoryId(),
     );
   }
 
   Widget buildListCategories(){
-    return SizedBox(
-      height: 100,
-      child: GridView.builder(
-        itemCount: _viewModel!.selectedCategory.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1.8,
-          crossAxisSpacing: SpaceBox.sizeSmall,
-        ), 
-        itemBuilder: (context, index) => buildSelectedCategory(index),
-      ),
+    return Wrap(
+      runSpacing: -5,
+      spacing: SpaceBox.sizeSmall,
+      children: List.generate(_viewModel!.selectedCategory.length, 
+        buildSelectedCategory,)
     );
   }
 
