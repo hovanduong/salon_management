@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../intl/generated/l10n.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/auth.dart';
@@ -11,33 +12,33 @@ import '../../resource/service/category_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
-class CategoryAddViewModel extends BaseViewModel{
-  bool enableButton=false;
+class CategoryAddViewModel extends BaseViewModel {
+  bool enableButton = false;
   TextEditingController categoryController = TextEditingController();
   String? messageErrorCategory;
-  CategoryApi categoryApi= CategoryApi();
+  CategoryApi categoryApi = CategoryApi();
   CategoryModel? categoryModel;
-  Future<void> init(CategoryModel? data)async{
-    if(data != null){
-      categoryModel=data;
-      categoryController.text= categoryModel!.name.toString();
-      enableButton=true;
+  Future<void> init(CategoryModel? data) async {
+    if (data != null) {
+      categoryModel = data;
+      categoryController.text = categoryModel!.name.toString();
+      enableButton = true;
     }
   }
 
   void validCategory(String? value) {
     if (value == null || value.isEmpty) {
-      messageErrorCategory= ServiceAddLanguage.emptyNameError;
-    }else if(value.length<2){
-      messageErrorCategory=S.current.validName;
-    }else{
-      messageErrorCategory='';
+      messageErrorCategory = ServiceAddLanguage.emptyNameError;
+    } else if (value.length < 2) {
+      messageErrorCategory = S.current.validName;
+    } else {
+      messageErrorCategory = '';
     }
     notifyListeners();
   }
 
   void onSubmit() {
-    if (messageErrorCategory == '' && categoryController.text!='') {
+    if (messageErrorCategory == '' && categoryController.text != '') {
       enableButton = true;
     } else {
       enableButton = false;
@@ -62,20 +63,21 @@ class CategoryAddViewModel extends BaseViewModel{
     );
   }
 
-  Future<void> setSourceButton() async{
-    if(categoryModel != null){
-      print('update');
+  Future<void> setSourceButton() async {
+    if (categoryModel != null) {
       await putCategory();
-      Timer(const Duration(seconds: 2), () { Navigator.pop(context); 
-        Navigator.pop(context);}) ;
-    }else{
+      Timer(const Duration(seconds: 2), () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    } else {
       await postCategory(categoryController.text);
-      categoryController.text='';
+      categoryController.text = '';
       onSubmit();
     }
   }
 
-  dynamic showErrorDialog(_){
+  dynamic showErrorDialog(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -88,7 +90,7 @@ class CategoryAddViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showSuccessDiaglog(_){
+  dynamic showSuccessDiaglog(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -103,11 +105,15 @@ class CategoryAddViewModel extends BaseViewModel{
     );
   }
 
-  void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
   }
 
   Future<void> postCategory(String name) async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await categoryApi.postCategory(name);
 
     final value = switch (result) {
@@ -116,31 +122,39 @@ class CategoryAddViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDialog(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
     } else {
-      showSuccessDiaglog(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showSuccessDiaglog(context);
     }
     notifyListeners();
   }
 
   Future<void> putCategory() async {
+    LoadingDialog.showLoadingDialog(context);
 
     final result = await categoryApi.putCategory(
-      AuthParams(id: categoryModel!.id, name: categoryController.text),);
+      AuthParams(id: categoryModel!.id, name: categoryController.text),
+    );
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,
       Failure(exception: final exception) => exception,
     };
 
-   if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDialog(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
     } else {
-      showSuccessDiaglog(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showSuccessDiaglog(context);
     }
     notifyListeners();
   }

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../intl/generated/l10n.dart';
 import '../routers.dart';
+import '../sign_in/sign_in.dart';
 
 class Constants {
   static const String languageVietName = 'vi';
@@ -43,8 +44,6 @@ class MyApp extends StatelessWidget {
       //           ),
       initialRoute: Routers.getStarted,
       onGenerateRoute: Routers.generateRoute,
-
-      // home: const ServiceAddScreen(),
     );
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/model/my_service_model.dart';
 import '../../resource/model/radio_model.dart';
@@ -13,40 +16,41 @@ import '../base/base.dart';
 class ServiceAddViewModel extends BaseViewModel {
   TextEditingController nameServiceController = TextEditingController();
   TextEditingController priceController = TextEditingController();
-  List<CategoryModel> listCategory = <CategoryModel>[];
+
   Map<int, String> mapCategory = {};
-  bool enableSubmit = false;
+
   String messageErrorNameService = '';
   String messageErrorPrice = '';
-  CategoryApi categoryApi = CategoryApi();
+
+  List<CategoryModel> listCategory = <CategoryModel>[];
   List<RadioModel> selectedCategory = [];
   List<bool> listIsCheck = [];
-  AuthApi authApi = AuthApi();
   List<int> categoryId = [];
-  bool isColorProvinces = false;
+
+  AuthApi authApi = AuthApi();
+  CategoryApi categoryApi = CategoryApi();
   MyServiceApi myServiceApi = MyServiceApi();
+
+  bool isColorProvinces = false;
+  bool enableSubmit = false;
+
   Future<void> init() async {
     await getCategory();
     await initMapCategory();
   }
 
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
   Future<void> changeValueCategory(List<RadioModel> value) async {
     selectedCategory.clear();
     selectedCategory = value;
-    // await clearDatAgencies();
     notifyListeners();
   }
-
-  // Future<void> setCategory() async{
-  //   if(selectedCategory.isNotEmpty){
-  //     selectedCategory.forEach((element) {
-  //       listCategory.forEach((element) {
-  //         mapCategory.addAll({element.id!: '${element.name}'},);
-  //       });
-  //     });
-  //   }
-  //   notifyListeners();
-  // }
 
   Future<void> setCategoryId() async {
     categoryId.clear();
@@ -64,7 +68,6 @@ class ServiceAddViewModel extends BaseViewModel {
         {element.id!: '${element.name}'},
       );
     });
-    print(mapCategory);
     notifyListeners();
   }
 
@@ -160,21 +163,30 @@ class ServiceAddViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      // await showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDialog(context);
+      // await showErrorDialog(context);
     } else {
       listCategory = value as List<CategoryModel>;
     }
     notifyListeners();
   }
 
+  void clearData() {
+    nameServiceController.text = '';
+    priceController.text = '';
+    selectedCategory.clear();
+    categoryId.clear();
+    notifyListeners();
+  }
+
   Future<void> postService() async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await myServiceApi.postService(
       AuthParams(
         myServiceModel: MyServiceModel(
           name: nameServiceController.text,
-          money: double.parse(priceController.text.trim()) ,
+          money: double.parse(priceController.text.trim()),
         ),
         listCategory: categoryId,
       ),
@@ -186,15 +198,16 @@ class ServiceAddViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDialog(context);
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
     } else {
-      nameServiceController.text='';
-      priceController.text='';
-      selectedCategory.clear();
-      categoryId.clear();
-      showSuccessDialog(context);
+      LoadingDialog.hideLoadingDialog(context);
+      clearData();
+      await showSuccessDialog(context);
+      closeDialog(context);
     }
     notifyListeners();
   }

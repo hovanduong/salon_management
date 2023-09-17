@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
@@ -118,11 +117,20 @@ class SignInViewModel extends BaseViewModel {
     // ConfigAnalytics.setCurrentScreen(Constants.signInScreen);
   }
 
+  String? handleNumberPhone(String? phone) {
+    if (phone == null) {
+      return null;
+    }
+    return phone.substring(1, phone.length);
+  }
+
   Future<void> onLogin({String? phone, String? password}) async {
+    final phoneNumber = handleNumberPhone(phone);
+
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.login(
       AuthParams(
-        phoneNumber: phone,
+        phoneNumber: int.parse(phoneNumber!),
         password: password,
       ),
     );
