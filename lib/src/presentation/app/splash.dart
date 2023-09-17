@@ -30,8 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacementNamed(context, Routers.navigation);
 
   Future<void> _init() async {
-    await AppPref.logout();
-    await HttpRemote.init();
+    // await AppPref.logout();
+    // await HttpRemote.init();
     final token = await AppPref.getToken();
     if (token == null || token.isEmpty) {
       await _goToSignIn(context);
