@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -25,7 +26,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       viewModel: CategoryViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) {
-        return buildCategory();
+        return buildListCategories();
       },
     );
   }
@@ -50,14 +51,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildCardService(int index, int serviceIndex) {
     final idService= _viewModel!.listCategory[index].myServices?[serviceIndex].id;
+    final idCategory= _viewModel!.listCategory[index].id;
     final money= _viewModel!.listCategory[index].myServices?[serviceIndex].money;
     return Padding(
       padding:EdgeInsets.only(
             bottom: SpaceBox.sizeSmall, right: SpaceBox.sizeMedium,),
       child: SlidableActionWidget(
-        onTapButtonFirst: (context) => _viewModel!.deleteService(idService!),
-        onTapButtonSecond: (context) 
-          => _viewModel!.goToUpdateServiceCategory(context,),
+        onTapButtonFirst: (context) 
+          => _viewModel!.deleteService(idCategory!, idService!),
         child: DecoratedBox(
           decoration: BoxDecoration(
               color: AppColors.COLOR_WHITE,
@@ -70,14 +71,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
             title: Paragraph(
               content:
                   _viewModel!.listCategory[index].myServices?[serviceIndex].name,
-              style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
+              style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
             ),
             subtitle: Paragraph(
               content:
                   AppCurrencyFormat.formatMoneyVND(
                     money ?? 0),
-              style: STYLE_SMALL.copyWith(
-                  fontWeight: FontWeight.w500, color: AppColors.BLACK_300,),
+              style: STYLE_SMALL_BOLD.copyWith(color: AppColors.BLACK_400,),
             ),
           ),
         ),
@@ -94,44 +94,46 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItemCategory(int index) {
-    return GestureDetector(
-        onTap: () {
-           _viewModel!.setIcon(index);
-        },
-        child: Icon(
-          _viewModel!.listIconCategory[index] == true
-              ? Icons.arrow_drop_down_circle
-              : Icons.remove_circle, 
-          color: AppColors.PRIMARY_GREEN, size: 27,
-        ),);
+    return Icon(
+      _viewModel!.listIconCategory[index] == true
+          ? Icons.arrow_drop_down_circle
+          : Icons.remove_circle, 
+      color: AppColors.PRIMARY_GREEN, size: 27,
+    );
   }
 
   Widget buildTitleCategory(int index) {
     final id= _viewModel!.listCategory[index].id;
     final name= _viewModel!.listCategory[index].name;
-    return SlidableActionWidget(
-      onTapButtonFirst: (context) => _viewModel!.deleteCategory(id!),
-      onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
-        context: context, categoryModel: CategoryModel(
-          id: id,
-          name: name
-        )
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding:  EdgeInsets.only(
-              right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium,
-              top: SizeToPadding.sizeMedium
+    return InkWell(
+      onTap: () {
+        _viewModel!.setIcon(index);
+      },
+      child: SlidableActionWidget(
+        isCheckCategory: true,
+        onTapButtonFirst: (context) => _viewModel!.deleteCategory(id!),
+        onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
+          context: context, categoryModel: CategoryModel(
+            id: id,
+            name: name
+          )
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding:  EdgeInsets.only(
+                right: SizeToPadding.sizeSmall, bottom: SizeToPadding.sizeMedium,
+                top: SizeToPadding.sizeMedium
+              ),
+              child: Paragraph(
+                content: _viewModel!.listCategory[index].name,
+                style: STYLE_LARGE_BOLD,
+              ),
             ),
-            child: Paragraph(
-              content: _viewModel!.listCategory[index].name,
-              style: STYLE_LARGE_BOLD,
-            ),
-          ),
-          buildItemCategory(index),
-        ],
+            buildItemCategory(index),
+          ],
+        ),
       ),
     );
   }
@@ -148,16 +150,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildBody() {
     return Expanded(
-      child: DecoratedBox(
-        decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
-        ],),
-        child: Padding(
-          padding: EdgeInsets.only(top: SizeToPadding.sizeMedium,
-            left: SizeToPadding.sizeSmall, right: SizeToPadding.sizeVerySmall),
-          child: ListView.builder(
-            itemCount: _viewModel!.listCategory.length,
-            itemBuilder: (context, index) => buildContentCategoryWidget(index),
+      child: RefreshIndicator(
+        color: AppColors.PRIMARY_GREEN,
+        onRefresh: ()async {
+          await _viewModel!.pullRefresh();
+        },
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: AppColors.COLOR_WHITE, boxShadow: [
+            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+          ],),
+          child: Padding(
+            padding: EdgeInsets.only(top: SizeToPadding.sizeMedium,
+              left: SizeToPadding.sizeSmall, right: SizeToPadding.sizeVerySmall),
+            child: ListView.builder(
+              itemCount: _viewModel!.listCategory.length,
+              itemBuilder: (context, index) => buildContentCategoryWidget(index),
+            ),
           ),
         ),
       ),
@@ -180,6 +188,34 @@ class _CategoryScreenState extends State<CategoryScreen> {
           onPressed: (){_viewModel!.goToAddCategory(context: context);},
         ),
       ],
+    );
+  }
+
+  Widget buildListCategories() {
+    return Scaffold(
+      body: StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildCategory(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

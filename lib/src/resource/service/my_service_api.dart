@@ -48,10 +48,10 @@ class MyServiceApi {
     }
   }
 
-  Future<Result<bool, Exception>> deleteService(int id) async {
+  Future<Result<bool, Exception>> deleteService(int idCategory, int idService) async {
     try {
       final response = await HttpRemote.delete(
-        url: '/my-service/$id',
+        url: '/my-service/$idService/$idCategory',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {

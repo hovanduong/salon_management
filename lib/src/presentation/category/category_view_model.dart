@@ -18,8 +18,37 @@ class CategoryViewModel extends BaseViewModel {
   List<bool> listIconCategory= [];
   bool isIconFloatingButton= true;
   TextEditingController category = TextEditingController();
-  Future<void> init() async{
+  bool isLoading = true;
+  bool loadingMore = false;
+  bool isLoadingList = true;
+ 
+  ScrollController scrollController = ScrollController();
+
+  Future<void> init() async {
+    scrollController.addListener(scrollListener);
     await getCategory();
+    isLoading = false;
+    isLoadingList = false;
+    notifyListeners();
+  }
+
+  dynamic scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 0) {
+      loadingMore = true;
+      Future.delayed(const Duration(seconds: 2), () {
+        // loadMoreData();
+        loadingMore = false;
+      });
+ 
+      notifyListeners();
+    }
+  }
+
+  Future<void> pullRefresh() async {
+    isLoadingList = true;
+    await init();
     notifyListeners();
   }
 
@@ -179,8 +208,8 @@ class CategoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> deleteService(int id) async {
-    final result = await myServiceApi.deleteService(id);
+  Future<void> deleteService(int idCategory, int idService) async {
+    final result = await myServiceApi.deleteService(idCategory, idService);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,

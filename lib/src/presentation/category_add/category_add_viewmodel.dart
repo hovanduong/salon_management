@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
 import '../../intl/generated/l10n.dart';
@@ -65,6 +66,8 @@ class CategoryAddViewModel extends BaseViewModel{
     if(categoryModel != null){
       print('update');
       await putCategory();
+      Timer(const Duration(seconds: 2), () { Navigator.pop(context); 
+        Navigator.pop(context);}) ;
     }else{
       await postCategory(categoryController.text);
       categoryController.text='';
@@ -123,8 +126,9 @@ class CategoryAddViewModel extends BaseViewModel{
   }
 
   Future<void> putCategory() async {
+
     final result = await categoryApi.putCategory(
-      AuthParams(id: categoryModel!.id, name: categoryModel!.name),);
+      AuthParams(id: categoryModel!.id, name: categoryController.text),);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,

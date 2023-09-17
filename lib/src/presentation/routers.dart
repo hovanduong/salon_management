@@ -7,7 +7,6 @@ import 'bottom_navigation_bar/navigation_screen.dart';
 import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'create_password/create_password.dart';
-import 'service_update/service_update.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
 import 'update_profile/update_profile.dart';
@@ -80,13 +79,6 @@ class Routers {
       //     name: homeDetails,
       //     arguments: arguments,
       //   );
-      case updateService:
-        return animRoute(
-          const ServiceUpdateScreen(),
-          beginOffset: right,
-          name: updateService,
-          arguments: arguments,
-        );
 
       case addService:
         return animRoute(
