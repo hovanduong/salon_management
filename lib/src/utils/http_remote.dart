@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -20,7 +20,7 @@ class HttpRemote {
   static final HttpRemote instance = HttpRemote._();
   static Future<void> init() async {
     accessToken = await AppPref.getToken() ?? '';
-    debugPrint('accessToken: $accessToken');
+    log('accessToken: $accessToken');
     if (accessToken.isEmpty || accessToken == 'null') {
       requestHeaders = {
         'Content-Type': 'application/json',

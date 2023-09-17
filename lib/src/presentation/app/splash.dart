@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../utils/http_remote.dart';
 import '../../utils/utils.dart';
 import '../routers.dart';
 
@@ -29,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacementNamed(context, Routers.navigation);
 
   Future<void> _init() async {
+    // await AppPref.logout();
+    // await HttpRemote.init();
     final token = await AppPref.getToken();
     if (token == null || token.isEmpty) {
       await _goToSignIn(context);
