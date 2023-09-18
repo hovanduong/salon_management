@@ -15,14 +15,13 @@ class HistoryBookingScreen extends StatefulWidget {
 }
 
 class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
-
   HistoryBookingViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: HistoryBookingViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
+      viewModel: HistoryBookingViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) => buildHistoryScreen(),
     );
   }
@@ -37,7 +36,8 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
             style: STYLE_LARGE,
           ),
         ),
-        leading: Icon(Icons.arrow_back,
+        leading: Icon(
+          Icons.arrow_back,
           color: AppColors.BLACK_500,
         ),
         trailing: Icon(null),
@@ -45,14 +45,20 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     );
   }
 
-  Widget buildAppBar(){
+  Widget buildAppBar() {
     return Container(
       color: AppColors.COLOR_WHITE,
       child: const TabBar(
         tabs: [
-          Tab(text: 'Sắp tới',),  
-          Tab(text: 'Đã xong',),
-          Tab(text: 'Đã hủy',), 
+          Tab(
+            text: 'Sắp tới',
+          ),
+          Tab(
+            text: 'Đã xong',
+          ),
+          Tab(
+            text: 'Đã hủy',
+          ),
         ],
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
@@ -64,21 +70,21 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
 
   void diaLogPhone(String phone) {
     showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel:
-          MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black45,
-      transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (buildContext, animation, secondaryAnimation,) {
-        return DiaLogPhoneCustomer(
-          phone: phone,
-        );
-      },
-    );
+        context: context,
+        barrierDismissible: true,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black45,
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation,
+            Animation secondaryAnimation) {
+          return DiaLogPhoneCustomer(
+            phone: phone,
+          );
+        });
   }
 
-  Widget buildFirstTab(){
+  Widget buildFirstTab() {
     return ListView.builder(
       itemCount: 1,
       itemBuilder: (context, index) => NotificationService(
@@ -94,7 +100,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     );
   }
 
-  Widget buildSecondTab(){
+  Widget buildSecondTab() {
     return Column(
       children: [
         NotificationService(
@@ -108,7 +114,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     );
   }
 
-  Widget buildThirdTab(){
+  Widget buildThirdTab() {
     return Column(
       children: [
         NotificationService(
@@ -122,7 +128,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     );
   }
 
-  Widget setStatusNotification(String type, String status){
+  Widget setStatusNotification(String type, String status) {
     switch (type) {
       case 'done':
         return StatusDoneWidget.statusDone(status);
@@ -133,24 +139,24 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     }
   }
 
-  Widget buildContentTab(){
+  Widget buildContentTab() {
     return SizedBox(
       width: double.maxFinite,
       height: MediaQuery.of(context).size.height,
       child: Padding(
         padding: EdgeInsets.all(SpaceBox.sizeMedium),
-        child: TabBarView(  
-          children: [  
-            buildFirstTab(),  
+        child: TabBarView(
+          children: [
+            buildFirstTab(),
             buildSecondTab(),
             buildThirdTab(),
-          ],  
+          ],
         ),
       ),
     );
   }
 
-  Widget buildHistoryScreen(){
+  Widget buildHistoryScreen() {
     return DefaultTabController(
       length: 3,
       child: SafeArea(
@@ -158,13 +164,15 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         left: false,
         right: false,
         bottom: false,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildHeader(),
-              buildAppBar(),
-              buildContentTab(),
-            ],
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildHeader(),
+                buildAppBar(),
+                buildContentTab(),
+              ],
+            ),
           ),
         ),
       ),
