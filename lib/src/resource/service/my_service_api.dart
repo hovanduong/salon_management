@@ -11,7 +11,7 @@ class MyServiceApi {
   Future<Result<List<MyServiceModel>, Exception>> getService() async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-service?pageSize=10&page=1',
+        url: '/my-service',
       );
       switch (response?.statusCode) {
         case 200:
@@ -27,15 +27,16 @@ class MyServiceApi {
     }
   }
 
-
-
-    Future<Result<bool, Exception>> postService(AuthParams? params) async {
+  Future<Result<bool, Exception>> postService(AuthParams? params) async {
     try {
-      final response = await HttpRemote.post(url: '/my-service', body: {
-        'name': params!.myServiceModel!.name,
-        'money': params.myServiceModel!.money,
-        'categories': params.listCategory
-      },);
+      final response = await HttpRemote.post(
+        url: '/my-service',
+        body: {
+          'name': params!.myServiceModel!.name,
+          'money': params.myServiceModel!.money,
+          'categories': params.listCategory
+        },
+      );
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:

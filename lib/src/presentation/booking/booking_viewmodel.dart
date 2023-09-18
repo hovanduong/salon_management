@@ -17,6 +17,8 @@ import 'components/choose_service_widget.dart';
 class BookingViewModel extends BaseViewModel {
   final List<Widget> fields = [];
   String? messageService;
+  List<int> myServiceId = [];
+  int? myCustomerId;
 
   late Object dropValue = myService.first;
 
@@ -27,7 +29,7 @@ class BookingViewModel extends BaseViewModel {
 
   List<MyCustomerModel> searchResults = [];
   bool isListViewVisible = false;
-
+  Map<int, String> mapPhone = {};
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final moneyController = TextEditingController();
@@ -67,6 +69,7 @@ class BookingViewModel extends BaseViewModel {
     findPhone();
     await fetchService();
     await fetchCustomer();
+    await initMapCategory();
     notifyListeners();
   }
 
@@ -114,15 +117,37 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-
-  void changeIsListViewVisible(bool isSelectPhone) {
-    if (isSelectPhone) {
-      isListViewVisible = false;
-    } else {
-      isListViewVisible = true;
-    }
+  Future<void> initMapCategory() async {
+    myCustumer.forEach((element) {
+      mapPhone.addAll(
+        {element.id!: '${element.phoneNumber}'},
+      );
+    });
+    print(mapPhone);
     notifyListeners();
   }
+
+  Future<void> setNameCustomer(MapEntry<dynamic, dynamic> value) async {
+    phoneController.text = value.value;
+    nameController.text = myCustumer
+        .where((element) => element.id == value.key)
+        .first
+        .fullName
+        .toString();
+    myCustomerId = value.key;
+
+    notifyListeners();
+  }
+
+  // void changeIsListViewVisible() {
+  //   // if (isSelectPhone) {
+  //   //   isListViewVisible = false;
+  //   // } else {
+  //   //   isListViewVisible = true;
+  //   // }
+  //   isListViewVisible = true;
+  //   notifyListeners();
+  // }
 
   void setDropValue(dynamic value) {
     dropValue = value.toString();
@@ -130,7 +155,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  double totalPrice = 0;
+  num totalPrice = 0;
   void calculateTotalPrice() {
     final currencyFormatter =
         NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
@@ -140,13 +165,14 @@ class BookingViewModel extends BaseViewModel {
     moneyController.text = totalPriceT;
   }
 
-  double calculateTotalPriceByName(
+  num calculateTotalPriceByName(
       dynamic selectedName, List<MyServiceModel> myService) {
     final selectedItems =
         myService.where((item) => item.name == selectedName).toList();
 
     for (final item in selectedItems) {
-      totalPrice += double.parse(item.money.toString());
+      print(item.money);
+      totalPrice += item.money ?? 0;
     }
 
     return totalPrice;
@@ -160,6 +186,7 @@ class BookingViewModel extends BaseViewModel {
           setDropValue(value);
 
           validService();
+          // myServiceId.add(value)
         },
         labelText: HomeLanguage.service,
         // dropValue: null,
@@ -244,8 +271,6 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-
-
   void checkDescriptionInput() {
     if (descriptionController.text.isEmpty) {
       onDescription = false;
@@ -296,7 +321,6 @@ class BookingViewModel extends BaseViewModel {
         lastDate: DateTime(2100),
       );
 
-
   List<MyCustomerModel> getContactSuggestions(String searchText) {
     final results = myCustumer
         .where(
@@ -311,32 +335,31 @@ class BookingViewModel extends BaseViewModel {
     return results;
   }
 
-  void updatePhoneNumber(String selectedPhoneNumber) {
-    phoneController.text = selectedPhoneNumber;
-    searchText = selectedPhoneNumber;
-    searchResults = getContactSuggestions(searchText);
-    findName();
-    isListViewVisible = true;
-    notifyListeners();
-  }
+  // void updatePhoneNumber(String selectedPhoneNumber) {
+  //   phoneController.text = selectedPhoneNumber;
+  //   searchText = selectedPhoneNumber;
+  //   searchResults = getContactSuggestions(searchText);
+  //   findName();
+  //   isListViewVisible = true;
+  //   notifyListeners();
+  // }
 
-  void findName() {
-    final phoneNumber = phoneController.text;
-    var found = false;
+  // void findName() {
+  //   final phoneNumber = phoneController.text;
+  //   var found = false;
 
-    for (final contact in myCustumer) {
-      if (phoneNumber == contact.phoneNumber) {
-        nameController.text = contact.fullName!;
-        notifyListeners();
-        found = true;
-        break;
-      }
-    }
+  //   for (final contact in myCustumer) {
+  //     if (phoneNumber == contact.phoneNumber) {
+  //       nameController.text = contact.fullName!;
+  //       notifyListeners();
+  //       found = true;
+  //       break;
+  //     }
+  //   }
 
-    if (!found) {
-      nameController.text = 'Không tìm thấy';
-      notifyListeners();
-    }
-  }
+  //   if (!found) {
+  //     nameController.text = 'Không tìm thấy';
+  //     notifyListeners();
+  //   }
+  // }
 }
-

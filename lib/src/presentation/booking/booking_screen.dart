@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
+import '../../configs/widget/bottom_sheet/bottom_sheet_single.dart';
 import '../base/base.dart';
 import 'booking.dart';
 import 'components/build_service_widget.dart';
@@ -112,16 +114,17 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         Row(
           children: [
             Expanded(
-                child: ElevatedButton(
-              onPressed: () async {
-                await _viewModel!.updateTime();
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _viewModel!.updateTime();
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
+                ),
+                child: Paragraph(content: '$hours:$minutes'),
               ),
-              child: Paragraph(content: '$hours:$minutes'),
-            ),),
+            ),
             SizedBox(
               width: SpaceBox.sizeMedium,
             ),
@@ -135,8 +138,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                       MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
                 ),
                 child: Paragraph(
-                    content:
-                        '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}',),
+                  content:
+                      '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}',
+                ),
               ),
             ),
           ],
@@ -165,62 +169,91 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildServicePhone() {
-    return Column(
-      children: [
-        AppFormField(
-          hintText: ServiceAddLanguage.enterPhoneNumber,
-          labelText: ServiceAddLanguage.phoneNumber,
-          validator: _viewModel!.phoneErrorMsg,
-          textEditingController: _viewModel!.phoneController,
-          onTap: () {
-            _viewModel!.changeIsListViewVisible(false);
-          },
-          onChanged: (value) {
-            print(value);
-
-            if (value.isNotEmpty) {
-              _viewModel!.isListViewVisible = true;
-              _viewModel!.searchResults =
-                  _viewModel!.getContactSuggestions(value);
-            } else {
-              _viewModel!.isListViewVisible = true;
-            }
-            _viewModel!
-              ..enableConfirmButton()
-              ..findName();
-          },
-        ),
-        // if (_viewModel!.isListViewVisible &&
-        //     _viewModel!.searchResults.isNotEmpty)
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: _viewModel!.isListViewVisible
-              ? _viewModel!.searchResults.length
-              : 0,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Paragraph(
-                content: _viewModel!.searchResults[index].fullName,
-                style: STYLE_MEDIUM,
-                fontWeight: FontWeight.w600,
-              ),
-              subtitle: Paragraph(
-                content: _viewModel!.searchResults[index].phoneNumber,
-                style: STYLE_MEDIUM,
-                fontWeight: FontWeight.w600,
-              ),
-              onTap: () {
-                _viewModel!.updatePhoneNumber(
-                    _viewModel!.searchResults[index].phoneNumber!,);
-                _viewModel!.isListViewVisible = false;
-              },
-            );
-          },
-        ),
-      ],
+  void showSelectPhone(_) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      isScrollControlled: true,
+      builder: (context) => BottomSheetSingle(
+        titleContent: 'Chọn số điện thoại',
+        listItems: _viewModel!.mapPhone,
+        initValues: 0,
+        onTapSubmit: (value) {
+          _viewModel!.setNameCustomer(value);
+        },
+      ),
     );
   }
+
+  Widget buildServicePhone() {
+    return InkWell(
+      onTap: () => showSelectPhone(context),
+      child: NameFieldWidget(
+        name: 'Phone Number',
+        nameController: _viewModel!.phoneController,
+      ),
+    );
+  }
+  // Widget buildServicePhone() {
+  //   return Column(
+  //     children: [
+  //       AppFormField(
+  //         hintText: ServiceAddLanguage.enterPhoneNumber,
+  //         labelText: ServiceAddLanguage.phoneNumber,
+  //         validator: _viewModel!.phoneErrorMsg,
+  //         textEditingController: _viewModel!.phoneController,
+  //         onTap: () {
+  //           _viewModel!.changeIsListViewVisible();
+  //         },
+  //         onChanged: (value) {
+  //           print(value);
+
+  //           if (value.isNotEmpty) {
+  //             _viewModel!.isListViewVisible = true;
+  //             _viewModel!.searchResults =
+  //                 _viewModel!.getContactSuggestions(value);
+  //           } else {
+  //             _viewModel!.isListViewVisible = true;
+  //           }
+  //           _viewModel!
+  //             ..enableConfirmButton()
+  //             ..findName();
+  //         },
+  //       ),
+  //       // if (_viewModel!.isListViewVisible &&
+  //       //     _viewModel!.searchResults.isNotEmpty)
+  //       ListView.builder(
+  //         shrinkWrap: true,
+  //         itemCount: _viewModel!.isListViewVisible
+  //             ? _viewModel!.searchResults.length
+  //             : 0,
+  //         itemBuilder: (context, index) {
+  //           return ListTile(
+  //             title: Paragraph(
+  //               content: _viewModel!.searchResults[index].fullName,
+  //               style: STYLE_MEDIUM,
+  //               fontWeight: FontWeight.w600,
+  //             ),
+  //             subtitle: Paragraph(
+  //               content: _viewModel!.searchResults[index].phoneNumber,
+  //               style: STYLE_MEDIUM,
+  //               fontWeight: FontWeight.w600,
+  //             ),
+  //             onTap: () {
+  //               _viewModel!.updatePhoneNumber(
+  //                 _viewModel!.searchResults[index].phoneNumber!,
+  //               );
+  //               _viewModel!.isListViewVisible = false;
+  //             },
+  //           );
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget buildAddress() {
     return AppFormField(
