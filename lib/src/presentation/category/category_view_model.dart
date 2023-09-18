@@ -164,6 +164,7 @@ class CategoryViewModel extends BaseViewModel {
     } else {
       listCategory = value as List<CategoryModel>;
       setListIcon();
+      print(listCategory.length);
     }
     notifyListeners();
   }

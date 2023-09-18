@@ -4,6 +4,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 
+import '../history_booking/history_booking_screen.dart';
 import '../homepage/homepage_screen.dart';
 import '../profile/profile_screen.dart';
 import '../booking/booking.dart';
@@ -60,7 +61,8 @@ class _NavigateScreenState extends State<NavigateScreen> {
             const BookingScreen()
           else
             Container(),
-          if (_viewModel!.selectedIndex == 2) const SizedBox() else Container(),
+          if (_viewModel!.selectedIndex == 2) 
+            const HistoryBookingScreen() else Container(),
           if (_viewModel!.selectedIndex == 3)
             const ProfileScreen()
           else

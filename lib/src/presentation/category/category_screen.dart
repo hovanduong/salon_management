@@ -5,11 +5,9 @@ import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../resource/model/model.dart';
-import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'category_view_model.dart';
-import 'components/floating_button_widget.dart';
-import 'components/slidable_action_widget.dart';
+import 'components/components.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -95,42 +93,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final idCategory = _viewModel!.listCategory[index].id;
     final money =
         _viewModel!.listCategory[index].myServices?[serviceIndex].money;
-    return Padding(
-        padding: EdgeInsets.only(
-          bottom: SpaceBox.sizeSmall,
-          right: SpaceBox.sizeMedium,
-        ),
-        child: SlidableActionWidget(
-          onTapButtonFirst: (context) =>
-              _viewModel!.deleteService(idCategory!, idService!),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: AppColors.COLOR_WHITE,
-              borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.BLACK_300,
-                  blurRadius: SpaceBox.sizeVerySmall,
-                )
-              ],
-            ),
-            child: ListTile(
-              title: Paragraph(
-                content: _viewModel!
-                    .listCategory[index].myServices?[serviceIndex].name,
-                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
-              ),
-              subtitle: Paragraph(
-                content: AppCurrencyFormat.formatMoneyVND(
-                  money ?? 0,
-                ),
-                style: STYLE_SMALL_BOLD.copyWith(
-                  color: AppColors.BLACK_400,
-                ),
-              ),
-            ),
-          ),
-        ));
+    final name = _viewModel!.listCategory[index].myServices?[serviceIndex].name;
+    return CardServiceWidget(
+      money: money,
+      name: name,
+      onTap: (context) => _viewModel!.deleteService(idCategory!, idService!),
+    );
   }
 
   Widget buildListService(int index) {
@@ -232,7 +200,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Column(
       children: [
         FloatingButtonWidget(
-          heroTag: 'btn1',
+          heroTag: 'btnOne',
           content: 'Add Service',
           iconData: Icons.add,
           onPressed: () {
@@ -240,7 +208,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           },
         ),
         FloatingButtonWidget(
-          heroTag: 'btn2',
+          heroTag: 'btnTwo',
           content: 'Add Category',
           iconData: Icons.add,
           onPressed: () {

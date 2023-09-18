@@ -66,7 +66,7 @@ class CategoryAddViewModel extends BaseViewModel {
   Future<void> setSourceButton() async {
     if (categoryModel != null) {
       await putCategory();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
         Navigator.pop(context);
       });
