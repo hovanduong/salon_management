@@ -60,8 +60,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                   buildServicePhone(),
                   buildName(),
                   buildService(),
+                  buildListService(),
+                  buildDiscount(),
                   buildMoney(),
-                  buildServiceDescription(),
+                  buildNote(),
                   buildAddress(),
                   buildDateTime(),
                   buildConfirmButton(),
@@ -75,10 +77,75 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
+ 
+  Widget buildListService() {
+    return Wrap(
+        runSpacing: -5,
+        spacing: SpaceBox.sizeSmall,
+        children: List.generate(
+          _viewModel!.selectedService.length,
+          buildSelectedService,
+        ));
+  }
+
+  Widget buildSelectedService(int index) {
+    return Chip(
+      label: Paragraph(
+        content: _viewModel!.selectedService[index].name,
+        style: STYLE_MEDIUM_BOLD,
+        overflow: TextOverflow.ellipsis,
+      ),
+      onDeleted: () => _viewModel!
+        ..removeService(index)
+        ..setServiceId(),
+    );
+  }
+
   Widget buildService() {
-    return BuildServiceWidget(
-      onTap: _viewModel!.addNewField,
-      fields: _viewModel!.fields,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Paragraph(
+          content: 'Selected Service',
+          style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle),
+          color: AppColors.PRIMARY_GREEN,
+          onPressed: () async {
+            showSelectCategory(context);
+          },
+        )
+      ],
+    );
+  }
+
+  void showSelectCategory(_) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      isScrollControlled: true,
+      builder: (context) => BottomSheetSingleRadio(
+        titleContent: 'Chon Service',
+        listItems: _viewModel!.mapService,
+        initValues: _viewModel!.serviceId,
+        onTapSubmit: (value) {
+          _viewModel!
+            ..changeValueService(value)
+            ..setServiceId();
+        },
+      ),
+    );
+  }
+
+  Widget buildDiscount() {
+    return AppFormField(
+      hintText: 'Nhập phiếu giảm giá (Tùy chọn)',
+      labelText: 'Giảm giá',
+      textEditingController: _viewModel!.discountController,
+      onChanged: (value) {
+        _viewModel!.enableConfirmButton();
+      },
     );
   }
 
@@ -197,63 +264,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
     );
   }
-  // Widget buildServicePhone() {
-  //   return Column(
-  //     children: [
-  //       AppFormField(
-  //         hintText: ServiceAddLanguage.enterPhoneNumber,
-  //         labelText: ServiceAddLanguage.phoneNumber,
-  //         validator: _viewModel!.phoneErrorMsg,
-  //         textEditingController: _viewModel!.phoneController,
-  //         onTap: () {
-  //           _viewModel!.changeIsListViewVisible();
-  //         },
-  //         onChanged: (value) {
-  //           print(value);
-
-  //           if (value.isNotEmpty) {
-  //             _viewModel!.isListViewVisible = true;
-  //             _viewModel!.searchResults =
-  //                 _viewModel!.getContactSuggestions(value);
-  //           } else {
-  //             _viewModel!.isListViewVisible = true;
-  //           }
-  //           _viewModel!
-  //             ..enableConfirmButton()
-  //             ..findName();
-  //         },
-  //       ),
-  //       // if (_viewModel!.isListViewVisible &&
-  //       //     _viewModel!.searchResults.isNotEmpty)
-  //       ListView.builder(
-  //         shrinkWrap: true,
-  //         itemCount: _viewModel!.isListViewVisible
-  //             ? _viewModel!.searchResults.length
-  //             : 0,
-  //         itemBuilder: (context, index) {
-  //           return ListTile(
-  //             title: Paragraph(
-  //               content: _viewModel!.searchResults[index].fullName,
-  //               style: STYLE_MEDIUM,
-  //               fontWeight: FontWeight.w600,
-  //             ),
-  //             subtitle: Paragraph(
-  //               content: _viewModel!.searchResults[index].phoneNumber,
-  //               style: STYLE_MEDIUM,
-  //               fontWeight: FontWeight.w600,
-  //             ),
-  //             onTap: () {
-  //               _viewModel!.updatePhoneNumber(
-  //                 _viewModel!.searchResults[index].phoneNumber!,
-  //               );
-  //               _viewModel!.isListViewVisible = false;
-  //             },
-  //           );
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
+ 
 
   Widget buildAddress() {
     return AppFormField(
@@ -268,25 +279,25 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildMoney() {
     return NameFieldWidget(
-      name: 'Money',
-      nameController: _viewModel!.moneyController,
+      name: 'total',
+      nameController: _viewModel!.totalController,
     );
   }
 
-  Widget buildServiceDescription() {
+  Widget buildNote() {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeVerySmall,
       ),
       child: AppFormField(
         maxLines: 3,
-        validator: _viewModel!.descriptionErrorMsg,
-        textEditingController: _viewModel!.descriptionController,
+        validator: _viewModel!.noteErrorMsg,
+        textEditingController: _viewModel!.noteController,
         labelText: ServiceAddLanguage.description,
         hintText: ServiceAddLanguage.enterServiceDescription,
         onChanged: (value) {
           _viewModel!
-            ..checkDescriptionInput()
+            ..checkNoteInput()
             ..enableConfirmButton();
         },
       ),
@@ -304,7 +315,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         onTap: () {
           _viewModel!
             ..confirmButton()
-            ..onServiceList(context);
+            ..postService();
         },
       ),
     );

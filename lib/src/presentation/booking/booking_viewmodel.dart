@@ -1,54 +1,58 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
-import '../../resource/model/my_customer_model.dart';
-import '../../resource/model/my_service_model.dart';
+import '../../configs/widget/dialog/warnig_network_dialog.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/model.dart';
+
+import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/auth.dart';
+import '../../resource/service/booking.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
-import 'components/choose_service_widget.dart';
 
 class BookingViewModel extends BaseViewModel {
   final List<Widget> fields = [];
   String? messageService;
-  List<int> myServiceId = [];
+  List<int>? myServiceId = [];
   int? myCustomerId;
-
-  late Object dropValue = myService.first;
+  BookingApi bookingApi = BookingApi();
+  // late Object dropValue = myService.first;
 
   String searchText = '';
   DateTime dateTime = DateTime.now();
 
-  List<String>? selectedServices = [];
-
+  // List<String>? selectedServices = [];
+  Map<int, String> mapService = {};
+  List<int> serviceId = [];
   List<MyCustomerModel> searchResults = [];
+  List<RadioModel> selectedService = [];
   bool isListViewVisible = false;
   Map<int, String> mapPhone = {};
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
-  final moneyController = TextEditingController();
+  final totalController = TextEditingController();
   final timeController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final noteController = TextEditingController();
   final addressController = TextEditingController();
+  final discountController = TextEditingController();
 
   bool onAddress = true;
   bool onPhone = true;
   bool onTopic = true;
   bool onMoney = true;
   bool onTime = true;
-  bool onDescription = true;
+  bool onNote = true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
   String? moneyErrorMsg;
   String? timeErrorMsg;
-  String? descriptionErrorMsg;
+  String? noteErrorMsg;
 
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustumer = [];
@@ -66,10 +70,11 @@ class BookingViewModel extends BaseViewModel {
   MyServiceApi myServiceApi = MyServiceApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
   Future<void> init() async {
-    findPhone();
+    // findPhone();
     await fetchService();
     await fetchCustomer();
-    await initMapCategory();
+    await initMapCustomer();
+    await initMapService();
     notifyListeners();
   }
 
@@ -117,13 +122,43 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> initMapCategory() async {
+  Future<void> changeValueService(List<RadioModel> value) async {
+    selectedService.clear();
+    selectedService = value;
+    notifyListeners();
+  }
+
+  Future<void> setServiceId() async {
+    serviceId.clear();
+    if (selectedService.isNotEmpty) {
+      selectedService.forEach((element) {
+        serviceId.add(element.id!);
+      });
+    }
+    notifyListeners();
+  }
+
+  void removeService(int index) {
+    selectedService.removeAt(index);
+    notifyListeners();
+  }
+
+  Future<void> initMapCustomer() async {
     myCustumer.forEach((element) {
       mapPhone.addAll(
         {element.id!: '${element.phoneNumber}'},
       );
     });
     print(mapPhone);
+    notifyListeners();
+  }
+
+  Future<void> initMapService() async {
+    myService.forEach((element) {
+      mapService.addAll(
+        {element.id!: '${element.name}'},
+      );
+    });
     notifyListeners();
   }
 
@@ -139,99 +174,30 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  // void changeIsListViewVisible() {
-  //   // if (isSelectPhone) {
-  //   //   isListViewVisible = false;
-  //   // } else {
-  //   //   isListViewVisible = true;
-  //   // }
-  //   isListViewVisible = true;
-  //   notifyListeners();
-  // }
-
-  void setDropValue(dynamic value) {
-    dropValue = value.toString();
-    calculateTotalPrice();
-    notifyListeners();
-  }
-
   num totalPrice = 0;
   void calculateTotalPrice() {
     final currencyFormatter =
         NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
 
-    totalPrice = calculateTotalPriceByName(dropValue, myService);
+    totalPrice = calculateTotalPriceByName(myService, serviceId);
     final totalPriceT = currencyFormatter.format(totalPrice);
-    moneyController.text = totalPriceT;
+    totalController.text = totalPriceT;
   }
 
   num calculateTotalPriceByName(
-      dynamic selectedName, List<MyServiceModel> myService) {
-    final selectedItems =
-        myService.where((item) => item.name == selectedName).toList();
+      List<MyServiceModel> myService, List<int> serviceID) {
+    num totalCost = 0;
 
-    for (final item in selectedItems) {
-      print(item.money);
-      totalPrice += item.money ?? 0;
+    for (final id in serviceID) {
+      // ignore: lines_longer_than_80_chars
+      final service =
+          myService.firstWhere((s) => s.id == id, orElse: MyServiceModel.new);
+      totalCost += service.money ?? 0;
     }
-
-    return totalPrice;
-  }
-
-  void addNewField() {
-    fields.add(
-      ChooseServiceWidget(
-        list: myService,
-        onChanged: (value) {
-          setDropValue(value);
-
-          validService();
-          // myServiceId.add(value)
-        },
-        labelText: HomeLanguage.service,
-        // dropValue: null,
-        onRemove: () {
-          removeField(fields.length - 1);
-        },
-      ),
-    );
-    notifyListeners();
-  }
-
-  void validService() {
-    if (dropValue == myService.first) {
-      messageService = 'BookingLanguage.validService';
-    } else {
-      messageService = '';
-    }
-    notifyListeners();
-  }
-
-  void removeField(int index) {
-    MyServiceModel? removedItem;
-
-    for (final item in myService) {
-      if (item.name == dropValue) {
-        removedItem = item;
-        break;
-      }
-    }
-
-    if (removedItem != null) {
-      totalPrice -= double.parse(removedItem.money.toString());
-      moneyController.text = totalPrice.toString();
-    }
-
-    fields.removeAt(index);
-    notifyListeners();
-  }
-
-  void findPhone() {
-    phoneController.addListener(() {
-      searchText = phoneController.text;
-      searchResults = getContactSuggestions(searchText);
-    });
-    notifyListeners();
+    print(serviceID);
+    print('object');
+    print(totalCost);
+    return totalCost;
   }
 
   void dis() {
@@ -271,16 +237,16 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void checkDescriptionInput() {
-    if (descriptionController.text.isEmpty) {
-      onDescription = false;
-      descriptionErrorMsg = ServiceAddLanguage.emptyDescriptionError;
-    } else if (descriptionController.text.length < 10) {
-      onDescription = false;
-      descriptionErrorMsg = ServiceAddLanguage.descriptionMinLenght;
+  void checkNoteInput() {
+    if (noteController.text.isEmpty) {
+      onNote = false;
+      noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
+    } else if (noteController.text.length < 10) {
+      onNote = false;
+      noteErrorMsg = ServiceAddLanguage.descriptionMinLenght;
     } else {
-      descriptionErrorMsg = '';
-      onDescription = true;
+      noteErrorMsg = '';
+      onNote = true;
     }
     notifyListeners();
   }
@@ -289,10 +255,10 @@ class BookingViewModel extends BaseViewModel {
     if (onPhone &&
         onAddress &&
         onMoney &&
-        onDescription &&
+        onNote &&
         phoneController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty &&
-        moneyController.text.isNotEmpty &&
+        noteController.text.isNotEmpty &&
+        totalController.text.isNotEmpty &&
         addressController.text.isNotEmpty) {
       enableButton = true;
     } else {
@@ -321,45 +287,38 @@ class BookingViewModel extends BaseViewModel {
         lastDate: DateTime(2100),
       );
 
-  List<MyCustomerModel> getContactSuggestions(String searchText) {
-    final results = myCustumer
-        .where(
-          (myCustumer) =>
-              myCustumer.phoneNumber!.contains(searchText) ||
-              myCustumer.fullName!.contains(searchText),
-        )
-        .toList();
+  Future<void> postService() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await bookingApi.postBooking(MyBookingModel(
+      id: myCustomerId,
+      //   myServices: [
+      //   MyServiceModel(
+      //     id: serviceId,
+      //   ),
+      // ],
+      address: addressController.text,
+      note: noteController.text,
+      date: dateTime.toString(),
+    ));
 
-    print(results);
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
 
-    return results;
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      // await showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      // clearData();
+      // await showSuccessDialog(context);
+      // closeDialog(context);
+    }
+    notifyListeners();
   }
 
-  // void updatePhoneNumber(String selectedPhoneNumber) {
-  //   phoneController.text = selectedPhoneNumber;
-  //   searchText = selectedPhoneNumber;
-  //   searchResults = getContactSuggestions(searchText);
-  //   findName();
-  //   isListViewVisible = true;
-  //   notifyListeners();
-  // }
-
-  // void findName() {
-  //   final phoneNumber = phoneController.text;
-  //   var found = false;
-
-  //   for (final contact in myCustumer) {
-  //     if (phoneNumber == contact.phoneNumber) {
-  //       nameController.text = contact.fullName!;
-  //       notifyListeners();
-  //       found = true;
-  //       break;
-  //     }
-  //   }
-
-  //   if (!found) {
-  //     nameController.text = 'Không tìm thấy';
-  //     notifyListeners();
-  //   }
-  // }
 }
