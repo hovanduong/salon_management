@@ -28,7 +28,9 @@ class BookingViewModel extends BaseViewModel {
 
   // List<String>? selectedServices = [];
   Map<int, String> mapService = {};
+
   List<int> serviceId = [];
+  num totalCost = 0;
   List<MyCustomerModel> searchResults = [];
   List<RadioModel> selectedService = [];
   bool isListViewVisible = false;
@@ -56,6 +58,9 @@ class BookingViewModel extends BaseViewModel {
 
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustumer = [];
+
+  final currencyFormatter =
+      NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
 
   final phoneCheckText = RegExp(r'[a-zA-Z!@#$%^&*()]');
   final phoneCheckQuantity = RegExp(r'^(\d{0,9}|\d{11,})$');
@@ -135,6 +140,7 @@ class BookingViewModel extends BaseViewModel {
         serviceId.add(element.id!);
       });
     }
+    print(serviceId.first);
     notifyListeners();
   }
 
@@ -175,29 +181,39 @@ class BookingViewModel extends BaseViewModel {
   }
 
   num totalPrice = 0;
-  void calculateTotalPrice() {
-    final currencyFormatter =
-        NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
+  // void calculateTotalPrice() {
 
-    totalPrice = calculateTotalPriceByName(myService, serviceId);
-    final totalPriceT = currencyFormatter.format(totalPrice);
-    totalController.text = totalPriceT;
+  //   totalPrice = calculateTotalPriceByName(myService, serviceId);
+
+  //   totalController.text = totalPriceT;
+  //   notifyListeners();
+  // }
+  num totalCostDiscount = 0;
+  void calculateTotalPriceByName() {
+    myService.forEach((element) {
+      serviceId.forEach((elementId) {
+        if (element.id == elementId) {
+          totalCost = totalCost + element.money!;
+          final totalPriceT = currencyFormatter.format(totalCost);
+          totalController.text = totalPriceT;
+        }
+      });
+    });
+
+    // print(moneyInt);
+    print(totalCost);
+    notifyListeners();
   }
 
-  num calculateTotalPriceByName(
-      List<MyServiceModel> myService, List<int> serviceID) {
-    num totalCost = 0;
-
-    for (final id in serviceID) {
-      // ignore: lines_longer_than_80_chars
-      final service =
-          myService.firstWhere((s) => s.id == id, orElse: MyServiceModel.new);
-      totalCost += service.money ?? 0;
-    }
-    print(serviceID);
-    print('object');
+  void totalDiscount() {
+    final moneyText = discountController.text;
+    final moneyInt = int.parse(moneyText);
+    totalCostDiscount = totalCost - (totalCost * moneyInt  / 100);
+    final totalPriceT = currencyFormatter.format(totalCostDiscount);
+    totalController.text = totalPriceT;
     print(totalCost);
-    return totalCost;
+    print(totalCostDiscount);
+    notifyListeners();
   }
 
   void dis() {
@@ -291,11 +307,7 @@ class BookingViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingModel(
       id: myCustomerId,
-      //   myServices: [
-      //   MyServiceModel(
-      //     id: serviceId,
-      //   ),
-      // ],
+      listId: serviceId,
       address: addressController.text,
       note: noteController.text,
       date: dateTime.toString(),
@@ -320,5 +332,4 @@ class BookingViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-
 }

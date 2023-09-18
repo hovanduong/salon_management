@@ -77,7 +77,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
- 
   Widget buildListService() {
     return Wrap(
         runSpacing: -5,
@@ -128,11 +127,12 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       builder: (context) => BottomSheetSingleRadio(
         titleContent: 'Chon Service',
         listItems: _viewModel!.mapService,
-        initValues: _viewModel!.serviceId,
+        // initValues: _viewModel!.serviceId,
         onTapSubmit: (value) {
           _viewModel!
             ..changeValueService(value)
-            ..setServiceId();
+            ..setServiceId()
+            ..calculateTotalPriceByName();
         },
       ),
     );
@@ -144,7 +144,13 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       labelText: 'Giảm giá',
       textEditingController: _viewModel!.discountController,
       onChanged: (value) {
-        _viewModel!.enableConfirmButton();
+        if (value.isEmpty) {
+          _viewModel!.discountController.text = '0';
+        } else {
+          _viewModel!
+            ..enableConfirmButton()
+            ..totalDiscount();
+        }
       },
     );
   }
@@ -264,7 +270,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
     );
   }
- 
 
   Widget buildAddress() {
     return AppFormField(
@@ -311,7 +316,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: AppButton(
         content: ServiceAddLanguage.confirm,
-        enableButton: _viewModel!.enableButton,
+        enableButton: true,
         onTap: () {
           _viewModel!
             ..confirmButton()

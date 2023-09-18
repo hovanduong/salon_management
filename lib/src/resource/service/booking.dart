@@ -1,20 +1,18 @@
 // ignore_for_file: avoid_dynamic_calls
 
-
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 
 import '../model/my_booking_model.dart';
 
-
 class BookingApi {
   Future<Result<bool, Exception>> postBooking(MyBookingModel? booking) async {
     try {
       final response = await HttpRemote.post(
-        url: '/api/my-booking',
+        url: '/my-booking',
         body: {
           'myCustomerId': booking!.userId,
-          'myServices': booking.myServices,
+          'myServices': booking.listId,
           'address': booking.address,
           'date': booking.date,
           'note': booking.note

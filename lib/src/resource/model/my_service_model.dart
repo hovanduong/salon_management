@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-
 import 'model.dart';
 
 class MyServiceModel {
@@ -11,6 +10,7 @@ class MyServiceModel {
   int? userId;
   num? money;
   List<CategoryModel>? categories;
+  
   String? deletedAt;
   String? createdAt;
   String? updateAt;
@@ -20,6 +20,7 @@ class MyServiceModel {
     this.name,
     this.money,
     this.userId,
+  
     this.categories,
     this.createdAt,
     this.updateAt,

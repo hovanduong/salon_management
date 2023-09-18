@@ -17,6 +17,7 @@ class MyBookingModel {
   MyCustomerModel? myCustomer;
   String? deletedAt;
   String? createdAt;
+  List<int>? listId;
 
   MyBookingModel({
     this.id,
@@ -26,6 +27,7 @@ class MyBookingModel {
     this.date,
     this.status,
     this.note,
+    this.listId,
     this.invoiceId,
     this.myServices,
     this.deletedAt,
