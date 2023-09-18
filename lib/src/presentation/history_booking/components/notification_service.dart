@@ -1,5 +1,6 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../../configs/configs.dart';
@@ -9,22 +10,24 @@ class NotificationService extends StatelessWidget {
   const NotificationService({super.key, 
     this.dateTime, 
     this.widget, 
-    this.address, 
-    this.onTap, this.service, this.price, this.time,
-    this.nameUser, this.phoneNumber
+    this.onTapCard, this.price, 
+    this.nameUser, this.phoneNumber, this.isSwitch, 
+    this.onChanged, this.onTapPhone,
   });
 
   final DateTime? dateTime; 
   final Widget? widget;
-  final String? address;
-  final String? service;
   final String? price;
-  final String? time;
   final String? nameUser;
   final String? phoneNumber;
-  final Function()? onTap;
+  final bool? isSwitch;
+  final Function()? onTapCard;
+  final Function(bool value)? onChanged;
+  final Function()? onTapPhone;
 
-  Widget buildTitle({IconData? icon, String? content, Widget? trailing}){
+
+  Widget buildTitle({IconData? icon, String? content, Widget? trailing,
+    Color? color,}){
     return Padding(
       padding: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
       child: Row(
@@ -32,11 +35,12 @@ class NotificationService extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon),
+              Icon(icon, color: AppColors.BLACK_400,),
               SizedBox(width: SpaceBox.sizeSmall,),
               Paragraph(
                 content: content ?? '',
-                style: STYLE_MEDIUM_BOLD,
+                style: STYLE_MEDIUM_BOLD.copyWith(
+                  color: color ?? AppColors.BLACK_400,),
               ),
             ],
           ),
@@ -53,7 +57,7 @@ class NotificationService extends StatelessWidget {
       date = DateFormat('dd/MM/yyyy').format(dateTime!);
       final currentDate= DateFormat('dd/MM/yyyy').format(DateTime.now());
       if(date == currentDate){
-        date= 'Hôm nay, $time';
+        date= '${HistoryLanguage.today}, $time';
       }else{
         date= '$date $time';
       }
@@ -63,44 +67,39 @@ class NotificationService extends StatelessWidget {
         buildTitle(
           content: date,
           icon: Icons.alarm,
-          trailing: widget
+          trailing: widget,
         ),
          buildTitle(
           content: nameUser,
-          icon: Icons.person,
+          icon: Icons.person_outline,
+          color: AppColors.FIELD_GREEN,
         ),
-         buildTitle(
-          content: phoneNumber,
-          icon: Icons.phone,
-        ),
+         InkWell(
+          onTap: () {
+            onTapPhone!();
+          },
+           child: buildTitle(
+            content: phoneNumber,
+            icon: Icons.phone_outlined,
+            color: AppColors.FIELD_GREEN,
+                 ),
+         ),
       ],
     );
   }
 
-  Widget buildService(){
-    return Padding(
-      padding: EdgeInsets.only(
-        top: SpaceBox.sizeMedium, bottom: SpaceBox.sizeSmall),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Paragraph(
-            content: service ?? '',
-            style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
-          ),
-          Paragraph(
-            content: time!=null ? '${time}p' : '',
-            style: STYLE_SMALL
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget buildPrice(){
-    return Paragraph(
-      content: price ?? '',
-      style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_PINK),
+    return Row(
+      children: [
+        Paragraph(
+          content: '${HistoryLanguage.total}: ',
+          style: STYLE_MEDIUM_BOLD,
+        ),
+        Paragraph(
+          content: price ?? '',
+          style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_PINK),
+        ),
+      ],
     );
   }
 
@@ -109,28 +108,90 @@ class NotificationService extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
       width: double.maxFinite,
       height: 1,
-      color: AppColors.BLACK_300,
+      color: AppColors.BLACK_200,
     );
   }
 
-  Widget buildAddress() {
-    return ListTile(
-      minLeadingWidth: SpaceBox.sizeSmall,
-      leading: SvgPicture.asset(AppImages.icLocation),
-      title: Paragraph(
-        content: address ?? '',
-        style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
-      ),
+
+  Widget buildButtonMore() {
+    return MenuAnchor(
+      builder:(context, controller, child) {
+        return Container(
+          padding: EdgeInsets.all(SpaceBox.sizeVerySmall),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(SpaceBox.sizeVerySmall),),
+            border: Border.all(color: AppColors.BLACK_300,),
+          ),
+          child: GestureDetector(
+            onTap: () {
+              if (controller.isOpen) {
+                controller.close();
+              } else {
+                controller.open();
+              }
+            },
+            child: const Icon(Icons.more_horiz),
+          ),
+        );
+      },
+      menuChildren: [
+        MenuItemButton(
+          child: Row(
+            children: [
+              const Icon(Icons.edit, color: AppColors.PRIMARY_GREEN,),
+              Paragraph(content: HistoryLanguage.editAppointmentSchedule, 
+                style: STYLE_MEDIUM_BOLD.copyWith(
+                  color: AppColors.PRIMARY_GREEN,),
+              ),
+            ],
+          ),
+        ),
+        MenuItemButton(
+           child: Row(
+            children: [
+              const Icon(Icons.delete, color: AppColors.PRIMARY_RED,),
+              Paragraph(content: HistoryLanguage.deleteAppointmentSchedule, 
+                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_RED),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+    // return ListTile(
+    //   minLeadingWidth: SpaceBox.sizeSmall,
+    //   leading: SvgPicture.asset(AppImages.icLocation),
+    //   title: Paragraph(
+    //     content: address ?? '',
+    //     style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
+    //   ),
+    // );
+
+  Widget buildFooter(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: AppButton(
+            content: HistoryLanguage.pay,
+            enableButton: true,
+          ),
+        ),
+        SizedBox(width: SpaceBox.sizeBig,),
+        buildButtonMore(),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTapCard,
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeMedium))
+          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeMedium)),
         ),
         margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeVerySmall),
         elevation: 7,
@@ -142,10 +203,9 @@ class NotificationService extends StatelessWidget {
             children: [
               buildHeaderCard(),
               buildLine(),
-              buildService(),
               buildPrice(),
               buildLine(),
-              buildAddress(),
+              buildFooter(),
             ],
           ),
         ),

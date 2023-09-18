@@ -5,10 +5,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 import 'components/components.dart';
-import 'history_status_canceled.dart';
-import 'history_status_done.dart';
-import 'history_status_upcoming.dart';
-import 'history_booking_viewmodel.dart';
+import 'history_booking.dart';
 
 class HistoryBookingScreen extends StatefulWidget {
   const HistoryBookingScreen({super.key});
@@ -25,7 +22,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   Widget build(BuildContext context) {
     return BaseWidget(
       viewModel: HistoryBookingViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!.init(),
+      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
       builder: (context, viewModel, child) => buildHistoryScreen(),
     );
   }
@@ -44,7 +41,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
           color: AppColors.BLACK_500,
         ),
         trailing: Icon(null),
-      )
+      ),
     );
   }
 
@@ -65,18 +62,34 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     );
   }
 
+  void diaLogPhone(String phone) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel:
+          MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black45,
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (buildContext, animation, secondaryAnimation,) {
+        return DiaLogPhoneCustomer(
+          phone: phone,
+        );
+      },
+    );
+  }
+
   Widget buildFirstTab(){
     return ListView.builder(
       itemCount: 1,
       itemBuilder: (context, index) => NotificationService(
         dateTime: DateTime.now(),
-        address: 'Số 37 Nguyễn Văn Huyên, Quận Cầu Giấy, Hà Nội. Hotline: 0949 969 323',
         price: '100.000 VNĐ',
-        service: 'Đi chơi',
-        time: '60',
         nameUser: 'Trung Thong',
         phoneNumber: '0931390467',
-        widget: setStatusNotification('upComing', 'confirm'),
+        onTapPhone: () => diaLogPhone('0931390467'),
+        widget: const SelectStatusWidget(),
+        isSwitch: _viewModel!.isSwitch,
+        onChanged: (value) => _viewModel!.setIsSwitch(),
       ),
     );
   }
@@ -86,11 +99,10 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
       children: [
         NotificationService(
           dateTime: DateFormat('dd/MM/yyyy HH:mm').parse('25/8/2023 16:06'),
-          address: 'Số 37 Nguyễn Văn Huyên, Quận Cầu Giấy, Hà Nội. Hotline: 0949 969 323',
           price: '100.000 VNĐ',
-          service: 'Đi chơi',
-          time: '60',
           widget: setStatusNotification('done', 'checkout'),
+          isSwitch: _viewModel!.isSwitch,
+          onChanged: (value) => _viewModel!.setIsSwitch(),
         ),
       ],
     );
@@ -101,11 +113,10 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
       children: [
         NotificationService(
           dateTime: DateFormat('dd/MM/yyyy HH:mm').parse('25/8/2023 16:06'),
-          address: 'Số 37 Nguyễn Văn Huyên, Quận Cầu Giấy, Hà Nội. Hotline: 0949 969 323',
           price: '100.000 VNĐ',
-          service: 'Đi chơi',
-          time: '60',
           widget: setStatusNotification('canceled', 'cancel'),
+          isSwitch: _viewModel!.isSwitch,
+          onChanged: (value) => _viewModel!.setIsSwitch(),
         ),
       ],
     );
@@ -155,7 +166,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
               buildContentTab(),
             ],
           ),
-        )
+        ),
       ),
     );
   }

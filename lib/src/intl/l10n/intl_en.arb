@@ -126,5 +126,9 @@
     "loginAndSecurity": "Login and security",
     "dataAndPrivacy": "Data and privacy",
     "profile": "Profile",
+    "pay": "Pay",
+    "today": "Today",
+    "editAppointmentSchedule": "Edit appointment schedule",
+    "deleteAppointmentSchedule": "Delete appointment schedule",
     "lastLine": ""
 }
