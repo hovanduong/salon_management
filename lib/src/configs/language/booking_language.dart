@@ -1,6 +1,8 @@
 import '../../intl/generated/l10n.dart';
 
 class BookingLanguage {
+  static final discount = S.current.discount;
+  static final selectServices = S.current.selectServices;
   static final name = S.current.name;
   static final address = S.current.address;
   static final hour = S.current.hour;

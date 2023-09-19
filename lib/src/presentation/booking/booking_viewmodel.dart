@@ -5,7 +5,6 @@ import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 
-import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/booking.dart';
 import '../../resource/service/my_customer_api.dart';
@@ -17,11 +16,9 @@ import '../routers.dart';
 
 class BookingViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
-
-  final List<Widget> fields = [];
   List<int>? myServiceId = [];
   List<int> serviceId = [];
-  List<MyCustomerModel> searchResults = [];
+
   List<RadioModel> selectedService = [];
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustumer = [];

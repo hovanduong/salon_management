@@ -108,7 +108,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Paragraph(
-          content: 'Selected Service',
+          content: BookingLanguage.selectServices,
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
         ),
         IconButton(
@@ -128,7 +128,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       isDismissible: true,
       isScrollControlled: true,
       builder: (context) => BottomSheetSingleRadio(
-        titleContent: 'Chon Service',
+        titleContent: BookingLanguage.selectServices,
         listItems: _viewModel!.mapService,
         // initValues: _viewModel!.serviceId,
         onTapSubmit: (value) {
@@ -144,7 +144,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildDiscount() {
     return AppFormField(
       hintText: '0',
-      labelText: 'Giảm giá',
+      labelText: BookingLanguage.discount,
       validator: _viewModel!.discountErrorMsg,
       keyboardType: TextInputType.number,
       textEditingController: _viewModel!.discountController,
@@ -230,7 +230,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildName() {
     return NameFieldWidget(
-      name: 'Name',
+      name: BookingLanguage.name,
       nameController: _viewModel!.nameController,
     );
   }
@@ -334,9 +334,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildCancelText() {
     return InkWell(
-      onTap:
-          // () {},
-          () => Navigator.pop(context),
+      onTap: () => Navigator.pop(context),
       child: Paragraph(
         content: ServiceAddLanguage.cancel,
         style: STYLE_MEDIUM_BOLD.copyWith(
