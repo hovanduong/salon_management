@@ -94,10 +94,13 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           style: STYLE_MEDIUM_BOLD,
           overflow: TextOverflow.ellipsis,
         ),
-        onDeleted: () => _viewModel!
-          ..removeService(index)
-          ..setServiceId()
-          ..calculateTotalPriceByName());
+        onDeleted: () async {
+          await _viewModel!.removeService(index);
+          await _viewModel!.setServiceId();
+          await _viewModel!.calculateTotalPriceByName(
+            isCalculate: true,
+          );
+        });
   }
 
   Widget buildService() {

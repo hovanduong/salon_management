@@ -16,25 +16,27 @@ import '../base/base.dart';
 import '../routers.dart';
 
 class BookingViewModel extends BaseViewModel {
-  final List<Widget> fields = [];
-  String? messageService;
-  List<int>? myServiceId = [];
-  int? myCustomerId;
   BookingApi bookingApi = BookingApi();
-  // late Object dropValue = myService.first;
 
-  String searchText = '';
-  DateTime dateTime = DateTime.now();
-
-  // List<String>? selectedServices = [];
-  Map<int, String> mapService = {};
-
+  final List<Widget> fields = [];
+  List<int>? myServiceId = [];
   List<int> serviceId = [];
-  num totalCost = 0;
   List<MyCustomerModel> searchResults = [];
   List<RadioModel> selectedService = [];
-  bool isListViewVisible = false;
+  List<MyServiceModel> myService = [];
+  List<MyCustomerModel> myCustumer = [];
+
+  int? myCustomerId;
+
+  num totalCost = 0;
+  num totalPrice = 0;
+  num updatedTotalCost = 0;
+
+  DateTime dateTime = DateTime.now();
+
+  Map<int, String> mapService = {};
   Map<int, String> mapPhone = {};
+
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final totalController = TextEditingController();
@@ -50,6 +52,7 @@ class BookingViewModel extends BaseViewModel {
   bool onTime = true;
   bool onNote = true;
   bool onDiscount = true;
+  bool isListViewVisible = false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -57,9 +60,8 @@ class BookingViewModel extends BaseViewModel {
   String? timeErrorMsg;
   String? noteErrorMsg;
   String? discountErrorMsg;
-
-  List<MyServiceModel> myService = [];
-  List<MyCustomerModel> myCustumer = [];
+  String? messageService;
+  String searchText = '';
 
   final currencyFormatter =
       NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
@@ -140,21 +142,16 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> setServiceId() async {
     serviceId.clear();
-    totalCost = 0;
     if (selectedService.isNotEmpty) {
       selectedService.forEach((element) {
         serviceId.add(element.id!);
       });
     }
-    print(totalCostDiscount);
-    print(serviceId);
     notifyListeners();
   }
 
-
-  void removeService(int index) {
+  Future<void> removeService(int index) async {
     selectedService.removeAt(index);
-
     notifyListeners();
   }
 
@@ -164,7 +161,6 @@ class BookingViewModel extends BaseViewModel {
         {element.id!: '${element.phoneNumber}'},
       );
     });
-    print(mapPhone);
     notifyListeners();
   }
 
@@ -189,17 +185,15 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  num totalPrice = 0;
-  // void calculateTotalPrice() {
+  Future<void> clearTotal() async {
+    updatedTotalCost = 0;
+    totalCost = 0;
+    totalController.clear();
+    notifyListeners();
+  }
 
-  //   totalPrice = calculateTotalPriceByName(myService, serviceId);
-
-  //   totalController.text = totalPriceT;
-  //   notifyListeners();
-  // }
-  num totalCostDiscount = 0;
-  num updatedTotalCost = 0;
-  void calculateTotalPriceByName() {
+  Future<void> calculateTotalPriceByName({bool isCalculate = false}) async {
+    await clearTotal();
     myService.forEach((element) {
       serviceId.forEach((elementId) {
         if (element.id == elementId) {
@@ -211,20 +205,19 @@ class BookingViewModel extends BaseViewModel {
       totalController.text = totalPriceT;
     });
 
-    // print(moneyInt);
-    print(totalCost);
     notifyListeners();
   }
 
   void totalDiscount() {
     final moneyText = discountController.text;
-
     final moneyInt = moneyText != '' ? int.parse(moneyText) : 0;
-    totalCostDiscount = totalCost - (totalCost * moneyInt / 100);
+
+    final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
+
     final totalPriceT = currencyFormatter.format(totalCostDiscount);
+
     totalController.text = totalPriceT;
-    print(totalCost);
-    print(totalCostDiscount);
+
     notifyListeners();
   }
 
