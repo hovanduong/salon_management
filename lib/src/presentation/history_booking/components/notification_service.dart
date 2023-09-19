@@ -18,7 +18,7 @@ class NotificationService extends StatelessWidget {
     this.onTapPhone,
   });
 
-  final DateTime? dateTime;
+  final String? dateTime;
   final Widget? widget;
   final String? price;
   final String? nameUser;
@@ -61,21 +61,21 @@ class NotificationService extends StatelessWidget {
   }
 
   Widget buildHeaderCard() {
-    String? date;
-    if (dateTime != null) {
-      final time = DateFormat('HH:mm').format(dateTime!);
-      date = DateFormat('dd/MM/yyyy').format(dateTime!);
-      final currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-      if (date == currentDate) {
-        date = '${HistoryLanguage.today}, $time';
-      } else {
-        date = '$date $time';
-      }
-    }
+    // String? date;
+    // if (dateTime != null) {
+    //   final time = DateFormat('HH:mm').format(dateTime!);
+    //   date = DateFormat('dd/MM/yyyy').format(dateTime!);
+    //   final currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    //   if (date == currentDate) {
+    //     date = '${HistoryLanguage.today}, $time';
+    //   } else {
+    //     date = '$date $time';
+    //   }
+    // }
     return Column(
       children: [
         buildTitle(
-          content: date,
+          content: dateTime,
           icon: Icons.alarm,
           trailing: widget,
         ),

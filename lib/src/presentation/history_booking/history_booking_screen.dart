@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/widget/load_more/load_more_widget.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'history_booking.dart';
@@ -95,7 +96,9 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
       },
       list: _viewModel?.listMyBooking,
       widget: NotificationService(
-        dateTime: DateTime.now(),
+        dateTime: AppDateUtils.splitHourDate(
+          AppDateUtils.formatDateLocal(_viewModel!.listMyBooking[0].createdAt!)
+        ),
         price: '100.000 VNĐ',
         nameUser: 'Trung Thong',
         phoneNumber: '0931390467',
@@ -120,7 +123,9 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     return Column(
       children: [
         NotificationService(
-          dateTime: DateFormat('dd/MM/yyyy HH:mm').parse('25/8/2023 16:06'),
+          dateTime: AppDateUtils.splitHourDate(
+          AppDateUtils.formatDateLocal(_viewModel!.listMyBooking[0].createdAt!)
+        ),
           price: '100.000 VNĐ',
           widget: setStatusNotification('done', 'checkout'),
         ),
@@ -132,7 +137,9 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     return Column(
       children: [
         NotificationService(
-          dateTime: DateFormat('dd/MM/yyyy HH:mm').parse('25/8/2023 16:06'),
+          dateTime: AppDateUtils.splitHourDate(
+          AppDateUtils.formatDateLocal(_viewModel!.listMyBooking[0].createdAt!)
+        ),
           price: '100.000 VNĐ',
           widget: setStatusNotification('canceled', 'cancel'),
         ),
