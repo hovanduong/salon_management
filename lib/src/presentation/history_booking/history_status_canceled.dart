@@ -5,8 +5,8 @@ import 'components/components.dart';
 
 class StatusCanceledWidget{
   static Widget statusCanceled(){
-    return const StatusService(
-      content: 'Đã hủy',
+    return StatusService(
+      content: HistoryLanguage.canceled,
       color: AppColors.PRIMARY_RED,
     );
   }

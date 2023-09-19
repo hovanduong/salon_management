@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/language/category_language.dart';
 import '../../resource/model/model.dart';
 import '../base/base.dart';
 import 'category_view_model.dart';
@@ -81,7 +82,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          title: 'Category',
+          title: CategoryLanguage.category,
         ),
       ),
     );
@@ -201,7 +202,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       children: [
         FloatingButtonWidget(
           heroTag: 'btnOne',
-          content: 'Add Service',
+          content: CategoryLanguage.serviceAdd,
           iconData: Icons.add,
           onPressed: () {
             _viewModel!.goToAddServiceCategory(context);
@@ -209,7 +210,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
         FloatingButtonWidget(
           heroTag: 'btnTwo',
-          content: 'Add Category',
+          content: CategoryLanguage.addCategory,
           iconData: Icons.add,
           onPressed: () {
             _viewModel!.goToAddCategory(context: context);

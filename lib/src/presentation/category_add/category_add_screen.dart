@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/language/category_language.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../../resource/model/my_category_model.dart';
 import '../base/base.dart';
@@ -38,12 +39,13 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+          icon: const Icon(
+            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
         ),
         title: Paragraph(
           content: _viewModel!.categoryModel != null 
-            ? 'Edit Category'
-            : 'Add Category' ,
+            ? CategoryLanguage.editCategory
+            : CategoryLanguage.addCategory ,
           style: STYLE_LARGE_BOLD.copyWith(
             color: AppColors.COLOR_WHITE,
           ),
@@ -60,9 +62,9 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
-        labelText: 'Category',
+        labelText: CategoryLanguage.category,
         textEditingController: _viewModel!.categoryController,
-        hintText: 'Enter Category',
+        hintText: CategoryLanguage.enterCategory,
         onChanged: (value) {
           _viewModel!..validCategory(value)
           ..onSubmit();
@@ -90,7 +92,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
         width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall)
+            BoxShadow(
+              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,)
           ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),

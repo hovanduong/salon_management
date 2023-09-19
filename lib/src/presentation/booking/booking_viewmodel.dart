@@ -252,7 +252,7 @@ class BookingViewModel extends BaseViewModel {
       descriptionErrorMsg = ServiceAddLanguage.emptyDescriptionError;
     } else if (descriptionController.text.length < 10) {
       onDescription = false;
-      descriptionErrorMsg = ServiceAddLanguage.descriptionMinLenght;
+      descriptionErrorMsg = ServiceAddLanguage.descriptionMinLength;
     } else {
       descriptionErrorMsg = '';
       onDescription = true;

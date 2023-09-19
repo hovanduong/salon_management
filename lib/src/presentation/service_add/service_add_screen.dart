@@ -88,7 +88,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Paragraph(
-          content: 'Selected Categories',
+          content: ServiceAddLanguage.selectedCategories,
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
         ),
         IconButton(
@@ -139,7 +139,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       isDismissible: true,
       isScrollControlled: true,
       builder: (context) => BottomSheetSingleRadio(
-        titleContent: 'Chon Category',
+        titleContent: ServiceAddLanguage.selectedCategories,
         listItems: _viewModel!.mapCategory,
         initValues: _viewModel!.categoryId,
         onTapSubmit: (value) {
@@ -156,7 +156,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall)
+            BoxShadow(
+              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,)
           ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),

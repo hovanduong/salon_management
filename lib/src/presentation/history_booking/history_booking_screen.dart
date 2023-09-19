@@ -29,18 +29,18 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   Widget buildHeader() {
     return Container(
       color: AppColors.COLOR_WHITE,
-      child: const ListTile(
+      child: ListTile(
         title: Center(
           child: Paragraph(
-            content: 'Lịch Hẹn',
+            content: HistoryLanguage.appointmentSchedule,
             style: STYLE_LARGE,
           ),
         ),
-        leading: Icon(
+        leading: const Icon(
           Icons.arrow_back,
           color: AppColors.BLACK_500,
         ),
-        trailing: Icon(null),
+        trailing: const Icon(null),
       ),
     );
   }
@@ -48,16 +48,16 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   Widget buildAppBar() {
     return Container(
       color: AppColors.COLOR_WHITE,
-      child: const TabBar(
+      child: TabBar(
         tabs: [
           Tab(
-            text: 'Sắp tới',
+            text: HistoryLanguage.upcoming,
           ),
           Tab(
-            text: 'Đã xong',
+            text: HistoryLanguage.done,
           ),
           Tab(
-            text: 'Đã hủy',
+            text: HistoryLanguage.canceled,
           ),
         ],
         indicatorColor: AppColors.PRIMARY_PINK,
@@ -76,10 +76,11 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
         barrierColor: Colors.black45,
         transitionDuration: const Duration(milliseconds: 200),
-        pageBuilder: (BuildContext buildContext, Animation animation,
-            Animation secondaryAnimation) {
+        pageBuilder: (buildContext, animation,
+            secondaryAnimation) {
           return DiaLogPhoneCustomer(
             phone: phone,
+            onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
           );
         });
   }
@@ -94,8 +95,6 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         phoneNumber: '0931390467',
         onTapPhone: () => diaLogPhone('0931390467'),
         widget: const SelectStatusWidget(),
-        isSwitch: _viewModel!.isSwitch,
-        onChanged: (value) => _viewModel!.setIsSwitch(),
       ),
     );
   }
@@ -107,8 +106,6 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
           dateTime: DateFormat('dd/MM/yyyy HH:mm').parse('25/8/2023 16:06'),
           price: '100.000 VNĐ',
           widget: setStatusNotification('done', 'checkout'),
-          isSwitch: _viewModel!.isSwitch,
-          onChanged: (value) => _viewModel!.setIsSwitch(),
         ),
       ],
     );
@@ -121,8 +118,6 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
           dateTime: DateFormat('dd/MM/yyyy HH:mm').parse('25/8/2023 16:06'),
           price: '100.000 VNĐ',
           widget: setStatusNotification('canceled', 'cancel'),
-          isSwitch: _viewModel!.isSwitch,
-          onChanged: (value) => _viewModel!.setIsSwitch(),
         ),
       ],
     );

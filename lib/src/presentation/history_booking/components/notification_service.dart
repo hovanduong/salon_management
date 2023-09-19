@@ -15,8 +15,6 @@ class NotificationService extends StatelessWidget {
     this.price,
     this.nameUser,
     this.phoneNumber,
-    this.isSwitch,
-    this.onChanged,
     this.onTapPhone,
   });
 
@@ -25,9 +23,7 @@ class NotificationService extends StatelessWidget {
   final String? price;
   final String? nameUser;
   final String? phoneNumber;
-  final bool? isSwitch;
   final Function()? onTapCard;
-  final Function(bool value)? onChanged;
   final Function()? onTapPhone;
 
   Widget buildTitle({

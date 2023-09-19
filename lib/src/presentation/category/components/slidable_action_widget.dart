@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
+import '../../../configs/language/category_language.dart';
 
 class SlidableActionWidget extends StatelessWidget {
   const SlidableActionWidget({
@@ -35,7 +36,7 @@ class SlidableActionWidget extends StatelessWidget {
               topRight: Radius.circular(isCheckCategory? 0 : SpaceBox.sizeSmall),
               bottomRight: Radius.circular(isCheckCategory? 0 : SpaceBox.sizeSmall)),
             icon: Icons.delete,
-            label: 'Delete',
+            label: CategoryLanguage.delete,
           ),
           if(isCheckCategory)
             SlidableAction(
@@ -47,7 +48,7 @@ class SlidableActionWidget extends StatelessWidget {
                 bottomRight: Radius.circular(SpaceBox.sizeSmall)),
               backgroundColor: AppColors.FIELD_GREEN,
               icon: Icons.edit,
-              label: 'Edit',
+              label: CategoryLanguage.edit,
             ),
         ],
       ),

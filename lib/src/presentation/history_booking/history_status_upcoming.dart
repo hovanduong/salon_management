@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../configs/configs.dart';
 import '../../configs/constants/app_colors.dart';
 import 'components/components.dart';
 
@@ -7,8 +8,8 @@ class StatusUpComingWidget{
   static Widget statusUpComing(String status){
     switch (status) {
       case 'confirm':
-        return const StatusService(
-          content: 'Đã xác nhận',
+        return StatusService(
+          content: HistoryLanguage.confirmed,
           color: AppColors.PRIMARY_PINK,
         );
       case 'refuse':

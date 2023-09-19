@@ -10,7 +10,7 @@ class SelectStatusWidget extends StatefulWidget {
   State<SelectStatusWidget> createState() => _SelectStatusWidgetState();
 }
 
-List<String> status=['Mới' ,'Đã xác nhận', 'Hủy',];
+List<String> status=['Mới' ,HistoryLanguage.confirmed, HistoryLanguage.cancel,];
 
 class _SelectStatusWidgetState extends State<SelectStatusWidget> {
 
