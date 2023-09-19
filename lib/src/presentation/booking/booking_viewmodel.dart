@@ -49,12 +49,14 @@ class BookingViewModel extends BaseViewModel {
   bool onMoney = true;
   bool onTime = true;
   bool onNote = true;
+  bool onDiscount = true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
   String? moneyErrorMsg;
   String? timeErrorMsg;
   String? noteErrorMsg;
+  String? discountErrorMsg;
 
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustumer = [];
@@ -67,6 +69,9 @@ class BookingViewModel extends BaseViewModel {
   final specialCharsCheck = RegExp(r'[`~!@#$%^&*()"-=_+{};:\|.,/?]');
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
+
+  final discountCheck = RegExp(r'^(?!0*(?:100|\d{1,2})$)\d+$');
+
   int? index;
   String? prices;
   String? services;
@@ -135,12 +140,13 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> setServiceId() async {
     serviceId.clear();
+    totalCost = 0;
     if (selectedService.isNotEmpty) {
       selectedService.forEach((element) {
         serviceId.add(element.id!);
       });
     }
-    print(serviceId.first);
+    print(serviceId);
     notifyListeners();
   }
 
@@ -189,15 +195,17 @@ class BookingViewModel extends BaseViewModel {
   //   notifyListeners();
   // }
   num totalCostDiscount = 0;
+  num updatedTotalCost = 0;
   void calculateTotalPriceByName() {
     myService.forEach((element) {
       serviceId.forEach((elementId) {
         if (element.id == elementId) {
-          totalCost = totalCost + element.money!;
-          final totalPriceT = currencyFormatter.format(totalCost);
-          totalController.text = totalPriceT;
+          updatedTotalCost += element.money!;
         }
       });
+      totalCost = updatedTotalCost;
+      final totalPriceT = currencyFormatter.format(totalCost);
+      totalController.text = totalPriceT;
     });
 
     // print(moneyInt);
@@ -207,8 +215,9 @@ class BookingViewModel extends BaseViewModel {
 
   void totalDiscount() {
     final moneyText = discountController.text;
-    final moneyInt = int.parse(moneyText);
-    totalCostDiscount = totalCost - (totalCost * moneyInt  / 100);
+
+    final moneyInt = moneyText != '' ? int.parse(moneyText) : 0;
+    totalCostDiscount = totalCost - (totalCost * moneyInt / 100);
     final totalPriceT = currencyFormatter.format(totalCostDiscount);
     totalController.text = totalPriceT;
     print(totalCost);
@@ -267,6 +276,20 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void checkDiscountInput(String value) {
+    if (value.isEmpty) {
+      onDiscount = false;
+      discountErrorMsg = 'roongx';
+    } else if (discountCheck.hasMatch(value)) {
+      onDiscount = false;
+      discountErrorMsg = 'sai';
+    } else {
+      discountErrorMsg = '';
+      onNote = true;
+    }
+    notifyListeners();
+  }
+
   void enableConfirmButton() {
     if (onPhone &&
         onAddress &&
@@ -305,12 +328,13 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> postService() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.postBooking(MyBookingModel(
-      id: myCustomerId,
-      listId: serviceId,
-      address: addressController.text,
-      note: noteController.text,
-      date: dateTime.toString(),
+    final result = await bookingApi.postBooking(MyBookingPramsApi(
+      myCustomerId: myCustomerId,
+      myServices: serviceId,
+      address: addressController.text.trim(),
+      date: dateTime.toString().trim(),
+      discount: int.parse(discountController.text.trim()),
+      note: noteController.text.trim(),
     ));
 
     final value = switch (result) {

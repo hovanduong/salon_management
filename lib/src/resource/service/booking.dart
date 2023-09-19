@@ -5,17 +5,35 @@ import '../../utils/http_remote.dart';
 
 import '../model/my_booking_model.dart';
 
+class MyBookingPramsApi {
+  int? myCustomerId;
+  List<int>? myServices;
+  String? address;
+  String? date;
+  int? discount;
+  String? status;
+  String? note;
+  MyBookingPramsApi(
+      {this.myCustomerId,
+      this.myServices,
+      this.address,
+      this.date,
+      this.discount,
+      this.note,
+      this.status});
+}
+
 class BookingApi {
-  Future<Result<bool, Exception>> postBooking(MyBookingModel? booking) async {
+  Future<Result<bool, Exception>> postBooking(MyBookingPramsApi? prams) async {
     try {
       final response = await HttpRemote.post(
         url: '/my-booking',
         body: {
-          'myCustomerId': booking!.userId,
-          'myServices': booking.listId,
-          'address': booking.address,
-          'date': booking.date,
-          'note': booking.note
+          'myCustomerId': prams!.myCustomerId,
+          'myServices': prams.myServices,
+          'address': prams.address,
+          'date': prams.date,
+          'note': prams.note
         },
       );
       print(response?.statusCode);

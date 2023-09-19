@@ -89,15 +89,14 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildSelectedService(int index) {
     return Chip(
-      label: Paragraph(
-        content: _viewModel!.selectedService[index].name,
-        style: STYLE_MEDIUM_BOLD,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onDeleted: () => _viewModel!
-        ..removeService(index)
-        ..setServiceId(),
-    );
+        label: Paragraph(
+          content: _viewModel!.selectedService[index].name,
+          style: STYLE_MEDIUM_BOLD,
+          overflow: TextOverflow.ellipsis,
+        ),
+        onDeleted: () => _viewModel!
+          ..removeService(index)
+          ..setServiceId());
   }
 
   Widget buildService() {
@@ -140,14 +139,17 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildDiscount() {
     return AppFormField(
-      hintText: 'Nhập phiếu giảm giá (Tùy chọn)',
+      hintText: '0',
       labelText: 'Giảm giá',
+      validator: _viewModel!.discountErrorMsg,
+      keyboardType: TextInputType.number,
       textEditingController: _viewModel!.discountController,
       onChanged: (value) {
         if (value.isEmpty) {
-          _viewModel!.discountController.text = '0';
+          _viewModel!.discountController.text = '';
         } else {
           _viewModel!
+            ..checkDiscountInput(value)
             ..enableConfirmButton()
             ..totalDiscount();
         }
