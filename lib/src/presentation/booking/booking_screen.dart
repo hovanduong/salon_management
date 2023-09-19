@@ -96,7 +96,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         ),
         onDeleted: () => _viewModel!
           ..removeService(index)
-          ..setServiceId());
+          ..setServiceId()
+          ..calculateTotalPriceByName());
   }
 
   Widget buildService() {

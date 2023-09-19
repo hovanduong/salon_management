@@ -146,12 +146,15 @@ class BookingViewModel extends BaseViewModel {
         serviceId.add(element.id!);
       });
     }
+    print(totalCostDiscount);
     print(serviceId);
     notifyListeners();
   }
 
+
   void removeService(int index) {
     selectedService.removeAt(index);
+
     notifyListeners();
   }
 
