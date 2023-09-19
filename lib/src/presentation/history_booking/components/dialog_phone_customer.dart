@@ -12,13 +12,15 @@ class DiaLogPhoneCustomer extends StatelessWidget {
   const DiaLogPhoneCustomer({Key? key, 
     this.phone, 
     this.isCopy = true, 
-    this.onTapCall,
+    this.onTapCall, 
+    this.onTapText,
   })
   : super(key: key);
 
   final String? phone;
   final bool? isCopy;
   final Function()? onTapCall;
+  final Function()? onTapText;
 
   Widget buildHeaderPhone(BuildContext context) {
     return Container(
@@ -108,7 +110,9 @@ class DiaLogPhoneCustomer extends StatelessWidget {
                 ),
                 const Divider(height: 0, thickness: 1),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    onTapText!();
+                  },
                   child: Padding(
                     padding: EdgeInsets.all(SpaceBox.sizeMedium),
                     child: Row(

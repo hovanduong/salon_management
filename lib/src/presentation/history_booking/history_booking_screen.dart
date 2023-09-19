@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/widget/load_more/load_more_widget.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'history_booking.dart';
@@ -21,7 +22,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   Widget build(BuildContext context) {
     return BaseWidget(
       viewModel: HistoryBookingViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel?..init(),
       builder: (context, viewModel, child) => buildHistoryScreen(),
     );
   }
@@ -86,9 +87,14 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   }
 
   Widget buildFirstTab() {
-    return ListView.builder(
-      itemCount: 1,
-      itemBuilder: (context, index) => NotificationService(
+    print(_viewModel?.listMyBooking);
+    return LoadMoreWidget(
+      page: 1,
+      onChanged: () async{
+        await _viewModel!.getMyBooking();
+      },
+      list: _viewModel?.listMyBooking,
+      widget: NotificationService(
         dateTime: DateTime.now(),
         price: '100.000 VNĐ',
         nameUser: 'Trung Thong',
@@ -97,6 +103,17 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         widget: const SelectStatusWidget(),
       ),
     );
+    // return ListView.builder(
+    //   itemCount: 10,
+    //   itemBuilder: (context, index) => NotificationService(
+    //     dateTime: DateTime.now(),
+    //     price: '100.000 VNĐ',
+    //     nameUser: 'Trung Thong',
+    //     phoneNumber: '0931390467',
+    //     onTapPhone: () => diaLogPhone('0931390467'),
+    //     widget: const SelectStatusWidget(),
+    //   ),
+    // );
   }
 
   Widget buildSecondTab() {
