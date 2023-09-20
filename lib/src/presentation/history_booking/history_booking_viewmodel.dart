@@ -18,27 +18,21 @@ class HistoryBookingViewModel extends BaseViewModel {
   int page = 1;
 
   Future<void> init() async {
+    await fetchData();
+    notifyListeners();
+  }
+
+  Future<void> fetchData() async {
     listCurrent.clear();
     page = 1;
     await getMyBooking(1);
     listCurrent = listMyBooking;
     scrollController.addListener(scrollListener);
-    notifyListeners();
   }
 
   Future<void> pullRefresh() async {
     await init();
     isLoadMore = false;
-    notifyListeners();
-  }
-
-  Future<void> loadMoreData() async {
-    page += 1;
-    await getMyBooking(page);
-
-    listCurrent = [...listCurrent, ...listMyBooking];
-    isLoadMore = false;
-
     notifyListeners();
   }
 
@@ -50,6 +44,16 @@ class HistoryBookingViewModel extends BaseViewModel {
       Future.delayed(const Duration(seconds: 2), loadMoreData);
       notifyListeners();
     }
+  }
+
+  Future<void> loadMoreData() async {
+    page += 1;
+    await getMyBooking(page);
+
+    listCurrent = [...listCurrent, ...listMyBooking];
+    isLoadMore = false;
+
+    notifyListeners();
   }
 
   void setIsSwitch() {
@@ -98,7 +102,6 @@ class HistoryBookingViewModel extends BaseViewModel {
   Future<void> getMyBooking(int page) async {
     final result =
         await myBookingApi.getMyBooking(AuthParams(page: page, pageSize: 10));
-    print(page);
 
     final value = switch (result) {
       Success(value: final listMyBooking) => listMyBooking,
