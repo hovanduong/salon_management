@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
@@ -66,7 +65,7 @@ class CategoryAddViewModel extends BaseViewModel {
   Future<void> setSourceButton() async {
     if (categoryModel != null) {
       await putCategory();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
         Navigator.pop(context);
       });

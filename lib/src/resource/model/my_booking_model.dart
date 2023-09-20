@@ -6,17 +6,17 @@ import 'model.dart';
 
 class MyBookingModel {
   int? id;
-  num? total;
-  int? userId;
   String? address;
   String? date;
-  String? status;
   String? note;
+  int? userId;
+  String? status;
   int? invoiceId;
-  List<MyServiceModel>? myServices;
+  num? total;
   MyCustomerModel? myCustomer;
-  String? deletedAt;
+  List<MyServiceModel>? myServices;
   String? createdAt;
+  String? deletedAt;
   List<int>? listId;
 
   MyBookingModel({
@@ -72,17 +72,18 @@ abstract class MyBookingModelFactory {
   static MyBookingModel _fromJson(Map<String, dynamic> json) {
     final myBooking = MyBookingModel()
       ..id = json['id']
-      ..total = json['total']
-      ..userId = json['userId']
       ..address = json['address']
       ..date = json['date']
-      ..status = json['status']
       ..note = json['note']
+      ..userId = json['userId']
+      ..status = json['status']
+      ..invoiceId = json['invoiceId']
+      ..total = json['total']
       ..myCustomer = json['myCustomer'] != null
-          ? MyCustomerModelFactory.create(jsonEncode(json['myService']))
+          ? MyCustomerModelFactory.create(jsonEncode(json['myCustomer']))
           : null
-      ..myServices = json['myService'] != null
-          ? MyServiceFactory.createList(jsonEncode(json['myService']))
+      ..myServices = json['myServices'] != null
+          ? MyServiceFactory.createList(jsonEncode(json['myServices']))
           : null
       ..deletedAt = json['deletedAt']
       ..createdAt = json['createdAt'];

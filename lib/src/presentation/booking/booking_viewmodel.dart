@@ -278,7 +278,7 @@ class BookingViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-
+  
   void checkDiscountInput(String value) {
     if (value.isEmpty) {
       onDiscount = false;
