@@ -271,7 +271,7 @@ class BookingViewModel extends BaseViewModel {
       noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
     } else if (noteController.text.length < 10) {
       onNote = false;
-      noteErrorMsg = ServiceAddLanguage.descriptionMinLenght;
+      noteErrorMsg = ServiceAddLanguage.descriptionMinLength;
     } else {
       noteErrorMsg = '';
       onNote = true;

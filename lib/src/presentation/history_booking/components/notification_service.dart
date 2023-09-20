@@ -171,14 +171,6 @@ class NotificationService extends StatelessWidget {
       ],
     );
   }
-  // return ListTile(
-  //   minLeadingWidth: SpaceBox.sizeSmall,
-  //   leading: SvgPicture.asset(AppImages.icLocation),
-  //   title: Paragraph(
-  //     content: address ?? '',
-  //     style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
-  //   ),
-  // );
 
   Widget buildFooter() {
     return Column(
