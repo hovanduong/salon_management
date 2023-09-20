@@ -71,19 +71,22 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
 
   void diaLogPhone(String phone) {
     showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        barrierColor: Colors.black45,
-        transitionDuration: const Duration(milliseconds: 200),
-        pageBuilder: (buildContext, animation,
-            secondaryAnimation,) {
-          return DiaLogPhoneCustomer(
-            phone: phone,
-            onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
-          );
-        },);
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black45,
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (
+        buildContext,
+        animation,
+        secondaryAnimation,
+      ) {
+        return DiaLogPhoneCustomer(
+          phone: phone,
+          onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
+        );
+      },
+    );
   }
 
   Widget buildFirstTab() {
@@ -114,7 +117,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
     // );
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async{
+      onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
       child: Padding(
@@ -122,19 +125,23 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         child: ListView.builder(
           shrinkWrap: true,
           controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.isLoadMore? _viewModel!.listCurrent.length+1
-          :_viewModel!.listCurrent.length,
+          itemCount: _viewModel!.isLoadMore
+              ? _viewModel!.listCurrent.length + 1
+              : _viewModel!.listCurrent.length,
           itemBuilder: (context, index) {
-            final phone= _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
-            final date= _viewModel!.listCurrent[index].createdAt;
-            if(index<_viewModel!.listCurrent.length ){
+            if (index < _viewModel!.listCurrent.length) {
+              final phone =
+                  _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
+              final date = _viewModel!.listCurrent[index].createdAt;
               return NotificationService(
                 isButton: true,
-                dateTime: date!=null? AppDateUtils.splitHourDate(
-                  AppDateUtils.formatDateLocal(
-                  date,
-                  ),
-                ): '',
+                dateTime: date != null
+                    ? AppDateUtils.splitHourDate(
+                        AppDateUtils.formatDateLocal(
+                          date,
+                        ),
+                      )
+                    : '',
                 total: _viewModel!.listCurrent[index].total.toString(),
                 nameUser: _viewModel!.listCurrent[index].myCustomer?.fullName,
                 phoneNumber: phone,
@@ -143,7 +150,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
                   status: _viewModel!.listCurrent[index].status,
                 ),
               );
-            }else{
+            } else {
               return const CupertinoActivityIndicator();
             }
           },
@@ -155,7 +162,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   Widget buildSecondTab() {
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async{
+      onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
       child: Padding(
@@ -163,14 +170,17 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         child: ListView.builder(
           itemCount: _viewModel!.listCurrent.length,
           itemBuilder: (context, index) {
-            final phone= _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
-            final date= _viewModel!.listCurrent[index].createdAt;
+            final phone =
+                _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
+            final date = _viewModel!.listCurrent[index].createdAt;
             return NotificationService(
-              dateTime: date!=null? AppDateUtils.splitHourDate(
-                AppDateUtils.formatDateLocal(
-                 date,
-                ),
-              ): '',
+              dateTime: date != null
+                  ? AppDateUtils.splitHourDate(
+                      AppDateUtils.formatDateLocal(
+                        date,
+                      ),
+                    )
+                  : '',
               total: _viewModel!.listCurrent[index].total.toString(),
               nameUser: _viewModel!.listCurrent[index].myCustomer?.fullName,
               phoneNumber: phone,
@@ -186,7 +196,7 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
   Widget buildThirdTab() {
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async{
+      onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
       child: Padding(
@@ -194,14 +204,17 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         child: ListView.builder(
           itemCount: _viewModel!.listCurrent.length,
           itemBuilder: (context, index) {
-            final phone= _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
-            final date= _viewModel!.listCurrent[index].createdAt;
+            final phone =
+                _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
+            final date = _viewModel!.listCurrent[index].createdAt;
             return NotificationService(
-              dateTime: date!=null? AppDateUtils.splitHourDate(
-                AppDateUtils.formatDateLocal(
-                 date,
-                ),
-              ): '',
+              dateTime: date != null
+                  ? AppDateUtils.splitHourDate(
+                      AppDateUtils.formatDateLocal(
+                        date,
+                      ),
+                    )
+                  : '',
               total: _viewModel!.listCurrent[index].total.toString(),
               nameUser: _viewModel!.listCurrent[index].myCustomer?.fullName,
               phoneNumber: phone,
