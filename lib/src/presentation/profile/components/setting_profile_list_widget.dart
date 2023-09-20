@@ -11,8 +11,9 @@ class SettingProfileListWidget extends StatelessWidget {
     this.colorTitle,
     this.title,
     this.textStyleTitle,
-    this.colorImage, this.onTap, 
-    this.isOntap= false,
+    this.colorImage,
+    this.onTap,
+    this.isOntap = false,
   });
   final String? image;
   final Color? colorImage;
@@ -29,10 +30,8 @@ class SettingProfileListWidget extends StatelessWidget {
         vertical: SizeToPadding.sizeSmall / 1.1,
       ),
       child: GestureDetector(
-        onTap: (){
-          if(isOntap==true){
-            onTap!();
-          }
+        onTap: () {
+          onTap!();
         },
         child: Row(
           children: [

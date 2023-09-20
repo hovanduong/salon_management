@@ -31,8 +31,8 @@ class BottomSheetSingle extends StatefulWidget {
 class _BottomSheetSingleState extends State<BottomSheetSingle> {
   late int? selectValue;
   late Map<int, String> listItems;
-  List<RadioModel> foundSearch=[];
-  List<RadioModel> listData=[];
+  List<RadioModel> foundSearch = [];
+  List<RadioModel> listData = [];
   @override
   void initState() {
     // if (widget.isAll) {
@@ -42,10 +42,12 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
     // }
     listItems = widget.listItems;
     widget.listItems.entries.forEach((e) {
-      listData.add(RadioModel(
-        id: e.key,
-        name: e.value,
-      ),);
+      listData.add(
+        RadioModel(
+          id: e.key,
+          name: e.value,
+        ),
+      );
     });
     foundSearch = listData;
     selectValue = widget.initValues;
@@ -129,6 +131,7 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                         onTap: () {
                           selectValue = key;
                           widget.onTapSubmit!(MapEntry(key, name));
+                          Navigator.pop(context);
                           setState(() {});
                         },
                         child: Container(
@@ -190,22 +193,21 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
   Future<void> filterData(String searchCategory) async {
     var listSearchCategory = <RadioModel>[];
     listSearchCategory = listData
-      .where(
-        (element) => element.name!.toLowerCase()
-            .contains(searchCategory),
-      )
-      .toList();
-      setState(() {
-        foundSearch=listSearchCategory;
-      });
+        .where(
+          (element) => element.name!.toLowerCase().contains(searchCategory),
+        )
+        .toList();
+    setState(() {
+      foundSearch = listSearchCategory;
+    });
   }
 
-  Future<void> onSearch(String value) async{
-    if(value.isEmpty){
+  Future<void> onSearch(String value) async {
+    if (value.isEmpty) {
       setState(() {
-        foundSearch = listData;  
+        foundSearch = listData;
       });
-    }else{
+    } else {
       final searchCategory = value.toLowerCase();
       // _timer = Timer(const Duration(milliseconds: 100), () async {});
       await filterData(searchCategory);

@@ -27,7 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  
   Widget buildBackground() {
     return const CustomBackGround();
   }
@@ -35,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildHeaderWidget() {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: SizeToPadding.sizeVeryBig,
-          vertical: SizeToPadding.sizeVeryBig, 
+        horizontal: SizeToPadding.sizeVeryBig,
+        vertical: SizeToPadding.sizeVeryBig,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,6 +163,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget buildLogoutWidget() {
+    return SettingProfileListWidget(
+      image: AppImages.icSecurity,
+      title: 'Logout',
+      onTap: () async {
+       await _viewModel!.logOut();
+      },
+    );
+  }
+
   Widget buildProfile() {
     return SafeArea(
       top: true,
@@ -192,6 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildCategoryWidget(),
             buildLoginAndSecurity(),
             buildDataAndPrivacyWidget(),
+            buildLogoutWidget(),
           ],
         ),
       ),

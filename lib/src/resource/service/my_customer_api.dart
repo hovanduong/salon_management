@@ -10,7 +10,7 @@ class MyCustomerApi {
   Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer() async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-customer?pageSize=10&page=1',
+        url: '/my-customer',
       );
       switch (response?.statusCode) {
         case 200:
