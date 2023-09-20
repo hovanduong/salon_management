@@ -19,13 +19,15 @@ class AppFormField extends StatefulWidget {
     this.maxLenght,
     this.maxLines,
     this.counterText,
-    this.onTap, 
+    this.onTap,
+    this.enabled,
     this.iconButton,
   });
-final Function()? onTap;
+  final Function()? onTap;
   final String? hintText;
   final String? labelText;
   final String? validator;
+  final bool? enabled;
   final bool? isSpace;
   final bool obscureText;
   final TextEditingController? textEditingController;
@@ -61,6 +63,7 @@ class _AppFormFieldState extends State<AppFormField> {
           height: SpaceBox.sizeVerySmall,
         ),
         TextFormField(
+          enabled: widget.enabled,
           maxLines: widget.maxLines ?? 1,
           maxLength: widget.maxLenght,
           keyboardType: widget.keyboardType,
@@ -102,7 +105,7 @@ class _AppFormFieldState extends State<AppFormField> {
                     ),
                   )
                 : null,
-                prefixIcon: widget.iconButton,
+            prefixIcon: widget.iconButton,
           ),
         ),
         SizedBox(

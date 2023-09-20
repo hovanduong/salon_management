@@ -4,8 +4,8 @@ import '../../../resource/model/radio_model.dart';
 import '../../configs.dart';
 import '../../constants/app_space.dart';
 
-class BottomSheetSingleRadio extends StatefulWidget {
-  const BottomSheetSingleRadio({
+class BottomSheetMultipleRadio extends StatefulWidget {
+  const BottomSheetMultipleRadio({
     required this.listItems,
     Key? key,
     this.titleContent = '',
@@ -26,10 +26,11 @@ class BottomSheetSingleRadio extends StatefulWidget {
   // final Function(String)? onSearch;
 
   @override
-  _BottomSheetSingleRadioState createState() => _BottomSheetSingleRadioState();
+  _BottomSheetMultipleRadioState createState() =>
+      _BottomSheetMultipleRadioState();
 }
 
-class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
+class _BottomSheetMultipleRadioState extends State<BottomSheetMultipleRadio> {
   List<RadioModel> listRadioData = [];
   List<RadioModel> selectValue = [];
   bool enableButton = false;
@@ -279,11 +280,21 @@ class RadioItem extends StatelessWidget {
           ),
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Paragraph(
-                content: item.name,
-              ),
-            ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Paragraph(
+                      content: item.name!.split('/')[0],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Paragraph(
+                      content: item.name!.split('/')[1],
+                    ),
+                  ],
+                )),
           ),
           // SizedBox(
           //   width: layout.sizeToPadding(LayoutSize.tiny),

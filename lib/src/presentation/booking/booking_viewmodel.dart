@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
@@ -69,7 +71,7 @@ class BookingViewModel extends BaseViewModel {
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
 
-  final discountCheck = RegExp(r'^(?!0*(?:100|\d{1,2})$)\d+$');
+  final discountCheck = RegExp(r'^(?!^100$)(?!^[0-9]{1,2}(\.[0-9])?$)^.*$');
 
   int? index;
   String? prices;
@@ -134,6 +136,7 @@ class BookingViewModel extends BaseViewModel {
   Future<void> changeValueService(List<RadioModel> value) async {
     selectedService.clear();
     selectedService = value;
+
     notifyListeners();
   }
 
@@ -155,7 +158,7 @@ class BookingViewModel extends BaseViewModel {
   Future<void> initMapCustomer() async {
     myCustumer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}'},
+        {element.id!: '0${element.phoneNumber}'},
       );
     });
     notifyListeners();
@@ -164,7 +167,10 @@ class BookingViewModel extends BaseViewModel {
   Future<void> initMapService() async {
     myService.forEach((element) {
       mapService.addAll(
-        {element.id!: '${element.name}'},
+        {
+          element.id!:
+              ' ${element.name}/${currencyFormatter.format(element.money)} '
+        },
       );
     });
     notifyListeners();
@@ -207,7 +213,7 @@ class BookingViewModel extends BaseViewModel {
 
   void totalDiscount() {
     final moneyText = discountController.text;
-    final moneyInt = moneyText != '' ? int.parse(moneyText) : 0;
+    final moneyInt = moneyText != '' ? double.parse(moneyText) : 0;
 
     final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
 
@@ -226,6 +232,9 @@ class BookingViewModel extends BaseViewModel {
     final date = await pickDate();
     if (date == null) {
       return;
+    }
+    if (date != dateTime) {
+      dateTime = date;
     }
     final newDateTime = DateTime(
       date.year,
@@ -270,12 +279,9 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void checkDiscountInput(String value) {
-    if (value.isEmpty) {
+    if (discountCheck.hasMatch(value)) {
       onDiscount = false;
-      discountErrorMsg = 'roongx';
-    } else if (discountCheck.hasMatch(value)) {
-      onDiscount = false;
-      discountErrorMsg = 'sai';
+      discountErrorMsg = BookingLanguage.discountLenghtError;
     } else {
       discountErrorMsg = '';
       onNote = true;
@@ -315,7 +321,7 @@ class BookingViewModel extends BaseViewModel {
   Future<DateTime?> pickDate() => showDatePicker(
         context: context,
         initialDate: dateTime,
-        firstDate: DateTime(1990),
+        firstDate: DateTime.now(),
         lastDate: DateTime(2100),
       );
 

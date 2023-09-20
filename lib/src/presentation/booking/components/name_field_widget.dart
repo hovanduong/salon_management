@@ -31,7 +31,7 @@ class NameFieldWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
               border: Border.all(
-                color: AppColors.FIELD_GREEN,
+                color: AppColors.BLACK_200,
               ),
             ),
             child: TextField(
@@ -39,6 +39,7 @@ class NameFieldWidget extends StatelessWidget {
               controller: nameController,
               style: const TextStyle(color: AppColors.BLACK_500),
               decoration: InputDecoration(
+                hintText: BookingLanguage.nameCustomer,
                 hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(

@@ -128,5 +128,11 @@
     "profile": "Profile",
     "discount": "Discount",
     "selectServices": "Select Services",
+    "discountLenghtError": "Enter between 0 - 100", 
+    "nameCustomer": "Name Customer",   
+    "selectPhoneNumber": "Select phone number",  
+    "enterPhone": "Enter phone",
+    "note": "Note", 
+    "enterNote": "Enter note",     
     "lastLine": ""
 }

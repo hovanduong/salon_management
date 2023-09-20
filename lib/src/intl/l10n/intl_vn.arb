@@ -127,6 +127,12 @@
     "dataAndPrivacy": "Bảo mật và riêng tư",
     "profile": "Hồ sơ",
     "discount": "Giảm giá",
-    "selectServices": "Chọn dịch vụ",    
+    "selectServices": "Chọn dịch vụ", 
+    "discountLenghtError": "Nhập trong khoảng từ 0 - 100", 
+    "nameCustomer": "Tên khách hàng", 
+    "selectPhoneNumber": "Chọn số điện thoại",
+    "enterPhone": "Nhập điện thoại",     
+    "note": "Ghi chú",  
+    "enterNote": "Nhập ghi chú",   
     "lastLine": ""
 }
