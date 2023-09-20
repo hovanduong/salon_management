@@ -7,6 +7,7 @@ import '../../resource/service/auth.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class HistoryBookingViewModel extends BaseViewModel {
   bool isSwitch = false;
@@ -21,6 +22,9 @@ class HistoryBookingViewModel extends BaseViewModel {
     await fetchData();
     notifyListeners();
   }
+
+  Future<void> goToBookingDetails(BuildContext context, int id)
+    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
 
   Future<void> fetchData() async {
     listCurrent.clear();

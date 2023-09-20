@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'booking_detail_view_model.dart';
 import 'components/components.dart';
@@ -20,20 +23,29 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final id= ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(id.toString()),
       viewModel: BookingDetailsViewModel(), 
-      builder: (context, viewModel, child) => buildBookingDetailsScreen(),
+      builder: (context, viewModel, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            systemNavigationBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ),
+          child: buildBookingDetailsScreen(),
+        ),
     );
   }
 
-  Widget buildAddress(){
+  Widget buildAddress(int index){
     return ListTile(
       minLeadingWidth: SpaceBox.sizeSmall,
       leading: SvgPicture.asset(AppImages.icLocation, 
         color: AppColors.PRIMARY_GREEN,),
       title: Paragraph(
-        content: 'address',
+        content: _viewModel!.listMyBooking[index].address,
         style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
       ),
     );
@@ -48,13 +60,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildAppBar(){
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeLarge),
-      child: const CustomerAppBar(
+      child: CustomerAppBar(
+        onTap: () => Navigator.pop(context),
         title: '#LH000034',
       ),
     );
   }
 
-  Widget buildHeader(){
+  Widget buildHeader(int index){
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
@@ -66,7 +79,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         children: [
           buildAppBar(),
           buildDivider(),
-          buildAddress(),
+          buildAddress(index),
         ],
       ),
     );
@@ -94,7 +107,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Widget buildStatusCard(){
+  Widget buildStatusCard(int index){
+    final date = _viewModel!.listMyBooking[index].createdAt;
     return Container(
       margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
@@ -109,20 +123,23 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildTitle(
-            content: 'Hom nay, 10: 30',
-            trailing: const StatusService(
-              content: 'Da xac nhan',
+            content:  date,
+            trailing: StatusService(
+              content: _viewModel!.listMyBooking[index].status,
               color: AppColors.PRIMARY_GREEN,
             )
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-            child: const ItemWidget(title:'Khach Hang' ,content: 'Ngan 98',),
+            child: ItemWidget(
+              title:'Khach Hang' ,
+              content: _viewModel!.listMyBooking[index].myCustomer!.fullName,
+            ),
           ),
           buildDivider(),
-          const ItemWidget(
+          ItemWidget(
             title:  'Tam tinh',
-            content: '300.000 vnd',
+            content: _viewModel!.listMyBooking[index].total.toString(),
             color: AppColors.PRIMARY_GREEN,
             isSpaceBetween: true,
           ),
@@ -131,29 +148,55 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Widget buildTitleService(){
-    return const Paragraph(
-      content: 'Thong tin dich vu (1)',
+  Widget buildTitleService(int index){
+    final lengthService= _viewModel!.listMyBooking[index].myServices!.length;
+    return Paragraph(
+      content: 'Thong tin dich vu ($lengthService)',
       style: STYLE_MEDIUM,
     );
   }
 
-  Widget buildNoteService(){
+  Widget buildNoteService(int index){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Paragraph(
           content: 'Ghi chu',
           style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
         ),
-        const Paragraph(
-          content: 'ghi chu',
+        Paragraph(
+          content: _viewModel!.listMyBooking[index].note,
           style: STYLE_MEDIUM,
         ),
       ],
     );
   }
 
-  Widget buildService(){
+  Widget buildListService(int index){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _viewModel!.listMyBooking[index].myServices?.length,
+        itemBuilder: (context, indexService) {
+          final money =_viewModel!.listMyBooking[index].myServices![indexService].money;
+          final service =_viewModel!.listMyBooking[index].myServices![indexService].name;
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
+            child: ItemWidget(
+              content: money.toString(),
+              title: service,
+              fontWeightTitle: FontWeight.bold,
+              isSpaceBetween: true,
+              color: AppColors.PRIMARY_GREEN,
+            ),
+          );
+        }
+      ),
+    );
+  }
+
+  Widget buildService(int index){
     return Container(
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       decoration: BoxDecoration(
@@ -166,37 +209,62 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildTitleService(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-            child: const ItemWidget(
-              content: '160.000d',
-              title: 'Hon moi cung em',
-              fontWeightTitle: FontWeight.bold,
-              isSpaceBetween: true,
-              color: AppColors.PRIMARY_GREEN,
-            ),
-          ),
+          buildTitleService(index),
+          buildListService(index),
           buildDivider(),
-          buildNoteService(),
+          buildNoteService(index),
         ],
       ),
     );
   }
 
-  Widget buildBookingDetailsScreen(){
+  Widget buildItemScreen(){
     return SafeArea(
       top: true,
       left: false,
       bottom: false,
       right: false,
-      child: Column(
-        children: [
-          buildHeader(),
-          buildStatusCard(),
-          buildService(),
-        ],
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _viewModel!.listMyBooking.length,
+            itemBuilder: (context, index) => Column(
+              children: [
+                buildHeader(index),
+                buildStatusCard(index),
+                buildService(index),
+              ],
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  Widget buildBookingDetailsScreen(){
+    return StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildItemScreen(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  )
+              ],
+            ),
+          ),
+        ),
+      );
   }
 }
