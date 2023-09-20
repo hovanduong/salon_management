@@ -1,9 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/widget/load_more/load_more_widget.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
@@ -79,71 +78,139 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
         barrierColor: Colors.black45,
         transitionDuration: const Duration(milliseconds: 200),
         pageBuilder: (buildContext, animation,
-            secondaryAnimation) {
+            secondaryAnimation,) {
           return DiaLogPhoneCustomer(
             phone: phone,
             onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
           );
-        });
+        },);
   }
 
   Widget buildFirstTab() {
-    print(_viewModel?.listMyBooking);
-    return LoadMoreWidget(
-      page: 1,
-      onChanged: () async{
-        await _viewModel!.getMyBooking();
-      },
-      list: _viewModel?.listMyBooking,
-      widget: NotificationService(
-        dateTime: AppDateUtils.splitHourDate(
-          AppDateUtils.formatDateLocal(_viewModel!.listMyBooking[0].createdAt!)
-        ),
-        price: '100.000 VNĐ',
-        nameUser: 'Trung Thong',
-        phoneNumber: '0931390467',
-        onTapPhone: () => diaLogPhone('0931390467'),
-        widget: const SelectStatusWidget(),
-      ),
-    );
-    // return ListView.builder(
-    //   itemCount: 10,
-    //   itemBuilder: (context, index) => NotificationService(
-    //     dateTime: DateTime.now(),
-    //     price: '100.000 VNĐ',
+    // return LoadMoreWidget(
+    //   model: (p0) {
+    //     _viewModel!.myBookingModel =p0;
+    //     print(p0);
+    //     setState(() { });
+    //   },
+    //   page: 1,
+    //   onChanged: () async{
+    //     // await _viewModel!.getMyBooking();
+    //   },
+    //   onChangedPage: (page) async{
+    //     await _viewModel!.getMyBooking(page);
+    //   },
+    //   list: _viewModel!.listCurrent,
+    //   widget: NotificationService(
+    //     dateTime: AppDateUtils.splitHourDate(
+    //       AppDateUtils.formatDateLocal(_viewModel!.listCurrent[0].createdAt!)
+    //     ),
+    //     price: _viewModel!.myBookingModel.address,
     //     nameUser: 'Trung Thong',
     //     phoneNumber: '0931390467',
     //     onTapPhone: () => diaLogPhone('0931390467'),
     //     widget: const SelectStatusWidget(),
     //   ),
     // );
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async{
+        await _viewModel!.pullRefresh();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 200),
+        child: ListView.builder(
+          shrinkWrap: true,
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.isLoadMore? _viewModel!.listCurrent.length+1
+          :_viewModel!.listCurrent.length,
+          itemBuilder: (context, index) {
+            final phone= _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
+            final date= _viewModel!.listCurrent[index].createdAt;
+            if(index<_viewModel!.listCurrent.length ){
+              return NotificationService(
+                isButton: true,
+                dateTime: date!=null? AppDateUtils.splitHourDate(
+                  AppDateUtils.formatDateLocal(
+                  date,
+                  ),
+                ): '',
+                total: _viewModel!.listCurrent[index].total.toString(),
+                nameUser: _viewModel!.listCurrent[index].myCustomer?.fullName,
+                phoneNumber: phone,
+                onTapPhone: () => diaLogPhone(phone!),
+                widget: SelectStatusWidget(
+                  status: _viewModel!.listCurrent[index].status,
+                ),
+              );
+            }else{
+              return const CupertinoActivityIndicator();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget buildSecondTab() {
-    return Column(
-      children: [
-        NotificationService(
-          dateTime: AppDateUtils.splitHourDate(
-          AppDateUtils.formatDateLocal(_viewModel!.listMyBooking[0].createdAt!)
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async{
+        await _viewModel!.pullRefresh();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 200),
+        child: ListView.builder(
+          itemCount: _viewModel!.listCurrent.length,
+          itemBuilder: (context, index) {
+            final phone= _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
+            final date= _viewModel!.listCurrent[index].createdAt;
+            return NotificationService(
+              dateTime: date!=null? AppDateUtils.splitHourDate(
+                AppDateUtils.formatDateLocal(
+                 date,
+                ),
+              ): '',
+              total: _viewModel!.listCurrent[index].total.toString(),
+              nameUser: _viewModel!.listCurrent[index].myCustomer?.fullName,
+              phoneNumber: phone,
+              onTapPhone: () => diaLogPhone(phone!),
+              widget: setStatusNotification('done', 'checkout'),
+            );
+          },
         ),
-          price: '100.000 VNĐ',
-          widget: setStatusNotification('done', 'checkout'),
-        ),
-      ],
+      ),
     );
   }
 
   Widget buildThirdTab() {
-    return Column(
-      children: [
-        NotificationService(
-          dateTime: AppDateUtils.splitHourDate(
-          AppDateUtils.formatDateLocal(_viewModel!.listMyBooking[0].createdAt!)
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async{
+        await _viewModel!.pullRefresh();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 200),
+        child: ListView.builder(
+          itemCount: _viewModel!.listCurrent.length,
+          itemBuilder: (context, index) {
+            final phone= _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
+            final date= _viewModel!.listCurrent[index].createdAt;
+            return NotificationService(
+              dateTime: date!=null? AppDateUtils.splitHourDate(
+                AppDateUtils.formatDateLocal(
+                 date,
+                ),
+              ): '',
+              total: _viewModel!.listCurrent[index].total.toString(),
+              nameUser: _viewModel!.listCurrent[index].myCustomer?.fullName,
+              phoneNumber: phone,
+              onTapPhone: () => diaLogPhone(phone!),
+              widget: setStatusNotification('canceled', 'cancel'),
+            );
+          },
         ),
-          price: '100.000 VNĐ',
-          widget: setStatusNotification('canceled', 'cancel'),
-        ),
-      ],
+      ),
     );
   }
 

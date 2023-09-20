@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -12,19 +11,21 @@ class NotificationService extends StatelessWidget {
     this.dateTime,
     this.widget,
     this.onTapCard,
-    this.price,
+    this.total,
     this.nameUser,
     this.phoneNumber,
-    this.onTapPhone,
+    this.onTapPhone, 
+    this.isButton=false,
   });
 
   final String? dateTime;
   final Widget? widget;
-  final String? price;
+  final String? total;
   final String? nameUser;
   final String? phoneNumber;
   final Function()? onTapCard;
   final Function()? onTapPhone;
+  final bool isButton;
 
   Widget buildTitle({
     IconData? icon,
@@ -61,17 +62,6 @@ class NotificationService extends StatelessWidget {
   }
 
   Widget buildHeaderCard() {
-    // String? date;
-    // if (dateTime != null) {
-    //   final time = DateFormat('HH:mm').format(dateTime!);
-    //   date = DateFormat('dd/MM/yyyy').format(dateTime!);
-    //   final currentDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    //   if (date == currentDate) {
-    //     date = '${HistoryLanguage.today}, $time';
-    //   } else {
-    //     date = '$date $time';
-    //   }
-    // }
     return Column(
       children: [
         buildTitle(
@@ -106,7 +96,7 @@ class NotificationService extends StatelessWidget {
           style: STYLE_MEDIUM_BOLD,
         ),
         Paragraph(
-          content: price ?? '',
+          content: total ?? '',
           style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_PINK),
         ),
       ],
@@ -191,19 +181,24 @@ class NotificationService extends StatelessWidget {
   // );
 
   Widget buildFooter() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Column(
       children: [
-        Expanded(
-          child: AppButton(
-            content: HistoryLanguage.pay,
-            enableButton: true,
-          ),
+        buildLine(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              child: AppButton(
+                content: HistoryLanguage.pay,
+                enableButton: true,
+              ),
+            ),
+            SizedBox(
+              width: SpaceBox.sizeBig,
+            ),
+            buildButtonMore(),
+          ],
         ),
-        SizedBox(
-          width: SpaceBox.sizeBig,
-        ),
-        buildButtonMore(),
       ],
     );
   }
@@ -227,8 +222,7 @@ class NotificationService extends StatelessWidget {
               buildHeaderCard(),
               buildLine(),
               buildPrice(),
-              buildLine(),
-              buildFooter(),
+              if (isButton) buildFooter() else Container(),
             ],
           ),
         ),

@@ -11,18 +11,46 @@ import '../base/base.dart';
 class HistoryBookingViewModel extends BaseViewModel{
   bool isSwitch=false;
   MyBookingApi myBookingApi =MyBookingApi();
+  ScrollController scrollController = ScrollController();
   List<MyBookingModel> listMyBooking=[];
+  List<MyBookingModel> listCurrent=[];
+  bool isLoadMore= false;
   int page=1;
+  
 
   Future<void> init() async {
-    await getMyBooking();
-    print(listMyBooking.length);
+    listCurrent.clear();
+    page=1;
+    await getMyBooking(1);
+    listCurrent=listMyBooking;
+    scrollController.addListener(scrollListener);
     notifyListeners();
   }
 
-  void setPage(){
-    page= page+1;
+   Future<void> pullRefresh() async {
+    await init();
+    isLoadMore=false;
     notifyListeners();
+  }
+
+  Future<void> loadMoreData() async {
+    page += 1;
+    await getMyBooking(page);
+
+    listCurrent = [...listCurrent, ...listMyBooking];
+    isLoadMore=false;
+ 
+    notifyListeners();
+  }
+
+   dynamic scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 100) {
+        isLoadMore=true;
+      Future.delayed(const Duration(seconds: 2), loadMoreData);
+      notifyListeners();
+    }
   }
 
   void setIsSwitch(){
@@ -68,13 +96,14 @@ class HistoryBookingViewModel extends BaseViewModel{
     );
   }
 
-  Future<void> getMyBooking() async {
+  Future<void> getMyBooking(int page) async {
     final result = await myBookingApi.getMyBooking(
       AuthParams(
         page: page,
         pageSize: 10
       )
     );
+    print(page);
 
     final value = switch (result) {
       Success(value: final listMyBooking) => listMyBooking,
@@ -82,9 +111,9 @@ class HistoryBookingViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      // showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDialog(context);
+      // showErrorDialog(context);
     } else {
       listMyBooking = value as List<MyBookingModel>;
     }

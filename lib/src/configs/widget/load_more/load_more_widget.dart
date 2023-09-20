@@ -1,5 +1,6 @@
+// ignore_for_file: unnecessary_statements
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../../../resource/service/auth.dart';
 import '../../../resource/service/my_booking.dart';
@@ -11,12 +12,16 @@ class LoadMoreWidget extends StatefulWidget {
     this.list, 
     this.widget, 
     this.onChanged, 
-    this.page, 
+    this.page,
+    this.onChangedPage, 
+    required this.model, 
   });
 
   final List<dynamic>? list;
   final Widget? widget;
   final Function()? onChanged;
+  final Function(int page)? onChangedPage;
+  final Function(dynamic) model;
   final int? page;
 
   @override
@@ -33,8 +38,9 @@ class _LoadMoreWidgetState extends State<LoadMoreWidget> {
   @override
   void initState() {
     super.initState();
-    if(widget.list!.isNotEmpty){
+    if(widget.list!.isNotEmpty && widget.list != null){
       listData = widget.list!;
+      widget.list!=[];
     }
     pageLoadMore= widget.page!;
     scrollController.addListener(scrollListener);
@@ -42,24 +48,10 @@ class _LoadMoreWidgetState extends State<LoadMoreWidget> {
 
   Future<void> loadMoreData() async {
     pageLoadMore += 1;
+
+    widget.onChangedPage!(pageLoadMore);
+    listData = [...listData, ...widget.list!];
  
-    final result = await myBookingApi.getMyBooking(
-      AuthParams(
-        page: pageLoadMore,
-        pageSize: 10
-      )
-    );
-
-    final value = switch (result) {
-      Success(value: final listMyBooking) => listMyBooking,
-      Failure(exception: final exception) => exception,
-    };
-
-    if(value is List) {
-      if (listData.isNotEmpty) {
-        listData = [...listData, ...value];
-      }
-    }
     setState(() {});
   }
 
@@ -67,7 +59,7 @@ class _LoadMoreWidgetState extends State<LoadMoreWidget> {
     if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent &&
         scrollController.position.pixels > 0) {
-      Future.delayed(const Duration(seconds: 2), loadMoreData);
+      Future.delayed(const Duration(seconds: 1), loadMoreData);
       setState(() {});
     }
   }
@@ -78,11 +70,13 @@ class _LoadMoreWidgetState extends State<LoadMoreWidget> {
       padding: const EdgeInsets.only(bottom: 200),
       child: ListView.builder(
         controller: scrollController,
-        itemCount: listData.length +1 ,
+        itemCount: listData.length +1,
         itemBuilder: (context, index) {
+
           if(index==listData.length && listData.length>4){
             return const CupertinoActivityIndicator();
           }
+          widget.model(listData[index]);
           return widget.widget;
         },
       ),
