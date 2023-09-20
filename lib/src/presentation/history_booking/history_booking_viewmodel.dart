@@ -8,29 +8,42 @@ import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
-class HistoryBookingViewModel extends BaseViewModel{
-  bool isSwitch=false;
-  MyBookingApi myBookingApi =MyBookingApi();
+class HistoryBookingViewModel extends BaseViewModel {
+  bool isSwitch = false;
+  MyBookingApi myBookingApi = MyBookingApi();
   ScrollController scrollController = ScrollController();
-  List<MyBookingModel> listMyBooking=[];
-  List<MyBookingModel> listCurrent=[];
-  bool isLoadMore= false;
-  int page=1;
-  
+  List<MyBookingModel> listMyBooking = [];
+  List<MyBookingModel> listCurrent = [];
+  bool isLoadMore = false;
+  int page = 1;
 
   Future<void> init() async {
-    listCurrent.clear();
-    page=1;
-    await getMyBooking(1);
-    listCurrent=listMyBooking;
-    scrollController.addListener(scrollListener);
+    await fetchData();
     notifyListeners();
   }
 
-   Future<void> pullRefresh() async {
+  Future<void> fetchData() async {
+    listCurrent.clear();
+    page = 1;
+    await getMyBooking(1);
+    listCurrent = listMyBooking;
+    scrollController.addListener(scrollListener);
+  }
+
+  Future<void> pullRefresh() async {
     await init();
-    isLoadMore=false;
+    isLoadMore = false;
     notifyListeners();
+  }
+
+  dynamic scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 0) {
+      isLoadMore = true;
+      Future.delayed(const Duration(seconds: 2), loadMoreData);
+      notifyListeners();
+    }
   }
 
   Future<void> loadMoreData() async {
@@ -38,23 +51,13 @@ class HistoryBookingViewModel extends BaseViewModel{
     await getMyBooking(page);
 
     listCurrent = [...listCurrent, ...listMyBooking];
-    isLoadMore=false;
- 
+    isLoadMore = false;
+
     notifyListeners();
   }
 
-   dynamic scrollListener() async {
-    if (scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent &&
-        scrollController.position.pixels > 100) {
-        isLoadMore=true;
-      Future.delayed(const Duration(seconds: 2), loadMoreData);
-      notifyListeners();
-    }
-  }
-
-  void setIsSwitch(){
-    isSwitch= !isSwitch;
+  void setIsSwitch() {
+    isSwitch = !isSwitch;
     notifyListeners();
   }
 
@@ -67,7 +70,7 @@ class HistoryBookingViewModel extends BaseViewModel{
     await launchUrl(launchUri);
   }
 
-   dynamic showDialogNetwork(_) {
+  dynamic showDialogNetwork(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -84,7 +87,7 @@ class HistoryBookingViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showErrorDialog(_){
+  dynamic showErrorDialog(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -97,13 +100,8 @@ class HistoryBookingViewModel extends BaseViewModel{
   }
 
   Future<void> getMyBooking(int page) async {
-    final result = await myBookingApi.getMyBooking(
-      AuthParams(
-        page: page,
-        pageSize: 10
-      )
-    );
-    print(page);
+    final result =
+        await myBookingApi.getMyBooking(AuthParams(page: page, pageSize: 10));
 
     final value = switch (result) {
       Success(value: final listMyBooking) => listMyBooking,

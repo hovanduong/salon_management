@@ -151,7 +151,6 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-
   void removeService(int index) {
     selectedService.removeAt(index);
 
@@ -271,14 +270,14 @@ class BookingViewModel extends BaseViewModel {
       noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
     } else if (noteController.text.length < 10) {
       onNote = false;
-      noteErrorMsg = ServiceAddLanguage.descriptionMinLength;
+      noteErrorMsg = 'ServiceAddLanguage.descriptionMinLenght';
     } else {
       noteErrorMsg = '';
       onNote = true;
     }
     notifyListeners();
   }
-  
+
   void checkDiscountInput(String value) {
     if (value.isEmpty) {
       onDiscount = false;
