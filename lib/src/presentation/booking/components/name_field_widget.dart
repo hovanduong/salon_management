@@ -8,9 +8,11 @@ class NameFieldWidget extends StatelessWidget {
     super.key,
     this.name,
     this.nameController,
+    this.hintText,
   });
   final TextEditingController? nameController;
   final String? name;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +30,17 @@ class NameFieldWidget extends StatelessWidget {
           ),
           DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.white,
               borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
               border: Border.all(
                 color: AppColors.BLACK_200,
               ),
             ),
-            child: TextField(
+            child: TextFormField(
               enabled: false,
               controller: nameController,
               style: const TextStyle(color: AppColors.BLACK_500),
               decoration: InputDecoration(
-                hintText: BookingLanguage.nameCustomer,
+                hintText: hintText,
                 hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(

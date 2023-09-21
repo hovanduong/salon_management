@@ -207,7 +207,7 @@ class BookingViewModel extends BaseViewModel {
       final totalPriceT = currencyFormatter.format(totalCost);
       totalController.text = totalPriceT;
     });
-
+    totalDiscount();
     notifyListeners();
   }
 

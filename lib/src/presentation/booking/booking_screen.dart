@@ -87,6 +87,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: List.generate(
           _viewModel!.selectedService.length,
           buildSelectedService,
+         
         ));
   }
 
@@ -113,6 +114,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           await _viewModel!.calculateTotalPriceByName(
             isCalculate: true,
           );
+         
         });
   }
 
@@ -240,6 +242,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildName() {
     return NameFieldWidget(
       name: BookingLanguage.name,
+      hintText: BookingLanguage.nameCustomer,
       nameController: _viewModel!.nameController,
     );
   }
@@ -299,6 +302,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildMoney() {
     return NameFieldWidget(
       name: BookingLanguage.total,
+      hintText: BookingLanguage.total,
       nameController: _viewModel!.totalController,
     );
   }
