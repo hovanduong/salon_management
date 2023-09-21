@@ -6,39 +6,38 @@ import '../../../configs/constants/app_space.dart';
 class SelectStatusWidget extends StatefulWidget {
   const SelectStatusWidget({
     super.key, 
-    this.status
+    this.status, 
+    this.onChanged,
   });
 
   final String? status;
+  final Function(String value)? onChanged;
 
   @override
   State<SelectStatusWidget> createState() => _SelectStatusWidgetState();
 }
 
-List<String> listStatus=['Mới' ,HistoryLanguage.confirmed, HistoryLanguage.cancel,];
+List<String> listStatus=['Mới' ,'Confirmed', 'Canceled',];
 
 class _SelectStatusWidgetState extends State<SelectStatusWidget> {
 
   String dropValue= listStatus.first;
-  
+
   @override
   Widget build(BuildContext context) {
-    if(widget.status!=null){
-      listStatus.forEach((element) {
-        if(element.contains(widget.status!)){
-          dropValue=element;
-        }
-      });
+    for(var i=0; i<listStatus.length; i++){
+      if(listStatus[i].contains(widget.status!)){
+        dropValue=listStatus[i];
+      }
     }
-    // dropValue=listStatus[2];
     return Container(
       height: SpaceBox.sizeLarge*2,
-      padding: EdgeInsets.all(SpaceBox.sizeSmall),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
         color: AppColors.PRIMARY_GREEN,
       ),
       child: DropdownButton(
+        padding: EdgeInsets.all(SpaceBox.sizeSmall),
         value: dropValue,
         dropdownColor: AppColors.PRIMARY_GREEN,
         iconEnabledColor: AppColors.COLOR_WHITE,
@@ -52,11 +51,7 @@ class _SelectStatusWidgetState extends State<SelectStatusWidget> {
           );
         }).toList(), 
         onChanged: (value) {
-          if(value!=listStatus.first){
-            setState(() {
-              dropValue=value!;
-            }); 
-          }
+          widget.onChanged!(value!);
         },
       ),
     );

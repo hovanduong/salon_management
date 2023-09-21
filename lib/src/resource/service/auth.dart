@@ -29,7 +29,7 @@ class AuthParams {
     this.myServiceModel,
     this.listCategory,
     this.page, 
-    this.pageSize,
+    this.status,
   });
   final int? id;
   final String? name;
@@ -43,7 +43,7 @@ class AuthParams {
   final MyServiceModel? myServiceModel;
   final List<int>? listCategory;
   final int? page;
-  final int? pageSize;
+  final String? status;
 }
 
 class AuthApi {

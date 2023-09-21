@@ -147,5 +147,10 @@
     "upcoming": "Sắp tới",
     "canceled": "Đã hủy",
     "done": "Đã xong",
+    "client": "Khách hàng",
+    "informationServices": "Thông tin dịch vụ",
+    "note": "Ghi chú",
+    "cancelAppointment": "Bạn muốn hủy lịch hẹn?",
+    "confirmAppointment": "Bạn muốn xác nhận lịch hẹn?",
     "lastLine": ""
 }

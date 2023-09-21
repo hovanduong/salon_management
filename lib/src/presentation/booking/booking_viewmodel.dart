@@ -4,8 +4,6 @@ import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
-
-import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/booking.dart';
 import '../../resource/service/my_customer_api.dart';

@@ -4,10 +4,10 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 
-import '../history_booking/history_booking_screen.dart';
+import '../booking/booking.dart';
+import '../booking_history/booking_history.dart';
 import '../homepage/homepage_screen.dart';
 import '../profile/profile_screen.dart';
-import '../booking/booking.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
 
@@ -62,7 +62,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
           else
             Container(),
           if (_viewModel!.selectedIndex == 2) 
-            const HistoryBookingScreen() else Container(),
+            const BookingHistoryScreen() else Container(),
           if (_viewModel!.selectedIndex == 3)
             const ProfileScreen()
           else
