@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../configs/constants/app_colors.dart';
 import 'components/components.dart';
 
 class StatusUpComingWidget{

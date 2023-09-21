@@ -11,7 +11,7 @@ class MyBookingApi{
   Future<Result<List<MyBookingModel>, Exception>> getMyBooking(AuthParams params) async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-booking?pageSize=${params.pageSize}&page=${params.page}',
+        url: '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
@@ -40,6 +40,40 @@ class MyBookingApi{
           final data = json.encode(jsonMap['data']['items']);
           final myBooking = MyBookingModelFactory.createList(data);
           return Success(myBooking);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> putStatusAppointment(AuthParams params) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/my-booking/${params.id}/Canceled',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> deleteBookingHistory(AuthParams params) async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/my-booking/${params.id}',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }

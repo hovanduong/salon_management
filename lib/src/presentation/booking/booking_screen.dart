@@ -5,7 +5,6 @@ import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet_single.dart';
 import '../base/base.dart';
 import 'booking.dart';
-import 'components/build_service_widget.dart';
 import 'components/name_field_widget.dart';
 
 class BookingScreen extends StatefulWidget {

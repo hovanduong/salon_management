@@ -15,5 +15,9 @@ class HistoryLanguage {
   static final canceled = S.current.canceled;
   static final upcoming = S.current.upcoming;
   static final done = S.current.done;
-  
+  static final delete = S.current.delete;
+  static final edit = S.current.edit;
+  static final cancelAppointment = S.current.cancelAppointment;
+  static final confirmAppointment = S.current.confirmAppointment;
+  static final confirm = S.current.confirm;
 }

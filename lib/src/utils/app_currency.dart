@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 class AppCurrencyFormat {
   static String formatMoneyDot(num value, {bool isDecimal = false}) {
     if (isDecimal) return NumberFormat('###,###,###.##', 'en_us').format(value)
-      .replaceAll(RegExp('[.]'), ',s');
+              .replaceAll(RegExp('[,]'), '.');
+
 
     return NumberFormat('###,###,###', 'en_us')
         .format(value);

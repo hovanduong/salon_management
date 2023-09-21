@@ -15,7 +15,9 @@ class NotificationService extends StatelessWidget {
     this.nameUser,
     this.phoneNumber,
     this.onTapPhone, 
-    this.isButton=false,
+    this.isButton=false, 
+    this.onTapDeleteBooking, 
+    this.onTapEditBooking,
   });
 
   final String? dateTime;
@@ -26,6 +28,9 @@ class NotificationService extends StatelessWidget {
   final Function()? onTapCard;
   final Function()? onTapPhone;
   final bool isButton;
+  final Function()? onTapDeleteBooking;
+  final Function()? onTapEditBooking;
+
 
   Widget buildTitle({
     IconData? icon,
@@ -74,7 +79,7 @@ class NotificationService extends StatelessWidget {
           icon: Icons.person_outline,
           color: AppColors.FIELD_GREEN,
         ),
-        InkWell(
+        GestureDetector(
           onTap: () {
             onTapPhone!();
           },
@@ -139,6 +144,7 @@ class NotificationService extends StatelessWidget {
       },
       menuChildren: [
         MenuItemButton(
+          onPressed: () => onTapEditBooking!(),
           child: Row(
             children: [
               const Icon(
@@ -146,7 +152,7 @@ class NotificationService extends StatelessWidget {
                 color: AppColors.PRIMARY_GREEN,
               ),
               Paragraph(
-                content: HistoryLanguage.editAppointmentSchedule,
+                content: HistoryLanguage.edit,
                 style: STYLE_MEDIUM_BOLD.copyWith(
                   color: AppColors.PRIMARY_GREEN,
                 ),
@@ -155,6 +161,7 @@ class NotificationService extends StatelessWidget {
           ),
         ),
         MenuItemButton(
+          onPressed: () => onTapDeleteBooking!(),
           child: Row(
             children: [
               const Icon(
@@ -162,7 +169,7 @@ class NotificationService extends StatelessWidget {
                 color: AppColors.PRIMARY_RED,
               ),
               Paragraph(
-                content: HistoryLanguage.deleteAppointmentSchedule,
+                content: HistoryLanguage.delete,
                 style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_RED),
               ),
             ],
