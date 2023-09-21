@@ -156,7 +156,15 @@
     "upcoming": "Upcoming",
     "canceled": "Canceled",
     "done": "Done",
+
     "home": "Home",
     "bookingSuccessful": "Booking successful",
+
+    "client": "Client",
+    "informationServices": "Information Services",
+    "note": "Note",
+    "cancelAppointment": "Do you want to cancel appointment?",
+    "confirmAppointment": "Do you want to confirm appointment?",
+
     "lastLine": ""
 }

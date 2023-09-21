@@ -61,7 +61,7 @@ class HttpRemote {
     return client.put(
       Uri.parse(Constants.baseUrl + url),
       headers: requestHeaders,
-      body: jsonEncode(body),
+      body: body == null ? null : jsonEncode(body),
     );
   }
 

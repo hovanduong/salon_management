@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../utils/date_format_utils.dart';
+import '../../configs/language/booking_details_language.dart';
+import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'booking_detail_view_model.dart';
 import 'components/components.dart';
@@ -108,7 +109,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildStatusCard(int index){
-    final date = _viewModel!.listMyBooking[index].createdAt;
+    final date = _viewModel!.listMyBooking[index].date;
     return Container(
       margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
@@ -132,16 +133,20 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
             child: ItemWidget(
-              title:'Khach Hang' ,
+              title: BookingDetailsLanguage.client,
               content: _viewModel!.listMyBooking[index].myCustomer!.fullName,
             ),
           ),
           buildDivider(),
-          ItemWidget(
-            title:  'Tam tinh',
-            content: _viewModel!.listMyBooking[index].total.toString(),
-            color: AppColors.PRIMARY_GREEN,
-            isSpaceBetween: true,
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+            child: ItemWidget(
+              title:  BookingDetailsLanguage.total,
+              content: AppCurrencyFormat.formatMoneyVND(
+                _viewModel!.listMyBooking[index].total!),
+              color: AppColors.PRIMARY_GREEN,
+              isSpaceBetween: true,
+            ),
           ),
         ],
       ),
@@ -151,24 +156,28 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildTitleService(int index){
     final lengthService= _viewModel!.listMyBooking[index].myServices!.length;
     return Paragraph(
-      content: 'Thong tin dich vu ($lengthService)',
+      content: '${BookingDetailsLanguage.informationServices} ($lengthService)',
       style: STYLE_MEDIUM,
     );
   }
 
   Widget buildNoteService(int index){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Paragraph(
-          content: 'Ghi chu',
-          style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
-        ),
-        Paragraph(
-          content: _viewModel!.listMyBooking[index].note,
-          style: STYLE_MEDIUM,
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Paragraph(
+            content: BookingDetailsLanguage.note,
+            style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_GREEN),
+          ),
+          SizedBox(height: SpaceBox.sizeSmall,),
+          Paragraph(
+            content: _viewModel!.listMyBooking[index].note,
+            style: STYLE_MEDIUM,
+          ),
+        ],
+      ),
     );
   }
 
@@ -184,7 +193,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
             child: ItemWidget(
-              content: money.toString(),
+              content: AppCurrencyFormat.formatMoneyVND(money!),
               title: service,
               fontWeightTitle: FontWeight.bold,
               isSpaceBetween: true,
@@ -244,27 +253,27 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   Widget buildBookingDetailsScreen(){
     return StreamProvider<NetworkStatus>(
-        initialData: NetworkStatus.online,
-        create: (context) =>
-            NetworkStatusService().networkStatusController.stream,
-        child: NetworkAwareWidget(
-          offlineChild: const ThreeBounceLoading(),
-          onlineChild: Container(
-            color: AppColors.COLOR_WHITE,
-            child: Stack(
-              children: [
-                buildItemScreen(),
-                if (_viewModel!.isLoading)
-                  const Positioned(
-                    child: Align(
-                      alignment: FractionalOffset.center,
-                      child: ThreeBounceLoading(),
-                    ),
-                  )
-              ],
-            ),
+      initialData: NetworkStatus.online,
+      create: (context) =>
+          NetworkStatusService().networkStatusController.stream,
+      child: NetworkAwareWidget(
+        offlineChild: const ThreeBounceLoading(),
+        onlineChild: Container(
+          color: AppColors.COLOR_WHITE,
+          child: Stack(
+            children: [
+              buildItemScreen(),
+              if (_viewModel!.isLoading)
+                const Positioned(
+                  child: Align(
+                    alignment: FractionalOffset.center,
+                    child: ThreeBounceLoading(),
+                  ),
+                )
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
