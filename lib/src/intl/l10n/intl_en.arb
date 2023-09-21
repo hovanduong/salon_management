@@ -156,5 +156,7 @@
     "upcoming": "Upcoming",
     "canceled": "Canceled",
     "done": "Done",
+    "home": "Home",
+    "bookingSuccessful": "Booking successful",
     "lastLine": ""
 }

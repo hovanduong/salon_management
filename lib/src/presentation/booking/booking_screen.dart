@@ -142,7 +142,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       builder: (context) => BottomSheetMultipleRadio(
         titleContent: BookingLanguage.selectServices,
         listItems: _viewModel!.mapService,
-        // initValues: _viewModel!.serviceId,
+        initValues: _viewModel!.serviceId,
         onTapSubmit: (value) {
           _viewModel!
             ..changeValueService(value)

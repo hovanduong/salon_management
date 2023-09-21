@@ -151,7 +151,6 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> removeService(int index) async {
-
     selectedService.removeAt(index);
     notifyListeners();
   }
@@ -325,6 +324,33 @@ class BookingViewModel extends BaseViewModel {
         firstDate: DateTime.now(),
         lastDate: DateTime(2100),
       );
+  Future<void> goToHome() => Navigator.pushNamed(
+        context,
+        Routers.home,
+      );
+
+  dynamic showOpenDialog(_) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return WarningDialog(
+          content: BookingLanguage.bookingSuccessful,
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+          leftButtonName: SignUpLanguage.cancel,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: BookingLanguage.home,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () {
+            goToHome();
+          },
+        );
+      },
+    );
+  }
 
   Future<void> postService() async {
     LoadingDialog.showLoadingDialog(context);
@@ -347,11 +373,11 @@ class BookingViewModel extends BaseViewModel {
       await showDialogNetwork(context);
     } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);
-      // await showErrorDialog(context);
+      // await showOpenDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      // clearData();
-      // await showSuccessDialog(context);
+
+      await showOpenDialog(context);
       // closeDialog(context);
     }
     notifyListeners();

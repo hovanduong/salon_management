@@ -1,6 +1,8 @@
 import '../../intl/generated/l10n.dart';
 
 class BookingLanguage {
+  static final bookingSuccessful = S.current.bookingSuccessful;
+  static final home = S.current.home;
   static final enterNote = S.current.enterNote;
   static final note = S.current.note;
   static final total = S.current.total;
