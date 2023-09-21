@@ -66,11 +66,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                   buildListService(),
                   buildDiscount(),
                   buildMoney(),
-                  buildNote(),
                   buildAddress(),
+                  buildNote(),
                   buildDateTime(),
                   buildConfirmButton(),
-                  buildCancelText(),
                 ],
               ),
             )
@@ -87,7 +86,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: List.generate(
           _viewModel!.selectedService.length,
           buildSelectedService,
-         
         ));
   }
 
@@ -114,7 +112,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           await _viewModel!.calculateTotalPriceByName(
             isCalculate: true,
           );
-         
         });
   }
 
