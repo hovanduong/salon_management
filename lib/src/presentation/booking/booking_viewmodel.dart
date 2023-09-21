@@ -342,6 +342,7 @@ class BookingViewModel extends BaseViewModel {
           colorNameLeft: AppColors.BLACK_500,
           rightButtonName: BookingLanguage.home,
           onTapLeft: () {
+            clearData();
             Navigator.pop(context);
           },
           onTapRight: () {
@@ -350,6 +351,17 @@ class BookingViewModel extends BaseViewModel {
         );
       },
     );
+  }
+
+  void clearData() {
+    selectedService.clear();
+    totalController.clear();
+    phoneController.text = '';
+    discountController.text = '';
+    nameController.clear();
+    addressController.clear();
+    noteController.clear();
+    notifyListeners();
   }
 
   Future<void> postService() async {
