@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
 import '../../../resource/model/my_booking_model.dart';
+import '../../../utils/app_currency.dart';
 import '../../../utils/date_format_utils.dart';
 import 'components.dart';
 
@@ -57,7 +58,7 @@ class ScreenTap extends StatelessWidget {
               final id = listCurrent![index].id;
               return NotificationService(
                 onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
-                onTapDeleteBooking: () => onTapDeleteBooking!(id!),
+                // onTapDeleteBooking: () => onTapDeleteBooking!(id!),
                 onTapCard: () => onTapCard!(id!),
                 isButton: isButton,
                 dateTime: date != null
@@ -67,7 +68,8 @@ class ScreenTap extends StatelessWidget {
                         ),
                       )
                     : '',
-                total: listCurrent![index].total.toString(),
+                total: AppCurrencyFormat.formatMoneyVND(
+                  listCurrent![index].total!,),
                 nameUser: listCurrent![index].myCustomer?.fullName,
                 phoneNumber: phone,
                 onTapPhone: () => onTapPhone!(phone!),
@@ -77,7 +79,7 @@ class ScreenTap extends StatelessWidget {
                     if(!value.contains(listCurrent![index].status!)){
                       onChangedStatus!(value, id!);
                     }
-                  } 
+                  }, 
                 ),
               );
             } else {

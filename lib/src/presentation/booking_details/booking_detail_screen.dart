@@ -7,7 +7,6 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/booking_details_language.dart';
 import '../../utils/app_currency.dart';
-import '../../utils/app_utils.dart';
 import '../base/base.dart';
 import 'booking_detail_view_model.dart';
 import 'components/components.dart';
@@ -143,7 +142,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
             padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
             child: ItemWidget(
               title:  BookingDetailsLanguage.total,
-              content: _viewModel!.listMyBooking[index].total.toString(),
+              content: AppCurrencyFormat.formatMoneyVND(
+                _viewModel!.listMyBooking[index].total!),
               color: AppColors.PRIMARY_GREEN,
               isSpaceBetween: true,
             ),
