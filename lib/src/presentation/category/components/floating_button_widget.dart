@@ -22,16 +22,19 @@ class FloatingButtonWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (content != '') Container(
-            padding: EdgeInsets.all(Size.sizeSmall),
-            decoration: BoxDecoration(
-              color: AppColors.SECONDARY_GREEN,
-              borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
-            ),
-            child: Paragraph(
-              content: content,
-              style: STYLE_SMALL_BOLD.copyWith(
-                color: AppColors.COLOR_WHITE,
+          if (content != '') GestureDetector(
+            onTap: () => onPressed!(),
+            child: Container(
+              padding: EdgeInsets.all(Size.sizeSmall),
+              decoration: BoxDecoration(
+                color: AppColors.SECONDARY_GREEN,
+                borderRadius: BorderRadius.circular(SpaceBox.sizeSmall),
+              ),
+              child: Paragraph(
+                content: content,
+                style: STYLE_SMALL_BOLD.copyWith(
+                  color: AppColors.COLOR_WHITE,
+                ),
               ),
             ),
           ) else Container(),

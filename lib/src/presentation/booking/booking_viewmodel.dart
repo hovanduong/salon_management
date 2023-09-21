@@ -151,6 +151,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> removeService(int index) async {
+
     selectedService.removeAt(index);
     notifyListeners();
   }
@@ -270,7 +271,7 @@ class BookingViewModel extends BaseViewModel {
       noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
     } else if (noteController.text.length < 10) {
       onNote = false;
-      noteErrorMsg = ServiceAddLanguage.descriptionMinLenght;
+      noteErrorMsg = 'ServiceAddLanguage.descriptionMinLenght';
     } else {
       noteErrorMsg = '';
       onNote = true;

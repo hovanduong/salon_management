@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/language/category_language.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
@@ -96,12 +97,12 @@ class CategoryViewModel extends BaseViewModel {
         closeDialog(context);
         return WarningDialog(
           image: AppImages.icPlus,
-          title: 'Are you sure!',
+          title: '${CategoryLanguage.areYouSure}!',
           leftButtonName: SignUpLanguage.cancel,
           onTapLeft: () {
             Navigator.pop(context);
           },
-          rightButtonName: 'Yes',
+          rightButtonName: CategoryLanguage.yes,
           onTapRight: (){
             deleteCategory(id);
             Navigator.pop(context);
@@ -164,6 +165,7 @@ class CategoryViewModel extends BaseViewModel {
     } else {
       listCategory = value as List<CategoryModel>;
       setListIcon();
+      print(listCategory.length);
     }
     notifyListeners();
   }
