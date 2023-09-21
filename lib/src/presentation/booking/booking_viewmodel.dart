@@ -353,6 +353,18 @@ class BookingViewModel extends BaseViewModel {
     );
   }
 
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
   void clearData() {
     selectedService.clear();
     totalController.clear();
@@ -385,12 +397,12 @@ class BookingViewModel extends BaseViewModel {
       await showDialogNetwork(context);
     } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);
-      // await showOpenDialog(context);
+      await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
 
       await showOpenDialog(context);
-      // closeDialog(context);
+
     }
     notifyListeners();
   }
