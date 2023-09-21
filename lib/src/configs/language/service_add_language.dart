@@ -31,7 +31,7 @@ class ServiceAddLanguage {
 
   static final specialCharsError = S.current.specialCharsError;
   static final serviceNameMinLength = S.current.serviceNameMinLenght;
-  static final descriptionMinLenght = S.current.descriptionMinLenght;
+  static final descriptionMinLength = S.current.descriptionMinLenght;
   static final onlyDenominations = S.current.onlyDenominations;
   static final onlyNumberOfTime = S.current.onlyNumberOfTime;
 
@@ -40,4 +40,6 @@ class ServiceAddLanguage {
   static final confirm = S.current.confirm;
 
   static final cancel = S.current.cancel;
+
+  static final selectedCategories = S.current.selectedCategories;
 }

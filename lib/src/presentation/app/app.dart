@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../intl/generated/l10n.dart';
+import '../booking_details/booking_detail_screen.dart';
 import '../routers.dart';
 import '../sign_in/sign_in.dart';
 
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
       //           ),
       initialRoute: Routers.getStarted,
       onGenerateRoute: Routers.generateRoute,
+      // home: BookingDetailsScreen(),
     );
   }
 }

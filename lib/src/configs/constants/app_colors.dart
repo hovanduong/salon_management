@@ -47,4 +47,6 @@ class AppColors {
   static const Color LIGHT_SOLID_PINK = Color.fromRGBO(237, 50, 225, 0.1);
 
   static const Color LIGHT_PURPLE = Color.fromRGBO(185, 48, 227, 0.1);
+
+  static const Color YELLOW_STATUS = Color.fromRGBO(253, 141, 20, 1);
 }
