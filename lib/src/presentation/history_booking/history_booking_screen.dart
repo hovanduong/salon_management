@@ -134,6 +134,9 @@ class _HistoryBookingScreenState extends State<HistoryBookingScreen> {
                   _viewModel!.listCurrent[index].myCustomer?.phoneNumber;
               final date = _viewModel!.listCurrent[index].createdAt;
               return NotificationService(
+                onTapCard: () => _viewModel!.goToBookingDetails(
+                  context, _viewModel!.listCurrent[index].id!
+                ),
                 isButton: true,
                 dateTime: date != null
                     ? AppDateUtils.splitHourDate(

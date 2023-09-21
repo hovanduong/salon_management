@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
+import 'booking_details/booking_details.dart';
 import 'service_add/service_add.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
@@ -44,6 +45,7 @@ class Routers {
   static const String navigation = '/navigation';
   static const String category= '/category';
   static const String addCategory= '/addCategory';
+  static const String bookingDetails= '/bookingDetails';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -79,6 +81,14 @@ class Routers {
       //     name: homeDetails,
       //     arguments: arguments,
       //   );
+
+      case bookingDetails:
+        return animRoute(
+          const BookingDetailsScreen(),
+          beginOffset: right,
+          name: bookingDetails,
+          arguments: arguments,
+        );
 
       case addService:
         return animRoute(

@@ -27,4 +27,24 @@ class MyBookingApi{
       return Failure(e);
     }
   }
+
+  Future<Result<List<MyBookingModel>, Exception>> getMyBookingUser(String id) async {
+    try {
+      final response = await HttpRemote.get(
+        url: '/my-booking/$id',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
+          final myBooking = MyBookingModelFactory.createList(data);
+          return Success(myBooking);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 }

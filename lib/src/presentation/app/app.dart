@@ -43,9 +43,9 @@ class MyApp extends StatelessWidget {
       //             _Contants.languageEnglish,
       //             _Contants.countryEnglish,
       //           ),
-      // initialRoute: Routers.getStarted,
-      // onGenerateRoute: Routers.generateRoute,
-      home: BookingDetailsScreen(),
+      initialRoute: Routers.getStarted,
+      onGenerateRoute: Routers.generateRoute,
+      // home: BookingDetailsScreen(),
     );
   }
 }
