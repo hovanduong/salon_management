@@ -16,6 +16,8 @@
     "validService": "Please choose the service",
     "phoneNumber": "Phone number",
     "enterPhoneNumber": "Input phone number",
+    "enterName": "Enter Name",
+    "enterEmail": "Enter Email",
     "passWord": "Password",
     "enterPassword": "Enter your password",
     "forgotPass": "Forgot password?",
@@ -55,6 +57,8 @@
     "enterAmountOfTime": "Enter amount of time",
     "enterServiceDescription": "Enter service description",
     "emptyNameError": "Please enter service name",
+    "emptyPhoneError": "Please enter Phone",
+    "emptyFullNameError": "Please enter full name",
     "emptyMoneyError": "Please enter amount of money",
     "emptyTimeError": "Please enter amount of time",
     "emptyDescriptionError": "Please enter service description",
@@ -152,5 +156,9 @@
     "note": "Note",
     "cancelAppointment": "Do you want to cancel appointment?",
     "confirmAppointment": "Do you want to confirm appointment?",
+    "myCustomer": "My Customer",
+    "addMyCustomer": "Add my Customer",
+    "updateMyCustomer": "Update Customer",
+    "search": "Search",
     "lastLine": ""
 }

@@ -4,62 +4,48 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';
-import '../../resource/model/my_category_model.dart';
-import '../../resource/service/auth.dart';
-import '../../resource/service/category_api.dart';
-import '../../resource/service/my_service_api.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/model.dart';
+import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class CategoryViewModel extends BaseViewModel {
-  CategoryApi categoryApi= CategoryApi();
-  MyServiceApi myServiceApi = MyServiceApi();
-  TextEditingController category = TextEditingController();
+class MyCustomerViewModel extends BaseViewModel{
+  MyCustomerApi myCustomerApi = MyCustomerApi();
   ScrollController scrollController = ScrollController();
 
-  List<CategoryModel> listCategory=[];
-  List<CategoryModel> listCurrent=[];
-  List<CategoryModel> foundCategory=[];
-  List<bool> listIconCategory= [];
+  List<MyCustomerModel> listMyCustomer=[];
+  List<MyCustomerModel> listCurrent=[];
+  List<MyCustomerModel> foundCustomer=[];
 
-  bool isIconFloatingButton= true;
   bool isLoading = true;
   bool loadingMore = false;
-  bool isLoadingList = true;
 
   int page=1;
 
   Future<void> init() async {
     page=1;
-    await getCategory(page);
-    isLoading = false;
-    isLoadingList = false;
-    listCurrent=listCategory;
-    foundCategory=listCategory;
-    setListIcon();
+    isLoading = true;
+    await getMyCustomer(page);
     scrollController.addListener(scrollListener);
-    notifyListeners();
-  }
-
-  Future<void> pullRefresh() async {
-    isLoadingList = true;
-    await init();
+    listCurrent=listMyCustomer;
+    foundCustomer=listMyCustomer;
     notifyListeners();
   }
 
   Future<void> filterCategory(String searchCategory) async {
-    var listSearchCategory = <CategoryModel>[];
+    var listSearchCategory = <MyCustomerModel>[];
     listSearchCategory = listCurrent.where(
-      (element) => element.name!.toLowerCase().contains(searchCategory),)
+      (element) => element.phoneNumber!.toLowerCase().contains(searchCategory),)
     .toList();
-    foundCategory=listSearchCategory;
+    foundCustomer=listSearchCategory;
     notifyListeners();
   }
 
   Future<void> onSearchCategory(String value) async{
     if(value.isEmpty){
-      foundCategory = listCurrent;  
+      foundCustomer = listCurrent;  
     }else{
       final searchCategory = value.toLowerCase();
       await filterCategory(searchCategory);
@@ -69,10 +55,9 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> loadMoreData() async {
     page+=1;
-    await getCategory(page);
-    listCurrent = [...listCurrent, ...listCategory];
-    setListIcon();
-    foundCategory=listCurrent;
+    await getMyCustomer(page);
+    listCurrent = [...listCurrent, ...listMyCustomer];
+    foundCustomer=listCurrent;
     loadingMore = false;
     notifyListeners();
   }
@@ -83,29 +68,22 @@ class CategoryViewModel extends BaseViewModel {
         scrollController.position.pixels > 0) {
       loadingMore = true;
       Future.delayed(const Duration(seconds: 2), loadMoreData);
+ 
       notifyListeners();
     }
   }
 
-  Future<void> goToAddServiceCategory(BuildContext context)
-    => Navigator.pushNamed(context, Routers.addService);
-
-  Future<void> goToUpdateServiceCategory(BuildContext context)
-    => Navigator.pushNamed(context, Routers.updateService);
-
-  Future<void> goToAddCategory(
-    {required BuildContext context, CategoryModel? categoryModel,})
-    => Navigator.pushNamed(context, Routers.addCategory, arguments: categoryModel);
-
-  void setIcon(int index){
-    listIconCategory[index]=!listIconCategory[index];
+  Future<void> pullRefresh() async {
+    await init();
     notifyListeners();
   }
 
-  void setIconFloating(){
-    isIconFloatingButton = !isIconFloatingButton;
-    notifyListeners();
-  }
+  Future<void> goToAddMyCustomer(BuildContext context)
+    => Navigator.pushNamed(context, Routers.myCustomerAdd);
+
+  Future<void> goToMyCustomerEdit(BuildContext context, MyCustomerModel myCustomerModel)
+    => Navigator.pushNamed(context, Routers.myCustomerEdit, arguments: myCustomerModel);
+
 
   dynamic showDialogNetwork(_) {
     showDialog(
@@ -138,7 +116,7 @@ class CategoryViewModel extends BaseViewModel {
           },
           rightButtonName: CategoryLanguage.yes,
           onTapRight: (){
-            deleteCategory(id);
+            // deleteCategory(id);
             Navigator.pop(context);
           },
         );
@@ -172,23 +150,18 @@ class CategoryViewModel extends BaseViewModel {
     );
   }
 
-  void setListIcon(){
-    listIconCategory.clear();
-    for(var i=0; i<listCurrent.length; i++){
-      listIconCategory.add(true);
-    }
-    notifyListeners();
-  }
-
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
   }
 
-  Future<void> getCategory(int page) async {
-    final result = await categoryApi.getCategory(page);
+  Future<void> getMyCustomer(int page) async {
+    final result = await myCustomerApi.getMyCustomer(
+      getAll: false,
+      page: page
+    );
 
     final value = switch (result) {
-      Success(value: final listCategory) => listCategory,
+      Success(value: final listMyCustomer) => listMyCustomer,
       Failure(exception: final exception) => exception,
     };
 
@@ -197,13 +170,15 @@ class CategoryViewModel extends BaseViewModel {
     } else if (value is Exception) {
       showErrorDialog(context);
     } else {
-      listCategory = value as List<CategoryModel>;
+      isLoading = false;
+      listMyCustomer = value as List<MyCustomerModel>;
     }
     notifyListeners();
   }
 
-  Future<void> deleteCategory(int id) async {
-    final result = await categoryApi.deleteCategory(id);
+  Future<void> deleteMyCustomer(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await myCustomerApi.deleteMyCustomer(id);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,
@@ -211,51 +186,15 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
     } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
       showErrorDialog(context);
     } else {
+      LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
-      await pullRefresh();
-    }
-    notifyListeners();
-  }
-
-  Future<void> putCategory(String name, int id) async {
-    final result = await categoryApi.putCategory(
-      AuthParams(name: name, id: id),);
-
-    final value = switch (result) {
-      Success(value: final isTrue) => isTrue,
-      Failure(exception: final exception) => exception,
-    };
-
-    if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
-    } else if (value is Exception) {
-      showErrorDialog(context);
-    } else {
-      showSuccessDiaglog(context);
-      await pullRefresh();
-    }
-    notifyListeners();
-  }
-
-  Future<void> deleteService(int idCategory, int idService) async {
-    final result = await myServiceApi.deleteService(idCategory, idService);
-
-    final value = switch (result) {
-      Success(value: final isTrue) => isTrue,
-      Failure(exception: final exception) => exception,
-    };
-
-    if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
-    } else if (value is Exception) {
-      showErrorDialog(context);
-    } else {
-      showSuccessDiaglog(context);
-      await pullRefresh();
+      await getMyCustomer(page);
     }
     notifyListeners();
   }

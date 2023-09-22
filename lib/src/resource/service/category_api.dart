@@ -8,10 +8,10 @@ import '../model/my_category_model.dart';
 import 'auth.dart';
 
 class CategoryApi{
-  Future<Result<List<CategoryModel>, Exception>> getCategory() async {
+  Future<Result<List<CategoryModel>, Exception>> getCategory(int page) async {
     try {
       final response = await HttpRemote.get(
-        url: '/category?pageSize=10&page=1',
+        url: '/category?pageSize=10&page=$page',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {

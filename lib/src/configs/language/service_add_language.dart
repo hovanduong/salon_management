@@ -30,7 +30,7 @@ class ServiceAddLanguage {
   static final emptyDescriptionError = S.current.emptyDescriptionError;
 
   static final specialCharsError = S.current.specialCharsError;
-  static final serviceNameMinLength = S.current.serviceNameMinLenght;
+  static final serviceNameMinLength = S.current.serviceNameMinLength;
   static final descriptionMinLength = S.current.descriptionMinLenght;
   static final onlyDenominations = S.current.onlyDenominations;
   static final onlyNumberOfTime = S.current.onlyNumberOfTime;

@@ -69,7 +69,7 @@ class ScreenTap extends StatelessWidget {
                       )
                     : '',
                 total: AppCurrencyFormat.formatMoneyVND(
-                  listCurrent![index].total!,),
+                  listCurrent![index].total?? 0,),
                 nameUser: listCurrent![index].myCustomer?.fullName,
                 phoneNumber: phone,
                 onTapPhone: () => onTapPhone!(phone!),
