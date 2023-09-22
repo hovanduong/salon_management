@@ -161,11 +161,12 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildDiscount() {
     return AppFormField(
-      hintText: '0%',
+      hintText: '0',
+      suffixText: '%',
       labelText: BookingLanguage.discount,
       validator: _viewModel!.discountErrorMsg,
       keyboardType: TextInputType.number,
-      textEditingController: _viewModel!.discountController ,
+      textEditingController: _viewModel!.discountController,
       onChanged: (value) {
         _viewModel!
           ..checkDiscountInput(value)
@@ -320,9 +321,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         labelText: BookingLanguage.note,
         hintText: BookingLanguage.enterNote,
         onChanged: (value) {
-          _viewModel!
-            ..checkNoteInput()
-            ..enableConfirmButton();
+          _viewModel!.enableConfirmButton();
         },
       ),
     );

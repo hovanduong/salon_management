@@ -40,9 +40,9 @@ class BookingViewModel extends BaseViewModel {
   final phoneController = TextEditingController();
   final totalController = TextEditingController();
   final timeController = TextEditingController();
-  final noteController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   final addressController = TextEditingController();
-  final discountController = TextEditingController();
+  TextEditingController discountController = TextEditingController();
 
   bool onAddress = true;
   bool onPhone = true;
@@ -295,6 +295,8 @@ class BookingViewModel extends BaseViewModel {
 
   void checkDiscountInput(String value) {
     final number = double.tryParse(value);
+
+    // discountController.text = value.replaceAll(value, '%');
     if (value.isEmpty) {
       discountErrorMsg = '';
     } else if (onlySpecialChars.hasMatch(value)) {
@@ -399,8 +401,9 @@ class BookingViewModel extends BaseViewModel {
       myServices: serviceId,
       address: addressController.text.trim(),
       date: dateTime.toString().trim(),
-      discount: int.parse(discountController.text.trim()),
-      note: noteController.text.trim(),
+      discount: double.parse(
+          discountController.text.isEmpty ? '0' : discountController.text),
+      note: noteController.text == '' ? '' : noteController.text,
     ));
 
     final value = switch (result) {
