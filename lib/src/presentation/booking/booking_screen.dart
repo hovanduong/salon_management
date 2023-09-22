@@ -92,29 +92,32 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildSelectedService(int index) {
-    return Chip(
-        label: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Paragraph(
-              content: _viewModel!.selectedService[index].name!.split('/')[0],
-              style: STYLE_MEDIUM_BOLD,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Paragraph(
-              content: _viewModel!.selectedService[index].name!.split('/')[1],
-              style: STYLE_SMALL,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-        onDeleted: () async {
-          await _viewModel!.removeService(index);
-          await _viewModel!.setServiceId();
-          await _viewModel!.calculateTotalPriceByName(
-            isCalculate: true,
-          );
-        });
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeVerySmall),
+      child: Chip(
+          label: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: _viewModel!.selectedService[index].name!.split('/')[0],
+                style: STYLE_MEDIUM_BOLD,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Paragraph(
+                content: _viewModel!.selectedService[index].name!.split('/')[1],
+                style: STYLE_SMALL,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          onDeleted: () async {
+            await _viewModel!.removeService(index);
+            await _viewModel!.setServiceId();
+            await _viewModel!.calculateTotalPriceByName(
+              isCalculate: true,
+            );
+          }),
+    );
   }
 
   Widget buildService() {
@@ -149,7 +152,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           _viewModel!
             ..changeValueService(value)
             ..setServiceId()
-            ..calculateTotalPriceByName();
+            ..calculateTotalPriceByName()
+            ..enableConfirmButton();
         },
       ),
     );
@@ -157,15 +161,14 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildDiscount() {
     return AppFormField(
-      hintText: '0',
+      hintText: '0%',
       labelText: BookingLanguage.discount,
       validator: _viewModel!.discountErrorMsg,
       keyboardType: TextInputType.number,
-      textEditingController: _viewModel!.discountController,
+      textEditingController: _viewModel!.discountController ,
       onChanged: (value) {
         _viewModel!
           ..checkDiscountInput(value)
-          ..enableConfirmButton()
           ..totalDiscount();
       },
     );
@@ -313,10 +316,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: AppFormField(
         maxLines: 3,
-        validator: _viewModel!.noteErrorMsg,
         textEditingController: _viewModel!.noteController,
         labelText: BookingLanguage.note,
-        hintText: BookingLanguage.enterPhone,
+        hintText: BookingLanguage.enterNote,
         onChanged: (value) {
           _viewModel!
             ..checkNoteInput()

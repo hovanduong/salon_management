@@ -163,9 +163,10 @@
 
     "client": "Khách hàng",
     "informationServices": "Thông tin dịch vụ",
-    "note": "Ghi chú",
+
     "cancelAppointment": "Bạn muốn hủy lịch hẹn?",
     "confirmAppointment": "Bạn muốn xác nhận lịch hẹn?",
-
+    "onlySpecialChars": "Vui lòng không nhập ký tự đặc biệt",
+    "numberBetween": "Vui lòng nhập số từ 0 đến 100",
     "lastLine": ""
 }

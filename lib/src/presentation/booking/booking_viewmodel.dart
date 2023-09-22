@@ -71,8 +71,7 @@ class BookingViewModel extends BaseViewModel {
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
 
-  final discountCheck = RegExp(r'^(?!^100$)(?!^[0-9]{1,2}(\.[0-9])?$)^.*$');
-
+  final onlySpecialChars = RegExp(r'^[\s,\-]*$');
   int? index;
   String? prices;
   String? services;
@@ -88,6 +87,13 @@ class BookingViewModel extends BaseViewModel {
     await initMapService();
     notifyListeners();
   }
+
+  // void addPercentageSymbol(String value) {
+  //   if (value.isNotEmpty) {
+  //     value = '$value%';
+  //     notifyListeners();
+  //   }
+  // }
 
   Future<void> fetchService() async {
     // LoadingDialog.showLoadingDialog(context);
@@ -252,6 +258,7 @@ class BookingViewModel extends BaseViewModel {
     if (time == null) {
       return;
     }
+    final now = DateTime.now();
     final newDateTime = DateTime(
       dateTime.year,
       dateTime.month,
@@ -259,7 +266,10 @@ class BookingViewModel extends BaseViewModel {
       time.hour,
       time.minute,
     );
-
+    if (newDateTime.isBefore(now)) {
+      print('loi loi');
+      return;
+    }
     dateTime = newDateTime;
     notifyListeners();
   }
@@ -268,9 +278,6 @@ class BookingViewModel extends BaseViewModel {
     if (noteController.text.isEmpty) {
       onNote = false;
       noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
-    } else if (noteController.text.length < 10) {
-      onNote = false;
-      noteErrorMsg = 'ServiceAddLanguage.descriptionMinLenght';
     } else {
       noteErrorMsg = '';
       onNote = true;
@@ -278,13 +285,25 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  // void addPercent() {
+  //   final giaTriHienTai = discountController.text;
+
+  //   final giaTriMoi = '$giaTriHienTai%';
+  //   discountController.value =
+  //       discountController.value.copyWith(text: giaTriMoi);
+  // }
+
   void checkDiscountInput(String value) {
-    if (discountCheck.hasMatch(value)) {
-      onDiscount = false;
-      discountErrorMsg = BookingLanguage.discountLenghtError;
-    } else {
+    final number = double.tryParse(value);
+    if (value.isEmpty) {
       discountErrorMsg = '';
-      onNote = true;
+    } else if (onlySpecialChars.hasMatch(value)) {
+      discountErrorMsg = BookingLanguage.onlySpecialChars;
+    } else if (number == null || number < 0 || number > 100) {
+      discountErrorMsg = BookingLanguage.numberBetween;
+    } else {
+      // addPercent();
+      discountErrorMsg = '';
     }
     notifyListeners();
   }
@@ -292,11 +311,8 @@ class BookingViewModel extends BaseViewModel {
   void enableConfirmButton() {
     if (onPhone &&
         onAddress &&
-        onMoney &&
-        onNote &&
+        selectedService.isNotEmpty &&
         phoneController.text.isNotEmpty &&
-        noteController.text.isNotEmpty &&
-        totalController.text.isNotEmpty &&
         addressController.text.isNotEmpty) {
       enableButton = true;
     } else {
@@ -402,7 +418,6 @@ class BookingViewModel extends BaseViewModel {
       LoadingDialog.hideLoadingDialog(context);
 
       await showOpenDialog(context);
-
     }
     notifyListeners();
   }
