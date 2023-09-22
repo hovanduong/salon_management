@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
 import 'booking_details/booking_details.dart';
+import 'myCustomer_edit/my_customer_edit_screen.dart';
+import 'my_customer/my_customer.dart';
+import 'my_customer_add/my_customer_add_screen.dart';
 import 'service_add/service_add.dart';
 import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
@@ -46,6 +49,9 @@ class Routers {
   static const String category= '/category';
   static const String addCategory= '/addCategory';
   static const String bookingDetails= '/bookingDetails';
+  static const String myCustomer= '/myCustomer';
+  static const String myCustomerAdd= '/myCustomerAdd';
+  static const String myCustomerEdit= '/myCustomerEdit';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -81,6 +87,30 @@ class Routers {
       //     name: homeDetails,
       //     arguments: arguments,
       //   );
+
+      case myCustomerEdit:
+        return animRoute(
+          const MyCustomerEditScreen(),
+          beginOffset: right,
+          name: myCustomerEdit,
+          arguments: arguments,
+        );
+
+      case myCustomerAdd:
+        return animRoute(
+          const MyCustomerAddScreen(),
+          beginOffset: right,
+          name: myCustomerAdd,
+          arguments: arguments,
+        );
+
+      case myCustomer:
+        return animRoute(
+          const MyCustomerScreen(),
+          beginOffset: right,
+          name: myCustomer,
+          arguments: arguments,
+        );
 
       case bookingDetails:
         return animRoute(

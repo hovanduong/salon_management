@@ -119,6 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SettingProfileListWidget(
       image: AppImages.icPeople,
       title: ProfileLanguage.personalProfile,
+      onTap: () => _viewModel!.goToMyCustomer(context),
     );
   }
 

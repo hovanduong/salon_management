@@ -1,0 +1,151 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import '../../configs/configs.dart';
+import '../../configs/language/my_customer_add_language.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/my_category_model.dart';
+import '../../resource/model/my_service_model.dart';
+import '../../resource/service/auth.dart';
+import '../../resource/service/my_customer_api.dart';
+import '../../utils/app_valid.dart';
+import '../base/base.dart';
+
+class MyCustomerAddViewModel extends BaseViewModel {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  String messageErrorName = '';
+  String? messageErrorPhone;
+
+  List<CategoryModel> listCategory = <CategoryModel>[];
+
+  MyCustomerApi myCustomerApi = MyCustomerApi();
+
+  bool isColorProvinces = false;
+  bool enableSubmit = false;
+
+  Future<void> init() async {
+
+  }
+
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
+  void validName(String? value) {
+    if (value == null || value.isEmpty) {
+      messageErrorName = MyCustomerAddLanguage.emptyFullNameError;
+    } else if (value.length < 6) {
+      messageErrorName = MyCustomerAddLanguage.nameMinLength;
+    } else {
+      messageErrorName = '';
+    }
+    notifyListeners();
+  }
+
+  void validPhone(String? value) {
+    final result = AppValid.validatePhoneNumber(value);
+    if (result != null) {
+      messageErrorPhone = result;
+    } else {
+      messageErrorPhone = null;
+    }
+    notifyListeners();
+  }
+
+  void onSubmit() {
+    if (messageErrorName == '' &&
+        nameController.text != '' &&
+        phoneController.text != '' &&
+        messageErrorPhone== null ) {
+      enableSubmit = true;
+    } else {
+      enableSubmit = false;
+    }
+    notifyListeners();
+  }
+
+  dynamic showDialogNetwork(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningOneDialog(
+          content: CreatePasswordLanguage.errorNetwork,
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+          buttonName: SignUpLanguage.cancel,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          onTap: () => Navigator.pop(context),
+        );
+      },
+    );
+  }
+
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  dynamic showSuccessDialog(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+          onTap: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
+  void clearData() {
+    nameController.text = '';
+    phoneController.text = '';
+    notifyListeners();
+  }
+
+  Future<void> postMyCustomer() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await myCustomerApi.postMyCustomer(
+      AuthParams(
+        phoneNumber: int.parse(phoneController.text),
+        name: nameController.text
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      clearData();
+      await showSuccessDialog(context);
+      closeDialog(context);
+    }
+    notifyListeners();
+  }
+}

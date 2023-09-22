@@ -11,6 +11,7 @@ import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
+import '../model/model.dart';
 import '../model/my_category_model.dart';
 import '../model/my_service_model.dart';
 import '../model/user_model.dart';
@@ -30,6 +31,7 @@ class AuthParams {
     this.listCategory,
     this.page, 
     this.status,
+    this.myCustomerModel
   });
   final int? id;
   final String? name;
@@ -44,6 +46,7 @@ class AuthParams {
   final List<int>? listCategory;
   final int? page;
   final String? status;
+  final MyCustomerModel? myCustomerModel;
 }
 
 class AuthApi {
