@@ -12,16 +12,23 @@ import '../base/base.dart';
 import '../routers.dart';
 
 class BookingHistoryViewModel extends BaseViewModel {
-  bool isSwitch = false;
   MyBookingApi myBookingApi = MyBookingApi();
+
   ScrollController scrollController = ScrollController();
+
   List<MyBookingModel> listMyBooking = [];
   List<MyBookingModel> listCurrentUpcoming = [];
   List<MyBookingModel> listCurrentDone = [];
   List<MyBookingModel> listCurrentCanceled = [];
+
+  bool isSwitch = false;
   bool isLoadMore = false;
   bool isLoading= true;
-  int page = 1;
+
+  int pageUpComing = 1;
+  int pageDone = 1;
+  int pageCanceled = 1;
+
   String status='Confirm';
 
   Future<void> init() async {
@@ -34,13 +41,15 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> fetchData() async {
     listCurrentUpcoming.clear();
-    page = 1;
-    // await getMyBooking(1, status);
-    await getMyBooking(page, 'Confirm');
+      pageUpComing = 1;
+      pageDone = 1;
+      pageCanceled = 1;
+
+    await getMyBooking(pageUpComing, 'Confirm');
     listCurrentUpcoming = listMyBooking;
-    await getMyBooking(page, 'Canceled');
+    await getMyBooking(pageCanceled, 'Canceled');
     listCurrentCanceled=listMyBooking;
-    await getMyBooking(page, 'Done');
+    await getMyBooking(pageDone, 'Done');
     listCurrentDone=listMyBooking;
     isLoading=false;
     scrollController.addListener(scrollListener);
@@ -63,15 +72,17 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    page += 1;
     if(status == 'Confirm'){
-      await getMyBooking(page, status);
+      pageUpComing += 1;
+      await getMyBooking(pageUpComing, status);
       listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
     }else if(status == 'Canceled'){
-      await getMyBooking(page, status);
+      pageCanceled += 1;
+      await getMyBooking(pageCanceled, status);
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
     }else{
-      await getMyBooking(page, status);
+      pageDone += 1;
+      await getMyBooking(pageDone, status);
       listCurrentDone = [...listCurrentDone, ...listMyBooking];
     }
     isLoadMore = false;
