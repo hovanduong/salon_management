@@ -89,12 +89,13 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
   Widget buildInfoCustomer (int index) {
     final phone =_viewModel!.listMyCustomer[index].phoneNumber;
     final name = _viewModel!.listMyCustomer[index].fullName;
+    final id = _viewModel!.listMyCustomer[index].id;
     return CardServiceWidget(
       phone: phone,
       name: name,
       onEdit: (context) => _viewModel!.goToMyCustomerEdit(
         context, _viewModel!.listMyCustomer[index]),
-      // onDelete: (context) => _viewModel!.goToMyCustomerEdit(context),
+      onDelete: (context) => _viewModel!.deleteMyCustomer(id!),
     );
   }
 

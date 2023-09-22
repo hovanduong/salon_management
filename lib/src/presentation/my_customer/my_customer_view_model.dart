@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
@@ -20,8 +21,8 @@ class MyCustomerViewModel extends BaseViewModel{
 
   Future<void> init() async {
     scrollController.addListener(scrollListener);
+    isLoading = true;
     await getCategory();
-    isLoading = false;
     notifyListeners();
   }
 
@@ -117,7 +118,7 @@ class MyCustomerViewModel extends BaseViewModel{
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
   }
 
   Future<void> getCategory() async {
@@ -133,12 +134,14 @@ class MyCustomerViewModel extends BaseViewModel{
     } else if (value is Exception) {
       showErrorDialog(context);
     } else {
+      isLoading = false;
       listMyCustomer = value as List<MyCustomerModel>;
     }
     notifyListeners();
   }
 
-  Future<void> deleteCategory(int id) async {
+  Future<void> deleteMyCustomer(int id) async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.deleteMyCustomer(id);
 
     final value = switch (result) {
@@ -147,11 +150,13 @@ class MyCustomerViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
     } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
       showErrorDialog(context);
-      await getCategory();
     } else {
+      LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
       await getCategory();
     }

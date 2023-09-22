@@ -30,7 +30,7 @@ class MyCustomerApi {
   Future<Result<bool, Exception>> deleteMyCustomer(int id) async {
     try {
       final response = await HttpRemote.delete(
-        url: '/category/$id',
+        url: '/my-customer/$id',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {

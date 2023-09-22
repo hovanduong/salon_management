@@ -6,7 +6,6 @@ import '../../configs/configs.dart';
 import '../../configs/language/my_customer_add_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_category_model.dart';
-import '../../resource/model/my_service_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
@@ -32,7 +31,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
   void closeDialog(BuildContext context) {
     Timer(
-      const Duration(seconds: 1),
+      const Duration(seconds: 2),
       () => Navigator.pop(context),
     );
   }
