@@ -8,10 +8,11 @@ import '../model/model.dart';
 import 'auth.dart';
 
 class MyCustomerApi {
-  Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer() async {
+  Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer({
+      int? page, required bool getAll}) async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-customer',
+        url: getAll?'/my-customer':'/my-customer?pageSize=10&page=$page',
       );
       switch (response?.statusCode) {
         case 200:
@@ -71,7 +72,7 @@ class MyCustomerApi {
       final response = await HttpRemote.post(
         url: '/my-customer', 
         body: {
-          'phoneNumber': params.phoneNumber,
+          'phoneNumber': '0${params.phoneNumber}',
           'fullName': params.name
         }
       );

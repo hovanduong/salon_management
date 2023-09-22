@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -90,11 +91,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildCardService(int index, int serviceIndex) {
     final idService =
-        _viewModel!.listCategory[index].myServices?[serviceIndex].id;
-    final idCategory = _viewModel!.listCategory[index].id;
+        _viewModel!.foundCategory[index].myServices?[serviceIndex].id;
+    final idCategory = _viewModel!.foundCategory[index].id;
     final money =
-        _viewModel!.listCategory[index].myServices?[serviceIndex].money;
-    final name = _viewModel!.listCategory[index].myServices?[serviceIndex].name;
+        _viewModel!.foundCategory[index].myServices?[serviceIndex].money;
+    final name = _viewModel!.foundCategory[index].myServices?[serviceIndex].name;
     return CardServiceWidget(
       money: money,
       name: name,
@@ -103,11 +104,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildListService(int index) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _viewModel!.listCategory[index].myServices?.length,
-      itemBuilder: (context, serviceIndex) =>
-          buildCardService(index, serviceIndex),
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _viewModel!.foundCategory[index].myServices?.length,
+        itemBuilder: (context, serviceIndex) =>
+            buildCardService(index, serviceIndex),
+      ),
     );
   }
 
@@ -122,32 +126,35 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildTitleCategory(int index) {
-    final id = _viewModel!.listCategory[index].id;
-    final name = _viewModel!.listCategory[index].name;
-    return InkWell(
-      onTap: () {
-        _viewModel!.setIcon(index);
-      },
-      child: SlidableActionWidget(
-        isCheckCategory: true,
-        onTapButtonFirst: (context) => _viewModel!.deleteCategory(id!),
-        onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
-            context: context, categoryModel: CategoryModel(id: id, name: name)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                  right: SizeToPadding.sizeSmall,
-                  bottom: SizeToPadding.sizeMedium,
-                  top: SizeToPadding.sizeMedium),
-              child: Paragraph(
-                content: _viewModel!.listCategory[index].name,
-                style: STYLE_LARGE_BOLD,
+    final id = _viewModel!.foundCategory[index].id;
+    final name = _viewModel!.foundCategory[index].name;
+    return Padding(
+      padding: EdgeInsets.only(bottom: SizeToPadding.sizeVeryVerySmall),
+      child: InkWell(
+        onTap: () {
+          _viewModel!.setIcon(index);
+        },
+        child: SlidableActionWidget(
+          isCheckCategory: true,
+          onTapButtonFirst: (context) => _viewModel!.deleteCategory(id!),
+          onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
+              context: context, categoryModel: CategoryModel(id: id, name: name)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                    right: SizeToPadding.sizeSmall,
+                    bottom: SizeToPadding.sizeMedium,
+                    top: SizeToPadding.sizeMedium),
+                child: Paragraph(
+                  content: _viewModel!.foundCategory[index].name,
+                  style: STYLE_LARGE_BOLD,
+                ),
               ),
-            ),
-            buildItemCategory(index),
-          ],
+              buildItemCategory(index),
+            ],
+          ),
         ),
       ),
     );
@@ -166,31 +173,67 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
+  Widget buildSearch(){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
+      child: AppFormField(
+        iconButton: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.search),
+          color: AppColors.BLACK_300,
+        ),
+        hintText: CategoryLanguage.search,
+        onChanged: (value) {
+          _viewModel!.onSearchCategory(value);
+        },
+      ),
+    );
+  }
+
+  Widget showListCategory(){
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: Container(
+        margin: EdgeInsets.only(
+            left: SizeToPadding.sizeSmall,
+            right: SizeToPadding.sizeVerySmall),
+        height: MediaQuery.of(context).size.height-200,
+        child: ListView.builder(
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.loadingMore
+            ? _viewModel!.foundCategory.length+1
+            : _viewModel!.foundCategory.length,
+          itemBuilder: (context, index) {
+            if(index<_viewModel!.foundCategory.length){
+              return buildContentCategoryWidget(index);
+            }else{
+              return const CupertinoActivityIndicator();
+            }
+          }
+        ),
+      ),
+    );
+  }
+
   Widget buildBody() {
     return Expanded(
-      child: RefreshIndicator(
-        color: AppColors.PRIMARY_GREEN,
-        onRefresh: () async {
-          await _viewModel!.pullRefresh();
-        },
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: AppColors.COLOR_WHITE,
-            boxShadow: [
-              BoxShadow(
-                  color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.COLOR_WHITE,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+          ],
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildSearch(),
+              showListCategory(),
             ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(
-                top: SizeToPadding.sizeMedium,
-                left: SizeToPadding.sizeSmall,
-                right: SizeToPadding.sizeVerySmall),
-            child: ListView.builder(
-              itemCount: _viewModel!.listCategory.length,
-              itemBuilder: (context, index) =>
-                  buildContentCategoryWidget(index),
-            ),
           ),
         ),
       ),

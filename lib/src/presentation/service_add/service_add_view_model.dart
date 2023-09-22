@@ -161,7 +161,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Future<void> getCategory() async {
     listCategory.clear();
-    final result = await categoryApi.getCategory();
+    final result = await categoryApi.getCategory(1);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,

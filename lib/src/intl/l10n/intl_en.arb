@@ -159,5 +159,6 @@
     "myCustomer": "My Customer",
     "addMyCustomer": "Add my Customer",
     "updateMyCustomer": "Update Customer",
+    "search": "Search",
     "lastLine": ""
 }

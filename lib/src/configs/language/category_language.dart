@@ -11,4 +11,5 @@ class CategoryLanguage {
   static final no= S.current.no;
   static final editCategory= S.current.editCategory;
   static final enterCategory= S.current.enterCategory;
+  static final search= S.current.search;
 }

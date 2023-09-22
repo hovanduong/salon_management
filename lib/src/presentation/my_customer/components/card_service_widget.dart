@@ -4,8 +4,8 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import 'slidable_action_widget.dart';
 
-class CardServiceWidget extends StatelessWidget {
-  const CardServiceWidget({
+class CardCustomerWidget extends StatelessWidget {
+  const CardCustomerWidget({
     super.key, 
     this.onEdit,
     this.onDelete, 

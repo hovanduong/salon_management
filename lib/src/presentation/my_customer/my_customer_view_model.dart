@@ -13,16 +13,52 @@ import '../routers.dart';
 
 class MyCustomerViewModel extends BaseViewModel{
   MyCustomerApi myCustomerApi = MyCustomerApi();
-  List<MyCustomerModel> listMyCustomer=[];
-  bool isLoading = true;
-  bool loadingMore = false;
- 
   ScrollController scrollController = ScrollController();
 
+  List<MyCustomerModel> listMyCustomer=[];
+  List<MyCustomerModel> listCurrent=[];
+  List<MyCustomerModel> foundCustomer=[];
+
+  bool isLoading = true;
+  bool loadingMore = false;
+
+  int page=1;
+
   Future<void> init() async {
-    scrollController.addListener(scrollListener);
+    page=1;
     isLoading = true;
-    await getCategory();
+    await getMyCustomer(page);
+    scrollController.addListener(scrollListener);
+    listCurrent=listMyCustomer;
+    foundCustomer=listMyCustomer;
+    notifyListeners();
+  }
+
+  Future<void> filterCategory(String searchCategory) async {
+    var listSearchCategory = <MyCustomerModel>[];
+    listSearchCategory = listCurrent.where(
+      (element) => element.phoneNumber!.toLowerCase().contains(searchCategory),)
+    .toList();
+    foundCustomer=listSearchCategory;
+    notifyListeners();
+  }
+
+  Future<void> onSearchCategory(String value) async{
+    if(value.isEmpty){
+      foundCustomer = listCurrent;  
+    }else{
+      final searchCategory = value.toLowerCase();
+      await filterCategory(searchCategory);
+    }
+    notifyListeners();
+  }
+
+  Future<void> loadMoreData() async {
+    page+=1;
+    await getMyCustomer(page);
+    listCurrent = [...listCurrent, ...listMyCustomer];
+    foundCustomer=listCurrent;
+    loadingMore = false;
     notifyListeners();
   }
 
@@ -31,10 +67,7 @@ class MyCustomerViewModel extends BaseViewModel{
             scrollController.position.maxScrollExtent &&
         scrollController.position.pixels > 0) {
       loadingMore = true;
-      Future.delayed(const Duration(seconds: 2), () {
-        // loadMoreData();
-        loadingMore = false;
-      });
+      Future.delayed(const Duration(seconds: 2), loadMoreData);
  
       notifyListeners();
     }
@@ -121,8 +154,11 @@ class MyCustomerViewModel extends BaseViewModel{
     Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
   }
 
-  Future<void> getCategory() async {
-    final result = await myCustomerApi.getMyCustomer();
+  Future<void> getMyCustomer(int page) async {
+    final result = await myCustomerApi.getMyCustomer(
+      getAll: false,
+      page: page
+    );
 
     final value = switch (result) {
       Success(value: final listMyCustomer) => listMyCustomer,
@@ -158,7 +194,7 @@ class MyCustomerViewModel extends BaseViewModel{
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
-      await getCategory();
+      await getMyCustomer(page);
     }
     notifyListeners();
   }
