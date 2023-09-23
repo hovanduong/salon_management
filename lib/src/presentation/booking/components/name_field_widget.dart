@@ -4,14 +4,16 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
 class NameFieldWidget extends StatelessWidget {
-  const NameFieldWidget({
-    super.key,
-    this.name,
-    this.nameController,
-  });
+  const NameFieldWidget(
+      {super.key,
+      this.name,
+      this.nameController,
+      this.hintText,
+      this.textAlign});
   final TextEditingController? nameController;
   final String? name;
-
+  final String? hintText;
+  final TextAlign? textAlign;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,17 +30,18 @@ class NameFieldWidget extends StatelessWidget {
           ),
           DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.white,
               borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
               border: Border.all(
-                color: AppColors.FIELD_GREEN,
+                color: AppColors.BLACK_200,
               ),
             ),
-            child: TextField(
+            child: TextFormField(
+              textAlign: textAlign ?? TextAlign.start,
               enabled: false,
               controller: nameController,
               style: const TextStyle(color: AppColors.BLACK_500),
               decoration: InputDecoration(
+                hintText: hintText,
                 hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(

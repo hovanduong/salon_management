@@ -1,9 +1,12 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
+
 import '../../resource/service/auth.dart';
 import '../../resource/service/booking.dart';
 import '../../resource/service/my_customer_api.dart';
@@ -14,32 +17,34 @@ import '../base/base.dart';
 import '../routers.dart';
 
 class BookingViewModel extends BaseViewModel {
-  final List<Widget> fields = [];
-  String? messageService;
-  List<int>? myServiceId = [];
-  int? myCustomerId;
   BookingApi bookingApi = BookingApi();
-  // late Object dropValue = myService.first;
+  List<int>? myServiceId = [];
+  List<int> serviceId = [];
 
-  String searchText = '';
+  List<RadioModel> selectedService = [];
+  List<MyServiceModel> myService = [];
+  List<MyCustomerModel> myCustumer = [];
+
+  int? myCustomerId;
+
+  num totalCost = 0;
+  num totalPrice = 0;
+  num updatedTotalCost = 0;
+
   DateTime dateTime = DateTime.now();
 
-  // List<String>? selectedServices = [];
   Map<int, String> mapService = {};
-
-  List<int> serviceId = [];
-  num totalCost = 0;
-  List<MyCustomerModel> searchResults = [];
-  List<RadioModel> selectedService = [];
-  bool isListViewVisible = false;
   Map<int, String> mapPhone = {};
+
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final totalController = TextEditingController();
   final timeController = TextEditingController();
-  final noteController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   final addressController = TextEditingController();
-  final discountController = TextEditingController();
+  TextEditingController discountController = TextEditingController();
+
+  final moneyController = TextEditingController();
 
   bool onAddress = true;
   bool onPhone = true;
@@ -48,6 +53,7 @@ class BookingViewModel extends BaseViewModel {
   bool onTime = true;
   bool onNote = true;
   bool onDiscount = true;
+  bool isListViewVisible = false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -55,9 +61,8 @@ class BookingViewModel extends BaseViewModel {
   String? timeErrorMsg;
   String? noteErrorMsg;
   String? discountErrorMsg;
-
-  List<MyServiceModel> myService = [];
-  List<MyCustomerModel> myCustumer = [];
+  String? messageService;
+  String searchText = '';
 
   final currencyFormatter =
       NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
@@ -68,8 +73,7 @@ class BookingViewModel extends BaseViewModel {
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
 
-  final discountCheck = RegExp(r'^(?!0*(?:100|\d{1,2})$)\d+$');
-
+  final onlySpecialChars = RegExp(r'^[\s,\-]*$');
   int? index;
   String? prices;
   String? services;
@@ -85,6 +89,13 @@ class BookingViewModel extends BaseViewModel {
     await initMapService();
     notifyListeners();
   }
+
+  // void addPercentageSymbol(String value) {
+  //   if (value.isNotEmpty) {
+  //     value = '$value%';
+  //     notifyListeners();
+  //   }
+  // }
 
   Future<void> fetchService() async {
     // LoadingDialog.showLoadingDialog(context);
@@ -133,42 +144,41 @@ class BookingViewModel extends BaseViewModel {
   Future<void> changeValueService(List<RadioModel> value) async {
     selectedService.clear();
     selectedService = value;
+
     notifyListeners();
   }
 
   Future<void> setServiceId() async {
     serviceId.clear();
-    totalCost = 0;
     if (selectedService.isNotEmpty) {
       selectedService.forEach((element) {
         serviceId.add(element.id!);
       });
     }
-    print(totalCostDiscount);
-    print(serviceId);
     notifyListeners();
   }
 
-  void removeService(int index) {
+  Future<void> removeService(int index) async {
     selectedService.removeAt(index);
-
     notifyListeners();
   }
 
   Future<void> initMapCustomer() async {
     myCustumer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}'},
+        {element.id!: '0${element.phoneNumber}'},
       );
     });
-    print(mapPhone);
     notifyListeners();
   }
 
   Future<void> initMapService() async {
     myService.forEach((element) {
       mapService.addAll(
-        {element.id!: '${element.name}'},
+        {
+          element.id!:
+              ' ${element.name}/${currencyFormatter.format(element.money)} '
+        },
       );
     });
     notifyListeners();
@@ -186,17 +196,15 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  num totalPrice = 0;
-  // void calculateTotalPrice() {
+  Future<void> clearTotal() async {
+    updatedTotalCost = 0;
+    totalCost = 0;
+    totalController.clear();
+    notifyListeners();
+  }
 
-  //   totalPrice = calculateTotalPriceByName(myService, serviceId);
-
-  //   totalController.text = totalPriceT;
-  //   notifyListeners();
-  // }
-  num totalCostDiscount = 0;
-  num updatedTotalCost = 0;
-  void calculateTotalPriceByName() {
+  Future<void> calculateTotalPriceByName({bool isCalculate = false}) async {
+    await clearTotal();
     myService.forEach((element) {
       serviceId.forEach((elementId) {
         if (element.id == elementId) {
@@ -206,22 +214,22 @@ class BookingViewModel extends BaseViewModel {
       totalCost = updatedTotalCost;
       final totalPriceT = currencyFormatter.format(totalCost);
       totalController.text = totalPriceT;
+      moneyController.text = totalPriceT;
     });
-
-    // print(moneyInt);
-    print(totalCost);
+    totalDiscount();
     notifyListeners();
   }
 
   void totalDiscount() {
     final moneyText = discountController.text;
+    final moneyInt = moneyText != '' ? double.parse(moneyText) : 0;
 
-    final moneyInt = moneyText != '' ? int.parse(moneyText) : 0;
-    totalCostDiscount = totalCost - (totalCost * moneyInt / 100);
+    final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
+
     final totalPriceT = currencyFormatter.format(totalCostDiscount);
+
     totalController.text = totalPriceT;
-    print(totalCost);
-    print(totalCostDiscount);
+
     notifyListeners();
   }
 
@@ -233,6 +241,9 @@ class BookingViewModel extends BaseViewModel {
     final date = await pickDate();
     if (date == null) {
       return;
+    }
+    if (date != dateTime) {
+      dateTime = date;
     }
     final newDateTime = DateTime(
       date.year,
@@ -250,6 +261,7 @@ class BookingViewModel extends BaseViewModel {
     if (time == null) {
       return;
     }
+    final now = DateTime.now();
     final newDateTime = DateTime(
       dateTime.year,
       dateTime.month,
@@ -257,7 +269,10 @@ class BookingViewModel extends BaseViewModel {
       time.hour,
       time.minute,
     );
-
+    if (newDateTime.isBefore(now)) {
+      print('loi loi');
+      return;
+    }
     dateTime = newDateTime;
     notifyListeners();
   }
@@ -266,9 +281,6 @@ class BookingViewModel extends BaseViewModel {
     if (noteController.text.isEmpty) {
       onNote = false;
       noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
-    } else if (noteController.text.length < 10) {
-      onNote = false;
-      noteErrorMsg = 'ServiceAddLanguage.descriptionMinLenght';
     } else {
       noteErrorMsg = '';
       onNote = true;
@@ -277,15 +289,16 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void checkDiscountInput(String value) {
+    final number = double.tryParse(value);
+
     if (value.isEmpty) {
-      onDiscount = false;
-      discountErrorMsg = 'roongx';
-    } else if (discountCheck.hasMatch(value)) {
-      onDiscount = false;
-      discountErrorMsg = 'sai';
+      discountErrorMsg = '';
+    } else if (onlySpecialChars.hasMatch(value)) {
+      discountErrorMsg = BookingLanguage.onlySpecialChars;
+    } else if (number == null || number < 0 || number > 100) {
+      discountErrorMsg = BookingLanguage.numberBetween;
     } else {
       discountErrorMsg = '';
-      onNote = true;
     }
     notifyListeners();
   }
@@ -293,11 +306,8 @@ class BookingViewModel extends BaseViewModel {
   void enableConfirmButton() {
     if (onPhone &&
         onAddress &&
-        onMoney &&
-        onNote &&
+        selectedService.isNotEmpty &&
         phoneController.text.isNotEmpty &&
-        noteController.text.isNotEmpty &&
-        totalController.text.isNotEmpty &&
         addressController.text.isNotEmpty) {
       enableButton = true;
     } else {
@@ -322,19 +332,71 @@ class BookingViewModel extends BaseViewModel {
   Future<DateTime?> pickDate() => showDatePicker(
         context: context,
         initialDate: dateTime,
-        firstDate: DateTime(1990),
+        firstDate: DateTime.now(),
         lastDate: DateTime(2100),
       );
+  Future<void> goToHome() => Navigator.pushNamed(
+        context,
+        Routers.home,
+      );
 
-  Future<void> postService() async {
+  dynamic showOpenDialog(_) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return WarningDialog(
+          content: BookingLanguage.bookingSuccessful,
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+          leftButtonName: SignUpLanguage.cancel,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: BookingLanguage.home,
+          onTapLeft: () {
+            clearData();
+            Navigator.pop(context);
+          },
+          onTapRight: () {
+            goToHome();
+          },
+        );
+      },
+    );
+  }
+
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  void clearData() {
+    selectedService.clear();
+    totalController.clear();
+    phoneController.text = '';
+    discountController.text = '';
+    nameController.clear();
+    addressController.clear();
+    noteController.clear();
+    notifyListeners();
+  }
+
+  Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,
       address: addressController.text.trim(),
       date: dateTime.toString().trim(),
-      discount: int.parse(discountController.text.trim()),
-      note: noteController.text.trim(),
+      discount: double.parse(
+          discountController.text.isEmpty ? '0' : discountController.text),
+      note: noteController.text == '' ? 'Trống' : noteController.text,
     ));
 
     final value = switch (result) {
@@ -347,12 +409,11 @@ class BookingViewModel extends BaseViewModel {
       await showDialogNetwork(context);
     } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);
-      // await showErrorDialog(context);
+      await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      // clearData();
-      // await showSuccessDialog(context);
-      // closeDialog(context);
+
+      await showOpenDialog(context);
     }
     notifyListeners();
   }

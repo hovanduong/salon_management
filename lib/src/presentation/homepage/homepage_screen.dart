@@ -34,7 +34,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     return const CustomBackGround();
   }
 
-  Widget buildGreeting(){
+  Widget buildGreeting() {
     return Paragraph(
       content: 'Good afternoon,',
       style: STYLE_MEDIUM.copyWith(
@@ -44,7 +44,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildUserName(){
+  Widget buildUserName() {
     return Paragraph(
       content: 'Enjelin Morgeana',
       style: STYLE_BIG.copyWith(
@@ -56,7 +56,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   Widget nameUser() {
     return Positioned(
-      top: SpaceBox.sizeBig*2.2,
+      top: SpaceBox.sizeBig * 2.2,
       child: Row(
         children: [
           Column(
@@ -67,14 +67,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
               buildUserName(),
             ],
           ),
-          SizedBox(width: SizeToPadding.sizeBig*7,),
+          SizedBox(
+            width: SizeToPadding.sizeBig * 7,
+          ),
           SvgPicture.asset(AppImages.icBellWhite),
         ],
       ),
     );
   }
 
-  Widget buildHeaderCard(){
+  Widget buildHeaderCard() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -95,10 +97,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildMoney(){
+  Widget buildMoney() {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: SpaceBox.sizeBig, 
+        bottom: SpaceBox.sizeBig,
         top: SpaceBox.sizeVerySmall,
       ),
       child: Paragraph(
@@ -111,7 +113,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildIncome(){
+  Widget buildIncome() {
     return StatusCardMoney(
       content: HomePageLanguage.inCome,
       icon: Icons.arrow_downward_sharp,
@@ -119,7 +121,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildExpenses(){
+  Widget buildExpenses() {
     return StatusCardMoney(
       content: HomePageLanguage.expenses,
       icon: Icons.arrow_upward,
@@ -128,7 +130,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildIncomeAndExpenses(){
+  Widget buildIncomeAndExpenses() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -147,11 +149,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_500, blurRadius: SpaceBox.sizeVerySmall,
+              color: AppColors.BLACK_500,
+              blurRadius: SpaceBox.sizeVerySmall,
             ),
           ],
           color: AppColors.PRIMARY_GREEN,
-          borderRadius: const BorderRadius.all(Radius.circular(20),),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
@@ -168,7 +173,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildHeader(){
+  Widget buildHeader() {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -195,7 +200,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
       child: SizedBox(
         width: double.maxFinite,
-        height: SpaceBox.sizeBig*2.4,
+        height: SpaceBox.sizeBig * 2.4,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: 5,
@@ -226,7 +231,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget paypal() {
     return const Transaction(
       image: AppImages.pngPaypal,
-      money:  r'+ $ 1,406.00',
+      money: r'+ $ 1,406.00',
       subtile: 'Jan 30,2022',
       title: 'Palpal',
     );
@@ -235,7 +240,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget youtube() {
     return const Transaction(
       image: AppImages.pngYoutube,
-      money:  r'- $ 11.99',
+      money: r'- $ 11.99',
       subtile: 'Jan 16, 2022',
       title: 'Youtube',
     );
@@ -248,9 +253,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget buildBody(){
+  Widget buildBody() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeLarge,),
+      padding: EdgeInsets.symmetric(
+        horizontal: SpaceBox.sizeLarge,
+      ),
       child: Column(
         children: [
           Column(

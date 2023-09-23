@@ -19,14 +19,18 @@ class AppFormField extends StatefulWidget {
     this.maxLenght,
     this.maxLines,
     this.counterText,
-    this.onTap, 
+    this.onTap,
+    this.enabled,
     this.iconButton,
+    this.suffixText,
   });
-final Function()? onTap;
+  final Function()? onTap;
   final String? hintText;
   final String? labelText;
   final String? validator;
+  final bool? enabled;
   final bool? isSpace;
+  final String? suffixText;
   final bool obscureText;
   final TextEditingController? textEditingController;
   final Function(String value)? onChanged;
@@ -61,6 +65,7 @@ class _AppFormFieldState extends State<AppFormField> {
           height: SpaceBox.sizeVerySmall,
         ),
         TextFormField(
+          enabled: widget.enabled,
           maxLines: widget.maxLines ?? 1,
           maxLength: widget.maxLenght,
           keyboardType: widget.keyboardType,
@@ -69,6 +74,7 @@ class _AppFormFieldState extends State<AppFormField> {
           onTap: widget.onTap,
           obscureText: hiddenPassword,
           decoration: InputDecoration(
+            suffixText: widget.suffixText ?? '',
             counterText: widget.counterText,
             contentPadding: EdgeInsets.symmetric(
               vertical: SizeToPadding.sizeSmall,
@@ -102,7 +108,7 @@ class _AppFormFieldState extends State<AppFormField> {
                     ),
                   )
                 : null,
-                prefixIcon: widget.iconButton,
+            prefixIcon: widget.iconButton,
           ),
         ),
         SizedBox(

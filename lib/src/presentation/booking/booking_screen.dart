@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/widget/bottom_sheet/bottom_sheet.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet_single.dart';
 import '../base/base.dart';
 import 'booking.dart';
+
+import 'components/build_service_widget.dart';
+import 'components/components.dart';
+
 import 'components/name_field_widget.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -60,18 +66,30 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                   buildName(),
                   buildService(),
                   buildListService(),
+                  buildTotalNoDis(),
                   buildDiscount(),
                   buildMoney(),
-                  buildNote(),
                   buildAddress(),
+                  buildNote(),
                   buildDateTime(),
                   buildConfirmButton(),
-                  buildCancelText(),
                 ],
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildTotalNoDis() {
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+      child: NameFieldWidget(
+        textAlign: TextAlign.right,
+        name: 'Tạm tính',
+        hintText: 'Tạm tính',
+        nameController: _viewModel!.moneyController,
       ),
     );
   }
@@ -88,15 +106,29 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildSelectedService(int index) {
     return Chip(
-        label: Paragraph(
-          content: _viewModel!.selectedService[index].name,
-          style: STYLE_MEDIUM_BOLD,
-          overflow: TextOverflow.ellipsis,
+        backgroundColor: AppColors.BLACK_100,
+        label: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Paragraph(
+              content: _viewModel!.selectedService[index].name!.split('/')[0],
+              style: STYLE_MEDIUM_BOLD,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Paragraph(
+              content: _viewModel!.selectedService[index].name!.split('/')[1],
+              style: STYLE_SMALL,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
-        onDeleted: () => _viewModel!
-          ..removeService(index)
-          ..setServiceId()
-          ..calculateTotalPriceByName());
+        onDeleted: () async {
+          await _viewModel!.removeService(index);
+          await _viewModel!.setServiceId();
+          await _viewModel!.calculateTotalPriceByName(
+            isCalculate: true,
+          );
+        });
   }
 
   Widget buildService() {
@@ -104,7 +136,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Paragraph(
-          content: 'Selected Service',
+          content: BookingLanguage.selectServices,
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
         ),
         IconButton(
@@ -123,15 +155,16 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       context: context,
       isDismissible: true,
       isScrollControlled: true,
-      builder: (context) => BottomSheetSingleRadio(
-        titleContent: 'Chon Service',
+      builder: (context) => BottomSheetMultipleRadio(
+        titleContent: BookingLanguage.selectServices,
         listItems: _viewModel!.mapService,
-        // initValues: _viewModel!.serviceId,
+        initValues: _viewModel!.serviceId,
         onTapSubmit: (value) {
           _viewModel!
             ..changeValueService(value)
             ..setServiceId()
-            ..calculateTotalPriceByName();
+            ..calculateTotalPriceByName()
+            ..enableConfirmButton();
         },
       ),
     );
@@ -140,24 +173,20 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildDiscount() {
     return AppFormField(
       hintText: '0',
-      labelText: 'Giảm giá',
+      suffixText: '%',
+      labelText: BookingLanguage.discount,
       validator: _viewModel!.discountErrorMsg,
       keyboardType: TextInputType.number,
       textEditingController: _viewModel!.discountController,
       onChanged: (value) {
-        if (value.isEmpty) {
-          _viewModel!.discountController.text = '';
-        } else {
-          _viewModel!
-            ..checkDiscountInput(value)
-            ..enableConfirmButton()
-            ..totalDiscount();
-        }
+        _viewModel!
+          ..checkDiscountInput(value)
+          ..totalDiscount();
       },
     );
   }
 
-  // Widget buildDateTimee() {
+  // Widget buildDateTime() {
   //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
   //   final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
   //   return DateTimeWidget(
@@ -214,7 +243,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                 ),
                 child: Paragraph(
                   content:
-                      '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}',
+                      DateFormat('dd/MM/yyyy').format(_viewModel!.dateTime),
                 ),
               ),
             ),
@@ -226,7 +255,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildName() {
     return NameFieldWidget(
-      name: 'Name',
+      name: BookingLanguage.name,
+      hintText: BookingLanguage.nameCustomer,
       nameController: _viewModel!.nameController,
     );
   }
@@ -238,8 +268,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         horizontal: SizeToPadding.sizeMedium,
       ),
       child: CustomerAppBar(
-        onTap: () => Navigator.pop(context),
-        title: ServiceAddLanguage.serviceAdd,
+        // onTap: () => Navigator.pop(context),
+        title: BookingLanguage.booking,
       ),
     );
   }
@@ -253,7 +283,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       isScrollControlled: true,
       builder: (context) => BottomSheetSingle(
-        titleContent: 'Chọn số điện thoại',
+        titleContent: BookingLanguage.selectPhoneNumber,
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
@@ -264,12 +294,11 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildServicePhone() {
-    return InkWell(
+    return AppFormField(
+      hintText: BookingLanguage.enterPhone,
+      labelText: BookingLanguage.phoneNumber,
+      textEditingController: _viewModel!.phoneController,
       onTap: () => showSelectPhone(context),
-      child: NameFieldWidget(
-        name: 'Phone Number',
-        nameController: _viewModel!.phoneController,
-      ),
     );
   }
 
@@ -286,7 +315,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildMoney() {
     return NameFieldWidget(
-      name: 'total',
+      textAlign: TextAlign.right,
+      name: BookingLanguage.total,
+      hintText: BookingLanguage.total,
       nameController: _viewModel!.totalController,
     );
   }
@@ -298,14 +329,11 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: AppFormField(
         maxLines: 3,
-        validator: _viewModel!.noteErrorMsg,
         textEditingController: _viewModel!.noteController,
-        labelText: ServiceAddLanguage.description,
-        hintText: ServiceAddLanguage.enterServiceDescription,
+        labelText: BookingLanguage.note,
+        hintText: BookingLanguage.enterNote,
         onChanged: (value) {
-          _viewModel!
-            ..checkNoteInput()
-            ..enableConfirmButton();
+          _viewModel!.enableConfirmButton();
         },
       ),
     );
@@ -318,11 +346,11 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: AppButton(
         content: ServiceAddLanguage.confirm,
-        enableButton: true,
+        enableButton: _viewModel!.enableButton,
         onTap: () {
           _viewModel!
             ..confirmButton()
-            ..postService();
+            ..postBooking();
         },
       ),
     );
@@ -330,9 +358,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildCancelText() {
     return InkWell(
-      onTap:
-          // () {},
-          () => Navigator.pop(context),
+      onTap: () => Navigator.pop(context),
       child: Paragraph(
         content: ServiceAddLanguage.cancel,
         style: STYLE_MEDIUM_BOLD.copyWith(

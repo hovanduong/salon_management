@@ -130,6 +130,16 @@
     "loginAndSecurity": "Đăng nhập và bảo mật",
     "dataAndPrivacy": "Bảo mật và riêng tư",
     "profile": "Hồ sơ",
+
+    "discount": "Giảm giá",
+    "selectServices": "Chọn dịch vụ", 
+    "discountLenghtError": "Nhập trong khoảng từ 0 - 100", 
+    "nameCustomer": "Tên khách hàng", 
+    "selectPhoneNumber": "Chọn số điện thoại",
+    "enterPhone": "Nhập điện thoại",     
+    "note": "Ghi chú",  
+    "enterNote": "Nhập ghi chú",   
+
     "pay": "Thanh Toán",
     "today": "Hôm nay",
     "editAppointmentSchedule": "Chỉnh sửa lịch hẹn",
@@ -151,11 +161,17 @@
     "upcoming": "Sắp tới",
     "canceled": "Đã hủy",
     "done": "Đã xong",
+
+    "home": "Trang chủ",
+    "bookingSuccessful": "Đặt trước thành công",
+
     "client": "Khách hàng",
     "informationServices": "Thông tin dịch vụ",
-    "note": "Ghi chú",
+
     "cancelAppointment": "Bạn muốn hủy lịch hẹn?",
     "confirmAppointment": "Bạn muốn xác nhận lịch hẹn?",
+    "onlySpecialChars": "Vui lòng không nhập ký tự đặc biệt",
+    "numberBetween": "Vui lòng nhập số từ 0 đến 100",
     "myCustomer": "Khách hàng của tôi",
     "addMyCustomer": "Thêm Khách hàng",
     "updateMyCustomer": "Cập nhật Khách hàng",

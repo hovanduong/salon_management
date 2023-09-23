@@ -10,7 +10,7 @@ class MyBookingPramsApi {
   List<int>? myServices;
   String? address;
   String? date;
-  int? discount;
+  num? discount;
   String? status;
   String? note;
   MyBookingPramsApi(

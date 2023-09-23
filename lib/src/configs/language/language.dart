@@ -1,3 +1,4 @@
+export 'booking_language.dart';
 export 'create_pass_language.dart';
 export 'history_language.dart';
 export 'home_language.dart';
