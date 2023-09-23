@@ -44,6 +44,8 @@ class BookingViewModel extends BaseViewModel {
   final addressController = TextEditingController();
   TextEditingController discountController = TextEditingController();
 
+  final moneyController = TextEditingController();
+
   bool onAddress = true;
   bool onPhone = true;
   bool onTopic = true;
@@ -212,6 +214,7 @@ class BookingViewModel extends BaseViewModel {
       totalCost = updatedTotalCost;
       final totalPriceT = currencyFormatter.format(totalCost);
       totalController.text = totalPriceT;
+      moneyController.text = totalPriceT;
     });
     totalDiscount();
     notifyListeners();
@@ -285,18 +288,9 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  // void addPercent() {
-  //   final giaTriHienTai = discountController.text;
-
-  //   final giaTriMoi = '$giaTriHienTai%';
-  //   discountController.value =
-  //       discountController.value.copyWith(text: giaTriMoi);
-  // }
-
   void checkDiscountInput(String value) {
     final number = double.tryParse(value);
 
-    // discountController.text = value.replaceAll(value, '%');
     if (value.isEmpty) {
       discountErrorMsg = '';
     } else if (onlySpecialChars.hasMatch(value)) {
@@ -304,7 +298,6 @@ class BookingViewModel extends BaseViewModel {
     } else if (number == null || number < 0 || number > 100) {
       discountErrorMsg = BookingLanguage.numberBetween;
     } else {
-      // addPercent();
       discountErrorMsg = '';
     }
     notifyListeners();
@@ -394,7 +387,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> postService() async {
+  Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
@@ -403,7 +396,7 @@ class BookingViewModel extends BaseViewModel {
       date: dateTime.toString().trim(),
       discount: double.parse(
           discountController.text.isEmpty ? '0' : discountController.text),
-      note: noteController.text == '' ? '' : noteController.text,
+      note: noteController.text == '' ? 'Trống' : noteController.text,
     ));
 
     final value = switch (result) {

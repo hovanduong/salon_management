@@ -66,6 +66,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                   buildName(),
                   buildService(),
                   buildListService(),
+                  buildTotalNoDis(),
                   buildDiscount(),
                   buildMoney(),
                   buildAddress(),
@@ -81,6 +82,14 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
+  Widget buildTotalNoDis() {
+    return NameFieldWidget(
+      name: 'Tạm tính',
+      hintText: 'Tạm tính',
+      nameController: _viewModel!.moneyController,
+    );
+  }
+
   Widget buildListService() {
     return Wrap(
         runSpacing: -5,
@@ -92,32 +101,30 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildSelectedService(int index) {
-    return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeVerySmall),
-      child: Chip(
-          label: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Paragraph(
-                content: _viewModel!.selectedService[index].name!.split('/')[0],
-                style: STYLE_MEDIUM_BOLD,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Paragraph(
-                content: _viewModel!.selectedService[index].name!.split('/')[1],
-                style: STYLE_SMALL,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-          onDeleted: () async {
-            await _viewModel!.removeService(index);
-            await _viewModel!.setServiceId();
-            await _viewModel!.calculateTotalPriceByName(
-              isCalculate: true,
-            );
-          }),
-    );
+    return Chip(
+        backgroundColor: AppColors.BLACK_100,
+        label: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Paragraph(
+              content: _viewModel!.selectedService[index].name!.split('/')[0],
+              style: STYLE_MEDIUM_BOLD,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Paragraph(
+              content: _viewModel!.selectedService[index].name!.split('/')[1],
+              style: STYLE_SMALL,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+        onDeleted: () async {
+          await _viewModel!.removeService(index);
+          await _viewModel!.setServiceId();
+          await _viewModel!.calculateTotalPriceByName(
+            isCalculate: true,
+          );
+        });
   }
 
   Widget buildService() {
@@ -338,7 +345,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         onTap: () {
           _viewModel!
             ..confirmButton()
-            ..postService();
+            ..postBooking();
         },
       ),
     );
