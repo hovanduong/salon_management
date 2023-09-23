@@ -121,7 +121,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> fetchCustomer() async {
     // LoadingDialog.showLoadingDialog(context);
-    final result = await myCustomerApi.getMyCustomer();
+    final result = await myCustomerApi.getMyCustomer(getAll: true);
 
     final value = switch (result) {
       Success(value: final accessToken) => accessToken,

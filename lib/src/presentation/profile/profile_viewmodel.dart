@@ -14,6 +14,9 @@ class ProfileViewModel extends BaseViewModel {
   Future<void> goToSignIn(BuildContext context) =>
       Navigator.pushReplacementNamed(context, Routers.signIn);
 
+  Future<void> goToMyCustomer(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.myCustomer);
+
   Future<void> logOut() async {
     await AppPref.logout();
     await HttpRemote.init();
