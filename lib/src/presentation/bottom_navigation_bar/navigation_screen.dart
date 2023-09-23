@@ -61,8 +61,10 @@ class _NavigateScreenState extends State<NavigateScreen> {
             const BookingScreen()
           else
             Container(),
-          if (_viewModel!.selectedIndex == 2) 
-            const BookingHistoryScreen() else Container(),
+          if (_viewModel!.selectedIndex == 2)
+            const BookingHistoryScreen()
+          else
+            Container(),
           if (_viewModel!.selectedIndex == 3)
             const ProfileScreen()
           else
@@ -76,7 +78,6 @@ class _NavigateScreenState extends State<NavigateScreen> {
 
   BottomAppBar appBarNavigator() {
     return BottomAppBar(
-      // color: const Color.fromARGB(255, 240, 241, 241),
       height: 60,
       shape: const CircularNotchedRectangle(),
       child: Padding(
