@@ -4,16 +4,16 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 
 class NameFieldWidget extends StatelessWidget {
-  const NameFieldWidget({
-    super.key,
-    this.name,
-    this.nameController,
-    this.hintText,
-  });
+  const NameFieldWidget(
+      {super.key,
+      this.name,
+      this.nameController,
+      this.hintText,
+      this.textAlign});
   final TextEditingController? nameController;
   final String? name;
   final String? hintText;
-
+  final TextAlign? textAlign;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,6 +36,7 @@ class NameFieldWidget extends StatelessWidget {
               ),
             ),
             child: TextFormField(
+              textAlign: textAlign ?? TextAlign.start,
               enabled: false,
               controller: nameController,
               style: const TextStyle(color: AppColors.BLACK_500),

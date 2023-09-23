@@ -83,10 +83,14 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildTotalNoDis() {
-    return NameFieldWidget(
-      name: 'Tạm tính',
-      hintText: 'Tạm tính',
-      nameController: _viewModel!.moneyController,
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+      child: NameFieldWidget(
+        textAlign: TextAlign.right,
+        name: 'Tạm tính',
+        hintText: 'Tạm tính',
+        nameController: _viewModel!.moneyController,
+      ),
     );
   }
 
@@ -265,7 +269,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: CustomerAppBar(
         // onTap: () => Navigator.pop(context),
-        title: ServiceAddLanguage.serviceAdd,
+        title: BookingLanguage.booking,
       ),
     );
   }
@@ -311,6 +315,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildMoney() {
     return NameFieldWidget(
+      textAlign: TextAlign.right,
       name: BookingLanguage.total,
       hintText: BookingLanguage.total,
       nameController: _viewModel!.totalController,
