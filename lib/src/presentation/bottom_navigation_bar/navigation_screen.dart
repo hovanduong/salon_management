@@ -58,7 +58,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
           else
             Container(),
           if (_viewModel!.selectedIndex == 1)
-            const BookingScreen()
+            const BookingHistoryScreen()
           else
             Container(),
           if (_viewModel!.selectedIndex == 2)

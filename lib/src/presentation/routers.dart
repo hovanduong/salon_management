@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
+import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
 import 'myCustomer_edit/my_customer_edit_screen.dart';
 import 'my_customer/my_customer.dart';
@@ -46,12 +47,13 @@ class Routers {
   static const String updateService = '/updateService';
   static const String signUp = '/signUp';
   static const String navigation = '/navigation';
-  static const String category= '/category';
-  static const String addCategory= '/addCategory';
-  static const String bookingDetails= '/bookingDetails';
-  static const String myCustomer= '/myCustomer';
-  static const String myCustomerAdd= '/myCustomerAdd';
-  static const String myCustomerEdit= '/myCustomerEdit';
+  static const String category = '/category';
+  static const String addCategory = '/addCategory';
+  static const String bookingDetails = '/bookingDetails';
+  static const String myCustomer = '/myCustomer';
+  static const String myCustomerAdd = '/myCustomerAdd';
+  static const String myCustomerEdit = '/myCustomerEdit';
+  static const String addBooking = '/addBooking';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -69,6 +71,13 @@ class Routers {
           const NavigateScreen(),
           beginOffset: right,
           name: verification,
+          arguments: arguments,
+        );
+      case addBooking:
+        return animRoute(
+          const BookingScreen(),
+          beginOffset: right,
+          name: addBooking,
           arguments: arguments,
         );
 

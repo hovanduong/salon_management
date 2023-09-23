@@ -23,35 +23,38 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   bool isSwitch = false;
   bool isLoadMore = false;
-  bool isLoading= true;
+  bool isLoading = true;
 
   int pageUpComing = 1;
   int pageDone = 1;
   int pageCanceled = 1;
 
-  String status='Confirm';
+  String status = 'Confirm';
 
   Future<void> init() async {
     await fetchData();
     notifyListeners();
   }
 
-  Future<void> goToBookingDetails(BuildContext context, int id)
-    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
+  Future<void> goToAddBooking(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.addBooking);
+
+  Future<void> goToBookingDetails(BuildContext context, int id) =>
+      Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
 
   Future<void> fetchData() async {
     listCurrentUpcoming.clear();
-      pageUpComing = 1;
-      pageDone = 1;
-      pageCanceled = 1;
+    pageUpComing = 1;
+    pageDone = 1;
+    pageCanceled = 1;
 
     await getMyBooking(pageUpComing, 'Confirm');
     listCurrentUpcoming = listMyBooking;
     await getMyBooking(pageCanceled, 'Canceled');
-    listCurrentCanceled=listMyBooking;
+    listCurrentCanceled = listMyBooking;
     await getMyBooking(pageDone, 'Done');
-    listCurrentDone=listMyBooking;
-    isLoading=false;
+    listCurrentDone = listMyBooking;
+    isLoading = false;
     scrollController.addListener(scrollListener);
   }
 
@@ -72,15 +75,15 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    if(status == 'Confirm'){
+    if (status == 'Confirm') {
       pageUpComing += 1;
       await getMyBooking(pageUpComing, status);
       listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
-    }else if(status == 'Canceled'){
+    } else if (status == 'Canceled') {
       pageCanceled += 1;
       await getMyBooking(pageCanceled, status);
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
-    }else{
+    } else {
       pageDone += 1;
       await getMyBooking(pageDone, status);
       listCurrentDone = [...listCurrentDone, ...listMyBooking];
@@ -91,33 +94,31 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   void setStatus(int value) {
-    if(value == 0){
-      status='Confirm';
-    }else if(value == 1){
-      status='Done';
-    }else{
-      status='Canceled';
+    if (value == 0) {
+      status = 'Confirm';
+    } else if (value == 1) {
+      status = 'Done';
+    } else {
+      status = 'Canceled';
     }
     notifyListeners();
   }
 
-  void dialogStatus({required BuildContext context, String? value, int? id}){
-    if(value!.contains('Confirm')){
+  void dialogStatus({required BuildContext context, String? value, int? id}) {
+    if (value!.contains('Confirm')) {
       showDialogStatus(
-        context: context,
-        content: HistoryLanguage.confirmAppointment,
-        title: HistoryLanguage.confirm,
-        status: value,
-        id: id
-      );
-    }else{
+          context: context,
+          content: HistoryLanguage.confirmAppointment,
+          title: HistoryLanguage.confirm,
+          status: value,
+          id: id);
+    } else {
       showDialogStatus(
-        context: context,
-        content: HistoryLanguage.cancelAppointment,
-        title: HistoryLanguage.cancel,
-        status: value,
-        id: id
-      );
+          context: context,
+          content: HistoryLanguage.cancelAppointment,
+          title: HistoryLanguage.cancel,
+          status: value,
+          id: id);
     }
   }
 
@@ -130,9 +131,12 @@ class BookingHistoryViewModel extends BaseViewModel {
     await launchUrl(launchUri);
   }
 
-  dynamic showDialogStatus({
-    required BuildContext context, String? content, 
-    String? title, int? id, String? status}) {
+  dynamic showDialogStatus(
+      {required BuildContext context,
+      String? content,
+      String? title,
+      int? id,
+      String? status}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -145,7 +149,7 @@ class BookingHistoryViewModel extends BaseViewModel {
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
           onTapLeft: () => Navigator.pop(context),
-          onTapRight: () async{
+          onTapRight: () async {
             Navigator.pop(context);
             await putStatusAppointment(id!, status!);
           },
@@ -154,7 +158,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showSuccessDiaglog(_){
+  dynamic showSuccessDiaglog(_) {
     showDialog(
       context: context,
       builder: (context) {
@@ -179,9 +183,12 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> getMyBooking(int page, String status) async {
-    final result =
-        await myBookingApi.getMyBooking(AuthParams(
-          page: page, status: status,),);
+    final result = await myBookingApi.getMyBooking(
+      AuthParams(
+        page: page,
+        status: status,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final listMyBooking) => listMyBooking,
@@ -201,7 +208,11 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> putStatusAppointment(int id, String status) async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myBookingApi.putStatusAppointment(
-      AuthParams(id: id, status: status,),);
+      AuthParams(
+        id: id,
+        status: status,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final bool) => bool,
@@ -223,7 +234,10 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> deleteBookingHistory(int id) async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myBookingApi.deleteBookingHistory(
-      AuthParams(id: id,),);
+      AuthParams(
+        id: id,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final bool) => bool,

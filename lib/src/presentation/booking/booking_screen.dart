@@ -21,16 +21,6 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _ServiceAddScreenState extends State<BookingScreen> {
-  // NOTE: Change language "vi" "en"
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   S.load(
-  //     const Locale('vi'),
-  //   );
-  // }
-
   BookingViewModel? _viewModel;
 
   @override
@@ -42,7 +32,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  //NOTE: MAIN WIDGET
   Widget buildserviceAdd() {
     return SafeArea(
       top: true,
@@ -54,27 +43,16 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             buildAppbar(),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: SizeToPadding.sizeMedium,
-                horizontal: SizeToPadding.sizeMedium,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildServicePhone(),
-                  buildName(),
-                  buildService(),
-                  buildListService(),
-                  buildTotalNoDis(),
-                  buildDiscount(),
-                  buildMoney(),
-                  buildAddress(),
-                  buildNote(),
-                  buildDateTime(),
-                  buildConfirmButton(),
-                ],
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildInfo(),
+                buildLineWidget(),
+                buildServiceInfo(),
+                buildLineWidget(),
+                buildNotes(),
+                buildConfirmButton(),
+              ],
             )
           ],
         ),
@@ -82,53 +60,125 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildTotalNoDis() {
+  Widget buildNotes() {
     return Padding(
-      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-      child: NameFieldWidget(
-        textAlign: TextAlign.right,
-        name: 'Tạm tính',
-        hintText: 'Tạm tính',
-        nameController: _viewModel!.moneyController,
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeMedium,
+        horizontal: SizeToPadding.sizeMedium,
+      ),
+      child: Column(
+        children: [
+          buildNote(),
+          buildDateTime(),
+        ],
       ),
     );
   }
 
-  Widget buildListService() {
-    return Wrap(
-        runSpacing: -5,
-        spacing: SpaceBox.sizeSmall,
-        children: List.generate(
-          _viewModel!.selectedService.length,
-          buildSelectedService,
-        ));
+  Widget buildServiceInfo() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeMedium,
+        horizontal: SizeToPadding.sizeMedium,
+      ),
+      child: Column(
+        children: [
+          buildService(),
+          buildListService(),
+          buildTotalNoDis(),
+          buildMoney(),
+        ],
+      ),
+    );
   }
 
-  Widget buildSelectedService(int index) {
-    return Chip(
-        backgroundColor: AppColors.BLACK_100,
-        label: Row(
+  Widget buildInfo() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeMedium,
+        horizontal: SizeToPadding.sizeMedium,
+      ),
+      child: Column(
+        children: [
+          buildServicePhone(),
+          buildName(),
+          buildAddress(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTotalNoDis() {
+    return Padding(
+        padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Paragraph(
-              content: _viewModel!.selectedService[index].name!.split('/')[0],
-              style: STYLE_MEDIUM_BOLD,
-              overflow: TextOverflow.ellipsis,
+              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+              content: 'Thành tiền',
             ),
             Paragraph(
-              content: _viewModel!.selectedService[index].name!.split('/')[1],
-              style: STYLE_SMALL,
-              overflow: TextOverflow.ellipsis,
-            ),
+              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+              content: _viewModel!.moneyController.text,
+            )
           ],
-        ),
-        onDeleted: () async {
-          await _viewModel!.removeService(index);
-          await _viewModel!.setServiceId();
-          await _viewModel!.calculateTotalPriceByName(
-            isCalculate: true,
-          );
-        });
+        ));
+  }
+
+  Widget buildListService() {
+    return Wrap(
+      runSpacing: -5,
+      spacing: SpaceBox.sizeSmall,
+      children: List.generate(
+        _viewModel!.selectedService.length,
+        buildItemService,
+      ),
+    );
+  }
+
+  Widget buildLineWidget() {
+    return Container(
+      width: double.infinity,
+      height: 20,
+      decoration: const BoxDecoration(
+        color: AppColors.BLACK_200,
+      ),
+    );
+  }
+
+  Widget buildItemService(int index) {
+    final serviceName = _viewModel!.selectedService[index].name!.split('/')[0];
+    final money = _viewModel!.selectedService[index].name!.split('/')[1];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Paragraph(
+                content: serviceName,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+              ),
+              Paragraph(
+                content: money,
+                style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Container(
+            color: Colors.grey.withOpacity(0.3),
+            height: 0.5,
+            width: double.infinity,
+          )
+        ],
+      ),
+    );
   }
 
   Widget buildService() {
@@ -185,17 +235,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       },
     );
   }
-
-  // Widget buildDateTime() {
-  //   final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
-  //   final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
-  //   return DateTimeWidget(
-  //       onPressedTime: _viewModel!.updateTime(),
-  //       time: '$hours:$minutes',
-  //       onPressedDay: _viewModel!.updateDate(),
-  //       day:
-  //           '${_viewModel!.dateTime.year}/${_viewModel!.dateTime.month}/${_viewModel!.dateTime.day}');
-  // }
 
   Widget buildDateTime() {
     final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
@@ -268,7 +307,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         horizontal: SizeToPadding.sizeMedium,
       ),
       child: CustomerAppBar(
-        // onTap: () => Navigator.pop(context),
+        onTap: () => Navigator.pop(context),
         title: BookingLanguage.booking,
       ),
     );
@@ -314,11 +353,21 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildMoney() {
-    return NameFieldWidget(
-      textAlign: TextAlign.right,
-      name: BookingLanguage.total,
-      hintText: BookingLanguage.total,
-      nameController: _viewModel!.totalController,
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Paragraph(
+            style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
+            content: 'Tạm tính',
+          ),
+          Paragraph(
+            style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),
+            content: _viewModel!.moneyController.text,
+          )
+        ],
+      ),
     );
   }
 

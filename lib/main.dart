@@ -7,6 +7,7 @@ import 'src/presentation/app/app.dart';
 import 'src/utils/http_remote.dart';
 
 Future<void> main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   // await Firebase.initializeApp(
