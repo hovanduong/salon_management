@@ -81,13 +81,13 @@ class Routers {
           arguments: arguments,
         );
 
-      // case home:
-      //   return animRoute(
-      //     const HomeScreen(),
-      //     beginOffset: right,
-      //     name: home,
-      //     arguments: arguments,
-      //   );
+      case home:
+        return animRoute(
+          const NavigateScreen(),
+          beginOffset: right,
+          name: home,
+          arguments: arguments,
+        );
 
       // case homeDetails:
       //   return animRoute(

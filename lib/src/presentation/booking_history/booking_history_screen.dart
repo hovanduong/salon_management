@@ -75,10 +75,10 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
             style: STYLE_LARGE,
           ),
         ),
-        leading: const Icon(
-          Icons.arrow_back,
-          color: AppColors.BLACK_500,
-        ),
+        // leading: const Icon(
+        //   Icons.arrow_back,
+        //   color: AppColors.BLACK_500,
+        // ),
         trailing: const Icon(null),
       ),
     );

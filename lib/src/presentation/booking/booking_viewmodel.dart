@@ -335,7 +335,7 @@ class BookingViewModel extends BaseViewModel {
         firstDate: DateTime.now(),
         lastDate: DateTime(2100),
       );
-  Future<void> goToHome() => Navigator.pushNamed(
+  Future<void> goToHome() => Navigator.pushReplacementNamed(
         context,
         Routers.home,
       );
@@ -381,7 +381,8 @@ class BookingViewModel extends BaseViewModel {
     totalController.clear();
     phoneController.text = '';
     discountController.text = '';
-    nameController.clear();
+    moneyController.text = '';
+    nameController.text = '';
     addressController.clear();
     noteController.clear();
     notifyListeners();
