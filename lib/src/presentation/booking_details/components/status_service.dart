@@ -12,16 +12,15 @@ class StatusService extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     alignment: Alignment.center,
-      width: SpaceBox.sizeBig*5,
-      height: SpaceBox.sizeMedium*2.4,
+      alignment: Alignment.center,
+      width: SpaceBox.sizeBig * 5,
+      height: SpaceBox.sizeMedium * 2.4,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
-        color: color
-      ),
+          borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
+          color: color),
       child: Paragraph(
         content: content ?? '',
-        style: STYLE_MEDIUM.copyWith(color: AppColors.COLOR_WHITE),
+        style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_WHITE),
       ),
     );
   }
