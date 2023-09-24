@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +18,9 @@ class BaseWidget<T extends BaseViewModel> extends StatefulWidget {
   final Function(T? viewModel)? onViewModelReady;
 
   const BaseWidget({
-    required this.viewModel, required this.builder, Key? key,
+    required this.viewModel,
+    required this.builder,
+    Key? key,
     this.child,
     this.onViewModelReady,
   }) : super(key: key);
@@ -33,6 +34,8 @@ class _BaseWidgetState<T extends BaseViewModel> extends State<BaseWidget<T>> {
 
   @override
   void initState() {
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.bottom]);
     viewModel = widget.viewModel;
     if (widget.onViewModelReady != null) widget.onViewModelReady!(viewModel);
     super.initState();
@@ -42,7 +45,8 @@ class _BaseWidgetState<T extends BaseViewModel> extends State<BaseWidget<T>> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).colorScheme.background,
+        // statusBarColor: Theme.of(context).colorScheme.background,
+        statusBarColor: Colors.transparent,
       ),
     );
     return Scaffold(

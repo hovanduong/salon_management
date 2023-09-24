@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/my_customer_add_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
-import '../../resource/model/my_category_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
@@ -17,8 +16,6 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
   String messageErrorName = '';
   String? messageErrorPhone;
-
-  List<CategoryModel> listCategory = <CategoryModel>[];
 
   MyCustomerApi myCustomerApi = MyCustomerApi();
 
@@ -123,13 +120,13 @@ class MyCustomerAddViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.postMyCustomer(
       AuthParams(
-        phoneNumber: int.parse(phoneController.text),
+        phoneNumber: phoneController.text,
         name: nameController.text
       ),
     );
 
     final value = switch (result) {
-      Success(value: final listCategory) => listCategory,
+      Success(value: final listCustomer) => listCustomer,
       Failure(exception: final exception) => exception,
     };
 

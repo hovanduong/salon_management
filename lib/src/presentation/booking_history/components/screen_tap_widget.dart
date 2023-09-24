@@ -42,8 +42,8 @@ class ScreenTap extends StatelessWidget {
       onRefresh: () async {
         await onRefresh!();
       },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 200),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: ListView.builder(
           shrinkWrap: true,
           controller: scrollController,
@@ -58,7 +58,7 @@ class ScreenTap extends StatelessWidget {
               final id = listCurrent![index].id;
               return NotificationService(
                 onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
-                // onTapDeleteBooking: () => onTapDeleteBooking!(id!),
+                onTapDeleteBooking: () => onTapDeleteBooking!(id!),
                 onTapCard: () => onTapCard!(id!),
                 isButton: isButton,
                 dateTime: date != null

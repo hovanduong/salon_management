@@ -196,23 +196,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: Container(
-        margin: EdgeInsets.only(
-            left: SizeToPadding.sizeSmall,
-            right: SizeToPadding.sizeVerySmall),
-        height: MediaQuery.of(context).size.height-200,
-        child: ListView.builder(
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-            ? _viewModel!.foundCategory.length+1
-            : _viewModel!.foundCategory.length,
-          itemBuilder: (context, index) {
-            if(index<_viewModel!.foundCategory.length){
-              return buildContentCategoryWidget(index);
-            }else{
-              return const CupertinoActivityIndicator();
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          margin: EdgeInsets.only(
+              left: SizeToPadding.sizeSmall,
+              right: SizeToPadding.sizeVerySmall),
+          height: MediaQuery.of(context).size.height-200,
+          child: ListView.builder(
+            controller: _viewModel!.scrollController,
+            itemCount: _viewModel!.loadingMore
+              ? _viewModel!.foundCategory.length+1
+              : _viewModel!.foundCategory.length,
+            itemBuilder: (context, index) {
+              if(index<_viewModel!.foundCategory.length){
+                return buildContentCategoryWidget(index);
+              }else{
+                return const CupertinoActivityIndicator();
+              }
             }
-          }
+          ),
         ),
       ),
     );

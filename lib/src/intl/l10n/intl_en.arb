@@ -78,6 +78,7 @@
     "service": "Service",
     "details": "Details",
     "booking": "Booking",
+    "bookingEdit": "Edit Booking",
     "name": "Name",
     "time": "Time",
     "price": "Price",

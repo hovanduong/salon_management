@@ -25,7 +25,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
     return BaseWidget(
       viewModel: BookingHistoryViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel?..init(),
-      builder: (context, viewModel, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+      builder: (context, viewModel, child) =>
+          AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
           statusBarColor: Colors.white,
           systemNavigationBarColor: Colors.white,
@@ -33,6 +34,32 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
         child: buildHistoryScreen(),
+      ),
+    );
+  }
+
+  Widget buildHistoryScreen() {
+    return StreamProvider<NetworkStatus>(
+      initialData: NetworkStatus.online,
+      create: (context) =>
+          NetworkStatusService().networkStatusController.stream,
+      child: NetworkAwareWidget(
+        offlineChild: const ThreeBounceLoading(),
+        onlineChild: Container(
+          color: AppColors.COLOR_WHITE,
+          child: Stack(
+            children: [
+              buildItemScreen(),
+              if (_viewModel!.isLoading)
+                const Positioned(
+                  child: Align(
+                    alignment: FractionalOffset.center,
+                    child: ThreeBounceLoading(),
+                  ),
+                )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -47,10 +74,10 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
             style: STYLE_LARGE,
           ),
         ),
-        leading: const Icon(
-          Icons.arrow_back,
-          color: AppColors.BLACK_500,
-        ),
+        // leading: const Icon(
+        //   Icons.arrow_back,
+        //   color: AppColors.BLACK_500,
+        // ),
         trailing: const Icon(null),
       ),
     );
@@ -97,31 +124,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   }
 
   Widget buildFirstTab() {
-    // return LoadMoreWidget(
-    //   model: (p0) {
-    //     _viewModel!.myBookingModel =p0;
-    //     print(p0);
-    //     setState(() { });
-    //   },
-    //   page: 1,
-    //   onChanged: () async{
-    //     // await _viewModel!.getMyBooking();
-    //   },
-    //   onChangedPage: (page) async{
-    //     await _viewModel!.getMyBooking(page);
-    //   },
-    //   list: _viewModel!.listCurrentUpcoming,
-    //   widget: NotificationService(
-    //     dateTime: AppDateUtils.splitHourDate(
-    //       AppDateUtils.formatDateLocal(_viewModel!.listCurrentUpcoming[0].createdAt!)
-    //     ),
-    //     price: _viewModel!.myBookingModel.address,
-    //     nameUser: 'Trung Thong',
-    //     phoneNumber: '0931390467',
-    //     onTapPhone: () => diaLogPhone('0931390467'),
-    //     widget: const SelectStatusWidget(),
-    //   ),
-    // );
     return ScreenTap(
       listCurrent: _viewModel!.listCurrentUpcoming,
       isButton: true,
@@ -129,13 +131,16 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       scrollController: _viewModel!.scrollController,
       onTapCard: (id) => _viewModel!.goToBookingDetails(context, id),
       onTapPhone: diaLogPhone,
-      onRefresh: ()async {await _viewModel!.pullRefresh();},
-      onChangedStatus: (value, id) =>_viewModel!.dialogStatus(
-          value: value,
-          context: context,
-          id: id
-        ),
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      onChangedStatus: (value, id) =>
+          _viewModel!.dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.deleteBookingHistory(id),
+      onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
+        context: context,
+        myBookingModel: myBookingModel
+      )
     );
   }
 
@@ -147,7 +152,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       scrollController: _viewModel!.scrollController,
       onTapCard: (id) => _viewModel!.goToBookingDetails(context, id),
       onTapPhone: diaLogPhone,
-      onRefresh: ()async {await _viewModel!.pullRefresh();},
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
     );
   }
 
@@ -159,7 +166,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       scrollController: _viewModel!.scrollController,
       onTapCard: (id) => _viewModel!.goToBookingDetails(context, id),
       onTapPhone: diaLogPhone,
-      onRefresh: ()async {await _viewModel!.pullRefresh();},
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
     );
   }
 
@@ -177,7 +186,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   Widget buildContentTab() {
     return SizedBox(
       width: double.maxFinite,
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height-200,
       child: Padding(
         padding: EdgeInsets.all(SpaceBox.sizeMedium),
         child: TabBarView(
@@ -191,7 +200,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
     );
   }
 
-  Widget buildItemScreen(){
+  Widget buildItemScreen() {
     return DefaultTabController(
       length: 3,
       child: SafeArea(
@@ -200,6 +209,15 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
         right: false,
         bottom: false,
         child: Scaffold(
+          floatingActionButton: Padding(
+            padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
+            child: FloatingActionButton(
+              heroTag: 'addBooking',
+              backgroundColor: AppColors.PRIMARY_GREEN,
+              onPressed: () => _viewModel!.goToAddBooking(context: context),
+              child: const Icon(Icons.add),
+            ),
+          ),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -208,31 +226,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                 buildContentTab(),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildHistoryScreen() {
-    return StreamProvider<NetworkStatus>(
-      initialData: NetworkStatus.online,
-      create: (context) => NetworkStatusService().networkStatusController.stream,
-      child: NetworkAwareWidget(
-        offlineChild: const ThreeBounceLoading(),
-        onlineChild: Container(
-          color: AppColors.COLOR_WHITE,
-          child: Stack(
-            children: [
-              buildItemScreen(),
-              if (_viewModel!.isLoading)
-                const Positioned(
-                  child: Align(
-                    alignment: FractionalOffset.center,
-                    child: ThreeBounceLoading(),
-                  ),
-                )
-            ],
           ),
         ),
       ),

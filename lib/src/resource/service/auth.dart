@@ -38,7 +38,7 @@ class AuthParams {
   final String? lastName;
   final String? middleName;
   final String? birthDate;
-  final int? phoneNumber;
+  final String? phoneNumber;
   final String? password;
   final UserModel? user;
   final CategoryModel? category;

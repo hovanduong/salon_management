@@ -19,6 +19,7 @@ class CategoryViewModel extends BaseViewModel {
   ScrollController scrollController = ScrollController();
 
   List<CategoryModel> listCategory=[];
+  List<CategoryModel> allCategory=[];
   List<CategoryModel> listCurrent=[];
   List<CategoryModel> foundCategory=[];
   List<bool> listIconCategory= [];
@@ -33,6 +34,7 @@ class CategoryViewModel extends BaseViewModel {
   Future<void> init() async {
     page=1;
     await getCategory(page);
+    await getListCategory();
     isLoading = false;
     isLoadingList = false;
     listCurrent=listCategory;
@@ -50,16 +52,18 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> filterCategory(String searchCategory) async {
     var listSearchCategory = <CategoryModel>[];
-    listSearchCategory = listCurrent.where(
+    listSearchCategory = allCategory.where(
       (element) => element.name!.toLowerCase().contains(searchCategory),)
     .toList();
     foundCategory=listSearchCategory;
+    setListIcon();
     notifyListeners();
   }
 
   Future<void> onSearchCategory(String value) async{
     if(value.isEmpty){
       foundCategory = listCurrent;  
+      setListIcon();
     }else{
       final searchCategory = value.toLowerCase();
       await filterCategory(searchCategory);
@@ -174,7 +178,7 @@ class CategoryViewModel extends BaseViewModel {
 
   void setListIcon(){
     listIconCategory.clear();
-    for(var i=0; i<listCurrent.length; i++){
+    for(var i=0; i<foundCategory.length; i++){
       listIconCategory.add(true);
     }
     notifyListeners();
@@ -198,6 +202,24 @@ class CategoryViewModel extends BaseViewModel {
       showErrorDialog(context);
     } else {
       listCategory = value as List<CategoryModel>;
+    }
+    notifyListeners();
+  }
+
+  Future<void> getListCategory() async {
+    final result = await categoryApi.getListCategory();
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      showErrorDialog(context);
+    } else {
+      allCategory = value as List<CategoryModel>;
     }
     notifyListeners();
   }

@@ -8,6 +8,25 @@ import '../model/model.dart';
 import 'auth.dart';
 
 class MyCustomerApi {
+  Future<Result<List<MyCustomerModel>, Exception>> getListSearch() async {
+    try {
+      final response = await HttpRemote.get(
+        url:'/my-customer?search=a',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
+          final myCustomer = MyCustomerModelFactory.createList(data);
+          return Success(myCustomer);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
   Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer({
       int? page, required bool getAll}) async {
     try {

@@ -17,6 +17,7 @@ class MyCustomerViewModel extends BaseViewModel{
 
   List<MyCustomerModel> listMyCustomer=[];
   List<MyCustomerModel> listCurrent=[];
+  List<MyCustomerModel> listSearch=[];
   List<MyCustomerModel> foundCustomer=[];
 
   bool isLoading = true;
@@ -28,6 +29,7 @@ class MyCustomerViewModel extends BaseViewModel{
     page=1;
     isLoading = true;
     await getMyCustomer(page);
+    await getListSearch();
     scrollController.addListener(scrollListener);
     listCurrent=listMyCustomer;
     foundCustomer=listMyCustomer;
@@ -36,8 +38,9 @@ class MyCustomerViewModel extends BaseViewModel{
 
   Future<void> filterCategory(String searchCategory) async {
     var listSearchCategory = <MyCustomerModel>[];
-    listSearchCategory = listCurrent.where(
-      (element) => element.phoneNumber!.toLowerCase().contains(searchCategory),)
+    listSearchCategory = listSearch.where(
+      (element) => element.phoneNumber!.toLowerCase().contains(searchCategory) 
+      || element.fullName!.toLowerCase().contains(searchCategory),)
     .toList();
     foundCustomer=listSearchCategory;
     notifyListeners();
@@ -195,6 +198,25 @@ class MyCustomerViewModel extends BaseViewModel{
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
       await getMyCustomer(page);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getListSearch() async {
+    final result = await myCustomerApi.getListSearch();
+
+    final value = switch (result) {
+      Success(value: final listMyCustomer) => listMyCustomer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      showErrorDialog(context);
+    } else {
+      isLoading = false;
+      listSearch = value as List<MyCustomerModel>;
     }
     notifyListeners();
   }
