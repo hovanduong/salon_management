@@ -4,7 +4,7 @@ class AppDateUtils {
   static String splitHourDate(String time) {
     final result = time.split(' ');
     final hour = result[1].substring(0, 5);
-    return '$hour ${result[0]}';
+    return '$hour ${formatDateTimeFromUtc(result[0])}';
   }
 
   static String formatDateLocal(String time) {
@@ -42,4 +42,3 @@ class AppDateUtils {
     }
   }
 }
-
