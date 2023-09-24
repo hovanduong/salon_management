@@ -91,9 +91,15 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
           _viewModel!.setStatus(value);
         },
         tabs: [
-          Tab(text: HistoryLanguage.upcoming,),
-          Tab(text: HistoryLanguage.done,),
-          Tab(text: HistoryLanguage.canceled,),
+          Tab(
+            text: HistoryLanguage.upcoming,
+          ),
+          Tab(
+            text: HistoryLanguage.done,
+          ),
+          Tab(
+            text: HistoryLanguage.canceled,
+          ),
         ],
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
@@ -137,10 +143,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       onChangedStatus: (value, id) =>
           _viewModel!.dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.deleteBookingHistory(id),
-      onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-        context: context,
-        myBookingModel: myBookingModel
-      )
+      onTapEditBooking: (myBookingModel) => _viewModel!
+          .goToAddBooking(context: context, myBookingModel: myBookingModel),
     );
   }
 
@@ -186,7 +190,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   Widget buildContentTab() {
     return SizedBox(
       width: double.maxFinite,
-      height: MediaQuery.of(context).size.height-200,
+      height: MediaQuery.of(context).size.height - 200,
       child: Padding(
         padding: EdgeInsets.all(SpaceBox.sizeMedium),
         child: TabBarView(

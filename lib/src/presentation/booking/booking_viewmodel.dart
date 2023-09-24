@@ -101,13 +101,13 @@ class BookingViewModel extends BaseViewModel {
   //   }
   // }
 
-  Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async{
-    if(myBookingModel != null){
-      dataMyBooking=myBookingModel;
-      phoneController.text=dataMyBooking!.myCustomer!.phoneNumber!;
-      nameController.text=dataMyBooking!.myCustomer!.fullName!;
-      addressController.text=dataMyBooking!.address!;
-      noteController.text=dataMyBooking!.note!;
+  Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
+    if (myBookingModel != null) {
+      dataMyBooking = myBookingModel;
+      phoneController.text = dataMyBooking!.myCustomer!.phoneNumber!;
+      nameController.text = dataMyBooking!.myCustomer!.fullName!;
+      addressController.text = dataMyBooking!.address!;
+      noteController.text = dataMyBooking!.note!;
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -117,16 +117,14 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setSelectedService(){
-    if(dataMyBooking!.myServices!.isNotEmpty){
+  void setSelectedService() {
+    if (dataMyBooking!.myServices!.isNotEmpty) {
       dataMyBooking?.myServices!.forEach((service) {
-        selectedService.add(
-          RadioModel(
-            isSelected: true,
-            id: service.id,
-            name: '${service.name}/${currencyFormatter.format(service.money)}',
-          )
-        );
+        selectedService.add(RadioModel(
+          isSelected: true,
+          id: service.id,
+          name: '${service.name}/${currencyFormatter.format(service.money)}',
+        ));
       });
     }
   }
