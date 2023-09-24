@@ -29,7 +29,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageDone = 1;
   int pageCanceled = 1;
 
-  String status = 'Confirm';
+  String status = 'Confirmed';
 
   Future<void> init() async {
     await fetchData();
@@ -48,7 +48,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     pageDone = 1;
     pageCanceled = 1;
 
-    await getMyBooking(pageUpComing, 'Confirm');
+    await getMyBooking(pageUpComing, 'Confirmed');
     listCurrentUpcoming = listMyBooking;
     await getMyBooking(pageCanceled, 'Canceled');
     listCurrentCanceled = listMyBooking;
@@ -75,7 +75,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    if (status == 'Confirm') {
+    if (status == 'Confirmed') {
       pageUpComing += 1;
       await getMyBooking(pageUpComing, status);
       listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
@@ -95,7 +95,7 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   void setStatus(int value) {
     if (value == 0) {
-      status = 'Confirm';
+      status = 'Confirmed';
     } else if (value == 1) {
       status = 'Done';
     } else {
@@ -105,7 +105,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   void dialogStatus({required BuildContext context, String? value, int? id}) {
-    if (value!.contains('Confirm')) {
+    if (value!.contains('Confirmed')) {
       showDialogStatus(
           context: context,
           content: HistoryLanguage.confirmAppointment,

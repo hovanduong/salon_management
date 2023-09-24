@@ -7,11 +7,13 @@ import '../../utils/http_remote.dart';
 import '../model/my_booking_model.dart';
 import 'auth.dart';
 
-class MyBookingApi{
-  Future<Result<List<MyBookingModel>, Exception>> getMyBooking(AuthParams params) async {
+class MyBookingApi {
+  Future<Result<List<MyBookingModel>, Exception>> getMyBooking(
+      AuthParams params) async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
+        url:
+            '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
@@ -28,7 +30,8 @@ class MyBookingApi{
     }
   }
 
-  Future<Result<List<MyBookingModel>, Exception>> getMyBookingUser(String id) async {
+  Future<Result<List<MyBookingModel>, Exception>> getMyBookingUser(
+      String id) async {
     try {
       final response = await HttpRemote.get(
         url: '/my-booking/$id',
@@ -48,7 +51,8 @@ class MyBookingApi{
     }
   }
 
-  Future<Result<bool, Exception>> putStatusAppointment(AuthParams params) async {
+  Future<Result<bool, Exception>> putStatusAppointment(
+      AuthParams params) async {
     try {
       final response = await HttpRemote.put(
         url: '/my-booking/${params.id}/Canceled',
@@ -65,7 +69,8 @@ class MyBookingApi{
     }
   }
 
-  Future<Result<bool, Exception>> deleteBookingHistory(AuthParams params) async {
+  Future<Result<bool, Exception>> deleteBookingHistory(
+      AuthParams params) async {
     try {
       final response = await HttpRemote.delete(
         url: '/my-booking/${params.id}',
