@@ -12,9 +12,9 @@ class StatusService extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+     alignment: Alignment.center,
       width: SpaceBox.sizeBig*5,
-      height: SpaceBox.sizeBig,
+      height: SpaceBox.sizeMedium*2.4,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
         color: color

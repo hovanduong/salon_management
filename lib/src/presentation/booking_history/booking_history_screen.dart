@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
-import '../category/components/components.dart';
 import 'booking_history.dart';
 import 'components/components.dart';
 
@@ -92,15 +91,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
           _viewModel!.setStatus(value);
         },
         tabs: [
-          Tab(
-            text: HistoryLanguage.upcoming,
-          ),
-          Tab(
-            text: HistoryLanguage.done,
-          ),
-          Tab(
-            text: HistoryLanguage.canceled,
-          ),
+          Tab(text: HistoryLanguage.upcoming,),
+          Tab(text: HistoryLanguage.done,),
+          Tab(text: HistoryLanguage.canceled,),
         ],
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
@@ -144,6 +137,10 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       onChangedStatus: (value, id) =>
           _viewModel!.dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.deleteBookingHistory(id),
+      onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
+        context: context,
+        myBookingModel: myBookingModel
+      )
     );
   }
 
@@ -189,7 +186,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   Widget buildContentTab() {
     return SizedBox(
       width: double.maxFinite,
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height-200,
       child: Padding(
         padding: EdgeInsets.all(SpaceBox.sizeMedium),
         child: TabBarView(
@@ -217,7 +214,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
             child: FloatingActionButton(
               heroTag: 'addBooking',
               backgroundColor: AppColors.PRIMARY_GREEN,
-              onPressed: () => _viewModel!.goToAddBooking(context),
+              onPressed: () => _viewModel!.goToAddBooking(context: context),
               child: const Icon(Icons.add),
             ),
           ),

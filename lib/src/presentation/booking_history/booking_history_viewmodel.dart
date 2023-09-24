@@ -36,8 +36,10 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> goToAddBooking(BuildContext context) =>
-      Navigator.pushNamed(context, Routers.addBooking);
+  Future<void> goToAddBooking(
+    {required BuildContext context, MyBookingModel? myBookingModel,}) =>
+      Navigator.pushNamed(context, Routers.addBooking, arguments: myBookingModel
+  ,);
 
   Future<void> goToBookingDetails(BuildContext context, int id) =>
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
@@ -93,7 +95,8 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setStatus(int value) {
+  Future<void> setStatus(int value) async{
+    await pullRefresh();
     if (value == 0) {
       status = 'Confirmed';
     } else if (value == 1) {
@@ -252,6 +255,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
+      await pullRefresh();
     }
     notifyListeners();
   }

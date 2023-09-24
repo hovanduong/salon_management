@@ -26,7 +26,7 @@ class ItemWidget extends StatelessWidget {
         : MainAxisAlignment.start,
       children: [
         Paragraph(
-          content: title!=null? '$title:': '',
+          content: title?? '',
           style: STYLE_MEDIUM.copyWith(
             fontWeight: fontWeightTitle,
           ),

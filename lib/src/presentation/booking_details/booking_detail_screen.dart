@@ -7,6 +7,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/booking_details_language.dart';
 import '../../utils/app_currency.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'booking_detail_view_model.dart';
 import 'components/components.dart';
@@ -54,7 +55,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   Widget buildDivider(){
     return const Divider(
-      color: AppColors.BLACK_300,
+      color: AppColors.BLACK_200,
     );
   }
 
@@ -73,7 +74,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         boxShadow: [
-          BoxShadow(blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_300),
+          BoxShadow(blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200),
         ],
       ),
       child: Column(
@@ -108,46 +109,55 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Widget buildStatusCard(int index){
-    final date = _viewModel!.listMyBooking[index].date;
+  Widget buildDateAndStatus(int index, String date){
+    return buildTitle(
+      content: date,
+      trailing: StatusWidget.status(_viewModel!.listMyBooking[index].status!)
+    );
+  }
+
+  Widget buildNameClient(int index){
+    return  Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+      child: ItemWidget(
+        title: '${BookingDetailsLanguage.client}:',
+        content: _viewModel!.listMyBooking[index].myCustomer!.fullName,
+      ),
+    );
+  }
+
+  Widget buildToTalMoney(int index){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+      child: ItemWidget(
+        title:  BookingDetailsLanguage.total,
+        content: AppCurrencyFormat.formatMoneyVND(
+          _viewModel!.listMyBooking[index].total ?? 0),
+        color: AppColors.PRIMARY_GREEN,
+        isSpaceBetween: true,
+      ),
+    );
+  }
+
+  Widget buildInfoCard(int index){
+    final date = _viewModel!.listMyBooking[index].date ?? '';
     return Container(
       margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE, 
          boxShadow: [
-          BoxShadow(blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_300),
+          BoxShadow(blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200),
         ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildTitle(
-            content:  date,
-            trailing: StatusService(
-              content: _viewModel!.listMyBooking[index].status,
-              color: AppColors.PRIMARY_GREEN,
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-            child: ItemWidget(
-              title: BookingDetailsLanguage.client,
-              content: _viewModel!.listMyBooking[index].myCustomer!.fullName,
-            ),
-          ),
+          buildDateAndStatus(index, date),
+          buildNameClient(index),
           buildDivider(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-            child: ItemWidget(
-              title:  BookingDetailsLanguage.total,
-              content: AppCurrencyFormat.formatMoneyVND(
-                _viewModel!.listMyBooking[index].total!),
-              color: AppColors.PRIMARY_GREEN,
-              isSpaceBetween: true,
-            ),
-          ),
+          buildToTalMoney(index),
         ],
       ),
     );
@@ -162,7 +172,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildNoteService(int index){
-    return Padding(
+    final note= _viewModel!.listMyBooking[index].note;
+    return note != 'Trống' ? Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,12 +184,12 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           ),
           SizedBox(height: SpaceBox.sizeSmall,),
           Paragraph(
-            content: _viewModel!.listMyBooking[index].note,
+            content: note,
             style: STYLE_MEDIUM,
           ),
         ],
       ),
-    );
+    ): Container();
   }
 
   Widget buildListService(int index){
@@ -211,7 +222,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE, 
         boxShadow: [
-          BoxShadow(blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_300),
+          BoxShadow(blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200),
         ],
       ),
       child: Column(
@@ -241,7 +252,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
             itemBuilder: (context, index) => Column(
               children: [
                 buildHeader(index),
-                buildStatusCard(index),
+                buildInfoCard(index),
                 buildService(index),
               ],
             ),

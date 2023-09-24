@@ -8,6 +8,26 @@ import '../model/my_category_model.dart';
 import 'auth.dart';
 
 class CategoryApi{
+  Future<Result<List<CategoryModel>, Exception>> getListCategory() async {
+    try {
+      final response = await HttpRemote.get(
+        url: '/category?search=a',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
+          final listCategory = CategoryModelFactory.createList(data);
+          return Success(listCategory);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
   Future<Result<List<CategoryModel>, Exception>> getCategory(int page) async {
     try {
       final response = await HttpRemote.get(

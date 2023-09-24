@@ -130,7 +130,7 @@ class SignInViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.login(
       AuthParams(
-        phoneNumber: int.parse(phoneNumber!),
+        phoneNumber: phoneNumber,
         password: password,
       ),
     );

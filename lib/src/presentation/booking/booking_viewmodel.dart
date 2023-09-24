@@ -7,6 +7,7 @@ import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 
+import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/booking.dart';
 import '../../resource/service/my_customer_api.dart';
@@ -23,7 +24,7 @@ class BookingViewModel extends BaseViewModel {
 
   List<RadioModel> selectedService = [];
   List<MyServiceModel> myService = [];
-  List<MyCustomerModel> myCustumer = [];
+  List<MyCustomerModel> myCustomer = [];
 
   int? myCustomerId;
 
@@ -32,6 +33,8 @@ class BookingViewModel extends BaseViewModel {
   num updatedTotalCost = 0;
 
   DateTime dateTime = DateTime.now();
+
+  MyBookingModel? dataMyBooking;
 
   Map<int, String> mapService = {};
   Map<int, String> mapPhone = {};
@@ -81,8 +84,9 @@ class BookingViewModel extends BaseViewModel {
   AuthApi authApi = AuthApi();
   MyServiceApi myServiceApi = MyServiceApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
-  Future<void> init() async {
+  Future<void> init(MyBookingModel? myBookingModel) async {
     // findPhone();
+    await setDataMyBooking(myBookingModel);
     await fetchService();
     await fetchCustomer();
     await initMapCustomer();
@@ -96,6 +100,36 @@ class BookingViewModel extends BaseViewModel {
   //     notifyListeners();
   //   }
   // }
+
+  Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async{
+    if(myBookingModel != null){
+      dataMyBooking=myBookingModel;
+      phoneController.text=dataMyBooking!.myCustomer!.phoneNumber!;
+      nameController.text=dataMyBooking!.myCustomer!.fullName!;
+      addressController.text=dataMyBooking!.address!;
+      noteController.text=dataMyBooking!.note!;
+      setSelectedService();
+      await setServiceId();
+      await fetchService();
+      await calculateTotalPriceByName();
+      enableConfirmButton();
+    }
+    notifyListeners();
+  }
+
+  void setSelectedService(){
+    if(dataMyBooking!.myServices!.isNotEmpty){
+      dataMyBooking?.myServices!.forEach((service) {
+        selectedService.add(
+          RadioModel(
+            isSelected: true,
+            id: service.id,
+            name: '${service.name}/${currencyFormatter.format(service.money)}',
+          )
+        );
+      });
+    }
+  }
 
   Future<void> fetchService() async {
     // LoadingDialog.showLoadingDialog(context);
@@ -136,7 +170,7 @@ class BookingViewModel extends BaseViewModel {
       // showOpenDialog(context);
     } else {
       // LoadingDialog.hideLoadingDialog(context);
-      myCustumer = value as List<MyCustomerModel>;
+      myCustomer = value as List<MyCustomerModel>;
     }
     notifyListeners();
   }
@@ -164,9 +198,9 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> initMapCustomer() async {
-    myCustumer.forEach((element) {
+    myCustomer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '0${element.phoneNumber}'},
+        {element.id!: '${element.phoneNumber}'},
       );
     });
     notifyListeners();
@@ -186,7 +220,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> setNameCustomer(MapEntry<dynamic, dynamic> value) async {
     phoneController.text = value.value;
-    nameController.text = myCustumer
+    nameController.text = myCustomer
         .where((element) => element.id == value.key)
         .first
         .fullName
@@ -340,7 +374,7 @@ class BookingViewModel extends BaseViewModel {
         Routers.home,
       );
 
-  dynamic showOpenDialog(_) {
+  dynamic showDialogSuccess(_) {
     showDialog(
       context: context,
       builder: (_) {
@@ -353,7 +387,6 @@ class BookingViewModel extends BaseViewModel {
           colorNameLeft: AppColors.BLACK_500,
           rightButtonName: BookingLanguage.home,
           onTapLeft: () {
-            clearData();
             Navigator.pop(context);
           },
           onTapRight: () {
@@ -377,6 +410,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void clearData() {
+    serviceId.clear();
     selectedService.clear();
     totalController.clear();
     phoneController.text = '';
@@ -413,8 +447,38 @@ class BookingViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
+      clearData();
+      await showDialogSuccess(context);
+    }
+    notifyListeners();
+  }
 
-      await showOpenDialog(context);
+  Future<void> putBooking() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await bookingApi.putBooking(MyBookingPramsApi(
+      id: dataMyBooking!.id,
+      myServices: serviceId,
+      address: addressController.text.trim(),
+      date: dateTime.toString().trim(),
+      discount: double.parse(
+          discountController.text.isEmpty ? '0' : discountController.text),
+      note: noteController.text == '' ? 'Trống' : noteController.text,
+    ));
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogSuccess(context);
     }
     notifyListeners();
   }

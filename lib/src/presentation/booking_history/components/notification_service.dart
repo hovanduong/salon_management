@@ -120,24 +120,24 @@ class NotificationService extends StatelessWidget {
   Widget buildButtonMore() {
     return MenuAnchor(
       builder: (context, controller, child) {
-        return Container(
-          padding: EdgeInsets.all(SpaceBox.sizeVerySmall),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(SpaceBox.sizeVerySmall),
+        return GestureDetector(
+          onTap: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          child: Container(
+            padding: EdgeInsets.all(SpaceBox.sizeVerySmall),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(SpaceBox.sizeVerySmall),
+              ),
+              border: Border.all(
+                color: AppColors.BLACK_300,
+              ),
             ),
-            border: Border.all(
-              color: AppColors.BLACK_300,
-            ),
-          ),
-          child: GestureDetector(
-            onTap: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
             child: const Icon(Icons.more_horiz),
           ),
         );

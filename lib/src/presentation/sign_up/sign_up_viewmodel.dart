@@ -87,7 +87,7 @@ class SignUpViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.checkPhoneNumberExists(
       AuthParams(
-        phoneNumber: int.parse(phone!),
+        phoneNumber: phone,
       ),
     );
 

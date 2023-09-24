@@ -126,23 +126,26 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: Container(
-        margin: EdgeInsets.only(
-            left: SizeToPadding.sizeSmall,
-            right: SizeToPadding.sizeVerySmall),
-        height: MediaQuery.of(context).size.height-200,
-        child: ListView.builder(
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-            ? _viewModel!.foundCustomer.length+1
-            : _viewModel!.foundCustomer.length,
-          itemBuilder: (context, index) {
-            if(index<_viewModel!.foundCustomer.length){
-              return buildInfoCustomer(index);
-            }else{
-              return const CupertinoActivityIndicator();
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          margin: EdgeInsets.only(
+              left: SizeToPadding.sizeSmall,
+              right: SizeToPadding.sizeVerySmall),
+          height: MediaQuery.of(context).size.height-200,
+          child: ListView.builder(
+            controller: _viewModel!.scrollController,
+            itemCount: _viewModel!.loadingMore
+              ? _viewModel!.foundCustomer.length+1
+              : _viewModel!.foundCustomer.length,
+            itemBuilder: (context, index) {
+              if(index<_viewModel!.foundCustomer.length){
+                return buildInfoCustomer(index);
+              }else{
+                return const CupertinoActivityIndicator();
+              }
             }
-          }
+          ),
         ),
       ),
     );

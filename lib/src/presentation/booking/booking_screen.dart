@@ -3,12 +3,11 @@ import 'package:intl/intl.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet.dart';
-import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet_single.dart';
+import '../../resource/model/my_booking_model.dart';
 import '../base/base.dart';
 import 'booking.dart';
 
-import 'components/build_service_widget.dart';
 import 'components/components.dart';
 
 import 'components/name_field_widget.dart';
@@ -25,14 +24,17 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dataBooking= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<BookingViewModel>(
       viewModel: BookingViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
-      builder: (context, viewModel, child) => buildserviceAdd(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
+        dataBooking as MyBookingModel?
+      ),
+      builder: (context, viewModel, child) => buildBookingScreen(),
     );
   }
 
-  Widget buildserviceAdd() {
+  Widget buildBookingScreen() {
     return SafeArea(
       top: true,
       bottom: false,
@@ -85,8 +87,13 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: [
           buildService(),
           buildListService(),
-          buildTotalNoDis(),
-          buildMoney(),
+          if(_viewModel!.selectedService.isNotEmpty)
+            Column(
+              children: [
+                buildTotalNoDis(),
+                buildMoney(),
+              ],
+            ),
         ],
       ),
     );
@@ -308,7 +315,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: CustomerAppBar(
         onTap: () => Navigator.pop(context),
-        title: BookingLanguage.booking,
+        title:_viewModel!.dataMyBooking==null
+          ? BookingLanguage.booking
+          : BookingLanguage.bookingEdit,
       ),
     );
   }
@@ -333,11 +342,15 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildServicePhone() {
-    return AppFormField(
+    return NameFieldWidget(
+      name: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.enterPhone,
-      labelText: BookingLanguage.phoneNumber,
-      textEditingController: _viewModel!.phoneController,
-      onTap: () => showSelectPhone(context),
+      nameController:_viewModel!.phoneController,
+      onTap: () {
+        if(_viewModel!.dataMyBooking== null){
+          showSelectPhone(context);
+        }
+      } 
     );
   }
 
@@ -392,14 +405,19 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeMedium * 2,
+        horizontal: SizeToPadding.sizeSmall
       ),
       child: AppButton(
         content: ServiceAddLanguage.confirm,
         enableButton: _viewModel!.enableButton,
         onTap: () {
-          _viewModel!
-            ..confirmButton()
-            ..postBooking();
+          if(_viewModel!.dataMyBooking!=null){
+            _viewModel!.putBooking();
+          }else{
+            _viewModel!
+              ..confirmButton()
+              ..postBooking();
+          }
         },
       ),
     );
