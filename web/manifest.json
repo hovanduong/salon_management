@@ -1,6 +1,6 @@
 {
-    "name": "booking_app",
-    "short_name": "booking_app",
+    "name": "apcare_app",
+    "short_name": "apcare_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
