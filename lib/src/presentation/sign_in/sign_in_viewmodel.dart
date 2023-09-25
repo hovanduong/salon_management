@@ -125,12 +125,12 @@ class SignInViewModel extends BaseViewModel {
   }
 
   Future<void> onLogin({String? phone, String? password}) async {
-    final phoneNumber = handleNumberPhone(phone);
+    // final phoneNumber = handleNumberPhone(phone);
 
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.login(
       AuthParams(
-        phoneNumber: phoneNumber,
+        phoneNumber: phone,
         password: password,
       ),
     );

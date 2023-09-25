@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/my_customer_edit_language.dart';
@@ -149,7 +150,8 @@ class MyCustomerEditViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      await showSuccessDialog(context);
+      // showSuccessDialog(context);
+      Timer(const Duration(seconds: 1), () {Navigator.pop(context); });
     }
     notifyListeners();
   }

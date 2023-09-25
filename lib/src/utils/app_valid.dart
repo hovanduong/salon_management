@@ -95,4 +95,23 @@ class AppValid {
     }
     return true;
   }
+
+  static bool isNumeric(String? s) {
+    if (s == null) {
+      return false;
+    }
+    return int.tryParse(s) != null;
+  }
+
+  static String? validPhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return S.current.validEnterPhoneNumber;
+    } else if (!isNumeric(value)) {
+      return  S.current.validPhone;
+    } else if (value.length != 10) {
+      return S.current.validPhoneNumber;
+    } else {
+      return null;
+    }
+  }
 }

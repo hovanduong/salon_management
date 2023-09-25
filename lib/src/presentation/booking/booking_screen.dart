@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet.dart';
@@ -243,6 +245,83 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
+  Widget buildTitleSelectTime(){
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: Paragraph(
+        content: BookingLanguage.chooseTime,
+        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget buildTimeSelect(){
+    return SizedBox(
+      height: 180,
+      child: CupertinoDatePicker(
+        initialDateTime: _viewModel!.dateTime,
+        mode: CupertinoDatePickerMode.time,
+        minimumDate: DateTime.now(),
+        use24hFormat: true,
+        onDateTimeChanged: (value) {
+          _viewModel!.updateDateTime(value);
+        },
+      ),
+    );
+  }
+
+  Widget buildButtonSelectTime(){
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: AppButton(
+        content: BookingLanguage.done,
+        enableButton: true,
+        onTap: ()=> Navigator.pop(context),
+      ),
+    );
+  }
+
+  dynamic showSelectTime(){
+    showModalBottomSheet(
+      context: context, 
+      isDismissible: false,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height/2.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTitleSelectTime(),
+            buildTimeSelect(),
+            buildButtonSelectTime()
+          ],
+        ),
+      )
+    );
+  }
+
+  dynamic showSelectDate(){
+    return showModalBottomSheet(
+      context: context, 
+      isDismissible: false,
+      builder: (context) => SfDateRangePicker(
+        minDate: DateTime.now(),
+        controller: _viewModel!.dateController,
+        selectionMode: DateRangePickerSelectionMode.single,
+        initialSelectedDate: _viewModel!.dateTime,
+        showActionButtons: true,
+        showNavigationArrow: true,
+        onCancel: () {
+          _viewModel!.dateController.selectedDate=null;
+          Navigator.pop(context);
+        } ,
+        onSubmit: (value) {
+          _viewModel!.updateDateTime(value! as DateTime);
+          Navigator.pop(context);
+        },
+      )
+    );
+  }
+
   Widget buildDateTime() {
     final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
     final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
@@ -252,11 +331,11 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Paragraph(
-              content: ServiceAddLanguage.chooseTime,
+              content: BookingLanguage.chooseTime,
               fontWeight: FontWeight.w600,
             ),
             Paragraph(
-              content: ServiceAddLanguage.chooseDay,
+              content: BookingLanguage.chooseDay,
               fontWeight: FontWeight.w600,
             ),
           ],
@@ -265,9 +344,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () async {
-                  await _viewModel!.updateTime();
-                },
+                onPressed: showSelectTime,
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
@@ -281,7 +358,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
-                  await _viewModel!.updateDate();
+                  showSelectDate();
                 },
                 style: ButtonStyle(
                   backgroundColor:
@@ -327,10 +404,11 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       context: context,
       isDismissible: true,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(SizeToPadding.sizeMedium),
       ),
       isScrollControlled: true,
       builder: (context) => BottomSheetSingle(
+        keyboardType: TextInputType.number,
         titleContent: BookingLanguage.selectPhoneNumber,
         listItems: _viewModel!.mapPhone,
         initValues: 0,
@@ -343,6 +421,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildServicePhone() {
     return NameFieldWidget(
+      isOnTap: true,
       name: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.enterPhone,
       nameController:_viewModel!.phoneController,
@@ -359,8 +438,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
       textEditingController: _viewModel!.addressController,
+      validator: _viewModel!.addressMsg,
       onChanged: (value) {
-        _viewModel!.enableConfirmButton();
+        _viewModel!..validAddress(value)..enableConfirmButton();
       },
     );
   }

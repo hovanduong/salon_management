@@ -27,4 +27,9 @@ class BookingLanguage {
   static final validService = S.current.validService;
   static final validHour = S.current.validHour;
   static final addressIsEmpty = S.current.addressIsEmpty;
+  static final done = S.current.done;
+  static final chooseTime = S.current.chooseTime;
+  static final chooseDay = S.current.chooseDay;
+  static final emptyAddress = S.current.emptyAddress;
+
 }

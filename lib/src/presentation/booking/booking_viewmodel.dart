@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
@@ -46,8 +47,9 @@ class BookingViewModel extends BaseViewModel {
   TextEditingController noteController = TextEditingController();
   final addressController = TextEditingController();
   TextEditingController discountController = TextEditingController();
-
   final moneyController = TextEditingController();
+
+  DateRangePickerController dateController= DateRangePickerController();
 
   bool onAddress = true;
   bool onPhone = true;
@@ -63,6 +65,7 @@ class BookingViewModel extends BaseViewModel {
   String? moneyErrorMsg;
   String? timeErrorMsg;
   String? noteErrorMsg;
+  String? addressMsg;
   String? discountErrorMsg;
   String? messageService;
   String searchText = '';
@@ -269,43 +272,8 @@ class BookingViewModel extends BaseViewModel {
     phoneController.dispose();
   }
 
-  Future<void> updateDate() async {
-    final date = await pickDate();
-    if (date == null) {
-      return;
-    }
-    if (date != dateTime) {
-      dateTime = date;
-    }
-    final newDateTime = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      dateTime.hour,
-      dateTime.minute,
-    );
-    dateTime = newDateTime;
-    notifyListeners();
-  }
-
-  Future<void> updateTime() async {
-    final time = await pickTime();
-    if (time == null) {
-      return;
-    }
-    final now = DateTime.now();
-    final newDateTime = DateTime(
-      dateTime.year,
-      dateTime.month,
-      dateTime.day,
-      time.hour,
-      time.minute,
-    );
-    if (newDateTime.isBefore(now)) {
-      print('loi loi');
-      return;
-    }
-    dateTime = newDateTime;
+  Future<void> updateDateTime(DateTime time) async {
+    dateTime=time;
     notifyListeners();
   }
 
@@ -316,6 +284,15 @@ class BookingViewModel extends BaseViewModel {
     } else {
       noteErrorMsg = '';
       onNote = true;
+    }
+    notifyListeners();
+  }
+
+  void validAddress(String value) {
+    if (addressController.text.isEmpty) {
+      addressMsg = BookingLanguage.emptyAddress;
+    } else {
+      addressMsg = '';
     }
     notifyListeners();
   }
@@ -356,17 +333,6 @@ class BookingViewModel extends BaseViewModel {
   Future<void> onServiceList(BuildContext context) =>
       Navigator.pushNamed(context, Routers.serviceList);
 
-  Future<TimeOfDay?> pickTime() => showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: dateTime.hour, minute: dateTime.minute),
-      );
-
-  Future<DateTime?> pickDate() => showDatePicker(
-        context: context,
-        initialDate: dateTime,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2100),
-      );
   Future<void> goToHome() => Navigator.pushReplacementNamed(
         context,
         Routers.home,

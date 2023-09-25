@@ -98,7 +98,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
         name: name,
         onEdit: (context) => _viewModel!.goToMyCustomerEdit(
           context, _viewModel!.foundCustomer[index]),
-        onDelete: (context) => _viewModel!.deleteMyCustomer(id!),
+        onDelete: (context) => _viewModel!.showWaningDiaglog(id!),
       ),
     );
   }
