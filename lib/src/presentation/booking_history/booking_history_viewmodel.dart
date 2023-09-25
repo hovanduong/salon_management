@@ -119,18 +119,20 @@ class BookingHistoryViewModel extends BaseViewModel {
   void dialogStatus({required BuildContext context, String? value, int? id}) {
     if (value!.contains('Confirmed')) {
       showDialogStatus(
-          context: context,
-          content: HistoryLanguage.confirmAppointment,
-          title: HistoryLanguage.confirm,
-          status: value,
-          id: id);
+        context: context,
+        content: HistoryLanguage.confirmAppointment,
+        title: HistoryLanguage.confirm,
+        status: value,
+        id: id,
+      );
     } else {
       showDialogStatus(
-          context: context,
-          content: HistoryLanguage.cancelAppointment,
-          title: HistoryLanguage.cancel,
-          status: value,
-          id: id);
+        context: context,
+        content: HistoryLanguage.cancelAppointment,
+        title: HistoryLanguage.cancel,
+        status: value,
+        id: id,
+      );
     }
   }
 
@@ -143,12 +145,13 @@ class BookingHistoryViewModel extends BaseViewModel {
     await launchUrl(launchUri);
   }
 
-  dynamic showDialogStatus(
-      {required BuildContext context,
-      String? content,
-      String? title,
-      int? id,
-      String? status}) {
+  dynamic showDialogStatus({
+    required BuildContext context,
+    String? content,
+    String? title,
+    int? id,
+    String? status,
+  }) {
     showDialog(
       context: context,
       builder: (context) {
