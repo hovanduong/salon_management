@@ -33,13 +33,17 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> init() async {
     await fetchData();
-    notifyListeners();
   }
 
-  Future<void> goToAddBooking(
-    {required BuildContext context, MyBookingModel? myBookingModel,}) =>
-      Navigator.pushNamed(context, Routers.addBooking, arguments: myBookingModel
-  ,);
+  Future<void> goToAddBooking({
+    required BuildContext context,
+    MyBookingModel? myBookingModel,
+  }) =>
+      Navigator.pushNamed(
+        context,
+        Routers.addBooking,
+        arguments: myBookingModel,
+      );
 
   Future<void> goToBookingDetails(BuildContext context, int id) =>
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
@@ -52,12 +56,17 @@ class BookingHistoryViewModel extends BaseViewModel {
 
     await getMyBooking(pageUpComing, 'Confirmed');
     listCurrentUpcoming = listMyBooking;
+
     await getMyBooking(pageCanceled, 'Canceled');
     listCurrentCanceled = listMyBooking;
+
     await getMyBooking(pageDone, 'Done');
     listCurrentDone = listMyBooking;
+
     isLoading = false;
     scrollController.addListener(scrollListener);
+
+    notifyListeners();
   }
 
   Future<void> pullRefresh() async {
@@ -95,7 +104,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> setStatus(int value) async{
+  Future<void> setStatus(int value) async {
     await pullRefresh();
     if (value == 0) {
       status = 'Confirmed';
