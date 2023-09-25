@@ -19,4 +19,6 @@ class MyCustomerEditLanguage {
   static final other = S.current.other;
   static final gender = S.current.gender;
 
+  static final update = S.current.update;
+
 }

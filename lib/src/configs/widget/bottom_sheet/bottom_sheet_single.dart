@@ -13,7 +13,8 @@ class BottomSheetSingle extends StatefulWidget {
     this.initValues,
     this.isAll = false,
     this.onSearch,
-    this.changeColor = false,
+    this.changeColor = false, 
+    this.keyboardType,
   }) : super(key: key);
 
   final String? titleContent;
@@ -23,6 +24,7 @@ class BottomSheetSingle extends StatefulWidget {
   final bool isAll;
   final Function(String)? onSearch;
   final bool? changeColor;
+  final TextInputType? keyboardType;
 
   @override
   _BottomSheetSingleState createState() => _BottomSheetSingleState();
@@ -96,6 +98,7 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
             padding:
                 EdgeInsets.symmetric(horizontal: SizeToPadding.sizeVerySmall),
             child: AppFormField(
+              keyboardType: widget.keyboardType,
               iconButton: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.search),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';
+import '../../configs/language/my_customer_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/my_customer_api.dart';
@@ -105,21 +106,41 @@ class MyCustomerViewModel extends BaseViewModel{
     );
   }
 
+  dynamic showDialogStatus(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          content: '',
+          title: 'title',
+          leftButtonName: SignUpLanguage.cancel,
+          rightButtonName: HistoryLanguage.confirmed,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          onTapLeft: () => Navigator.pop(context),
+          onTapRight: () async {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
   dynamic showWaningDiaglog(int id){
     showDialog(
       context: context,
       builder: (context) {
-        closeDialog(context);
         return WarningDialog(
           image: AppImages.icPlus,
-          title: '${CategoryLanguage.areYouSure}!',
+          title: MyCustomerLanguage.waningDeleteCustomer,
           leftButtonName: SignUpLanguage.cancel,
           onTapLeft: () {
             Navigator.pop(context);
           },
           rightButtonName: CategoryLanguage.yes,
           onTapRight: (){
-            // deleteCategory(id);
+            deleteMyCustomer(id);
             Navigator.pop(context);
           },
         );
@@ -196,8 +217,8 @@ class MyCustomerViewModel extends BaseViewModel{
       showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
+      await pullRefresh();
       showSuccessDiaglog(context);
-      await getMyCustomer(page);
     }
     notifyListeners();
   }

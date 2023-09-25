@@ -89,7 +89,7 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
   Widget buildButtonApp(){
     return AppButton(
       enableButton: _viewModel!.enableSubmit,
-      content: MyCustomerEditLanguage.submit,
+      content: MyCustomerEditLanguage.update,
       onTap: () {
         _viewModel!.putMyCustomer();
       },

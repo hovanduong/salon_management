@@ -6,10 +6,12 @@ class CategoryLanguage {
   static final addCategory = S.current.addCategory;
   static final delete= S.current.delete;
   static final edit= S.current.edit;
-  static final areYouSure= S.current.areYouSure;
+  static final waningDeleteCategory= S.current.waningDeleteCategory;
   static final yes= S.current.yes;
   static final no= S.current.no;
   static final editCategory= S.current.editCategory;
   static final enterCategory= S.current.enterCategory;
   static final search= S.current.search;
+  static final waningDeleteService= S.current.waningDeleteService;
+
 }

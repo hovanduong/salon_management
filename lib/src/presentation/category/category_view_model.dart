@@ -128,21 +128,20 @@ class CategoryViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showWaningDiaglog(int id){
+  dynamic showWaningDiaglog({String? title, Function()? onTapRight}){
     showDialog(
       context: context,
       builder: (context) {
-        closeDialog(context);
         return WarningDialog(
           image: AppImages.icPlus,
-          title: '${CategoryLanguage.areYouSure}!',
+          title: title??'',
           leftButtonName: SignUpLanguage.cancel,
           onTapLeft: () {
             Navigator.pop(context);
           },
           rightButtonName: CategoryLanguage.yes,
-          onTapRight: (){
-            deleteCategory(id);
+          onTapRight: () async{
+            await onTapRight!();
             Navigator.pop(context);
           },
         );

@@ -10,13 +10,15 @@ class NameFieldWidget extends StatelessWidget {
     this.nameController,
     this.hintText,
     this.textAlign, 
-    this.onTap
+    this.onTap,
+    this.isOnTap=false
   });
   final TextEditingController? nameController;
   final String? name;
   final String? hintText;
   final TextAlign? textAlign;
   final Function()? onTap;
+  final bool isOnTap;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,7 +34,11 @@ class NameFieldWidget extends StatelessWidget {
             height: SpaceBox.sizeVerySmall,
           ),
           InkWell(
-            onTap: () => onTap!(),
+            onTap: () {
+              if(isOnTap){
+                onTap!();
+              }
+            },
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),

@@ -57,6 +57,7 @@
     "enterAmountOfTime": "Enter amount of time",
     "enterServiceDescription": "Enter service description",
     "emptyNameError": "Please enter service name",
+    "emptyAddress": "Please enter address",
     "emptyPhoneError": "Please enter Phone",
     "emptyFullNameError": "Please enter full name",
     "emptyMoneyError": "Please enter amount of money",
@@ -149,7 +150,9 @@
     "enterCategory": "Enter Category",
     "delete": "Delete",
     "edit": "Edit",
-    "areYouSure": "Are You sure",
+    "waningDeleteCategory": "you want to delete this category?",
+    "waningDeleteService": "you want to delete this service?",
+    "waningDeleteCustomer": "you want to delete this customer?",
     "yes": "Yes",
     "no": "No",
     "selectedCategories": "Selected Categories",
@@ -176,5 +179,6 @@
     "addMyCustomer": "Add my Customer",
     "updateMyCustomer": "Update Customer",
     "search": "Search",
+    "update": "Update",
     "lastLine": ""
 }

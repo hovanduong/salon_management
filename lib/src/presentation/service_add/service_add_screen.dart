@@ -71,6 +71,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Widget buildFieldPrice(){
     return AppFormField(
+      keyboardType: TextInputType.number,
       labelText: ServiceAddLanguage.amountOfMoney,
       textEditingController: _viewModel!.priceController,
       hintText: ServiceAddLanguage.enterAmountOfMoney,

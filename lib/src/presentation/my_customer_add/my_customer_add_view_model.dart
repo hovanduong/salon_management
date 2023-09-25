@@ -36,16 +36,14 @@ class MyCustomerAddViewModel extends BaseViewModel {
   void validName(String? value) {
     if (value == null || value.isEmpty) {
       messageErrorName = MyCustomerAddLanguage.emptyFullNameError;
-    } else if (value.length < 6) {
-      messageErrorName = MyCustomerAddLanguage.nameMinLength;
-    } else {
+    }else {
       messageErrorName = '';
     }
     notifyListeners();
   }
 
   void validPhone(String? value) {
-    final result = AppValid.validatePhoneNumber(value);
+    final result = AppValid.validPhone(value);
     if (result != null) {
       messageErrorPhone = result;
     } else {
@@ -140,7 +138,6 @@ class MyCustomerAddViewModel extends BaseViewModel {
       LoadingDialog.hideLoadingDialog(context);
       clearData();
       await showSuccessDialog(context);
-      closeDialog(context);
     }
     notifyListeners();
   }

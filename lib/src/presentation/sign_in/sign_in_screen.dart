@@ -93,8 +93,8 @@ class _SignInScreenState extends State<SignInScreen> {
       content: SignInLanguage.signIn,
       onTap: () {
         _viewModel!.onLogin(
-          phone: _viewModel!.phoneController.text,
-          password: _viewModel!.passwordController.text,
+          phone: _viewModel!.phoneController.text.trim(),
+          password: _viewModel!.passwordController.text.trim(),
         );
       },
     );

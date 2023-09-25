@@ -99,7 +99,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return CardServiceWidget(
       money: money,
       name: name,
-      onTap: (context) => _viewModel!.deleteService(idCategory!, idService!),
+      onTap: (context) => _viewModel!.showWaningDiaglog(
+        onTapRight: () {
+          _viewModel!.deleteService(idCategory!, idService!);
+        },
+        title: CategoryLanguage.waningDeleteService
+      ),
     );
   }
 
@@ -116,13 +121,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItemCategory(int index) {
-    return Icon(
-      _viewModel!.listIconCategory[index] == true
-          ? Icons.arrow_drop_down_circle
-          : Icons.remove_circle,
-      color: AppColors.PRIMARY_GREEN,
-      size: 27,
-    );
+    if(_viewModel!.listCategory.isNotEmpty){
+      return _viewModel!.listCategory[index].myServices!.isNotEmpty? Icon(
+        _viewModel!.listIconCategory[index] == true
+            ? Icons.arrow_drop_down_circle
+            : Icons.remove_circle,
+        color: AppColors.PRIMARY_GREEN,
+        size: 27,
+      ): Container();
+    }else {
+      return Container();
+    }
   }
 
   Widget buildTitleCategory(int index) {
@@ -136,7 +145,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
         },
         child: SlidableActionWidget(
           isCheckCategory: true,
-          onTapButtonFirst: (context) => _viewModel!.deleteCategory(id!),
+          onTapButtonFirst: (context) => _viewModel!.showWaningDiaglog(
+            onTapRight: () {
+              _viewModel!.deleteCategory(id!);
+            },title: CategoryLanguage.waningDeleteCategory),
           onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
               context: context, categoryModel: CategoryModel(id: id, name: name)),
           child: Row(

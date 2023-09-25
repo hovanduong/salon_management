@@ -90,13 +90,10 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validPrice(String? value) {
-    if(value!=null){
-      priceController.text= AppCurrencyFormat.formatMoney(
-        int.parse(value),);
-    }
     if (value == null || value.isEmpty) {
       messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
     } else {
+      
       messageErrorPrice = '';
     }
     notifyListeners();
@@ -192,7 +189,7 @@ class ServiceAddViewModel extends BaseViewModel {
       AuthParams(
         myServiceModel: MyServiceModel(
           name: nameServiceController.text,
-          money: double.parse(priceController.text.trim()),
+          money: int.parse(priceController.text.trim()),
         ),
         listCategory: categoryId,
       ),
