@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -37,6 +38,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget buildFieldPhoneNumber() {
     return AppFormField(
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+      ],
       labelText: SignInLanguage.phoneNumber,
       hintText: SignInLanguage.enterPhoneNumber,
       keyboardType: TextInputType.phone,
