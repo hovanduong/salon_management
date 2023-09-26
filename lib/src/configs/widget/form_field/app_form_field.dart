@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_space.dart';
@@ -22,7 +23,8 @@ class AppFormField extends StatefulWidget {
     this.onTap,
     this.enabled,
     this.iconButton,
-    this.suffixText,
+    this.suffixText, 
+    this.inputFormatters,
   });
   final Function()? onTap;
   final String? hintText;
@@ -39,6 +41,7 @@ class AppFormField extends StatefulWidget {
   final int? maxLines;
   final String? counterText;
   final IconButton? iconButton;
+  final List<TextInputFormatter>? inputFormatters;
   @override
   State<AppFormField> createState() => _AppFormFieldState();
 }
@@ -65,6 +68,7 @@ class _AppFormFieldState extends State<AppFormField> {
           height: SpaceBox.sizeVerySmall,
         ),
         TextFormField(
+          inputFormatters: widget.inputFormatters,
           enabled: widget.enabled,
           maxLines: widget.maxLines ?? 1,
           maxLength: widget.maxLenght,

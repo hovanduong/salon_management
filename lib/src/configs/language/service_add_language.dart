@@ -42,4 +42,6 @@ class ServiceAddLanguage {
   static final cancel = S.current.cancel;
 
   static final selectedCategories = S.current.selectedCategories;
+  static final validName = S.current.validName;
+
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/widget/bottom_sheet/bottom_sheet_multiple.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
+import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'service_add_view_model.dart';
 
@@ -56,6 +58,9 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+        ],
         labelText: ServiceAddLanguage.serviceName,
         textEditingController: _viewModel!.nameServiceController,
         hintText: ServiceAddLanguage.enterServiceName,
@@ -71,6 +76,10 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Widget buildFieldPrice(){
     return AppFormField(
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        FilteringTextInputFormatter.digitsOnly
+      ],
       keyboardType: TextInputType.number,
       labelText: ServiceAddLanguage.amountOfMoney,
       textEditingController: _viewModel!.priceController,
@@ -78,6 +87,9 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       onChanged: (value) {
         _viewModel!..validPrice(value)
         ..onSubmit();
+        _viewModel!.priceController.text= AppCurrencyFormat.formatMoney(
+          int.parse(value),
+        );
       },
       validator: _viewModel!.messageErrorPrice,
       isSpace: true, 

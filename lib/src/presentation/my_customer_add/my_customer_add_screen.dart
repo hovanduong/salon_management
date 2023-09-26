@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -56,6 +57,10 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        ],
+        keyboardType: TextInputType.number,
         labelText: MyCustomerAddLanguage.phoneNumber,
         textEditingController: _viewModel!.phoneController,
         hintText: MyCustomerAddLanguage.enterPhoneNumber,
