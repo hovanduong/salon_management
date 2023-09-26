@@ -19,8 +19,8 @@ class NavigateScreen extends StatefulWidget {
 }
 
 class _NavigateScreenState extends State<NavigateScreen> {
+  final PageStorageBucket bucket = PageStorageBucket();
   NavigateViewModel? _viewModel;
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget<NavigateViewModel>(
@@ -36,37 +36,31 @@ class _NavigateScreenState extends State<NavigateScreen> {
   Widget buildNavigateScreen() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SizedBox(
-        width: 65,
-        height: 65,
-        child: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: AppColors.FIELD_GREEN,
-          elevation: 10,
-          child: const Icon(
-            Icons.add,
-            size: 35,
-          ),
-        ),
-      ),
       body: IndexedStack(
         index: _viewModel!.selectedIndex,
         children: [
           if (_viewModel!.selectedIndex == 0)
-            const HomePageScreen()
+            const HomePageScreen(
+              key: PageStorageKey('HomePage'),
+            )
           else
             Container(),
           if (_viewModel!.selectedIndex == 1)
-            const BookingHistoryScreen()
+            const BookingHistoryScreen(
+              key: PageStorageKey('BookingPage'),
+            )
           else
             Container(),
           if (_viewModel!.selectedIndex == 2)
-            const BookingHistoryScreen()
+            const BookingHistoryScreen(
+              key: PageStorageKey('HistoryPage'),
+            )
           else
             Container(),
           if (_viewModel!.selectedIndex == 3)
-            const ProfileScreen()
+            const ProfileScreen(
+              key: PageStorageKey('ProfilePage'),
+            )
           else
             Container(),
           if (_viewModel!.selectedIndex == 4) const SizedBox() else Container(),
@@ -76,55 +70,49 @@ class _NavigateScreenState extends State<NavigateScreen> {
     );
   }
 
-  BottomAppBar appBarNavigator() {
-    return BottomAppBar(
-      height: 60,
-      shape: const CircularNotchedRectangle(),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeSmall),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: IconTabWidget(
-                onTap: () => _viewModel!.changeIndex(0),
-                name: _viewModel!.selectedIndex == 0
-                    ? AppImages.icHome
-                    : AppImages.icHomeLine,
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: IconTabWidget(
-                onTap: () => _viewModel!.changeIndex(1),
-                size: 25,
-                name: _viewModel!.selectedIndex == 1
-                    ? AppImages.icStatist
-                    : AppImages.icStatistLine,
-              ),
-            ),
-            const Expanded(flex: 1, child: SizedBox()),
-            Expanded(
-              flex: 1,
-              child: IconTabWidget(
-                onTap: () => _viewModel!.changeIndex(2),
-                name: _viewModel!.selectedIndex == 2
-                    ? AppImages.icWallet
-                    : AppImages.icWalletLine,
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: IconTabWidget(
-                onTap: () => _viewModel!.changeIndex(3),
-                name: _viewModel!.selectedIndex == 3
-                    ? AppImages.icProfile
-                    : AppImages.icProfileLine,
-              ),
-            ),
-          ],
+  BottomNavigationBar appBarNavigator() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      currentIndex: _viewModel!.selectedIndex,
+      selectedItemColor: AppColors.PRIMARY_PINK,
+      unselectedItemColor: AppColors.BLACK_400,
+      onTap: (index) {
+        _viewModel!.changeIndex(index);
+      },
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: IconTabWidget(
+            name: _viewModel!.selectedIndex == 0
+                ? AppImages.icHome
+                : AppImages.icHomeLine,
+          ),
+          label: 'Home',
         ),
-      ),
+        BottomNavigationBarItem(
+          icon: IconTabWidget(
+            name: _viewModel!.selectedIndex == 1
+                ? AppImages.icStatist
+                : AppImages.icStatistLine,
+          ),
+          label: 'Lich hẹn',
+        ),
+        BottomNavigationBarItem(
+          icon: IconTabWidget(
+            name: _viewModel!.selectedIndex == 2
+                ? AppImages.icWallet
+                : AppImages.icWalletLine,
+          ),
+          label: 'Hóa đơn',
+        ),
+        BottomNavigationBarItem(
+          icon: IconTabWidget(
+            name: _viewModel!.selectedIndex == 3
+                ? AppImages.icProfile
+                : AppImages.icProfileLine,
+          ),
+          label: 'Tài khoản',
+        ),
+      ],
     );
   }
 }

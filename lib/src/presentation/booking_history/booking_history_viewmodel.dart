@@ -33,13 +33,17 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> init() async {
     await fetchData();
-    notifyListeners();
   }
 
-  Future<void> goToAddBooking(
-    {required BuildContext context, MyBookingModel? myBookingModel,}) =>
-      Navigator.pushNamed(context, Routers.addBooking, arguments: myBookingModel
-  ,);
+  Future<void> goToAddBooking({
+    required BuildContext context,
+    MyBookingModel? myBookingModel,
+  }) =>
+      Navigator.pushNamed(
+        context,
+        Routers.addBooking,
+        arguments: myBookingModel,
+      );
 
   Future<void> goToBookingDetails(BuildContext context, int id) =>
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
@@ -52,12 +56,17 @@ class BookingHistoryViewModel extends BaseViewModel {
 
     await getMyBooking(pageUpComing, 'Confirmed');
     listCurrentUpcoming = listMyBooking;
+
     await getMyBooking(pageCanceled, 'Canceled');
     listCurrentCanceled = listMyBooking;
+
     await getMyBooking(pageDone, 'Done');
     listCurrentDone = listMyBooking;
+
     isLoading = false;
     scrollController.addListener(scrollListener);
+
+    notifyListeners();
   }
 
   Future<void> pullRefresh() async {
@@ -95,7 +104,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> setStatus(int value) async{
+  Future<void> setStatus(int value) async {
     await pullRefresh();
     if (value == 0) {
       status = 'Confirmed';
@@ -110,18 +119,20 @@ class BookingHistoryViewModel extends BaseViewModel {
   void dialogStatus({required BuildContext context, String? value, int? id}) {
     if (value!.contains('Confirmed')) {
       showDialogStatus(
-          context: context,
-          content: HistoryLanguage.confirmAppointment,
-          title: HistoryLanguage.confirm,
-          status: value,
-          id: id);
+        context: context,
+        content: HistoryLanguage.confirmAppointment,
+        title: HistoryLanguage.confirm,
+        status: value,
+        id: id,
+      );
     } else {
       showDialogStatus(
-          context: context,
-          content: HistoryLanguage.cancelAppointment,
-          title: HistoryLanguage.cancel,
-          status: value,
-          id: id);
+        context: context,
+        content: HistoryLanguage.cancelAppointment,
+        title: HistoryLanguage.cancel,
+        status: value,
+        id: id,
+      );
     }
   }
 
@@ -134,12 +145,13 @@ class BookingHistoryViewModel extends BaseViewModel {
     await launchUrl(launchUri);
   }
 
-  dynamic showDialogStatus(
-      {required BuildContext context,
-      String? content,
-      String? title,
-      int? id,
-      String? status}) {
+  dynamic showDialogStatus({
+    required BuildContext context,
+    String? content,
+    String? title,
+    int? id,
+    String? status,
+  }) {
     showDialog(
       context: context,
       builder: (context) {

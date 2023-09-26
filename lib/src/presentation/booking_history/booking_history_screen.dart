@@ -17,8 +17,12 @@ class BookingHistoryScreen extends StatefulWidget {
   State<BookingHistoryScreen> createState() => _BookingHistoryScreenState();
 }
 
-class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
+class _BookingHistoryScreenState extends State<BookingHistoryScreen>
+    with AutomaticKeepAliveClientMixin {
   BookingHistoryViewModel? _viewModel;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

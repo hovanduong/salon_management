@@ -37,7 +37,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.spa.app.management"
+    namespace "com.dhysolutios.apcare"
     compileSdkVersion 33
     ndkVersion flutter.ndkVersion
     
@@ -56,7 +56,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.spa.app.management"
+        applicationId "com.dhysolutios.apcare"
         minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

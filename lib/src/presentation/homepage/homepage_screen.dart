@@ -17,7 +17,8 @@ class HomePageScreen extends StatefulWidget {
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class _HomePageScreenState extends State<HomePageScreen>
+    with AutomaticKeepAliveClientMixin {
   HomePageViewModel? _viewModel;
   @override
   Widget build(BuildContext context) {
@@ -286,4 +287,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
