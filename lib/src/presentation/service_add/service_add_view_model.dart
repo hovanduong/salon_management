@@ -82,7 +82,7 @@ class ServiceAddViewModel extends BaseViewModel {
     if (value == null || value.isEmpty) {
       messageErrorNameService = ServiceAddLanguage.emptyNameError;
     } else if (value.length < 2) {
-      messageErrorNameService = ServiceAddLanguage.serviceNameMinLength;
+      messageErrorNameService = ServiceAddLanguage.validName;
     } else {
       messageErrorNameService = '';
     }

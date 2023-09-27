@@ -56,9 +56,13 @@ class WarningDialog extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            Paragraph(
-              content: title,
-              style: STYLE_BIG.copyWith(fontWeight: FontWeight.w600),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+              child: Paragraph(
+                textAlign: TextAlign.center,
+                content: title,
+                style: STYLE_BIG.copyWith(fontWeight: FontWeight.w600),
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(
