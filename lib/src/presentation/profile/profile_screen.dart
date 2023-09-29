@@ -79,32 +79,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         Paragraph(
-          content: 'Enjelin Morgeana',
+          content: 'WELCOME MANAGER',
           style: STYLE_BIG.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
-          height: SpaceBox.sizeSmall,
-        ),
-        Paragraph(
-          content: '@enjelin_morgeana',
-          style: STYLE_MEDIUM.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.LINEAR_GREEN,
-          ),
-        ),
       ],
-    );
-  }
-
-  Widget buildInviteFriendsWidget() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-      child: const SettingProfileListWidget(
-        image: AppImages.icDiamond,
-        // title: ProfileLanguage.inviteFriends,
-      ),
     );
   }
 
@@ -141,6 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVeryBig,
+        vertical: SizeToPadding.sizeVeryBig,
       ),
       child: Container(
         width: double.infinity,
@@ -169,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       image: AppImages.icSecurity,
       title: 'Logout',
       onTap: () async {
-       await _viewModel!.logOut();
+        await _viewModel!.logOut();
       },
     );
   }
@@ -195,7 +176,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             buildNameUserWidget(),
-            buildInviteFriendsWidget(),
             buildLineWidget(),
             buildAccountInfoWidget(),
             buildPersonalProfileWidget(),
