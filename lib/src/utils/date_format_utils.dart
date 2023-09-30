@@ -41,4 +41,15 @@ class AppDateUtils {
       return DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now());
     }
   }
+
+  static String formatDateTimeNotify(String? time) {
+    try {
+      return time!.isNotEmpty
+          ? DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(time))
+          : '';
+    } catch (e) {
+      return DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now());
+    }
+  }
 }

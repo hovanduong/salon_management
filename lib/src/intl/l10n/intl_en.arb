@@ -132,7 +132,6 @@
     "loginAndSecurity": "Login and security",
     "dataAndPrivacy": "Data and privacy",
     "profile": "Profile",
-
     "discount": "Discount",
     "selectServices": "Select Services",
     "discountLenghtError": "Enter between 0 - 100", 
@@ -165,13 +164,10 @@
     "upcoming": "Upcoming",
     "canceled": "Canceled",
     "done": "Done",
-
     "home": "Home",
     "bookingSuccessful": "Booking successful",
-
     "client": "Client",
     "informationServices": "Information Services",
-
     "cancelAppointment": "Do you want to cancel appointment?",
     "confirmAppointment": "Do you want to confirm appointment?",
     "onlySpecialChars": "Please do not enter special characters",
@@ -181,5 +177,9 @@
     "updateMyCustomer": "Update Customer",
     "search": "Search",
     "update": "Update",
+    "justNow":"Just now",
+    "minuteAgo":"{minute} minutes ago",
+    "daysAgo":"{days} days ago",
+    "hourAgo":"{days} hours ago",
     "lastLine": ""
 }

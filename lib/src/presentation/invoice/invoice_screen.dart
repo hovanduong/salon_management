@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
+import '../../utils/check_time.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
@@ -29,7 +30,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
   }
 
-  Widget buildInvoice(){
+  Widget buildInvoice() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -59,37 +60,31 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   Widget buildHeader() {
     return Container(
-      height: SpaceBox.sizeBig*2,
-      width: double.maxFinite,
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
-        ],
-      ),
-      child: const Paragraph(
-        content: 'Hoa Don',
-        style: STYLE_LARGE_BOLD,
-      )
-    );
+        height: SpaceBox.sizeBig * 2,
+        width: double.maxFinite,
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
+        decoration: BoxDecoration(
+          color: AppColors.COLOR_WHITE,
+          boxShadow: [
+            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+          ],
+        ),
+        child: const Paragraph(
+          content: 'Hoa Don',
+          style: STYLE_LARGE_BOLD,
+        ));
   }
 
   Widget invoiceUser(int index) {
-    final money= _viewModel!.listInvoice[index].total;
-    final date= _viewModel!.listInvoice[index].createdAt;
-    final name= _viewModel!.listInvoice[index].myBooking?.myCustomer?.fullName;
+    final money = _viewModel!.listInvoice[index].total;
+    final date = _viewModel!.listInvoice[index].createdAt;
+    final name = _viewModel!.listInvoice[index].myBooking?.myCustomer?.fullName;
     return Transaction(
+      color: _viewModel!.colors[index % _viewModel!.colors.length],
       money: '+ $money',
-      subtile:  date != null
-        ? AppDateUtils.splitHourDate(
-            AppDateUtils.formatDateLocal(
-              date,
-            ),
-          )
-        : '',
-      name: name??'',
+      subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
+      name: name ?? '',
     );
   }
 

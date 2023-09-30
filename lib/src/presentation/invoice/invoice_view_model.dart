@@ -1,4 +1,5 @@
 import '../../configs/app_result/app_result.dart';
+import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../resource/model/invoice_model.dart';
 import '../../resource/service/invoice.dart';
@@ -6,16 +7,23 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
 class InvoiceViewModel extends BaseViewModel {
+  InvoiceApi invoiceApi = InvoiceApi();
 
-  InvoiceApi invoiceApi= InvoiceApi();
+  List<InvoiceModel> listInvoice = [];
+  List colors = [
+    AppColors.COLOR_TEAL,
+    AppColors.COLOR_OLIVE,
+    AppColors.COLOR_MAROON,
+    AppColors.COLOR_GREEN_LIST,
+    AppColors.COLOR_PURPLE,
+    AppColors.PRIMARY_PINK,
+  ];
 
-  List<InvoiceModel> listInvoice=[];
+  int page = 1;
 
-  int page =1;
+  bool isLoading = true;
 
-  bool isLoading=true;
-   
-  Future<void> init() async{
+  Future<void> init() async {
     await getInvoice(page);
   }
 
@@ -36,7 +44,7 @@ class InvoiceViewModel extends BaseViewModel {
     } else if (value is Exception) {
       // showErrorDialog(context);
     } else {
-      isLoading=false;
+      isLoading = false;
       listInvoice = value as List<InvoiceModel>;
     }
     notifyListeners();
