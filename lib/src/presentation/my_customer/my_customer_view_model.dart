@@ -177,7 +177,7 @@ class MyCustomerViewModel extends BaseViewModel{
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
+    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   Future<void> getMyCustomer(int page) async {

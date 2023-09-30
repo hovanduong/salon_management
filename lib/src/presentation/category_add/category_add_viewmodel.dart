@@ -103,7 +103,7 @@ class CategoryAddViewModel extends BaseViewModel {
 
   void closeDialog(BuildContext context) {
     Timer(
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
   }
