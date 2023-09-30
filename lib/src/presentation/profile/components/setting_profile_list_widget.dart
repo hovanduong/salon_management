@@ -33,34 +33,41 @@ class SettingProfileListWidget extends StatelessWidget {
         onTap: () {
           onTap!();
         },
-        child: Container(
-          height: SpaceBox.sizeBig + SpaceBox.sizeBig,
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.FIELD_GREEN,
-                width: 1,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (image != null)
+                  SvgPicture.asset(
+                    image!,
+                    color: colorImage,
+                  ),
+                SizedBox(
+                  width: SpaceBox.sizeMedium,
+                ),
+                Paragraph(
+                  content: title ?? '',
+                  style: textStyleTitle ??
+                      STYLE_LARGE_BOLD.copyWith(
+                        color: colorTitle ?? AppColors.BLACK_500,
+                      ),
+                ),
+                const Spacer(),
+                const Icon(Icons.arrow_forward_ios)
+              ],
+            ),
+            SizedBox(
+              height: SpaceBox.sizeBig,
+            ),
+            Container(
+              width: double.infinity,
+              height: 0.5,
+              decoration: const BoxDecoration(
+                color: AppColors.COLOR_GREY,
               ),
-              color: const Color.fromARGB(255, 216, 212, 212),
-              borderRadius: BorderRadius.circular(BorderRadiusSize.sizeBig)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: SpaceBox.sizeMedium,
-              ),
-              if (image != null) SvgPicture.asset(image!, color: colorImage),
-              SizedBox(
-                width: SpaceBox.sizeMedium,
-              ),
-              Paragraph(
-                content: title ?? '',
-                style: textStyleTitle ??
-                    STYLE_LARGE_BOLD.copyWith(
-                      color: colorTitle ?? AppColors.BLACK_500,
-                    ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
