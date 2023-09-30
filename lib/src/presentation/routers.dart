@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../resource/model/user_model.dart';
 import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
+import 'invoice/invoice_screen.dart';
 import 'myCustomer_edit/my_customer_edit_screen.dart';
 import 'my_customer/my_customer.dart';
 import 'my_customer_add/my_customer_add_screen.dart';
@@ -54,6 +55,8 @@ class Routers {
   static const String myCustomerAdd = '/myCustomerAdd';
   static const String myCustomerEdit = '/myCustomerEdit';
   static const String addBooking = '/addBooking';
+  static const String invoice = '/invoice';
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -73,6 +76,15 @@ class Routers {
           name: verification,
           arguments: arguments,
         );
+        
+      case invoice:
+        return animRoute(
+          const InvoiceScreen(),
+          beginOffset: right,
+          name: invoice,
+          arguments: arguments,
+        );
+      
       case addBooking:
         return animRoute(
           const BookingScreen(),

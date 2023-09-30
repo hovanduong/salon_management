@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -5,7 +7,6 @@ import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
-import '../../resource/service/auth.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -14,14 +15,16 @@ import '../routers.dart';
 class BookingHistoryViewModel extends BaseViewModel {
   MyBookingApi myBookingApi = MyBookingApi();
 
-  ScrollController scrollController = ScrollController();
+  ScrollController scrollUpComing = ScrollController();
+  ScrollController scrollDone = ScrollController();
+  ScrollController scrollCanceled = ScrollController();
+
 
   List<MyBookingModel> listMyBooking = [];
   List<MyBookingModel> listCurrentUpcoming = [];
   List<MyBookingModel> listCurrentDone = [];
   List<MyBookingModel> listCurrentCanceled = [];
 
-  bool isSwitch = false;
   bool isLoadMore = false;
   bool isLoading = true;
 
@@ -45,8 +48,8 @@ class BookingHistoryViewModel extends BaseViewModel {
         arguments: myBookingModel,
       );
 
-  Future<void> goToBookingDetails(BuildContext context, int id) =>
-      Navigator.pushNamed(context, Routers.bookingDetails, arguments: id);
+  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model) 
+    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   Future<void> fetchData() async {
     listCurrentUpcoming.clear();
@@ -64,7 +67,9 @@ class BookingHistoryViewModel extends BaseViewModel {
     listCurrentDone = listMyBooking;
 
     isLoading = false;
-    scrollController.addListener(scrollListener);
+    scrollUpComing.addListener(() => scrollListener(scrollUpComing),);
+    scrollCanceled.addListener(() => scrollListener(scrollCanceled),);
+    scrollDone.addListener(() => scrollListener(scrollDone),);
 
     notifyListeners();
   }
@@ -75,14 +80,14 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  dynamic scrollListener() async {
+  dynamic scrollListener(ScrollController scrollController) async {
     if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent &&
         scrollController.position.pixels > 0) {
       isLoadMore = true;
       Future.delayed(const Duration(seconds: 2), loadMoreData);
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> loadMoreData() async {
@@ -105,7 +110,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> setStatus(int value) async {
-    await pullRefresh();
+    // await pullRefresh();
     if (value == 0) {
       status = 'Confirmed';
     } else if (value == 1) {
@@ -145,6 +150,27 @@ class BookingHistoryViewModel extends BaseViewModel {
     await launchUrl(launchUri);
   }
 
+  dynamic showWaningDiaglog(int id){
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: BookingLanguage.waningDeleteBooking,
+          leftButtonName: SignUpLanguage.cancel,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          rightButtonName: BookingLanguage.yes,
+          onTapRight: (){
+            deleteBookingHistory(id);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
   dynamic showDialogStatus({
     required BuildContext context,
     String? content,
@@ -173,10 +199,16 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
+  void closeDialog(BuildContext context){
+    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
+  }
+
   dynamic showSuccessDiaglog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
@@ -188,7 +220,9 @@ class BookingHistoryViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -199,7 +233,7 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> getMyBooking(int page, String status) async {
     final result = await myBookingApi.getMyBooking(
-      AuthParams(
+      MyBookingParams(
         page: page,
         status: status,
       ),
@@ -223,7 +257,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> putStatusAppointment(int id, String status) async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myBookingApi.putStatusAppointment(
-      AuthParams(
+      MyBookingParams(
         id: id,
         status: status,
       ),
@@ -249,7 +283,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> deleteBookingHistory(int id) async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myBookingApi.deleteBookingHistory(
-      AuthParams(
+      MyBookingParams(
         id: id,
       ),
     );

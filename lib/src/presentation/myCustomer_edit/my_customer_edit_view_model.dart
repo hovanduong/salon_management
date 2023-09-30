@@ -97,10 +97,16 @@ class MyCustomerEditViewModel extends BaseViewModel {
     );
   }
 
+  void closeDialog(BuildContext context){
+    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
+  }
+
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -112,7 +118,9 @@ class MyCustomerEditViewModel extends BaseViewModel {
   dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
@@ -150,8 +158,8 @@ class MyCustomerEditViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      // showSuccessDialog(context);
-      Timer(const Duration(seconds: 1), () {Navigator.pop(context); });
+      showSuccessDialog(context);
+      Timer(const Duration(seconds: 2), () {Navigator.pop(context); });
     }
     notifyListeners();
   }

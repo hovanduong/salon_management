@@ -17,7 +17,8 @@ class NotificationService extends StatelessWidget {
     this.onTapPhone, 
     this.isButton=false, 
     this.onTapDeleteBooking, 
-    this.onTapEditBooking,
+    this.onTapEditBooking, 
+    this.onPay,
   });
 
   final String? dateTime;
@@ -30,6 +31,7 @@ class NotificationService extends StatelessWidget {
   final bool isButton;
   final Function()? onTapDeleteBooking;
   final Function()? onTapEditBooking;
+  final Function()? onPay;
 
 
   Widget buildTitle({
@@ -188,6 +190,9 @@ class NotificationService extends StatelessWidget {
           children: [
             Expanded(
               child: AppButton(
+                onTap: (){
+                  onPay!();
+                },
                 content: HistoryLanguage.pay,
                 enableButton: true,
               ),

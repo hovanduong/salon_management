@@ -121,6 +121,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItemCategory(int index) {
+    print(index);
     if(_viewModel!.listCategory.isNotEmpty){
       return _viewModel!.listCategory[index].myServices!.isNotEmpty? Icon(
         _viewModel!.listIconCategory[index] == true

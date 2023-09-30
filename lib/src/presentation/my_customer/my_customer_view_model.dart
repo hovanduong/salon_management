@@ -151,6 +151,7 @@ class MyCustomerViewModel extends BaseViewModel{
   dynamic showErrorDialog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -164,6 +165,7 @@ class MyCustomerViewModel extends BaseViewModel{
   dynamic showSuccessDiaglog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(

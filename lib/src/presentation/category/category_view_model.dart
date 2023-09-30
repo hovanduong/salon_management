@@ -45,6 +45,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
+    listCategory.clear();
     isLoadingList = true;
     await init();
     notifyListeners();
@@ -152,6 +153,7 @@ class CategoryViewModel extends BaseViewModel {
   dynamic showErrorDialog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -165,6 +167,7 @@ class CategoryViewModel extends BaseViewModel {
   dynamic showSuccessDiaglog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -184,7 +187,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
   }
 
   Future<void> getCategory(int page) async {
@@ -236,8 +239,8 @@ class CategoryViewModel extends BaseViewModel {
     } else if (value is Exception) {
       showErrorDialog(context);
     } else {
-      showSuccessDiaglog(context);
       await pullRefresh();
+      showSuccessDiaglog(context);
     }
     notifyListeners();
   }

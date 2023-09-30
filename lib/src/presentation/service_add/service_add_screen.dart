@@ -58,9 +58,6 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-        ],
         labelText: ServiceAddLanguage.serviceName,
         textEditingController: _viewModel!.nameServiceController,
         hintText: ServiceAddLanguage.enterServiceName,

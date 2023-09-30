@@ -84,7 +84,9 @@ class MyCustomerAddViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -96,13 +98,12 @@ class MyCustomerAddViewModel extends BaseViewModel {
   dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
-          onTap: () {
-            Navigator.pop(context);
-          },
         );
       },
     );

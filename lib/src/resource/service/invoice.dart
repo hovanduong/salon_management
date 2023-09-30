@@ -4,10 +4,10 @@ import 'dart:convert';
 
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
-import '../model/my_booking_model.dart';
+import '../model/invoice_model.dart';
 
-class MyBookingParams {
-  const MyBookingParams({
+class InvoiceParams {
+  const InvoiceParams({
     this.id,
     this.page, 
     this.status,
@@ -19,21 +19,21 @@ class MyBookingParams {
   final bool isButtonBookingDetails;
 }
 
-class MyBookingApi {
-  Future<Result<List<MyBookingModel>, Exception>> getMyBooking(
-      MyBookingParams params) async {
+class InvoiceApi {
+  Future<Result<bool, Exception>> postInvoice(
+      InvoiceParams params,) async {
     try {
-      final response = await HttpRemote.get(
-        url:
-            '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
+      final response = await HttpRemote.post(
+        url: '/invoice',
+        body: {
+          'myBookingId': params.id,
+          'discount': 0,
+        },
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final myBooking = MyBookingModelFactory.createList(data);
-          return Success(myBooking);
+        case 201:
+          return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -42,19 +42,19 @@ class MyBookingApi {
     }
   }
 
-  Future<Result<List<MyBookingModel>, Exception>> getMyBookingUser(
-      String id) async {
+  Future<Result<List<InvoiceModel>, Exception>> getInvoice(
+      InvoiceParams params,) async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-booking/$id',
+        url: '/invoice?pageSize=10&page=${params.page}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
-          final myBooking = MyBookingModelFactory.createList(data);
-          return Success(myBooking);
+          final invoice = InvoiceModelFactory.createList(data);
+          return Success(invoice);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -64,7 +64,7 @@ class MyBookingApi {
   }
 
   Future<Result<bool, Exception>> putStatusAppointment(
-      MyBookingParams params) async {
+      InvoiceParams params,) async {
     try {
       final response = await HttpRemote.put(
         url: '/my-booking/${params.id}/Canceled',
@@ -82,7 +82,7 @@ class MyBookingApi {
   }
 
   Future<Result<bool, Exception>> deleteBookingHistory(
-      MyBookingParams params) async {
+      InvoiceParams params,) async {
     try {
       final response = await HttpRemote.delete(
         url: '/my-booking/${params.id}',

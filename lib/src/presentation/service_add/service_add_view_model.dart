@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_category_model.dart';
-import '../../resource/model/my_service_model.dart';
 import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/my_service_api.dart';
-import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
@@ -35,6 +32,8 @@ class ServiceAddViewModel extends BaseViewModel {
 
   bool isColorProvinces = false;
   bool enableSubmit = false;
+
+  String? money;
 
   Future<void> init() async {
     await getCategory();
@@ -90,6 +89,7 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validPrice(String? value) {
+    money=value;
     if (value == null || value.isEmpty) {
       messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
     } else {
@@ -132,7 +132,9 @@ class ServiceAddViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -144,13 +146,12 @@ class ServiceAddViewModel extends BaseViewModel {
   dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
-          onTap: () {
-            Navigator.pop(context);
-          },
         );
       },
     );
@@ -186,11 +187,9 @@ class ServiceAddViewModel extends BaseViewModel {
   Future<void> postService() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myServiceApi.postService(
-      AuthParams(
-        myServiceModel: MyServiceModel(
-          name: nameServiceController.text,
-          money: int.parse(priceController.text.trim()),
-        ),
+      ServiceParams(
+        name: nameServiceController.text,
+        money: int.parse(money??'0'),
         listCategory: categoryId,
       ),
     );
@@ -210,7 +209,6 @@ class ServiceAddViewModel extends BaseViewModel {
       LoadingDialog.hideLoadingDialog(context);
       clearData();
       await showSuccessDialog(context);
-      closeDialog(context);
     }
     notifyListeners();
   }

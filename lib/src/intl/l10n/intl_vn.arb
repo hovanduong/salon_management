@@ -154,6 +154,7 @@
     "waningDeleteCategory": "Bạn muốn xóa mục này?",
     "waningDeleteService": "Bạn muốn xóa dịch vụ này?",
     "waningDeleteCustomer": "Bạn muốn xóa nguời dùng này?",
+    "waningDeleteBooking": "Bạn muốn xóa lịch hẹn này?",
     "yes": "Có",
     "no": "Không",
     "selectedCategories": "Chọn mục",

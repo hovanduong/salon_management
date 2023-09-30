@@ -1,5 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -110,7 +112,8 @@ class BookingViewModel extends BaseViewModel {
       phoneController.text = dataMyBooking!.myCustomer!.phoneNumber!;
       nameController.text = dataMyBooking!.myCustomer!.fullName!;
       addressController.text = dataMyBooking!.address!;
-      noteController.text = dataMyBooking!.note!;
+      noteController.text = dataMyBooking!.note != 'Trống' 
+        ? dataMyBooking!.note! : '';
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -364,13 +367,19 @@ class BookingViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
         );
       },
     );
+  }
+
+  void closeDialog(BuildContext context){
+    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
   }
 
   void clearData() {

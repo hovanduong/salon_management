@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/booking_details_language.dart';
+import '../../resource/service/my_booking.dart';
 import '../../utils/app_currency.dart';
-import '../../utils/app_utils.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'booking_detail_view_model.dart';
@@ -24,11 +24,17 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   BookingDetailsViewModel? _viewModel;
 
   @override
+  void dispose() {
+    _viewModel!.timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context)!.settings.arguments;
+    final model = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
       onViewModelReady: (viewModel) =>
-          _viewModel = viewModel!..init(id.toString()),
+          _viewModel = viewModel!..init(model! as MyBookingParams),
       viewModel: BookingDetailsViewModel(),
       builder: (context, viewModel, child) =>
           AnnotatedRegion<SystemUiOverlayStyle>(
@@ -79,7 +85,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200),
+              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
         ],
       ),
       child: Column(
@@ -122,7 +128,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           ),
         ),
         trailing:
-            StatusWidget.status(_viewModel!.listMyBooking[index].status!));
+            StatusWidget.status(_viewModel!.listMyBooking[index].status!),);
   }
 
   Widget buildNameClient(int index) {
@@ -142,7 +148,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       child: ItemWidget(
         title: BookingDetailsLanguage.total,
         content: AppCurrencyFormat.formatMoneyVND(
-            _viewModel!.listMyBooking[index].total ?? 0),
+            _viewModel!.listMyBooking[index].total ?? 0,),
         color: AppColors.PRIMARY_GREEN,
         isSpaceBetween: true,
         fontWeightContent: FontWeight.bold,
@@ -159,7 +165,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200),
+              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
         ],
       ),
       child: Column(
@@ -209,6 +215,23 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         : Container();
   }
 
+  Widget buildService(String money, String titleService){
+    return Column(
+      children: [
+        buildDivider(),
+        SizedBox(height: SizeToPadding.sizeVeryVerySmall,),
+        ItemWidget(
+          content: money,
+          title: titleService,
+          fontWeightTitle: FontWeight.w500,
+          isSpaceBetween: true,
+          color: AppColors.PRIMARY_GREEN,
+          fontWeightContent: FontWeight.bold,
+        ),
+      ],
+    );
+  }
+
   Widget buildListService(int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
@@ -222,28 +245,24 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                 _viewModel!.listMyBooking[index].myServices![indexService].name;
             return Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: SizeToPadding.sizeVeryVerySmall),
-              child: ItemWidget(
-                content: AppCurrencyFormat.formatMoneyVND(money!),
-                title: service,
-                fontWeightTitle: FontWeight.w500,
-                isSpaceBetween: true,
-                color: AppColors.PRIMARY_GREEN,
-                fontWeightContent: FontWeight.bold,
+                  vertical: SizeToPadding.sizeVeryVerySmall,),
+              child: buildService(
+                AppCurrencyFormat.formatMoneyVND(money!),
+                service!,
               ),
             );
-          }),
+          },),
     );
   }
 
-  Widget buildService(int index) {
+  Widget buildCardService(int index) {
     return Container(
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200),
+              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
         ],
       ),
       child: Column(
@@ -257,6 +276,28 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         ],
       ),
     );
+  }
+
+  Widget buildButtonPay(){
+    if(_viewModel!.dataMyBooking != null){
+      return _viewModel!.dataMyBooking!.isButtonBookingDetails? Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Padding(
+          padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+          child: AppButton(
+            enableButton: true,
+            content: BookingDetailsLanguage.pay,
+            onTap: (){
+              _viewModel!.postInvoice(_viewModel!.dataMyBooking!.id!);
+            },
+          ),
+        ),
+      ): Container();
+    }else {
+      return Container();
+    }
   }
 
   Widget buildItemScreen() {
@@ -274,7 +315,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
               children: [
                 buildHeader(index),
                 buildInfoCard(index),
-                buildService(index),
+                buildCardService(index),
               ],
             ),
           ),
@@ -295,13 +336,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           child: Stack(
             children: [
               buildItemScreen(),
+              buildButtonPay(),
               if (_viewModel!.isLoading)
                 const Positioned(
                   child: Align(
                     alignment: FractionalOffset.center,
                     child: ThreeBounceLoading(),
                   ),
-                )
+                ),
             ],
           ),
         ),

@@ -153,6 +153,7 @@
     "waningDeleteCategory": "you want to delete this category?",
     "waningDeleteService": "you want to delete this service?",
     "waningDeleteCustomer": "you want to delete this customer?",
+    "waningDeleteBooking": "you want to delete this booking?",
     "yes": "Yes",
     "no": "No",
     "selectedCategories": "Selected Categories",

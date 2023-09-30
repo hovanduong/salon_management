@@ -20,7 +20,8 @@ class ScreenTap extends StatelessWidget {
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
-    this.onTapEditBooking,
+    this.onTapEditBooking, 
+    this.onPay,
   });
 
   final Function()? onRefresh;
@@ -34,6 +35,7 @@ class ScreenTap extends StatelessWidget {
   final Function(String value, int id)? onChangedStatus;
   final Function(int id)? onTapDeleteBooking;
   final Function(MyBookingModel myBookingModel)? onTapEditBooking;
+  final Function(int id)? onPay;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class ScreenTap extends StatelessWidget {
         await onRefresh!();
       },
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: ListView.builder(
           shrinkWrap: true,
           controller: scrollController,
@@ -54,6 +56,7 @@ class ScreenTap extends StatelessWidget {
               final date = listCurrent![index].date;
               final id = listCurrent![index].id;
               return NotificationService(
+                onPay: () => onPay!(id!),
                 onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
                 onTapDeleteBooking: () => onTapDeleteBooking!(id!),
                 onTapCard: () => onTapCard!(id!),
