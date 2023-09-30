@@ -75,6 +75,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
       currentIndex: _viewModel!.selectedIndex,
       selectedItemColor: AppColors.PRIMARY_PINK,
       unselectedItemColor: AppColors.BLACK_400,
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
       onTap: (index) {
         _viewModel!.changeIndex(index);
       },
