@@ -199,12 +199,14 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading = false;
       listCategory = value as List<CategoryModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 
@@ -217,12 +219,14 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading = false;
       allCategory = value as List<CategoryModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 

@@ -10,6 +10,9 @@ import 'booking_history.dart';
 import 'components/components.dart';
 
 const done = 'done';
+const canceled = 'Canceled';
+const upcoming = 'upcoming';
+
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -79,11 +82,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
             style: STYLE_LARGE,
           ),
         ),
-        // leading: const Icon(
-        //   Icons.arrow_back,
-        //   color: AppColors.BLACK_500,
-        // ),
-        trailing: const Icon(null),
       ),
     );
   }
@@ -96,15 +94,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           _viewModel!.setStatus(value);
         },
         tabs: [
-          Tab(
-            text: HistoryLanguage.upcoming,
-          ),
-          Tab(
-            text: HistoryLanguage.done,
-          ),
-          Tab(
-            text: HistoryLanguage.canceled,
-          ),
+          Tab(text: HistoryLanguage.upcoming,),
+          Tab(text: HistoryLanguage.done,),
+          Tab(text: HistoryLanguage.canceled,),
         ],
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
@@ -158,7 +150,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildSecondTab() {
     return ScreenTap(
-      widget: setStatusNotification(done, 'checkout'),
+      widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollDone,
@@ -173,7 +165,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildThirdTab() {
     return ScreenTap(
-      widget: setStatusNotification('canceled', 'cancel'),
+      widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollCanceled,
@@ -186,14 +178,14 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-  Widget setStatusNotification(String type, String status) {
-    switch (type) {
-      case 'done':
-        return StatusDoneWidget.statusDone(status);
-      case 'canceled':
-        return StatusCanceledWidget.statusCanceled();
+  Widget setStatusNotification(String status) {
+    switch (status) {
+      case done:
+        return StatusUpWidget.statusUpComing(status);
+      case canceled:
+        return StatusUpWidget.statusUpComing(status);
       default:
-        return StatusUpComingWidget.statusUpComing(status);
+        return StatusUpWidget.statusUpComing(status);
     }
   }
 

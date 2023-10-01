@@ -177,13 +177,10 @@
     "updateMyCustomer": "Update Customer",
     "search": "Search",
     "update": "Update",
-<<<<<<< Updated upstream
     "justNow":"Just now",
     "minuteAgo":"{minute} minutes ago",
     "daysAgo":"{days} days ago",
     "hourAgo":"{days} hours ago",
-=======
     "invoice": "Invoice",
->>>>>>> Stashed changes
     "lastLine": ""
 }

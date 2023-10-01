@@ -1,3 +1,5 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +59,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
                       alignment: FractionalOffset.center,
                       child: ThreeBounceLoading(),
                     ),
-                  )
+                  ),
               ],
             ),
           ),
@@ -72,7 +74,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
         ],
       ),
       child: Padding(
@@ -97,7 +99,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
         phone: phone,
         name: name,
         onEdit: (context) => _viewModel!.goToMyCustomerEdit(
-          context, _viewModel!.foundCustomer[index]),
+          context, _viewModel!.foundCustomer[index],),
         onDelete: (context) => _viewModel!.showWaningDiaglog(id!),
       ),
     );
@@ -131,7 +133,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
         child: Container(
           margin: EdgeInsets.only(
               left: SizeToPadding.sizeSmall,
-              right: SizeToPadding.sizeVerySmall),
+              right: SizeToPadding.sizeVerySmall,),
           height: MediaQuery.of(context).size.height-200,
           child: ListView.builder(
             controller: _viewModel!.scrollController,
@@ -144,7 +146,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
               }else{
                 return const CupertinoActivityIndicator();
               }
-            }
+            },
           ),
         ),
       ),
@@ -158,7 +160,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           color: AppColors.COLOR_WHITE,
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig,),
           ],
         ),
         child: SingleChildScrollView(
@@ -192,7 +194,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
               onPressed: () {
                 _viewModel!.goToAddMyCustomer(context);
               },
-            )
+            ),
           ],
         ),
       ),

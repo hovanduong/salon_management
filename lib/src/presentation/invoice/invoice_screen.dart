@@ -60,7 +60,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       alignment: FractionalOffset.center,
                       child: ThreeBounceLoading(),
                     ),
-                  )
+                  ),
               ],
             ),
           ),
@@ -78,20 +78,20 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
         ],
       ),
       child: Paragraph(
         content: InvoiceLanguage.invoice,
         style: STYLE_LARGE_BOLD,
-      )
+      ),
     );
   }
 
   Widget invoiceUser(int index) {
-    final money= _viewModel!.listFoundInvoice[index].total;
-    final date= _viewModel!.listFoundInvoice[index].createdAt;
-    final name= _viewModel!.listFoundInvoice[index].myBooking?.myCustomer?.fullName;
+    final money= _viewModel!.listCurrent[index].total;
+    final date= _viewModel!.listCurrent[index].createdAt;
+    final name= _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
     return Transaction(
       color: _viewModel!.colors[index % _viewModel!.colors.length],
       money: '+ $money',
@@ -128,20 +128,20 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         child: Container(
           margin: EdgeInsets.only(
               left: SizeToPadding.sizeSmall,
-              right: SizeToPadding.sizeVerySmall),
+              right: SizeToPadding.sizeVerySmall,),
           height: MediaQuery.of(context).size.height-200,
           child: ListView.builder(
             controller: _viewModel!.scrollController,
             itemCount: _viewModel!.loadingMore
-              ? _viewModel!.listFoundInvoice.length +1 
-              : _viewModel!.listFoundInvoice.length,
+              ? _viewModel!.listCurrent.length +1 
+              : _viewModel!.listCurrent.length,
             itemBuilder: (context, index) {
-              if(index<_viewModel!.listFoundInvoice.length){
+              if(index<_viewModel!.listCurrent.length){
                 return invoiceUser(index);
               }else{
                 return const CupertinoActivityIndicator();
               }
-            } 
+            }, 
           ),
         ),
       ),
@@ -154,7 +154,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         decoration: BoxDecoration(
           color: AppColors.COLOR_WHITE,
           boxShadow: [
-            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
           ],
         ),
         child: SingleChildScrollView(

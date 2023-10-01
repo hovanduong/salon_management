@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../resource/model/my_booking_model.dart';
@@ -14,6 +13,9 @@ import '../routers.dart';
 
 class BookingDetailsViewModel extends BaseViewModel{
   bool isLoading=true;
+
+  late Timer timer;
+
   MyBookingParams? dataMyBooking;
 
   MyBookingApi myBookingApi = MyBookingApi();
@@ -40,7 +42,7 @@ class BookingDetailsViewModel extends BaseViewModel{
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        Timer(const Duration(seconds: 1), () {
+        timer= Timer(const Duration(seconds: 1), () {
           goToHome(context); });
         return WarningOneDialog(
           image: AppImages.icCheck,
@@ -72,13 +74,15 @@ class BookingDetailsViewModel extends BaseViewModel{
       Failure(exception: final exception) => exception,
     };
 
-    if (!AppValid.isNetWork(value)) {
-      // showDialogNetwork(context);
+   if (!AppValid.isNetWork(value)) {
+      isLoading = true;
     } else if (value is Exception) {
-      // showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading = false;
       listMyBooking = value as List<MyBookingModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 

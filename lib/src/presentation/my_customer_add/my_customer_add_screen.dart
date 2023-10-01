@@ -37,7 +37,8 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+          icon: const Icon(
+            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
         ),
         title: Paragraph(
           content: MyCustomerAddLanguage.addMyCustomer,
@@ -106,7 +107,7 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,)
+              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,),
           ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),

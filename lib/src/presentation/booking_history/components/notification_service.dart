@@ -8,7 +8,7 @@ import '../../../configs/constants/app_space.dart';
 class NotificationService extends StatelessWidget {
   const NotificationService({
     super.key,
-    this.dateTime,
+    this.date,
     this.widget,
     this.onTapCard,
     this.total,
@@ -21,7 +21,7 @@ class NotificationService extends StatelessWidget {
     this.onPay,
   });
 
-  final String? dateTime;
+  final String? date;
   final Widget? widget;
   final String? total;
   final String? nameUser;
@@ -72,7 +72,7 @@ class NotificationService extends StatelessWidget {
     return Column(
       children: [
         buildTitle(
-          content: dateTime,
+          content: date,
           icon: Icons.alarm,
           trailing: widget,
         ),

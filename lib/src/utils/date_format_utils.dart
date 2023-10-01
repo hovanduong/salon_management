@@ -4,7 +4,7 @@ class AppDateUtils {
   static String splitHourDate(String time) {
     final result = time.split(' ');
     final hour = result[1].substring(0, 5);
-    return '$hour ${formatDateTimeFromUtc(result[0])}';
+    return '$hour ${formatDateTime(result[0])}';
   }
 
   static String formatDateLocal(String time) {
@@ -13,6 +13,15 @@ class AppDateUtils {
 
   static String formatTimeToHHMM(DateTime time) {
     return DateFormat('HH:mm').format(time);
+  }
+
+  static String formatDateTime(dynamic time) {
+    try {
+      return DateFormat('dd-MM-yyyy')
+          .format(DateFormat('yyyy-MM-dd').parse(time));
+    } catch (e) {
+      return DateFormat('dd-MM-yyyy').format(DateTime.now());
+    }
   }
 
   static String formatDateTimeFromUtc(dynamic time) {

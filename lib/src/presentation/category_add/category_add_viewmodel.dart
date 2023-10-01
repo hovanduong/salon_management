@@ -13,10 +13,14 @@ import '../base/base.dart';
 
 class CategoryAddViewModel extends BaseViewModel {
   bool enableButton = false;
+  
   TextEditingController categoryController = TextEditingController();
+
   String? messageErrorCategory;
+
   CategoryApi categoryApi = CategoryApi();
   CategoryModel? categoryModel;
+
   Future<void> init(CategoryModel? data) async {
     if (data != null) {
       categoryModel = data;

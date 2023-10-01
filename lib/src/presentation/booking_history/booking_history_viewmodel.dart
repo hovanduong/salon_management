@@ -12,6 +12,12 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
+class Contains{
+  static const confirmed = 'Confirmed';
+  static const canceled = 'Canceled';
+  static const done = 'Done';
+}
+
 class BookingHistoryViewModel extends BaseViewModel {
   MyBookingApi myBookingApi = MyBookingApi();
 
@@ -32,7 +38,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageDone = 1;
   int pageCanceled = 1;
 
-  String status = 'Confirmed';
+  String status = Contains.confirmed;
 
   Future<void> init() async {
     await fetchData();
@@ -57,13 +63,13 @@ class BookingHistoryViewModel extends BaseViewModel {
     pageDone = 1;
     pageCanceled = 1;
 
-    await getMyBooking(pageUpComing, 'Confirmed');
+    await getMyBooking(pageUpComing, Contains.confirmed);
     listCurrentUpcoming = listMyBooking;
 
-    await getMyBooking(pageCanceled, 'Canceled');
+    await getMyBooking(pageCanceled, Contains.canceled);
     listCurrentCanceled = listMyBooking;
 
-    await getMyBooking(pageDone, 'Done');
+    await getMyBooking(pageDone, Contains.done);
     listCurrentDone = listMyBooking;
 
     isLoading = false;
@@ -91,11 +97,11 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    if (status == 'Confirmed') {
+    if (status == Contains.confirmed) {
       pageUpComing += 1;
       await getMyBooking(pageUpComing, status);
       listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
-    } else if (status == 'Canceled') {
+    } else if (status == Contains.canceled) {
       pageCanceled += 1;
       await getMyBooking(pageCanceled, status);
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
@@ -110,19 +116,19 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> setStatus(int value) async {
-    // await pullRefresh();
+    await pullRefresh();
     if (value == 0) {
-      status = 'Confirmed';
+      status = Contains.confirmed;
     } else if (value == 1) {
-      status = 'Done';
+      status = Contains.done;
     } else {
-      status = 'Canceled';
+      status = Contains.canceled;
     }
     notifyListeners();
   }
 
   void dialogStatus({required BuildContext context, String? value, int? id}) {
-    if (value!.contains('Confirmed')) {
+    if (value!.contains(Contains.confirmed)) {
       showDialogStatus(
         context: context,
         content: HistoryLanguage.confirmAppointment,
@@ -245,12 +251,14 @@ class BookingHistoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      // showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      // showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading = false;
       listMyBooking = value as List<MyBookingModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 

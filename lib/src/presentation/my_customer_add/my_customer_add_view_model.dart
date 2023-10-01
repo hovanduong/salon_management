@@ -22,9 +22,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
   bool isColorProvinces = false;
   bool enableSubmit = false;
 
-  Future<void> init() async {
-
-  }
+  Future<void> init() async {}
 
   void closeDialog(BuildContext context) {
     Timer(
@@ -36,7 +34,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
   void validName(String? value) {
     if (value == null || value.isEmpty) {
       messageErrorName = MyCustomerAddLanguage.emptyFullNameError;
-    }else {
+    } else {
       messageErrorName = '';
     }
     notifyListeners();
@@ -56,7 +54,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
     if (messageErrorName == '' &&
         nameController.text != '' &&
         phoneController.text != '' &&
-        messageErrorPhone== null ) {
+        messageErrorPhone == null) {
       enableSubmit = true;
     } else {
       enableSubmit = false;
@@ -120,7 +118,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
     final result = await myCustomerApi.postMyCustomer(
       AuthParams(
         phoneNumber: phoneController.text,
-        name: nameController.text
+        name: nameController.text,
       ),
     );
 

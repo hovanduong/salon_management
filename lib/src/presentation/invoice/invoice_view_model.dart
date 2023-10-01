@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
-import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../resource/model/invoice_model.dart';
 import '../../resource/service/invoice.dart';
 import '../../utils/app_valid.dart';
@@ -99,13 +97,14 @@ class InvoiceViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      // showErrorDialog(context);
+      isLoading = true;
     } else {
       isLoading = false;
       listInvoice = value as List<InvoiceModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 }
