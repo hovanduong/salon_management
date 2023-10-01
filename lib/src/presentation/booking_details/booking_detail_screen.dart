@@ -25,7 +25,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   @override
   void dispose() {
-    _viewModel!.timer.cancel();
+    _viewModel?.timer.cancel();
     super.dispose();
   }
 

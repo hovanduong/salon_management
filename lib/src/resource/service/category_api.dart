@@ -13,7 +13,6 @@ class CategoryApi{
       final response = await HttpRemote.get(
         url: '/category?search=a',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
@@ -33,7 +32,6 @@ class CategoryApi{
       final response = await HttpRemote.get(
         url: '/category?pageSize=10&page=$page',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);

@@ -40,13 +40,14 @@ class InvoiceViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      // showErrorDialog(context);
+      isLoading = true;
     } else {
       isLoading = false;
       listInvoice = value as List<InvoiceModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 }
