@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -23,8 +21,6 @@ class BookingDetailsViewModel extends BaseViewModel{
 
   List<MyBookingModel> listMyBooking = [];
 
-  late Timer timer;
-
   Future<void> init(MyBookingParams params)async{
     await getMyBookingUser(params.id.toString());
     dataMyBooking=params;
@@ -36,8 +32,7 @@ class BookingDetailsViewModel extends BaseViewModel{
     => Navigator.pushNamed(context, Routers.navigation);
 
   void closeDialog(BuildContext context){
-    final timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
-    timer.cancel();
+    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   dynamic showSuccessDiaglog(_) {
@@ -45,7 +40,7 @@ class BookingDetailsViewModel extends BaseViewModel{
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        timer = Timer(const Duration(seconds: 1), () {
+        Timer(const Duration(seconds: 1), () {
           goToHome(context); });
         return WarningOneDialog(
           image: AppImages.icCheck,

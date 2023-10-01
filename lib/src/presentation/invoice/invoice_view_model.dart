@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
@@ -9,7 +11,6 @@ import '../base/base.dart';
 class InvoiceViewModel extends BaseViewModel {
   InvoiceApi invoiceApi = InvoiceApi();
 
-  List<InvoiceModel> listInvoice = [];
   List colors = [
     AppColors.COLOR_TEAL,
     AppColors.COLOR_OLIVE,
@@ -19,12 +20,70 @@ class InvoiceViewModel extends BaseViewModel {
     AppColors.PRIMARY_PINK,
   ];
 
-  int page = 1;
+  List<InvoiceModel> listInvoice=[];
+  List<InvoiceModel> listFoundInvoice=[];
+  List<InvoiceModel> listCurrent=[];
+
+
+  ScrollController scrollController = ScrollController();
 
   bool isLoading = true;
+  bool loadingMore=false;
 
-  Future<void> init() async {
+  int page=1;
+   
+  Future<void> init() async{
+    page=1;
     await getInvoice(page);
+    scrollController.addListener(scrollListener);
+    listCurrent=listInvoice;
+    listFoundInvoice=listInvoice;
+  }
+
+  Future<void> pullRefresh() async {
+    await init();
+    notifyListeners();
+  }
+
+  Future<void> loadMoreData() async {
+    page+=1;
+    await getInvoice(page);
+    listCurrent = [...listCurrent, ...listInvoice];
+    listFoundInvoice=listCurrent;
+    loadingMore = false;
+    notifyListeners();
+  }
+
+  dynamic scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 0) {
+      loadingMore = true;
+      Future.delayed(const Duration(seconds: 2), loadMoreData);
+ 
+      notifyListeners();
+    }
+  }
+
+  Future<void> filterCategory(String searchCategory) async {
+    var listSearchCategory = <InvoiceModel>[];
+    listSearchCategory = listInvoice.where(
+      (element) => element.code!.toLowerCase().contains(searchCategory) 
+      || element.myBooking!.myCustomer!.fullName!.toLowerCase()
+        .contains(searchCategory),)
+    .toList();
+    listFoundInvoice=listSearchCategory;
+    notifyListeners();
+  }
+
+  Future<void> onSearchCategory(String value) async{
+    if(value.isEmpty){
+      listFoundInvoice = listInvoice;  
+    }else{
+      final searchCategory = value.toLowerCase();
+      await filterCategory(searchCategory);
+    }
+    notifyListeners();
   }
 
   Future<void> getInvoice(int page) async {

@@ -177,9 +177,13 @@
     "updateMyCustomer": "Cập nhật Khách hàng",
     "search": "Tìm kiếm",
     "update": "Cập Nhật",
+<<<<<<< Updated upstream
     "justNow":"Vừa xong",
    "minuteAgo":"{minute} phút trước",
    "daysAgo":"{days} ngày trước",
    "hourAgo":"{days} giờ trước",
+=======
+    "invoice": "Hóa Đơn",
+>>>>>>> Stashed changes
     "lastLine": ""
 }

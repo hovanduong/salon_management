@@ -24,12 +24,6 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   BookingDetailsViewModel? _viewModel;
 
   @override
-  void dispose() {
-    _viewModel!.timer.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final model = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
@@ -120,13 +114,16 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Widget buildDateAndStatus(int index, String date) {
+  Widget buildDateAndStatus(int index, String? date) {
     return buildTitle(
-        content: AppDateUtils.splitHourDate(
-          AppDateUtils.formatDateLocal(
-            date,
-          ),
-        ),
+        content:date != null
+          ? AppDateUtils.splitHourDate(
+              AppDateUtils.formatDateLocal(
+                date,
+              ),
+            )
+          : '',
+        // content: date,
         trailing:
             StatusWidget.status(_viewModel!.listMyBooking[index].status!),);
   }
@@ -157,7 +154,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildInfoCard(int index) {
-    final date = _viewModel!.listMyBooking[index].date ?? '';
+    final date = _viewModel!.listMyBooking[index].date;
     return Container(
       margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
@@ -281,7 +278,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildButtonPay(){
     if(_viewModel!.dataMyBooking != null){
       return _viewModel!.dataMyBooking!.isButtonBookingDetails? Positioned(
-        bottom: 0,
+        bottom: 20,
         left: 0,
         right: 0,
         child: Padding(
