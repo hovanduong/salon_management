@@ -5,13 +5,22 @@ import 'dart:convert';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/my_category_model.dart';
-import 'auth.dart';
+
+class CategoryParams {
+  const CategoryParams({
+    this.id,
+    this.name,
+  });
+  final int? id;
+  final String? name;
+}
 
 class CategoryApi{
-  Future<Result<List<CategoryModel>, Exception>> getListCategory() async {
+  Future<Result<List<CategoryModel>, Exception>> getListCategory(String? search) 
+  async {
     try {
       final response = await HttpRemote.get(
-        url: '/category?search=a',
+        url: '/category?search=$search',
       );
       switch (response?.statusCode) {
         case 200:
@@ -63,7 +72,7 @@ class CategoryApi{
     }
   }
 
-  Future<Result<bool, Exception>> putCategory(AuthParams? params) async {
+  Future<Result<bool, Exception>> putCategory(CategoryParams? params) async {
     try {
       final response = await HttpRemote.put(
           url: '/category/${params!.id}', body: {'name': params.name},);

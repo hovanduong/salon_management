@@ -6,7 +6,6 @@ import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../intl/generated/l10n.dart';
 import '../../resource/model/my_category_model.dart';
-import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -138,7 +137,7 @@ class CategoryAddViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
 
     final result = await categoryApi.putCategory(
-      AuthParams(id: categoryModel!.id, name: categoryController.text),
+      CategoryParams(id: categoryModel!.id, name: categoryController.text),
     );
 
     final value = switch (result) {

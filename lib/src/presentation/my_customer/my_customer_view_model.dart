@@ -30,7 +30,6 @@ class MyCustomerViewModel extends BaseViewModel{
     page=1;
     isLoading = true;
     await getMyCustomer(page);
-    await getListSearch();
     scrollController.addListener(scrollListener);
     listCurrent=listMyCustomer;
     foundCustomer=listMyCustomer;
@@ -38,6 +37,7 @@ class MyCustomerViewModel extends BaseViewModel{
   }
 
   Future<void> filterCategory(String searchCategory) async {
+    await getListSearch(searchCategory);
     var listSearchCategory = <MyCustomerModel>[];
     listSearchCategory = listSearch.where(
       (element) => element.phoneNumber!.toLowerCase().contains(searchCategory) 
@@ -226,8 +226,8 @@ class MyCustomerViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  Future<void> getListSearch() async {
-    final result = await myCustomerApi.getListSearch();
+  Future<void> getListSearch(String search) async {
+    final result = await myCustomerApi.getListSearch(search);
 
     final value = switch (result) {
       Success(value: final listMyCustomer) => listMyCustomer,

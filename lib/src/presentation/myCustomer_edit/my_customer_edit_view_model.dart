@@ -6,7 +6,6 @@ import '../../configs/configs.dart';
 import '../../configs/language/my_customer_edit_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
-import '../../resource/service/auth.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -134,13 +133,11 @@ class MyCustomerEditViewModel extends BaseViewModel {
   Future<void> putMyCustomer() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.putMyCustomer(
-      AuthParams(
-        myCustomerModel: MyCustomerModel(
-          id: id,
-          email: mailController.text,
-          fullName: nameController.text,
-          gender: selectedGender
-        )
+      MyCustomerParams(
+        id: id,
+        email: mailController.text,
+        fullName: nameController.text,
+        gender: selectedGender
       ),
     );
 

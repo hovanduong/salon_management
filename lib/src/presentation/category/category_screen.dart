@@ -197,7 +197,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
         hintText: CategoryLanguage.search,
         onChanged: (value) {
-          _viewModel!.onSearchCategory(value);
+          _viewModel!.onSearchCategory(value.trim());
         },
       ),
     );
