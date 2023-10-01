@@ -91,5 +91,5 @@ class AppImages {
 
   static const String icPrivacy = 'assets/icons/privacy.svg';
 
-  static const String icLocation= 'assets/icons/icLocation.svg';
+  static const String icLocation = 'assets/icons/icLocation.svg';
 }

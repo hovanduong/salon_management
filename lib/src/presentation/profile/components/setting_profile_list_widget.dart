@@ -33,19 +33,40 @@ class SettingProfileListWidget extends StatelessWidget {
         onTap: () {
           onTap!();
         },
-        child: Row(
+        child: Column(
           children: [
-            if (image != null) SvgPicture.asset(image!, color: colorImage),
-            SizedBox(
-              width: SpaceBox.sizeBig,
-            ),
-            Paragraph(
-              content: title ?? '',
-              style: textStyleTitle ??
-                  STYLE_MEDIUM_BOLD.copyWith(
-                    color: colorTitle ?? AppColors.BLACK_500,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (image != null)
+                  SvgPicture.asset(
+                    image!,
+                    color: colorImage,
                   ),
-            )
+                SizedBox(
+                  width: SpaceBox.sizeMedium,
+                ),
+                Paragraph(
+                  content: title ?? '',
+                  style: textStyleTitle ??
+                      STYLE_LARGE_BOLD.copyWith(
+                        color: colorTitle ?? AppColors.BLACK_500,
+                      ),
+                ),
+                const Spacer(),
+                const Icon(Icons.arrow_forward_ios)
+              ],
+            ),
+            SizedBox(
+              height: SpaceBox.sizeBig,
+            ),
+            Container(
+              width: double.infinity,
+              height: 0.5,
+              decoration: const BoxDecoration(
+                color: AppColors.COLOR_GREY,
+              ),
+            ),
           ],
         ),
       ),

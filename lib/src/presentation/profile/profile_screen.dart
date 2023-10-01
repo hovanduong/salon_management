@@ -64,9 +64,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Container(
         width: 140,
         height: 140,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.FIELD_GREEN,
+            width: 1,
+          ),
           color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(999),
           ),
         ),
@@ -79,32 +83,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         Paragraph(
-          content: 'Enjelin Morgeana',
+          content: 'WELCOME MANAGER',
           style: STYLE_BIG.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
-          height: SpaceBox.sizeSmall,
-        ),
-        Paragraph(
-          content: '@enjelin_morgeana',
-          style: STYLE_MEDIUM.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.LINEAR_GREEN,
-          ),
-        ),
       ],
-    );
-  }
-
-  Widget buildInviteFriendsWidget() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-      child: const SettingProfileListWidget(
-        image: AppImages.icDiamond,
-        // title: ProfileLanguage.inviteFriends,
-      ),
     );
   }
 
@@ -139,12 +123,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget buildLineWidget() {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeToPadding.sizeVeryBig,
+      padding: EdgeInsets.only(
+        left: SizeToPadding.sizeVeryBig,
+        right: SizeToPadding.sizeVeryBig,
+        top: SizeToPadding.sizeVeryBig,
+        bottom: SizeToPadding.sizeMedium,
       ),
       child: Container(
         width: double.infinity,
-        height: 1,
+        height: 0.5,
         decoration: BoxDecoration(
           color: AppColors.BLACK_100,
           border: Border.all(),
@@ -169,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       image: AppImages.icSecurity,
       title: 'Logout',
       onTap: () async {
-       await _viewModel!.logOut();
+        await _viewModel!.logOut();
       },
     );
   }
@@ -195,7 +182,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             buildNameUserWidget(),
-            buildInviteFriendsWidget(),
             buildLineWidget(),
             buildAccountInfoWidget(),
             buildPersonalProfileWidget(),
