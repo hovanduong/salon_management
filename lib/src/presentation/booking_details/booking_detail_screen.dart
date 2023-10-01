@@ -69,12 +69,13 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Widget buildAppBar() {
+  Widget buildAppBar(int index) {
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeLarge),
       child: CustomerAppBar(
         onTap: () => Navigator.pop(context),
-        title: '#LH000034',
+        title: _viewModel!.listMyBooking[index].code !=null 
+        ? '#${_viewModel!.listMyBooking[index].code}' : '',
       ),
     );
   }
@@ -90,7 +91,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       ),
       child: Column(
         children: [
-          buildAppBar(),
+          buildAppBar(index),
           buildDivider(),
           buildAddress(index),
         ],
@@ -129,7 +130,6 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
               ),
             )
           : '',
-        // content: date,
         trailing:
             StatusWidget.status(_viewModel!.listMyBooking[index].status!),);
   }
