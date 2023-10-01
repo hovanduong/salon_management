@@ -13,10 +13,14 @@ import '../base/base.dart';
 
 class CategoryAddViewModel extends BaseViewModel {
   bool enableButton = false;
+  
   TextEditingController categoryController = TextEditingController();
+
   String? messageErrorCategory;
+
   CategoryApi categoryApi = CategoryApi();
   CategoryModel? categoryModel;
+
   Future<void> init(CategoryModel? data) async {
     if (data != null) {
       categoryModel = data;
@@ -65,10 +69,7 @@ class CategoryAddViewModel extends BaseViewModel {
   Future<void> setSourceButton() async {
     if (categoryModel != null) {
       await putCategory();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-        Navigator.pop(context);
-      });
+      Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
     } else {
       await postCategory(categoryController.text);
       categoryController.text = '';
@@ -79,6 +80,7 @@ class CategoryAddViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -92,13 +94,12 @@ class CategoryAddViewModel extends BaseViewModel {
   dynamic showSuccessDiaglog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
-          onTap: () {
-            Navigator.pop(context);
-          },
         );
       },
     );

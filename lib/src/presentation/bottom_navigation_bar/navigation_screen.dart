@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
 
-import '../booking/booking.dart';
 import '../booking_history/booking_history.dart';
 import '../homepage/homepage_screen.dart';
+import '../invoice/invoice_screen.dart';
 import '../profile/profile_screen.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
@@ -52,8 +51,8 @@ class _NavigateScreenState extends State<NavigateScreen> {
           else
             Container(),
           if (_viewModel!.selectedIndex == 2)
-            const BookingHistoryScreen(
-              key: PageStorageKey('HistoryPage'),
+            const InvoiceScreen(
+              key: PageStorageKey('invoicePage'),
             )
           else
             Container(),
@@ -76,6 +75,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
       currentIndex: _viewModel!.selectedIndex,
       selectedItemColor: AppColors.PRIMARY_PINK,
       unselectedItemColor: AppColors.BLACK_400,
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
       onTap: (index) {
         _viewModel!.changeIndex(index);
       },

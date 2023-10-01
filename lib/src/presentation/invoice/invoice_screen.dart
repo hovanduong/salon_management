@@ -7,24 +7,25 @@ import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/language/my_customer_language.dart';
+import '../../configs/language/invoice_language.dart';
+import '../../utils/check_time.dart';
 import '../base/base.dart';
 import 'components/components.dart';
-import 'my_customer.dart';
+import 'invoice_view_model.dart';
 
-class MyCustomerScreen extends StatefulWidget {
-  const MyCustomerScreen({super.key});
+class InvoiceScreen extends StatefulWidget {
+  const InvoiceScreen({super.key});
 
   @override
-  State<MyCustomerScreen> createState() => _MyCustomerScreenState();
+  State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
-class _MyCustomerScreenState extends State<MyCustomerScreen> {
-  MyCustomerViewModel? _viewModel;
+class _InvoiceScreenState extends State<InvoiceScreen> {
+  InvoiceViewModel? _viewModel;
   @override
   Widget build(BuildContext context) {
-    return BaseWidget<MyCustomerViewModel>(
-      viewModel: MyCustomerViewModel(),
+    return BaseWidget<InvoiceViewModel>(
+      viewModel: InvoiceViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -34,13 +35,13 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
             statusBarIconBrightness: Brightness.dark,
             systemNavigationBarIconBrightness: Brightness.dark,
           ),
-          child: buildCustomerScreen(),
+          child: buildInvoice(),
         );
       },
     );
   }
 
-  Widget buildCustomerScreen() {
+  Widget buildInvoice() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -52,7 +53,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
             color: AppColors.COLOR_WHITE,
             child: Stack(
               children: [
-                buildMyCustomer(),
+                buildInvoiceScreen(),
                 if (_viewModel!.isLoading)
                   const Positioned(
                     child: Align(
@@ -70,6 +71,9 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
 
   Widget buildHeader() {
     return Container(
+      height: SpaceBox.sizeBig*2,
+      width: double.maxFinite,
+      alignment: Alignment.center,
       margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
@@ -77,35 +81,26 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
         ],
       ),
-      child: Padding(
-        padding: EdgeInsets.all(SizeToPadding.sizeSmall),
-        child: CustomerAppBar(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          title: MyCustomerLanguage.myCustomer,
-        ),
+      child: Paragraph(
+        content: InvoiceLanguage.invoice,
+        style: STYLE_LARGE_BOLD,
       ),
     );
   }
 
-  Widget buildInfoCustomer (int index) {
-    final phone =_viewModel!.foundCustomer[index].phoneNumber;
-    final name = _viewModel!.foundCustomer[index].fullName;
-    final id = _viewModel!.foundCustomer[index].id;
-    return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
-      child: CardCustomerWidget(
-        phone: phone,
-        name: name,
-        onEdit: (context) => _viewModel!.goToMyCustomerEdit(
-          context, _viewModel!.foundCustomer[index],),
-        onDelete: (context) => _viewModel!.showWaningDiaglog(id!),
-      ),
+  Widget invoiceUser(int index) {
+    final money= _viewModel!.listCurrent[index].total;
+    final date= _viewModel!.listCurrent[index].createdAt;
+    final name= _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
+    return Transaction(
+      color: _viewModel!.colors[index % _viewModel!.colors.length],
+      money: '+ $money',
+      subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
+      name: name ?? '',
     );
   }
 
-  Widget buildSearch(){
+   Widget buildSearch(){
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
       child: AppFormField(
@@ -114,7 +109,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           icon: const Icon(Icons.search),
           color: AppColors.BLACK_300,
         ),
-        hintText: MyCustomerLanguage.search,
+        hintText: InvoiceLanguage.search,
         onChanged: (value) {
           _viewModel!.onSearchCategory(value);
         },
@@ -122,7 +117,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
     );
   }
 
-  Widget showListCustomer(){
+  Widget buildListInvoice(){
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
@@ -138,15 +133,15 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           child: ListView.builder(
             controller: _viewModel!.scrollController,
             itemCount: _viewModel!.loadingMore
-              ? _viewModel!.foundCustomer.length+1
-              : _viewModel!.foundCustomer.length,
+              ? _viewModel!.listCurrent.length +1 
+              : _viewModel!.listCurrent.length,
             itemBuilder: (context, index) {
-              if(index<_viewModel!.foundCustomer.length){
-                return buildInfoCustomer(index);
+              if(index<_viewModel!.listCurrent.length){
+                return invoiceUser(index);
               }else{
                 return const CupertinoActivityIndicator();
               }
-            },
+            }, 
           ),
         ),
       ),
@@ -159,15 +154,14 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
         decoration: BoxDecoration(
           color: AppColors.COLOR_WHITE,
           boxShadow: [
-            BoxShadow(
-              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig,),
+            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
           ],
         ),
         child: SingleChildScrollView(
           child: Column(
             children: [
               buildSearch(),
-              showListCustomer(),
+              buildListInvoice(),
             ],
           ),
         ),
@@ -175,28 +169,13 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
     );
   }
 
-  Widget buildMyCustomer() {
+  Widget buildInvoiceScreen() {
     return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            buildHeader(),
-            buildBody(),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingButtonWidget(
-              heroTag: 'btn',
-              iconData: Icons.add,
-              onPressed: () {
-                _viewModel!.goToAddMyCustomer(context);
-              },
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          buildHeader(),
+          buildBody(),
+        ],
       ),
     );
   }

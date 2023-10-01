@@ -8,7 +8,7 @@ import '../../../configs/constants/app_space.dart';
 class NotificationService extends StatelessWidget {
   const NotificationService({
     super.key,
-    this.dateTime,
+    this.date,
     this.widget,
     this.onTapCard,
     this.total,
@@ -17,10 +17,11 @@ class NotificationService extends StatelessWidget {
     this.onTapPhone, 
     this.isButton=false, 
     this.onTapDeleteBooking, 
-    this.onTapEditBooking,
+    this.onTapEditBooking, 
+    this.onPay,
   });
 
-  final String? dateTime;
+  final String? date;
   final Widget? widget;
   final String? total;
   final String? nameUser;
@@ -30,6 +31,7 @@ class NotificationService extends StatelessWidget {
   final bool isButton;
   final Function()? onTapDeleteBooking;
   final Function()? onTapEditBooking;
+  final Function()? onPay;
 
 
   Widget buildTitle({
@@ -70,7 +72,7 @@ class NotificationService extends StatelessWidget {
     return Column(
       children: [
         buildTitle(
-          content: dateTime,
+          content: date,
           icon: Icons.alarm,
           trailing: widget,
         ),
@@ -188,6 +190,9 @@ class NotificationService extends StatelessWidget {
           children: [
             Expanded(
               child: AppButton(
+                onTap: (){
+                  onPay!();
+                },
                 content: HistoryLanguage.pay,
                 enableButton: true,
               ),

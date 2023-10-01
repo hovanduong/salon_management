@@ -132,7 +132,6 @@
     "loginAndSecurity": "Đăng nhập và bảo mật",
     "dataAndPrivacy": "Bảo mật và riêng tư",
     "profile": "Hồ sơ",
-
     "discount": "Giảm giá",
     "selectServices": "Chọn dịch vụ", 
     "discountLenghtError": "Nhập trong khoảng từ 0 - 100", 
@@ -141,7 +140,6 @@
     "enterPhone": "Nhập điện thoại",     
     "note": "Ghi chú",  
     "enterNote": "Nhập ghi chú",   
-
     "pay": "Thanh Toán",
     "today": "Hôm nay",
     "editAppointmentSchedule": "Chỉnh sửa lịch hẹn",
@@ -154,6 +152,7 @@
     "waningDeleteCategory": "Bạn muốn xóa mục này?",
     "waningDeleteService": "Bạn muốn xóa dịch vụ này?",
     "waningDeleteCustomer": "Bạn muốn xóa nguời dùng này?",
+    "waningDeleteBooking": "Bạn muốn xóa lịch hẹn này?",
     "yes": "Có",
     "no": "Không",
     "selectedCategories": "Chọn mục",
@@ -165,13 +164,10 @@
     "upcoming": "Sắp tới",
     "canceled": "Đã hủy",
     "done": "Đã xong",
-
     "home": "Trang chủ",
     "bookingSuccessful": "Đặt trước thành công",
-
     "client": "Khách hàng",
     "informationServices": "Thông tin dịch vụ",
-
     "cancelAppointment": "Bạn muốn hủy lịch hẹn?",
     "confirmAppointment": "Bạn muốn xác nhận lịch hẹn?",
     "onlySpecialChars": "Vui lòng không nhập ký tự đặc biệt",
@@ -181,5 +177,10 @@
     "updateMyCustomer": "Cập nhật Khách hàng",
     "search": "Tìm kiếm",
     "update": "Cập Nhật",
+    "justNow":"Vừa xong",
+   "minuteAgo":"{minute} phút trước",
+   "daysAgo":"{days} ngày trước",
+   "hourAgo":"{days} giờ trước",
+    "invoice": "Hóa Đơn",
     "lastLine": ""
 }

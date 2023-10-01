@@ -151,6 +151,7 @@ class MyCustomerViewModel extends BaseViewModel{
   dynamic showErrorDialog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -164,6 +165,7 @@ class MyCustomerViewModel extends BaseViewModel{
   dynamic showSuccessDiaglog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -175,13 +177,13 @@ class MyCustomerViewModel extends BaseViewModel{
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 2), () => Navigator.pop(context),);
+    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   Future<void> getMyCustomer(int page) async {
     final result = await myCustomerApi.getMyCustomer(
       getAll: false,
-      page: page
+      page: page,
     );
 
     final value = switch (result) {
@@ -190,13 +192,14 @@ class MyCustomerViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      showErrorDialog(context);
+      isLoading = true;
     } else {
       isLoading = false;
       listMyCustomer = value as List<MyCustomerModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 
@@ -232,13 +235,14 @@ class MyCustomerViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      showErrorDialog(context);
+      isLoading = true;
     } else {
       isLoading = false;
       listSearch = value as List<MyCustomerModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 }

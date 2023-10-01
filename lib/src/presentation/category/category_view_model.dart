@@ -45,6 +45,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
+    listCategory.clear();
     isLoadingList = true;
     await init();
     notifyListeners();
@@ -152,6 +153,7 @@ class CategoryViewModel extends BaseViewModel {
   dynamic showErrorDialog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -165,6 +167,7 @@ class CategoryViewModel extends BaseViewModel {
   dynamic showSuccessDiaglog(_){
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         closeDialog(context);
         return WarningOneDialog(
@@ -196,12 +199,14 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading = false;
       listCategory = value as List<CategoryModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 
@@ -214,12 +219,14 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading = false;
       allCategory = value as List<CategoryModel>;
     }
+    isLoading = false;
     notifyListeners();
   }
 
@@ -236,8 +243,8 @@ class CategoryViewModel extends BaseViewModel {
     } else if (value is Exception) {
       showErrorDialog(context);
     } else {
-      showSuccessDiaglog(context);
       await pullRefresh();
+      showSuccessDiaglog(context);
     }
     notifyListeners();
   }

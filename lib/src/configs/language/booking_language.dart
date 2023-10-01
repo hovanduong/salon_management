@@ -31,5 +31,7 @@ class BookingLanguage {
   static final chooseTime = S.current.chooseTime;
   static final chooseDay = S.current.chooseDay;
   static final emptyAddress = S.current.emptyAddress;
+  static final yes = S.current.yes;
+  static final waningDeleteBooking = S.current.waningDeleteBooking;
 
 }

@@ -5,7 +5,19 @@ import 'dart:convert';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/model.dart';
-import 'auth.dart';
+
+class ServiceParams {
+  const ServiceParams({
+    this.id,
+    this.name,
+    this.listCategory,
+    this.money, 
+  });
+  final int? id;
+  final String? name;
+  final List<int>? listCategory;
+  final num? money;
+}
 
 class MyServiceApi {
   Future<Result<List<MyServiceModel>, Exception>> getService() async {
@@ -27,13 +39,13 @@ class MyServiceApi {
     }
   }
 
-  Future<Result<bool, Exception>> postService(AuthParams? params) async {
+  Future<Result<bool, Exception>> postService(ServiceParams? params) async {
     try {
       final response = await HttpRemote.post(
         url: '/my-service',
         body: {
-          'name': params!.myServiceModel!.name,
-          'money': params.myServiceModel!.money,
+          'name': params!.name,
+          'money': params.money,
           'categories': params.listCategory
         },
       );

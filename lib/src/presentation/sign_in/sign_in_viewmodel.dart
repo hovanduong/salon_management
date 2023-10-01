@@ -17,12 +17,15 @@ class SignInViewModel extends BaseViewModel {
   AuthApi authApi = AuthApi();
 
   bool enableSignIn = false;
+
   String? messagePhone;
   String? messagePass;
+
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
   dynamic init() {}
-  late int b;
+
   Future<void> goToSignUp() => Navigator.pushNamed(
         context,
         Routers.signUp,

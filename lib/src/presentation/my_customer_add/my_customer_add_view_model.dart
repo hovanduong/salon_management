@@ -22,13 +22,11 @@ class MyCustomerAddViewModel extends BaseViewModel {
   bool isColorProvinces = false;
   bool enableSubmit = false;
 
-  Future<void> init() async {
-
-  }
+  Future<void> init() async {}
 
   void closeDialog(BuildContext context) {
     Timer(
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
   }
@@ -36,7 +34,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
   void validName(String? value) {
     if (value == null || value.isEmpty) {
       messageErrorName = MyCustomerAddLanguage.emptyFullNameError;
-    }else {
+    } else {
       messageErrorName = '';
     }
     notifyListeners();
@@ -56,7 +54,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
     if (messageErrorName == '' &&
         nameController.text != '' &&
         phoneController.text != '' &&
-        messageErrorPhone== null ) {
+        messageErrorPhone == null) {
       enableSubmit = true;
     } else {
       enableSubmit = false;
@@ -84,7 +82,9 @@ class MyCustomerAddViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
@@ -96,13 +96,12 @@ class MyCustomerAddViewModel extends BaseViewModel {
   dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
-          onTap: () {
-            Navigator.pop(context);
-          },
         );
       },
     );
@@ -119,7 +118,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
     final result = await myCustomerApi.postMyCustomer(
       AuthParams(
         phoneNumber: phoneController.text,
-        name: nameController.text
+        name: nameController.text,
       ),
     );
 

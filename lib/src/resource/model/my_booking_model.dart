@@ -18,6 +18,7 @@ class MyBookingModel {
   String? createdAt;
   String? deletedAt;
   List<int>? listId;
+  String? code;
 
   MyBookingModel({
     this.id,
@@ -32,6 +33,7 @@ class MyBookingModel {
     this.myServices,
     this.deletedAt,
     this.createdAt,
+    this.code
   });
 }
 
@@ -79,6 +81,7 @@ abstract class MyBookingModelFactory {
       ..status = json['status']
       ..invoiceId = json['invoiceId']
       ..total = json['total']
+      ..code=json['code']
       ..myCustomer = json['myCustomer'] != null
           ? MyCustomerModelFactory.create(jsonEncode(json['myCustomer']))
           : null

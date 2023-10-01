@@ -11,7 +11,7 @@ class SlidableActionWidget extends StatelessWidget {
     this.child,
     this.onTapButtonFirst, 
     this.onTapButtonSecond, 
-    this.isEdit=false
+    this.isEdit=false,
   });
 
   final Widget? child;
@@ -34,7 +34,7 @@ class SlidableActionWidget extends StatelessWidget {
               topLeft: Radius.circular(SpaceBox.sizeSmall), 
               bottomLeft: Radius.circular(SpaceBox.sizeSmall),
               topRight: Radius.circular(isEdit? 0 : SpaceBox.sizeSmall),
-              bottomRight: Radius.circular(isEdit? 0 : SpaceBox.sizeSmall)),
+              bottomRight: Radius.circular(isEdit? 0 : SpaceBox.sizeSmall),),
             icon: Icons.delete,
             label: CategoryLanguage.delete,
           ),
@@ -45,14 +45,14 @@ class SlidableActionWidget extends StatelessWidget {
               },
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(SpaceBox.sizeSmall), 
-                bottomRight: Radius.circular(SpaceBox.sizeSmall)),
+                bottomRight: Radius.circular(SpaceBox.sizeSmall),),
               backgroundColor: AppColors.FIELD_GREEN,
               icon: Icons.edit,
               label: CategoryLanguage.edit,
             ),
         ],
       ),
-      child: child?? Container()
+      child: child?? Container(),
     );
   }
 }

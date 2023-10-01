@@ -4,11 +4,15 @@ import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../resource/service/my_booking.dart';
 import '../base/base.dart';
 import 'booking_history.dart';
 import 'components/components.dart';
 
 const done = 'done';
+const canceled = 'Canceled';
+const upcoming = 'upcoming';
+
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -78,11 +82,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
             style: STYLE_LARGE,
           ),
         ),
-        // leading: const Icon(
-        //   Icons.arrow_back,
-        //   color: AppColors.BLACK_500,
-        // ),
-        trailing: const Icon(null),
       ),
     );
   }
@@ -95,15 +94,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           _viewModel!.setStatus(value);
         },
         tabs: [
-          Tab(
-            text: HistoryLanguage.upcoming,
-          ),
-          Tab(
-            text: HistoryLanguage.done,
-          ),
-          Tab(
-            text: HistoryLanguage.canceled,
-          ),
+          Tab(text: HistoryLanguage.upcoming,),
+          Tab(text: HistoryLanguage.done,),
+          Tab(text: HistoryLanguage.canceled,),
         ],
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
@@ -138,27 +131,31 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       listCurrent: _viewModel!.listCurrentUpcoming,
       isButton: true,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollController,
-      onTapCard: (id) => _viewModel!.goToBookingDetails(context, id),
+      scrollController: _viewModel!.scrollUpComing,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context, 
+        MyBookingParams(id: id)
+      ),
       onTapPhone: diaLogPhone,
-      onRefresh: () async {
-        await _viewModel!.pullRefresh();
-      },
+      onRefresh: () async {await _viewModel!.pullRefresh();},
       onChangedStatus: (value, id) =>
           _viewModel!.dialogStatus(value: value, context: context, id: id),
-      onTapDeleteBooking: (id) => _viewModel!.deleteBookingHistory(id),
+      onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!
           .goToAddBooking(context: context, myBookingModel: myBookingModel),
+      onPay: (id) => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(id: id, isButtonBookingDetails: true),),
     );
   }
 
   Widget buildSecondTab() {
     return ScreenTap(
-      widget: setStatusNotification(done, 'checkout'),
+      widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollController,
-      onTapCard: (id) => _viewModel!.goToBookingDetails(context, id),
+      scrollController: _viewModel!.scrollDone,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(id: id),),
       onTapPhone: diaLogPhone,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
@@ -168,11 +165,12 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildThirdTab() {
     return ScreenTap(
-      widget: setStatusNotification('canceled', 'cancel'),
+      widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollController,
-      onTapCard: (id) => _viewModel!.goToBookingDetails(context, id),
+      scrollController: _viewModel!.scrollCanceled,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(id: id),),
       onTapPhone: diaLogPhone,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
@@ -180,29 +178,38 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-  Widget setStatusNotification(String type, String status) {
-    switch (type) {
-      case 'done':
-        return StatusDoneWidget.statusDone(status);
-      case 'canceled':
-        return StatusCanceledWidget.statusCanceled();
+  Widget setStatusNotification(String status) {
+    switch (status) {
+      case done:
+        return StatusUpWidget.statusUpComing(status);
+      case canceled:
+        return StatusUpWidget.statusUpComing(status);
       default:
-        return StatusUpComingWidget.statusUpComing(status);
+        return StatusUpWidget.statusUpComing(status);
     }
   }
 
   Widget buildContentTab() {
-    return SizedBox(
-      width: double.maxFinite,
-      height: MediaQuery.of(context).size.height - 200,
-      child: Padding(
-        padding: EdgeInsets.all(SpaceBox.sizeMedium),
-        child: TabBarView(
-          children: [
-            buildFirstTab(),
-            buildSecondTab(),
-            buildThirdTab(),
-          ],
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          width: double.maxFinite,
+          height: MediaQuery.of(context).size.height - 200,
+          child: Padding(
+            padding: EdgeInsets.all(SpaceBox.sizeMedium),
+            child: TabBarView(
+              children: [
+                buildFirstTab(),
+                buildSecondTab(),
+                buildThirdTab(),
+              ],
+            ),
+          ),
         ),
       ),
     );

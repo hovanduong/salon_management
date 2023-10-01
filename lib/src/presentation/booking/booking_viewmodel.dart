@@ -1,5 +1,8 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -20,6 +23,10 @@ import '../routers.dart';
 
 class BookingViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
+  MyServiceApi myServiceApi = MyServiceApi();
+  MyCustomerApi myCustomerApi = MyCustomerApi();
+  AuthApi authApi = AuthApi();
+
   List<int>? myServiceId = [];
   List<int> serviceId = [];
 
@@ -28,6 +35,7 @@ class BookingViewModel extends BaseViewModel {
   List<MyCustomerModel> myCustomer = [];
 
   int? myCustomerId;
+  int? index;
 
   num totalCost = 0;
   num totalPrice = 0;
@@ -45,11 +53,11 @@ class BookingViewModel extends BaseViewModel {
   final totalController = TextEditingController();
   final timeController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-  final addressController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController discountController = TextEditingController();
-  final moneyController = TextEditingController();
+  TextEditingController moneyController = TextEditingController();
 
-  DateRangePickerController dateController= DateRangePickerController();
+  DateRangePickerController dateController = DateRangePickerController();
 
   bool onAddress = true;
   bool onPhone = true;
@@ -59,6 +67,7 @@ class BookingViewModel extends BaseViewModel {
   bool onNote = true;
   bool onDiscount = true;
   bool isListViewVisible = false;
+  bool enableButton = false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -69,6 +78,8 @@ class BookingViewModel extends BaseViewModel {
   String? discountErrorMsg;
   String? messageService;
   String searchText = '';
+  String? prices;
+  String? services;
 
   final currencyFormatter =
       NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
@@ -78,17 +89,9 @@ class BookingViewModel extends BaseViewModel {
   final specialCharsCheck = RegExp(r'[`~!@#$%^&*()"-=_+{};:\|.,/?]');
   final numberCheck = RegExp('0123456789');
   final moneyCharsCheck = RegExp(r'^\d+$');
-
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
-  int? index;
-  String? prices;
-  String? services;
-  bool enableButton = false;
-  AuthApi authApi = AuthApi();
-  MyServiceApi myServiceApi = MyServiceApi();
-  MyCustomerApi myCustomerApi = MyCustomerApi();
+
   Future<void> init(MyBookingModel? myBookingModel) async {
-    // findPhone();
     await setDataMyBooking(myBookingModel);
     await fetchService();
     await fetchCustomer();
@@ -97,20 +100,14 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  // void addPercentageSymbol(String value) {
-  //   if (value.isNotEmpty) {
-  //     value = '$value%';
-  //     notifyListeners();
-  //   }
-  // }
-
   Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
     if (myBookingModel != null) {
       dataMyBooking = myBookingModel;
       phoneController.text = dataMyBooking!.myCustomer!.phoneNumber!;
       nameController.text = dataMyBooking!.myCustomer!.fullName!;
       addressController.text = dataMyBooking!.address!;
-      noteController.text = dataMyBooking!.note!;
+      noteController.text =
+          dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -133,7 +130,6 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> fetchService() async {
-    // LoadingDialog.showLoadingDialog(context);
     final result = await myServiceApi.getService();
 
     final value = switch (result) {
@@ -142,20 +138,14 @@ class BookingViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      // LoadingDialog.hideLoadingDialog(context);
-      // showDialogNetwork(context);
     } else if (value is Exception) {
-      // LoadingDialog.hideLoadingDialog(context);
-      // showOpenDialog(context);
     } else {
-      // LoadingDialog.hideLoadingDialog(context);
       myService = value as List<MyServiceModel>;
     }
     notifyListeners();
   }
 
   Future<void> fetchCustomer() async {
-    // LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.getMyCustomer(getAll: true);
 
     final value = switch (result) {
@@ -164,13 +154,8 @@ class BookingViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      // LoadingDialog.hideLoadingDialog(context);
-      // showDialogNetwork(context);
     } else if (value is Exception) {
-      // LoadingDialog.hideLoadingDialog(context);
-      // showOpenDialog(context);
     } else {
-      // LoadingDialog.hideLoadingDialog(context);
       myCustomer = value as List<MyCustomerModel>;
     }
     notifyListeners();
@@ -179,7 +164,6 @@ class BookingViewModel extends BaseViewModel {
   Future<void> changeValueService(List<RadioModel> value) async {
     selectedService.clear();
     selectedService = value;
-
     notifyListeners();
   }
 
@@ -226,6 +210,7 @@ class BookingViewModel extends BaseViewModel {
         .first
         .fullName
         .toString();
+        
     myCustomerId = value.key;
 
     notifyListeners();
@@ -257,6 +242,7 @@ class BookingViewModel extends BaseViewModel {
 
   void totalDiscount() {
     final moneyText = discountController.text;
+
     final moneyInt = moneyText != '' ? double.parse(moneyText) : 0;
 
     final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
@@ -268,12 +254,8 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void dis() {
-    phoneController.dispose();
-  }
-
   Future<void> updateDateTime(DateTime time) async {
-    dateTime=time;
+    dateTime = time;
     notifyListeners();
   }
 
@@ -364,12 +346,21 @@ class BookingViewModel extends BaseViewModel {
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
+        closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
         );
       },
+    );
+  }
+
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
     );
   }
 
@@ -387,7 +378,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> postBooking() async {
-    LoadingDialog.showLoadingDialog(context);
+    log('message $dateTime');
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,
@@ -445,5 +436,11 @@ class BookingViewModel extends BaseViewModel {
       await showDialogSuccess(context);
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
   }
 }
