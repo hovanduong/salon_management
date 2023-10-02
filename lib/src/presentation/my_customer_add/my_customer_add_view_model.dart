@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/my_customer_add_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
-import '../../resource/service/auth.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -116,9 +115,9 @@ class MyCustomerAddViewModel extends BaseViewModel {
   Future<void> postMyCustomer() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.postMyCustomer(
-      AuthParams(
+      MyCustomerParams(
         phoneNumber: phoneController.text,
-        name: nameController.text,
+        fullName: nameController.text,
       ),
     );
 

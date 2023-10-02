@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';
 import '../../resource/model/my_category_model.dart';
-import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
@@ -34,13 +33,12 @@ class CategoryViewModel extends BaseViewModel {
   Future<void> init() async {
     page=1;
     await getCategory(page);
-    await getListCategory();
     isLoading = false;
     isLoadingList = false;
+    scrollController.addListener(scrollListener);
     listCurrent=listCategory;
     foundCategory=listCategory;
     setListIcon();
-    scrollController.addListener(scrollListener);
     notifyListeners();
   }
 
@@ -52,6 +50,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> filterCategory(String searchCategory) async {
+    await getListCategory(searchCategory);
     var listSearchCategory = <CategoryModel>[];
     listSearchCategory = allCategory.where(
       (element) => element.name!.toLowerCase().contains(searchCategory),)
@@ -62,12 +61,12 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> onSearchCategory(String value) async{
-    if(value.isEmpty){
-      foundCategory = listCurrent;  
-      setListIcon();
-    }else{
+    if(value.isNotEmpty){
       final searchCategory = value.toLowerCase();
       await filterCategory(searchCategory);
+    }else{
+      foundCategory = listCurrent;  
+      setListIcon();
     }
     notifyListeners();
   }
@@ -210,8 +209,8 @@ class CategoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> getListCategory() async {
-    final result = await categoryApi.getListCategory();
+  Future<void> getListCategory(String? search) async {
+    final result = await categoryApi.getListCategory(search);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -251,7 +250,7 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> putCategory(String name, int id) async {
     final result = await categoryApi.putCategory(
-      AuthParams(name: name, id: id),);
+      CategoryParams(name: name, id: id),);
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,
