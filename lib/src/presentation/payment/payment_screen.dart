@@ -96,24 +96,15 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildButtonAddCustomer(){
-    return AppButton(
-      content: PaymentLanguage.addMyCustomer,
-      enableButton: true,
-      onTap: ()=> _viewModel!.goToAddMyCustomer(context),
-      width: 150,
-    );
-  }
-
   Widget buildInfo() {
     return Padding(
       padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeMedium,
         horizontal: SizeToPadding.sizeMedium,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          buildButtonAddCustomer(),
           buildServicePhone(),
           buildName(),
           buildAddress(),
@@ -179,7 +170,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
               ),
               Paragraph(
                 content: money,
-                style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -269,7 +260,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
-          _viewModel!.setNameCustomer(value);
+          _viewModel!..setNameCustomer(value)..enableConfirmButton();
         },
       ),
     );
@@ -281,6 +272,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       name: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.enterPhone,
       nameController:_viewModel!.phoneController,
+      isAddCustomer: true,
+      onAddPhone: () => _viewModel!.goToAddMyCustomer(context),
       onTap: () async{
         await _viewModel!.fetchCustomer();
         await _viewModel!.initMapCustomer();
@@ -346,19 +339,6 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         onTap: () {
           _viewModel!.postBooking();
         },
-      ),
-    );
-  }
-
-  Widget buildCancelText() {
-    return InkWell(
-      onTap: () => Navigator.pop(context),
-      child: Paragraph(
-        content: ServiceAddLanguage.cancel,
-        style: STYLE_MEDIUM_BOLD.copyWith(
-          fontSize: FONT_SIZE_LARGE,
-          color: AppColors.PRIMARY_PINK,
-        ),
       ),
     );
   }

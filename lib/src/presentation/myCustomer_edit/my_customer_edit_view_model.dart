@@ -27,6 +27,8 @@ class MyCustomerEditViewModel extends BaseViewModel {
   bool isColorProvinces = false;
   bool enableSubmit = false;
 
+  Timer? timer;
+
   Future<void> init(MyCustomerModel myCustomerModel) async {
     setData(myCustomerModel);
     notifyListeners();
@@ -155,8 +157,14 @@ class MyCustomerEditViewModel extends BaseViewModel {
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDialog(context);
-      Timer(const Duration(seconds: 2), () {Navigator.pop(context); });
+      timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context); });
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

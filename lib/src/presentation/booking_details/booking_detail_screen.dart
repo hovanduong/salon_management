@@ -26,12 +26,6 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   BookingDetailsViewModel? _viewModel;
 
   @override
-  void dispose() {
-    _viewModel?.timer.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final model = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
@@ -59,7 +53,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         color: AppColors.PRIMARY_GREEN,
       ),
       title: Paragraph(
-        content: _viewModel!.listMyBooking[index].address,
+        content: _viewModel!.listMyBooking[index].address =='Trống'?'':
+          _viewModel!.listMyBooking[index].address,
         style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
       ),
     );

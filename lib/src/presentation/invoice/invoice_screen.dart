@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/invoice_language.dart';
+import '../../resource/service/my_booking.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/check_time.dart';
 import '../base/base.dart';
 import 'components/components.dart';
@@ -43,6 +45,15 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   Widget buildInvoice() {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
+        child: FloatingActionButton(
+          heroTag: 'addBooking',
+          backgroundColor: AppColors.PRIMARY_GREEN,
+          onPressed: () => _viewModel!.goToAddInvoice(context),
+          child: const Icon(Icons.add),
+        ),
+      ),
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
         create: (context) =>
@@ -92,11 +103,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     final money= _viewModel!.listCurrent[index].total;
     final date= _viewModel!.listCurrent[index].createdAt;
     final name= _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
-    return Transaction(
-      color: _viewModel!.colors[index % _viewModel!.colors.length],
-      money: '+ $money',
-      subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
-      name: name ?? '',
+    final idBooking= _viewModel!.listCurrent[index].myBookingId;
+    return InkWell(
+      onTap: () => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(id: idBooking),),
+      child: Transaction(
+        color: _viewModel!.colors[index % _viewModel!.colors.length],
+        money: '+ ${AppCurrencyFormat.formatMoneyVND(money!)}',
+        subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
+        name: name ?? '',
+      ),
     );
   }
 

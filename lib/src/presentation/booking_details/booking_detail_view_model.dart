@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/invoice.dart';
 import '../../resource/service/my_booking.dart';
@@ -14,7 +15,7 @@ import '../routers.dart';
 class BookingDetailsViewModel extends BaseViewModel{
   bool isLoading=true;
 
-  late Timer timer;
+  Timer? timer;
 
   MyBookingParams? dataMyBooking;
 
@@ -35,6 +36,7 @@ class BookingDetailsViewModel extends BaseViewModel{
 
   void closeDialog(BuildContext context){
     Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    notifyListeners();
   }
 
   dynamic showSuccessDiaglog(_) {
@@ -42,14 +44,15 @@ class BookingDetailsViewModel extends BaseViewModel{
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        timer= Timer(const Duration(seconds: 1), () {
-          goToHome(context); });
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
         );
       },
     );
+    timer= Timer(const Duration(seconds: 1), () {
+      goToHome(context); });
+    notifyListeners();
   }
 
   dynamic showErrorDialog(_) {
@@ -87,6 +90,7 @@ class BookingDetailsViewModel extends BaseViewModel{
   }
 
   Future<void> postInvoice(int id) async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await invoiceApi.postInvoice(InvoiceParams(id: id));
 
     final value = switch (result) {
@@ -95,12 +99,21 @@ class BookingDetailsViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
     } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
       showErrorDialog(context);
     } else {
+      LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

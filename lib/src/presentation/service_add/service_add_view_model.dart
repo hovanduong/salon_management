@@ -26,6 +26,8 @@ class ServiceAddViewModel extends BaseViewModel {
   List<bool> listIsCheck = [];
   List<int> categoryId = [];
 
+  Timer? timer;
+
   AuthApi authApi = AuthApi();
   CategoryApi categoryApi = CategoryApi();
   MyServiceApi myServiceApi = MyServiceApi();
@@ -41,7 +43,7 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void closeDialog(BuildContext context) {
-    Timer(
+    timer= Timer(
       const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
@@ -211,5 +213,11 @@ class ServiceAddViewModel extends BaseViewModel {
       await showSuccessDialog(context);
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

@@ -16,6 +16,7 @@ import '../../resource/service/booking.dart';
 import '../../resource/service/my_booking.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../resource/service/my_service_api.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
@@ -35,7 +36,7 @@ class PaymentViewModel extends BaseViewModel {
   List<MyCustomerModel> myCustomer = [];
   List<MyBookingModel> listMyBooking=[];
 
-  Timer timer= Timer(const Duration(seconds: 1), () { });
+  Timer? timer;
 
   int? myCustomerId;
   int? index;
@@ -132,7 +133,7 @@ class PaymentViewModel extends BaseViewModel {
         selectedService.add(RadioModel(
           isSelected: true,
           id: service.id,
-          name: '${service.name}/${currencyFormatter.format(service.money)}',
+          name: '${service.name}/${AppCurrencyFormat.formatMoneyVND(service.money!)}',
         ),);
       });
     }
@@ -205,7 +206,7 @@ class PaymentViewModel extends BaseViewModel {
       mapService.addAll(
         {
           element.id!:
-              ' ${element.name}/${currencyFormatter.format(element.money)} ',
+              ' ${element.name}/${AppCurrencyFormat.formatMoneyVND(element.money!)} ',
         },
       );
     });
@@ -241,7 +242,7 @@ class PaymentViewModel extends BaseViewModel {
         }
       });
       totalCost = updatedTotalCost;
-      final totalPriceT = currencyFormatter.format(totalCost);
+      final totalPriceT = AppCurrencyFormat.formatMoneyVND(totalCost);
       totalController.text = totalPriceT;
       moneyController.text = totalPriceT;
     });
@@ -256,7 +257,7 @@ class PaymentViewModel extends BaseViewModel {
 
     final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
 
-    final totalPriceT = currencyFormatter.format(totalCostDiscount);
+    final totalPriceT = AppCurrencyFormat.formatMoneyVND(totalCostDiscount);
 
     totalController.text = totalPriceT;
 
@@ -379,7 +380,7 @@ class PaymentViewModel extends BaseViewModel {
   }
 
   void closeDialog(BuildContext context) {
-    Timer(
+    timer= Timer(
       const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
@@ -428,7 +429,7 @@ class PaymentViewModel extends BaseViewModel {
   @override
   void dispose() {
     phoneController.dispose();
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 }

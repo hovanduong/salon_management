@@ -28,6 +28,8 @@ class CategoryViewModel extends BaseViewModel {
   bool loadingMore = false;
   bool isLoadingList = true;
 
+  Timer? timer;
+
   int page=1;
 
   Future<void> init() async {
@@ -187,7 +189,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   Future<void> getCategory(int page) async {
@@ -286,5 +288,11 @@ class CategoryViewModel extends BaseViewModel {
       await pullRefresh();
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

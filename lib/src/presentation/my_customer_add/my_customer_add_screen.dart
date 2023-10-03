@@ -147,12 +147,4 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    if(_viewModel!.isPayments==true){
-      _viewModel?.timer.cancel();
-    }
-    super.dispose();
-  }
 }

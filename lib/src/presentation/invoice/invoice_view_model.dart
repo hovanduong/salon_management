@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../resource/model/invoice_model.dart';
 import '../../resource/service/invoice.dart';
+import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class InvoiceViewModel extends BaseViewModel {
   InvoiceApi invoiceApi = InvoiceApi();
@@ -37,6 +39,12 @@ class InvoiceViewModel extends BaseViewModel {
     listCurrent=listInvoice;
     listFoundInvoice=listInvoice;
   }
+
+  Future<void> goToBookingDetails(BuildContext context, MyBookingParams params) 
+    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: params);
+  
+  Future<void> goToAddInvoice(BuildContext context)
+    => Navigator.pushNamed(context, Routers.payment);
 
   Future<void> pullRefresh() async {
     await init();

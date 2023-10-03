@@ -24,7 +24,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
   bool enableSubmit = false;
   bool isPayments=false;
 
-  Timer timer=Timer(const Duration(seconds: 1), () { });
+  Timer? timer;
 
   Future<void> init(bool isPayment) async {
     isPayments=isPayment;
@@ -152,5 +152,11 @@ class MyCustomerAddViewModel extends BaseViewModel {
       closeScreen();
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

@@ -11,14 +11,19 @@ class NameFieldWidget extends StatelessWidget {
     this.hintText,
     this.textAlign, 
     this.onTap,
-    this.isOnTap=false,
+    this.isOnTap=false, 
+    this.onAddPhone, 
+    this.isAddCustomer=false,
   });
   final TextEditingController? nameController;
   final String? name;
   final String? hintText;
   final TextAlign? textAlign;
   final Function()? onTap;
+  final Function()? onAddPhone;
   final bool isOnTap;
+  final bool isAddCustomer;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,9 +31,21 @@ class NameFieldWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Paragraph(
-            content: name,
-            fontWeight: FontWeight.w600,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Paragraph(
+                content: name,
+                fontWeight: FontWeight.w600,
+              ),
+              if (isAddCustomer) IconButton(
+                icon: const Icon(Icons.add_circle),
+                color: AppColors.PRIMARY_GREEN,
+                onPressed: () {
+                  onAddPhone!();
+                },
+              ) else Container(),
+            ],
           ),
           SizedBox(
             height: SpaceBox.sizeVerySmall,

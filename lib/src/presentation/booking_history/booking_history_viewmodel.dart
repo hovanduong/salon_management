@@ -38,6 +38,8 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageDone = 1;
   int pageCanceled = 1;
 
+  Timer? timer;
+
   String status = Contains.confirmed;
 
   Future<void> init() async {
@@ -206,7 +208,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   dynamic showSuccessDiaglog(_) {
@@ -312,5 +314,11 @@ class BookingHistoryViewModel extends BaseViewModel {
       await pullRefresh();
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }
