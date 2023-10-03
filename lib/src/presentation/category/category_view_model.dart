@@ -99,7 +99,8 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> goToAddCategory(
     {required BuildContext context, CategoryModel? categoryModel,})
-    => Navigator.pushNamed(context, Routers.addCategory, arguments: categoryModel);
+      => Navigator.pushNamed(
+        context, Routers.addCategory, arguments: categoryModel,);
 
   void setIcon(int index){
     listIconCategory[index]=!listIconCategory[index];

@@ -11,7 +11,7 @@ class SlidableActionWidget extends StatelessWidget {
     this.child,
     this.onTapButtonFirst, 
     this.onTapButtonSecond, 
-    this.isCheckCategory=false
+    this.isCheckCategory=false,
   });
 
   final Widget? child;
@@ -33,8 +33,10 @@ class SlidableActionWidget extends StatelessWidget {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(SpaceBox.sizeSmall), 
               bottomLeft: Radius.circular(SpaceBox.sizeSmall),
-              topRight: Radius.circular(isCheckCategory? 0 : SpaceBox.sizeSmall),
-              bottomRight: Radius.circular(isCheckCategory? 0 : SpaceBox.sizeSmall)),
+              topRight: Radius.circular(
+                isCheckCategory? 0 : SpaceBox.sizeSmall,),
+              bottomRight: Radius.circular(
+                isCheckCategory? 0 : SpaceBox.sizeSmall,),),
             icon: Icons.delete,
             label: CategoryLanguage.delete,
           ),
@@ -45,14 +47,14 @@ class SlidableActionWidget extends StatelessWidget {
               },
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(SpaceBox.sizeSmall), 
-                bottomRight: Radius.circular(SpaceBox.sizeSmall)),
+                bottomRight: Radius.circular(SpaceBox.sizeSmall),),
               backgroundColor: AppColors.FIELD_GREEN,
               icon: Icons.edit,
               label: CategoryLanguage.edit,
             ),
         ],
       ),
-      child: child?? Container()
+      child: child?? Container(),
     );
   }
 }

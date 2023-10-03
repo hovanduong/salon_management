@@ -85,8 +85,10 @@ class MyCustomerViewModel extends BaseViewModel{
   Future<void> goToAddMyCustomer(BuildContext context)
     => Navigator.pushNamed(context, Routers.myCustomerAdd);
 
-  Future<void> goToMyCustomerEdit(BuildContext context, MyCustomerModel myCustomerModel)
-    => Navigator.pushNamed(context, Routers.myCustomerEdit, arguments: myCustomerModel);
+  Future<void> goToMyCustomerEdit(
+    BuildContext context, MyCustomerModel myCustomerModel,)
+      => Navigator.pushNamed(
+        context, Routers.myCustomerEdit, arguments: myCustomerModel,);
 
 
   dynamic showDialogNetwork(_) {

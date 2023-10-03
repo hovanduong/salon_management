@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_dynamic_calls
 
+import 'dart:convert';
+
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
+import '../model/my_booking_model.dart';
 
 class MyBookingPramsApi {
   int? id;
@@ -12,7 +15,9 @@ class MyBookingPramsApi {
   num? discount;
   String? status;
   String? note;
+  bool isBooking;
   MyBookingPramsApi({
+    this.isBooking=false,
     this.myCustomerId,
     this.myServices,
     this.address,
@@ -20,12 +25,13 @@ class MyBookingPramsApi {
     this.discount,
     this.note,
     this.status,
-    this.id
+    this.id,
   });
 }
 
 class BookingApi {
-  Future<Result<bool, Exception>> postBooking(MyBookingPramsApi? prams) async {
+  Future<Result<List<MyBookingModel>, Exception>> postBooking(
+    MyBookingPramsApi? prams) async {
     try {
       final response = await HttpRemote.post(
         url: '/my-booking',
@@ -34,13 +40,16 @@ class BookingApi {
           'myServices': prams.myServices,
           'address': prams.address,
           'date': prams.date,
-          'note': prams.note
+          'note': prams.note,
+          'isBooking': prams.isBooking,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
-          return const Success(true);
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']);
+          final listMyBooking = MyBookingModelFactory.createList(data);
+          return Success(listMyBooking);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -57,7 +66,7 @@ class BookingApi {
           'myServices': prams.myServices,
           'address': prams.address,
           'date': prams.date,
-          'note': prams.note
+          'note': prams.note,
         },
       );
       print(response?.statusCode);

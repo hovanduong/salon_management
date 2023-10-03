@@ -33,7 +33,7 @@ class MyBookingModel {
     this.myServices,
     this.deletedAt,
     this.createdAt,
-    this.code
+    this.code,
   });
 }
 

@@ -1,2 +1,2 @@
-export 'statistics_viewmodel.dart';
 export 'statistics_screen.dart';
+export 'statistics_viewmodel.dart';

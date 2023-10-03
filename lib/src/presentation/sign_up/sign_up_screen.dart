@@ -101,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 buildRegister(),
                 buildWelComeBack(),
                 buildFieldPhoneNumber(),
-                buildButtonSignIn()
+                buildButtonSignIn(),
               ],
             ),
           ),

@@ -82,7 +82,7 @@ class _UpdateProfileSreenState extends State<UpdateProfileSreen> {
                 color: AppColors.BLACK_500,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

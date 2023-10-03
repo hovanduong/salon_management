@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import '../../intl/generated/l10n.dart';
 
 class ServiceEditLanguage {

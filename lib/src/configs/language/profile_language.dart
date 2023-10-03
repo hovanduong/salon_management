@@ -5,6 +5,8 @@ class ProfileLanguage {
 
   static final accountInfo = S.current.accountInfo;
 
+  static final pay = S.current.pay;
+
   static final personalProfile = S.current.personalProfile;
 
   static final category = S.current.category;

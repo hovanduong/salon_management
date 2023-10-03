@@ -57,7 +57,8 @@ class WarningDialog extends StatelessWidget {
               height: 25,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeToPadding.sizeMedium,),
               child: Paragraph(
                 textAlign: TextAlign.center,
                 content: title,
@@ -98,7 +99,7 @@ class WarningDialog extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

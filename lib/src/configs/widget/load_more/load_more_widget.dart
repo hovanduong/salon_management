@@ -6,13 +6,12 @@ import '../../../resource/service/my_booking.dart';
 
 class LoadMoreWidget extends StatefulWidget {
   const LoadMoreWidget({
-    super.key, 
+    required this.model, super.key, 
     this.list, 
     this.widget, 
     this.onChanged, 
     this.page,
     this.onChangedPage, 
-    required this.model, 
   });
 
   final List<dynamic>? list;

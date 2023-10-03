@@ -29,7 +29,7 @@ class Transaction extends StatelessWidget {
         child: Paragraph(
           content: alphabet,
           style: STYLE_BIG.copyWith(
-              fontWeight: FontWeight.w600, color: AppColors.COLOR_WHITE),
+              fontWeight: FontWeight.w600, color: AppColors.COLOR_WHITE,),
         ),
       ),
       title: Paragraph(

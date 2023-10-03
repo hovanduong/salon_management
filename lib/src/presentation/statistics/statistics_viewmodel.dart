@@ -1,8 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../base/base.dart';
-import 'package:fl_chart/fl_chart.dart';
 import '../../configs/configs.dart';
+import '../base/base.dart';
 
 class StatisticsViewModel extends BaseViewModel {
   List<ChartData> data = [];

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -283,7 +285,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   Widget buildButtonPay(){
     if(_viewModel!.dataMyBooking != null){
-      return _viewModel!.dataMyBooking!.isButtonBookingDetails? Positioned(
+      return _viewModel!.dataMyBooking!.isPayment? Positioned(
         bottom: 20,
         left: 0,
         right: 0,

@@ -126,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

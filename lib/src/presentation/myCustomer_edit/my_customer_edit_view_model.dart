@@ -137,7 +137,7 @@ class MyCustomerEditViewModel extends BaseViewModel {
         id: id,
         email: mailController.text,
         fullName: nameController.text,
-        gender: selectedGender
+        gender: selectedGender,
       ),
     );
 

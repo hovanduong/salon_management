@@ -11,17 +11,17 @@ class MyBookingParams {
     this.id,
     this.page, 
     this.status,
-    this.isButtonBookingDetails=false,
+    this.isPayment=false,
   });
   final int? id;
   final int? page;
   final String? status;
-  final bool isButtonBookingDetails;
+  final bool isPayment;
 }
 
 class MyBookingApi {
   Future<Result<List<MyBookingModel>, Exception>> getMyBooking(
-      MyBookingParams params) async {
+      MyBookingParams params,) async {
     try {
       final response = await HttpRemote.get(
         url:
@@ -43,7 +43,7 @@ class MyBookingApi {
   }
 
   Future<Result<List<MyBookingModel>, Exception>> getMyBookingUser(
-      String id) async {
+      String id,) async {
     try {
       final response = await HttpRemote.get(
         url: '/my-booking/$id',
@@ -64,7 +64,7 @@ class MyBookingApi {
   }
 
   Future<Result<bool, Exception>> putStatusAppointment(
-      MyBookingParams params) async {
+      MyBookingParams params,) async {
     try {
       final response = await HttpRemote.put(
         url: '/my-booking/${params.id}/Canceled',
@@ -82,7 +82,7 @@ class MyBookingApi {
   }
 
   Future<Result<bool, Exception>> deleteBookingHistory(
-      MyBookingParams params) async {
+      MyBookingParams params,) async {
     try {
       final response = await HttpRemote.delete(
         url: '/my-booking/${params.id}',

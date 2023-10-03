@@ -1,3 +1,5 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +61,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       alignment: FractionalOffset.center,
                       child: ThreeBounceLoading(),
                     ),
-                  )
+                  ),
               ],
             ),
           ),
@@ -74,7 +76,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
         ],
       ),
       child: Padding(
@@ -95,7 +97,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final idCategory = _viewModel!.foundCategory[index].id;
     final money =
         _viewModel!.foundCategory[index].myServices?[serviceIndex].money;
-    final name = _viewModel!.foundCategory[index].myServices?[serviceIndex].name;
+    final name = 
+      _viewModel!.foundCategory[index].myServices?[serviceIndex].name;
     return CardServiceWidget(
       money: money,
       name: name,
@@ -103,7 +106,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         onTapRight: () {
           _viewModel!.deleteService(idCategory!, idService!);
         },
-        title: CategoryLanguage.waningDeleteService
+        title: CategoryLanguage.waningDeleteService,
       ),
     );
   }
@@ -149,9 +152,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
           onTapButtonFirst: (context) => _viewModel!.showWaningDiaglog(
             onTapRight: () {
               _viewModel!.deleteCategory(id!);
-            },title: CategoryLanguage.waningDeleteCategory),
+            },title: CategoryLanguage.waningDeleteCategory,),
           onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
-              context: context, categoryModel: CategoryModel(id: id, name: name)),
+            context: context, 
+            categoryModel: CategoryModel(id: id, name: name),),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -159,7 +163,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 padding: EdgeInsets.only(
                     right: SizeToPadding.sizeSmall,
                     bottom: SizeToPadding.sizeMedium,
-                    top: SizeToPadding.sizeMedium),
+                    top: SizeToPadding.sizeMedium,),
                 child: Paragraph(
                   content: _viewModel!.foundCategory[index].name,
                   style: STYLE_LARGE_BOLD,
@@ -214,7 +218,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: Container(
           margin: EdgeInsets.only(
               left: SizeToPadding.sizeSmall,
-              right: SizeToPadding.sizeVerySmall),
+              right: SizeToPadding.sizeVerySmall,),
           height: MediaQuery.of(context).size.height-200,
           child: ListView.builder(
             controller: _viewModel!.scrollController,
@@ -227,7 +231,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               }else{
                 return const CupertinoActivityIndicator();
               }
-            }
+            },
           ),
         ),
       ),
@@ -241,7 +245,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           color: AppColors.COLOR_WHITE,
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig)
+              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig,),
           ],
         ),
         child: SingleChildScrollView(
@@ -303,7 +307,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               onPressed: () {
                 _viewModel!.setIconFloating();
               },
-            )
+            ),
           ],
         ),
       ),

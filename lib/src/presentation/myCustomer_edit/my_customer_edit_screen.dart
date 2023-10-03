@@ -40,7 +40,8 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+          icon: const Icon(
+            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
         ),
         title: Paragraph(
           content: MyCustomerEditLanguage.updateMyCustomer,

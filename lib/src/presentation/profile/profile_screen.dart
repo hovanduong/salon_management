@@ -101,6 +101,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget buildPaymentWidget() {
+    return SettingProfileListWidget(
+      image: AppImages.icWallet,
+      title: ProfileLanguage.pay,
+      onTap: () => _viewModel!.goToPayment(context),
+    );
+  }
+
   Widget buildPersonalProfileWidget() {
     return SettingProfileListWidget(
       image: AppImages.icPeople,
@@ -187,6 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildLineWidget(),
             buildAccountInfoWidget(),
             buildPersonalProfileWidget(),
+            buildPaymentWidget(),
             buildCategoryWidget(),
             buildLoginAndSecurity(),
             buildDataAndPrivacyWidget(),

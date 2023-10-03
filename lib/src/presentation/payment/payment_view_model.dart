@@ -1,7 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +13,7 @@ import '../../resource/model/model.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/booking.dart';
+import '../../resource/service/my_booking.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_valid.dart';
@@ -21,7 +21,7 @@ import '../base/base.dart';
 
 import '../routers.dart';
 
-class BookingViewModel extends BaseViewModel {
+class PaymentViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
   MyServiceApi myServiceApi = MyServiceApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
@@ -33,6 +33,9 @@ class BookingViewModel extends BaseViewModel {
   List<RadioModel> selectedService = [];
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustomer = [];
+  List<MyBookingModel> listMyBooking=[];
+
+  Timer timer= Timer(const Duration(seconds: 1), () { });
 
   int? myCustomerId;
   int? index;
@@ -116,6 +119,12 @@ class BookingViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+
+  Future<void> goToAddMyCustomer(BuildContext context)
+    => Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true);
+
+  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model) 
+    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   void setSelectedService() {
     if (dataMyBooking!.myServices!.isNotEmpty) {
@@ -296,10 +305,8 @@ class BookingViewModel extends BaseViewModel {
 
   void enableConfirmButton() {
     if (onPhone &&
-        onAddress &&
         selectedService.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        addressController.text.isNotEmpty) {
+        phoneController.text.isNotEmpty) {
       enableButton = true;
     } else {
       enableButton = false;
@@ -307,10 +314,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void confirmButton() {
-    if (enableButton) {}
-    notifyListeners();
-  }
+
 
   Future<void> onServiceList(BuildContext context) =>
       Navigator.pushNamed(context, Routers.serviceList);
@@ -357,6 +361,23 @@ class BookingViewModel extends BaseViewModel {
     );
   }
 
+   dynamic showSuccessDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+          onTap: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
   void closeDialog(BuildContext context) {
     Timer(
       const Duration(seconds: 1),
@@ -364,27 +385,23 @@ class BookingViewModel extends BaseViewModel {
     );
   }
 
-  void clearData() {
-    serviceId.clear();
-    selectedService.clear();
-    totalController.clear();
-    phoneController.text = '';
-    discountController.text = '';
-    moneyController.text = '';
-    nameController.text = '';
-    addressController.clear();
-    noteController.clear();
-    notifyListeners();
+  DateTime date= DateTime.now();
+
+  String setDateTime(){
+    final time= '${date.hour}:${date.minute}';
+    final day='${date.day}/${date.month}/${date.year}';
+    return '$time $day';
   }
 
   Future<void> postBooking() async {
-    log('message $dateTime');
+    LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,
-      address: addressController.text.trim(),
-      date: dateTime.toString().trim(),
-      isBooking: true,
+      date: setDateTime(),
+      address: addressController.text==''?'Trống'
+        :addressController.text.trim(),
+      isBooking: false,
       note: noteController.text == '' ? 'Trống' : noteController.text,
     ),);
 
@@ -401,38 +418,9 @@ class BookingViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      clearData();
-      await showDialogSuccess(context);
-    }
-    notifyListeners();
-  }
-
-  Future<void> putBooking() async {
-    LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.putBooking(MyBookingPramsApi(
-      id: dataMyBooking!.id,
-      myServices: serviceId,
-      address: addressController.text.trim(),
-      date: dateTime.toString().trim(),
-      discount: double.parse(
-          discountController.text.isEmpty ? '0' : discountController.text,),
-      note: noteController.text == '' ? 'Trống' : noteController.text,
-    ),);
-
-    final value = switch (result) {
-      Success(value: final listCategory) => listCategory,
-      Failure(exception: final exception) => exception,
-    };
-
-    if (!AppValid.isNetWork(value)) {
-      LoadingDialog.hideLoadingDialog(context);
-      await showDialogNetwork(context);
-    } else if (value is Exception) {
-      LoadingDialog.hideLoadingDialog(context);
-      await showErrorDialog(context);
-    } else {
-      LoadingDialog.hideLoadingDialog(context);
-      await showDialogSuccess(context);
+      listMyBooking=value as List<MyBookingModel>;
+      await goToBookingDetails(
+        context, MyBookingParams(id: listMyBooking[0].id, isPayment: true),);
     }
     notifyListeners();
   }
@@ -440,6 +428,7 @@ class BookingViewModel extends BaseViewModel {
   @override
   void dispose() {
     phoneController.dispose();
+    timer.cancel();
     super.dispose();
   }
 }

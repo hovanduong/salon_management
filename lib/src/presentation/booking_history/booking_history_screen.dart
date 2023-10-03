@@ -64,7 +64,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
                     alignment: FractionalOffset.center,
                     child: ThreeBounceLoading(),
                   ),
-                )
+                ),
             ],
           ),
         ),
@@ -134,7 +134,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       scrollController: _viewModel!.scrollUpComing,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
         context, 
-        MyBookingParams(id: id)
+        MyBookingParams(id: id),
       ),
       onTapPhone: diaLogPhone,
       onRefresh: () async {await _viewModel!.pullRefresh();},
@@ -144,7 +144,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       onTapEditBooking: (myBookingModel) => _viewModel!
           .goToAddBooking(context: context, myBookingModel: myBookingModel),
       onPay: (id) => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: id, isButtonBookingDetails: true),),
+        context, MyBookingParams(id: id, isPayment: true),),
     );
   }
 

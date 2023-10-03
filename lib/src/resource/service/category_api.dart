@@ -16,8 +16,8 @@ class CategoryParams {
 }
 
 class CategoryApi{
-  Future<Result<List<CategoryModel>, Exception>> getListCategory(String? search) 
-  async {
+  Future<Result<List<CategoryModel>, Exception>> getListCategory(
+    String? search,) async {
     try {
       final response = await HttpRemote.get(
         url: '/category?search=$search',

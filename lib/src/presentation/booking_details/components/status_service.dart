@@ -17,7 +17,7 @@ class StatusService extends StatelessWidget {
       height: SpaceBox.sizeMedium * 2.4,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
-          color: color),
+          color: color,),
       child: Paragraph(
         content: content ?? '',
         style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_WHITE),
