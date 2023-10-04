@@ -94,10 +94,13 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           _viewModel!.setStatus(value);
         },
         tabs: [
+          Tab(text: HistoryLanguage.today,),
           Tab(text: HistoryLanguage.upcoming,),
           Tab(text: HistoryLanguage.done,),
           Tab(text: HistoryLanguage.canceled,),
         ],
+        labelPadding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeVeryVerySmall),
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
         unselectedLabelColor: AppColors.BLACK_400,
@@ -128,7 +131,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildFirstTab() {
     return ScreenTap(
-      listCurrent: _viewModel!.listCurrentUpcoming,
+      listCurrent: _viewModel!.listCurrentToday,
       isButton: true,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollUpComing,
@@ -150,10 +153,32 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildSecondTab() {
     return ScreenTap(
+      listCurrent: _viewModel!.listCurrentUpcoming,
+      isButton: true,
+      isLoadMore: _viewModel!.isLoadMore,
+      scrollController: _viewModel!.scrollUpComing,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context, 
+        MyBookingParams(id: id),
+      ),
+      onTapPhone: diaLogPhone,
+      onRefresh: () async {await _viewModel!.pullRefresh();},
+      onChangedStatus: (value, id) =>
+          _viewModel!.dialogStatus(value: value, context: context, id: id),
+      onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
+      onTapEditBooking: (myBookingModel) => _viewModel!
+          .goToAddBooking(context: context, myBookingModel: myBookingModel),
+      onPay: (id) => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(id: id, isPayment: true),),
+    );
+  }
+
+  Widget buildThirdTab() {
+     return ScreenTap(
       widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollDone,
+      scrollController: _viewModel!.scrollUpComing,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
         context, MyBookingParams(id: id),),
       onTapPhone: diaLogPhone,
@@ -163,12 +188,12 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-  Widget buildThirdTab() {
+   Widget buildFourthTab() {
     return ScreenTap(
       widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollCanceled,
+      scrollController: _viewModel!.scrollUpComing,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
         context, MyBookingParams(id: id),),
       onTapPhone: diaLogPhone,
@@ -207,6 +232,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
                 buildFirstTab(),
                 buildSecondTab(),
                 buildThirdTab(),
+                buildFourthTab(),
               ],
             ),
           ),
@@ -217,7 +243,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildItemScreen() {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: SafeArea(
         top: true,
         left: false,

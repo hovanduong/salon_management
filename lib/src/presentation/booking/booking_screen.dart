@@ -45,6 +45,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       right: false,
       left: false,
       child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

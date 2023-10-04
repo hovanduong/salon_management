@@ -57,78 +57,81 @@ class _AppFormFieldState extends State<AppFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Paragraph(
-          content: widget.labelText ?? '',
-          fontWeight: FontWeight.w600,
-        ),
-        SizedBox(
-          height: SpaceBox.sizeVerySmall,
-        ),
-        TextFormField(
-          inputFormatters: widget.inputFormatters,
-          enabled: widget.enabled,
-          maxLines: widget.maxLines ?? 1,
-          maxLength: widget.maxLenght,
-          keyboardType: widget.keyboardType,
-          controller: widget.textEditingController,
-          onChanged: widget.onChanged,
-          onTap: widget.onTap,
-          obscureText: hiddenPassword,
-          decoration: InputDecoration(
-            suffixText: widget.suffixText ?? '',
-            counterText: widget.counterText,
-            contentPadding: EdgeInsets.symmetric(
-              vertical: SizeToPadding.sizeSmall,
-              horizontal: SizeToPadding.sizeMedium,
-            ),
-            hintText: widget.hintText ?? '',
-            hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
-            fillColor: AppColors.COLOR_WHITE,
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
-              borderSide: const BorderSide(
-                color: AppColors.FIELD_GREEN,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
-              borderSide: const BorderSide(
-                color: AppColors.BLACK_200,
-              ),
-            ),
-            suffixIcon: (widget.obscureText)
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        hiddenPassword = !hiddenPassword;
-                      });
-                    },
-                    child: Icon(
-                      hiddenPassword ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.BLACK_300,
-                    ),
-                  )
-                : null,
-            prefixIcon: widget.iconButton,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Paragraph(
+            content: widget.labelText ?? '',
+            fontWeight: FontWeight.w600,
           ),
-        ),
-        SizedBox(
-          height: SpaceBox.sizeVerySmall,
-        ),
-        Paragraph(
-          textAlign: TextAlign.center,
-          content: widget.validator ?? '',
-          fontWeight: FontWeight.w500,
-          color: AppColors.PRIMARY_RED,
-        ),
-        if (widget.isSpace ?? false)
           SizedBox(
-            height: SpaceBox.sizeSmall,
+            height: SpaceBox.sizeVerySmall,
           ),
-      ],
+          TextFormField(
+            inputFormatters: widget.inputFormatters,
+            enabled: widget.enabled,
+            maxLines: widget.maxLines ?? 1,
+            maxLength: widget.maxLenght,
+            keyboardType: widget.keyboardType,
+            controller: widget.textEditingController,
+            onChanged: widget.onChanged,
+            onTap: widget.onTap,
+            obscureText: hiddenPassword,
+            decoration: InputDecoration(
+              suffixText: widget.suffixText ?? '',
+              counterText: widget.counterText,
+              contentPadding: EdgeInsets.symmetric(
+                vertical: SizeToPadding.sizeSmall,
+                horizontal: SizeToPadding.sizeMedium,
+              ),
+              hintText: widget.hintText ?? '',
+              hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
+              fillColor: AppColors.COLOR_WHITE,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
+                borderSide: const BorderSide(
+                  color: AppColors.FIELD_GREEN,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
+                borderSide: const BorderSide(
+                  color: AppColors.BLACK_200,
+                ),
+              ),
+              suffixIcon: (widget.obscureText)
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          hiddenPassword = !hiddenPassword;
+                        });
+                      },
+                      child: Icon(
+                        hiddenPassword ? Icons.visibility : Icons.visibility_off,
+                        color: AppColors.BLACK_300,
+                      ),
+                    )
+                  : null,
+              prefixIcon: widget.iconButton,
+            ),
+          ),
+          SizedBox(
+            height: SpaceBox.sizeVerySmall,
+          ),
+          Paragraph(
+            textAlign: TextAlign.center,
+            content: widget.validator ?? '',
+            fontWeight: FontWeight.w500,
+            color: AppColors.PRIMARY_RED,
+          ),
+          if (widget.isSpace ?? false)
+            SizedBox(
+              height: SpaceBox.sizeSmall,
+            ),
+        ],
+      ),
     );
   }
 }

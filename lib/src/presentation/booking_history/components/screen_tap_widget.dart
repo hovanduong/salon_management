@@ -44,51 +44,48 @@ class ScreenTap extends StatelessWidget {
       onRefresh: () async {
         await onRefresh!();
       },
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: ListView.builder(
-          shrinkWrap: true,
-          controller: scrollController,
-          itemCount: isLoadMore ? listCurrent!.length + 1 : listCurrent!.length,
-          itemBuilder: (context, index) {
-            if (index < listCurrent!.length) {
-              final phone = listCurrent![index].myCustomer?.phoneNumber;
-              final date = listCurrent![index].date;
-              final id = listCurrent![index].id;
-              return NotificationService(
-                onPay: () => onPay!(id!),
-                onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
-                onTapDeleteBooking: () => onTapDeleteBooking!(id!),
-                onTapCard: () => onTapCard!(id!),
-                isButton: isButton,
-                date: date != null
-                    ? AppDateUtils.splitHourDate(
-                        AppDateUtils.formatDateLocal(
-                          '2023-01-12T10:10:00.000Z',
-                        ),
-                      )
-                    : '',
-                total: AppCurrencyFormat.formatMoneyVND(
-                  listCurrent![index].total ?? 0,
-                ),
-                nameUser: listCurrent![index].myCustomer?.fullName,
-                phoneNumber: phone,
-                onTapPhone: () => onTapPhone!(phone!),
-                widget: widget ??
-                    SelectStatusWidget(
-                      status: listCurrent![index].status,
-                      onChanged: (value) {
-                        if (!value.contains(listCurrent![index].status!)) {
-                          onChangedStatus!(value, id!);
-                        }
-                      },
-                    ),
-              );
-            } else {
-              return const CupertinoActivityIndicator();
-            }
-          },
-        ),
+      child: ListView.builder(
+        shrinkWrap: true,
+        controller: scrollController,
+        itemCount: isLoadMore ? listCurrent!.length + 1 : listCurrent!.length,
+        itemBuilder: (context, index) {
+          if (index < listCurrent!.length) {
+            final phone = listCurrent![index].myCustomer?.phoneNumber;
+            final date = listCurrent![index].date;
+            final id = listCurrent![index].id;
+            return NotificationService(
+              onPay: () => onPay!(id!),
+              onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
+              onTapDeleteBooking: () => onTapDeleteBooking!(id!),
+              onTapCard: () => onTapCard!(id!),
+              isButton: isButton,
+              date: date != null
+                  ? AppDateUtils.splitHourDate(
+                      AppDateUtils.formatDateLocal(
+                        date,
+                      ),
+                    )
+                  : '',
+              total: AppCurrencyFormat.formatMoneyVND(
+                listCurrent![index].total ?? 0,
+              ),
+              nameUser: listCurrent![index].myCustomer?.fullName,
+              phoneNumber: phone,
+              onTapPhone: () => onTapPhone!(phone!),
+              widget: widget ??
+                  SelectStatusWidget(
+                    status: listCurrent![index].status,
+                    onChanged: (value) {
+                      if (!value.contains(listCurrent![index].status!)) {
+                        onChangedStatus!(value, id!);
+                      }
+                    },
+                  ),
+            );
+          } else {
+            return const CupertinoActivityIndicator();
+          }
+        },
       ),
     );
   }

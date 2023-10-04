@@ -12,11 +12,15 @@ class MyBookingParams {
     this.page, 
     this.status,
     this.isPayment=false,
+    this.isToday=false,
+    this.date
   });
   final int? id;
   final int? page;
   final String? status;
   final bool isPayment;
+  final bool isToday;
+  final DateTime? date;
 }
 
 class MyBookingApi {
@@ -24,8 +28,9 @@ class MyBookingApi {
       MyBookingParams params,) async {
     try {
       final response = await HttpRemote.get(
-        url:
-            '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
+        url: params.isToday
+          ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&date=${DateTime.now()}'
+          : '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {

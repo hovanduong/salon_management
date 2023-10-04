@@ -378,7 +378,8 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> postBooking() async {
-    log('message $dateTime');
+    print('---$dateTime');
+    LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,
