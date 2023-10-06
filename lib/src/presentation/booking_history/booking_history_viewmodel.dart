@@ -9,6 +9,7 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -24,6 +25,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   ScrollController scrollUpComing = ScrollController();
   ScrollController scrollDone = ScrollController();
   ScrollController scrollCanceled = ScrollController();
+  ScrollController scrollToday = ScrollController();
 
 
   List<MyBookingModel> listMyBooking = [];
@@ -64,6 +66,9 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> fetchData() async {
     listCurrentUpcoming.clear();
+    listCurrentCanceled.clear();
+    listCurrentDone.clear();
+    listCurrentToday.clear();
     pageToday = 1;
     pageUpComing = 1;
     pageDone = 1;
@@ -83,9 +88,10 @@ class BookingHistoryViewModel extends BaseViewModel {
     listCurrentDone = listMyBooking;
 
     isLoading = false;
+    scrollToday.addListener(() => scrollListener(scrollToday),);
     scrollUpComing.addListener(() => scrollListener(scrollUpComing),);
-    // scrollCanceled.addListener(() => scrollListener(scrollCanceled),);
-    // scrollDone.addListener(() => scrollListener(scrollDone),);
+    scrollCanceled.addListener(() => scrollListener(scrollCanceled),);
+    scrollDone.addListener(() => scrollListener(scrollDone),);
 
     notifyListeners();
   }
@@ -230,8 +236,8 @@ class BookingHistoryViewModel extends BaseViewModel {
     timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
-  dynamic showSuccessDiaglog(_) {
-    showDialog(
+  dynamic showSuccessDiaglog(_) async{
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -242,6 +248,7 @@ class BookingHistoryViewModel extends BaseViewModel {
         );
       },
     );
+    await pullRefresh();
   }
 
   dynamic showErrorDialog(_) {
@@ -256,6 +263,21 @@ class BookingHistoryViewModel extends BaseViewModel {
         );
       },
     );
+  }
+
+  Future<List<MyBookingModel>> setListMyBooking({String? status, 
+    bool isToday=false, List<MyBookingModel>? value,})async{
+      final list=<MyBookingModel>[];
+      if(status==Contains.confirmed && isToday==false){
+        value!.forEach((element) {
+          if(AppDateUtils.formatDateLocal(element.date!).split(' ')[0]
+            != DateTime.now().toString().split(' ')[0]){
+            list.add(element);
+          }
+        });
+        return list;
+      }
+      return value!;
   }
 
   Future<void> getMyBooking({int? page, String? status, bool isToday=false}) 
@@ -279,7 +301,10 @@ class BookingHistoryViewModel extends BaseViewModel {
       isLoading = true;
     } else {
       isLoading = false;
-      listMyBooking = value as List<MyBookingModel>;
+      listMyBooking= await setListMyBooking(
+        status: status, isToday: isToday, 
+        value: value as List<MyBookingModel>,
+      );
     }
     isLoading = false;
     notifyListeners();
@@ -333,7 +358,6 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
-      await pullRefresh();
     }
     notifyListeners();
   }

@@ -72,7 +72,7 @@ class MyBookingApi {
       MyBookingParams params,) async {
     try {
       final response = await HttpRemote.put(
-        url: '/my-booking/${params.id}/Canceled',
+        url: '/my-booking/${params.id}/${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {

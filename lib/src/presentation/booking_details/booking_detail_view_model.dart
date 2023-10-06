@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/language/booking_details_language.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
@@ -32,7 +33,7 @@ class BookingDetailsViewModel extends BaseViewModel{
   }
 
   Future<void> goToHome(BuildContext context) 
-    => Navigator.pushNamed(context, Routers.navigation);
+    => Navigator.pushReplacementNamed(context, Routers.navigation);
 
   void closeDialog(BuildContext context){
     Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
@@ -69,6 +70,27 @@ class BookingDetailsViewModel extends BaseViewModel{
     );
   }
 
+  dynamic showWaningDiaglog(int id){
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: BookingDetailsLanguage.waningPayment,
+          leftButtonName: BookingDetailsLanguage.cancel,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          rightButtonName: BookingDetailsLanguage.yes,
+          onTapRight: (){
+            postInvoice(id);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
   Future<void> getMyBookingUser(String id) async {
     final result = await myBookingApi.getMyBookingUser(id);
 
@@ -100,6 +122,32 @@ class BookingDetailsViewModel extends BaseViewModel{
 
     if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await putStatusAppointment(id, 'Done');
+    }
+    notifyListeners();
+  }
+
+  Future<void> putStatusAppointment(int id, String status) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await myBookingApi.putStatusAppointment(
+      MyBookingParams(
+        id: id,
+        status: status,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);

@@ -416,7 +416,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
-          _viewModel!.setNameCustomer(value);
+          _viewModel!..setNameCustomer(value)..enableConfirmButton();
         },
       ),
     );

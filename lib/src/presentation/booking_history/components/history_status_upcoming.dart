@@ -14,7 +14,7 @@ class StatusUpWidget{
       case 'done':
         return StatusService(
           content: HistoryLanguage.done,
-          color: AppColors.PRIMARY_GREEN,
+          color: AppColors.COLOR_GREEN_LIST,
         );
       default:
         return StatusService(

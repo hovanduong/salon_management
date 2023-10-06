@@ -39,7 +39,7 @@ class CategoryApi{
   Future<Result<List<CategoryModel>, Exception>> getCategory(int page) async {
     try {
       final response = await HttpRemote.get(
-        url: '/category?pageSize=10&page=$page',
+        url: '/category?pageSize=15&page=$page',
       );
       switch (response?.statusCode) {
         case 200:

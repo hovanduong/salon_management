@@ -149,6 +149,7 @@
     "enterCategory": "Nhập loại",
     "delete": "Xoá",
     "edit": "Chỉnh Sửa",
+    "waningPayment": "Bạn muốn thanh toán không?",
     "waningDeleteCategory": "Bạn muốn xóa mục này?",
     "waningDeleteService": "Bạn muốn xóa dịch vụ này?",
     "waningDeleteCustomer": "Bạn muốn xóa nguời dùng này?",
@@ -182,5 +183,6 @@
    "daysAgo":"{days} ngày trước",
    "hourAgo":"{days} giờ trước",
     "invoice": "Hóa Đơn",
+    "paymentConfirmation": "Xác nhận thanh toán",
     "lastLine": ""
 }

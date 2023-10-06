@@ -139,26 +139,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          margin: EdgeInsets.only(
-              left: SizeToPadding.sizeSmall,
-              right: SizeToPadding.sizeVerySmall,),
-          height: MediaQuery.of(context).size.height-200,
-          child: ListView.builder(
-            controller: _viewModel!.scrollController,
-            itemCount: _viewModel!.loadingMore
-              ? _viewModel!.listCurrent.length +1 
-              : _viewModel!.listCurrent.length,
-            itemBuilder: (context, index) {
-              if(index<_viewModel!.listCurrent.length){
-                return invoiceUser(index);
-              }else{
-                return const CupertinoActivityIndicator();
-              }
-            }, 
-          ),
+      child: Container(
+        margin: EdgeInsets.only(
+            left: SizeToPadding.sizeSmall,
+            right: SizeToPadding.sizeVerySmall,),
+        height: MediaQuery.of(context).size.height-250,
+        child: ListView.builder(
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.loadingMore
+            ? _viewModel!.listCurrent.length +1 
+            : _viewModel!.listCurrent.length,
+          itemBuilder: (context, index) {
+            if(index<_viewModel!.listCurrent.length){
+              return invoiceUser(index);
+            }else{
+              return const CupertinoActivityIndicator();
+            }
+          }, 
         ),
       ),
     );

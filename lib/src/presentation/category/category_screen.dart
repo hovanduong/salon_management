@@ -36,13 +36,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
             statusBarIconBrightness: Brightness.dark,
             systemNavigationBarIconBrightness: Brightness.dark,
           ),
-          child: buildListCategories(),
+          child: buildCategoryScreen(),
         );
       },
     );
   }
 
-  Widget buildListCategories() {
+  Widget buildCategoryScreen() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -54,7 +54,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             color: AppColors.COLOR_WHITE,
             child: Stack(
               children: [
-                buildCategory(),
+                buildItemCategory(),
                 if (_viewModel!.isLoading)
                   const Positioned(
                     child: Align(
@@ -123,11 +123,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildItemCategory(int index) {
-    print(index);
-    if(_viewModel!.listCategory.isNotEmpty){
-      return _viewModel!.listCategory[index].myServices!.isNotEmpty? Icon(
-        _viewModel!.listIconCategory[index] == true
+  Widget buildIconCategory(int index) {
+    if(_viewModel!.foundCategory.isNotEmpty){
+      return _viewModel!.foundCategory[index].myServices!.isNotEmpty? Icon(
+        _viewModel!.foundCategory[index].isIconCategory == true
             ? Icons.arrow_drop_down_circle
             : Icons.remove_circle,
         color: AppColors.PRIMARY_GREEN,
@@ -136,6 +135,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }else {
       return Container();
     }
+  }
+
+  Widget buildNameCategory(int index){
+    return Container(
+      padding: EdgeInsets.only(
+          right: SizeToPadding.sizeSmall,
+          bottom: SizeToPadding.sizeMedium,
+          top: SizeToPadding.sizeMedium,),
+      child: Paragraph(
+        content: _viewModel!.foundCategory[index].name,
+        style: STYLE_LARGE_BOLD,
+      ),
+    );
   }
 
   Widget buildTitleCategory(int index) {
@@ -159,17 +171,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: EdgeInsets.only(
-                    right: SizeToPadding.sizeSmall,
-                    bottom: SizeToPadding.sizeMedium,
-                    top: SizeToPadding.sizeMedium,),
-                child: Paragraph(
-                  content: _viewModel!.foundCategory[index].name,
-                  style: STYLE_LARGE_BOLD,
-                ),
-              ),
-              buildItemCategory(index),
+              buildNameCategory(index),
+              buildIconCategory(index),
             ],
           ),
         ),
@@ -182,7 +185,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildTitleCategory(index),
-        if (_viewModel!.listIconCategory[index] == false)
+        if (_viewModel!.foundCategory[index].isIconCategory == false)
           buildListService(index)
         else
           Container(),
@@ -207,6 +210,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
+  Widget buildCategory(){
+    return Container(
+      margin: EdgeInsets.only(
+          left: SizeToPadding.sizeSmall,
+          right: SizeToPadding.sizeVerySmall,),
+      height: MediaQuery.of(context).size.height-200,
+      child: ListView.builder(
+        controller: _viewModel!.scrollController,
+        itemCount: _viewModel!.loadingMore
+          ? _viewModel!.foundCategory.length+1
+          : _viewModel!.foundCategory.length,
+        itemBuilder: (context, index) {
+          if(index<_viewModel!.foundCategory.length){
+            return buildContentCategoryWidget(index);
+          }else{
+            return const CupertinoActivityIndicator();
+          }
+        },
+      ),
+    );
+  }
+
   Widget showListCategory(){
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
@@ -215,26 +240,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          margin: EdgeInsets.only(
-              left: SizeToPadding.sizeSmall,
-              right: SizeToPadding.sizeVerySmall,),
-          height: MediaQuery.of(context).size.height-200,
-          child: ListView.builder(
-            controller: _viewModel!.scrollController,
-            itemCount: _viewModel!.loadingMore
-              ? _viewModel!.foundCategory.length+1
-              : _viewModel!.foundCategory.length,
-            itemBuilder: (context, index) {
-              if(index<_viewModel!.foundCategory.length){
-                return buildContentCategoryWidget(index);
-              }else{
-                return const CupertinoActivityIndicator();
-              }
-            },
-          ),
-        ),
-      ),
+        child: buildCategory(),
+      ), 
     );
   }
 
@@ -283,7 +290,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildCategory() {
+  Widget buildItemCategory() {
     return SafeArea(
       child: Scaffold(
         body: Column(

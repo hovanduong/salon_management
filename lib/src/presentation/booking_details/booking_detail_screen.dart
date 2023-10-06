@@ -281,16 +281,19 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildButtonPay(){
     if(_viewModel!.dataMyBooking != null){
       return _viewModel!.dataMyBooking!.isPayment? Positioned(
-        bottom: 20,
+        bottom: 30,
         left: 0,
         right: 0,
         child: Padding(
-          padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+          padding: EdgeInsets.only(
+            top: SizeToPadding.sizeSmall,
+            left: SizeToPadding.sizeMedium,
+            right: SizeToPadding.sizeMedium,),
           child: AppButton(
             enableButton: true,
-            content: BookingDetailsLanguage.pay,
+            content: BookingDetailsLanguage.paymentConfirmation,
             onTap: (){
-              _viewModel!.postInvoice(_viewModel!.dataMyBooking!.id!);
+              _viewModel!.showWaningDiaglog(_viewModel!.dataMyBooking!.id!);
             },
           ),
         ),
@@ -308,16 +311,23 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       right: false,
       child: Scaffold(
         body: SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _viewModel!.listMyBooking.length,
-            itemBuilder: (context, index) => Column(
-              children: [
-                buildHeader(index),
-                buildInfoCard(index),
-                buildCardService(index),
-              ],
-            ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height-70,
+                width: double.maxFinite,
+                child: ListView.builder(
+                  itemCount: _viewModel!.listMyBooking.length,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      buildHeader(index),
+                      buildInfoCard(index),
+                      buildCardService(index),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

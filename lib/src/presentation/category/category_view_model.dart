@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/my_service_api.dart';
@@ -21,7 +22,6 @@ class CategoryViewModel extends BaseViewModel {
   List<CategoryModel> allCategory=[];
   List<CategoryModel> listCurrent=[];
   List<CategoryModel> foundCategory=[];
-  List<bool> listIconCategory= [];
 
   bool isIconFloatingButton= true;
   bool isLoading = true;
@@ -40,7 +40,6 @@ class CategoryViewModel extends BaseViewModel {
     scrollController.addListener(scrollListener);
     listCurrent=listCategory;
     foundCategory=listCategory;
-    setListIcon();
     notifyListeners();
   }
 
@@ -58,7 +57,6 @@ class CategoryViewModel extends BaseViewModel {
       (element) => element.name!.toLowerCase().contains(searchCategory),)
     .toList();
     foundCategory=listSearchCategory;
-    setListIcon();
     notifyListeners();
   }
 
@@ -67,8 +65,7 @@ class CategoryViewModel extends BaseViewModel {
       final searchCategory = value.toLowerCase();
       await filterCategory(searchCategory);
     }else{
-      foundCategory = listCurrent;  
-      setListIcon();
+      foundCategory = listCurrent; 
     }
     notifyListeners();
   }
@@ -77,7 +74,6 @@ class CategoryViewModel extends BaseViewModel {
     page+=1;
     await getCategory(page);
     listCurrent = [...listCurrent, ...listCategory];
-    setListIcon();
     foundCategory=listCurrent;
     loadingMore = false;
     notifyListeners();
@@ -105,7 +101,7 @@ class CategoryViewModel extends BaseViewModel {
         context, Routers.addCategory, arguments: categoryModel,);
 
   void setIcon(int index){
-    listIconCategory[index]=!listIconCategory[index];
+    foundCategory[index].isIconCategory=!foundCategory[index].isIconCategory;
     notifyListeners();
   }
 
@@ -166,8 +162,8 @@ class CategoryViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showSuccessDiaglog(_){
-    showDialog(
+  dynamic showSuccessDiaglog(_)async{
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -178,14 +174,7 @@ class CategoryViewModel extends BaseViewModel {
         );
       },
     );
-  }
-
-  void setListIcon(){
-    listIconCategory.clear();
-    for(var i=0; i<foundCategory.length; i++){
-      listIconCategory.add(true);
-    }
-    notifyListeners();
+    await pullRefresh();
   }
 
   void closeDialog(BuildContext context){
@@ -233,25 +222,27 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> deleteCategory(int id) async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await categoryApi.deleteCategory(id);
-
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,
       Failure(exception: final exception) => exception,
     };
-
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
     } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
       showErrorDialog(context);
     } else {
-      await pullRefresh();
+      LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
     }
     notifyListeners();
   }
 
   Future<void> putCategory(String name, int id) async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await categoryApi.putCategory(
       CategoryParams(name: name, id: id),);
 
@@ -261,10 +252,13 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
     } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
       showErrorDialog(context);
     } else {
+      LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
       await pullRefresh();
     }
@@ -272,6 +266,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> deleteService(int idCategory, int idService) async {
+    LoadingDialog.showLoadingDialog(context);
     final result = await myServiceApi.deleteService(idCategory, idService);
 
     final value = switch (result) {
@@ -280,12 +275,14 @@ class CategoryViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);     
       showDialogNetwork(context);
     } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
       showErrorDialog(context);
     } else {
+      LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
-      await pullRefresh();
     }
     notifyListeners();
   }

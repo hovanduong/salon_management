@@ -5,6 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:spa_app_management/src/utils/date_format_utils.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
@@ -42,6 +43,8 @@ class BookingViewModel extends BaseViewModel {
   num updatedTotalCost = 0;
 
   DateTime dateTime = DateTime.now();
+  // DateTime dateTime = DateTime.now();
+
 
   MyBookingModel? dataMyBooking;
 
@@ -108,6 +111,9 @@ class BookingViewModel extends BaseViewModel {
       addressController.text = dataMyBooking!.address!;
       noteController.text =
           dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
+      dateTime= DateTime.parse(AppDateUtils.formatDateLocal(
+          dataMyBooking!.date!,
+        ),);
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -378,7 +384,6 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> postBooking() async {
-    print('---$dateTime');
     LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,

@@ -134,7 +134,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       listCurrent: _viewModel!.listCurrentToday,
       isButton: true,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollUpComing,
+      scrollController: _viewModel!.scrollToday,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
         context, 
         MyBookingParams(id: id),
@@ -178,7 +178,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollUpComing,
+      scrollController: _viewModel!.scrollDone,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
         context, MyBookingParams(id: id),),
       onTapPhone: diaLogPhone,
@@ -193,7 +193,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,
-      scrollController: _viewModel!.scrollUpComing,
+      scrollController: _viewModel!.scrollCanceled,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
         context, MyBookingParams(id: id),),
       onTapPhone: diaLogPhone,
