@@ -9,7 +9,6 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
-import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -26,13 +25,14 @@ class BookingHistoryViewModel extends BaseViewModel {
   ScrollController scrollDone = ScrollController();
   ScrollController scrollCanceled = ScrollController();
   ScrollController scrollToday = ScrollController();
-
+  ScrollController scrollDaysBefore= ScrollController();
 
   List<MyBookingModel> listMyBooking = [];
   List<MyBookingModel> listCurrentUpcoming = [];
   List<MyBookingModel> listCurrentToday = [];
   List<MyBookingModel> listCurrentDone = [];
   List<MyBookingModel> listCurrentCanceled = [];
+  List<MyBookingModel> listCurrentDaysBefore= [];
 
   bool isLoadMore = false;
   bool isLoading = true;
@@ -42,6 +42,8 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageDone = 1;
   int pageCanceled = 1;
   int pageToday=1;
+  int pageDaysBefore=1;
+  int currentTab=0;
 
   Timer? timer;
 
@@ -69,25 +71,30 @@ class BookingHistoryViewModel extends BaseViewModel {
     listCurrentCanceled.clear();
     listCurrentDone.clear();
     listCurrentToday.clear();
+    listCurrentDaysBefore.clear();
     pageToday = 1;
     pageUpComing = 1;
     pageDone = 1;
     pageCanceled = 1;
+    pageDaysBefore=1;
 
-    await getMyBooking(page: pageToday,
-      status: Contains.confirmed, isToday: true,);
+    await getDataDaysBefore(pageDaysBefore);
+    listCurrentDaysBefore = listMyBooking;
+
+    await getDataToday(pageToday);
     listCurrentToday = listMyBooking;
 
-    await getMyBooking(page: pageUpComing,status: Contains.confirmed);
+    await getDataUpcoming(pageUpComing);
     listCurrentUpcoming = listMyBooking;
 
-    await getMyBooking(page: pageCanceled,status: Contains.canceled);
+    await getDataCanceled(pageCanceled);
     listCurrentCanceled = listMyBooking;
 
-    await getMyBooking(page: pageDone,status: Contains.done);
+    await getDataDone(pageDone);
     listCurrentDone = listMyBooking;
 
     isLoading = false;
+    scrollDaysBefore.addListener(() => scrollListener(scrollDaysBefore),);
     scrollToday.addListener(() => scrollListener(scrollToday),);
     scrollUpComing.addListener(() => scrollListener(scrollUpComing),);
     scrollCanceled.addListener(() => scrollListener(scrollCanceled),);
@@ -102,6 +109,52 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> getDataDaysBefore(int page) async{
+    await getMyBooking(
+      MyBookingParams(
+        page: page, isDaysBefore: true,
+        status: Contains.confirmed,
+      ),
+    );
+  }
+
+  Future<void> getDataToday(int page) async{
+    await getMyBooking(
+      MyBookingParams(
+        page: page, isToday: true,
+        status: Contains.confirmed,
+      ),
+    );
+  }
+
+  Future<void> getDataUpcoming(int page) async{
+    await getMyBooking(
+      MyBookingParams(
+        page: page,
+        isUpcoming: true,
+        status: Contains.confirmed,
+      ),
+    );
+  }
+
+  Future<void> getDataDone(int page) async{
+    await getMyBooking(
+      MyBookingParams(
+        page: page,
+        status: Contains.done,
+      ),
+    );
+  }
+
+  Future<void> getDataCanceled(int page) async{
+    await getMyBooking(
+      MyBookingParams(
+        page: page,
+        status: Contains.canceled,
+      ),
+    );
+  }
+
   dynamic scrollListener(ScrollController scrollController) async {
     if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent &&
@@ -113,25 +166,26 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    if (status == Contains.confirmed) {
-      if(isToday){
-        pageToday+=1;
-        await getMyBooking(page: pageToday,
-          status: Contains.confirmed, isToday: true,);
-        listCurrentToday = [...listCurrentToday, ...listMyBooking];
-      }else{
-        pageUpComing += 1;
-        await getMyBooking(page: pageUpComing,status: status);
-        listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
-      }
-    } else if (status == Contains.canceled) {
-      pageCanceled += 1;
-      await getMyBooking(page: pageCanceled,status: status);
-      listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
-    } else {
-      pageDone += 1;
-      await getMyBooking(page: pageDone,status: status);
+    if (currentTab==0) {
+      pageDaysBefore+=1;
+      await getDataDaysBefore(pageDaysBefore);
+      listCurrentDaysBefore = [...listCurrentDaysBefore, ...listMyBooking];
+    } else if (currentTab==1) {
+      pageToday += 1;
+      await getDataToday(pageToday);
+      listCurrentToday = [...listCurrentToday, ...listMyBooking];
+    } else if(currentTab==2){
+      pageUpComing += 1;
+      await getDataUpcoming(pageUpComing);
+      listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
+    } else if(currentTab==3){
+      pageDone+=1;
+      await getDataDone(pageDone);
       listCurrentDone = [...listCurrentDone, ...listMyBooking];
+    }else{
+      pageCanceled+=1;
+      await getDataCanceled(pageCanceled);
+      listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
     }
     isLoadMore = false;
 
@@ -142,14 +196,19 @@ class BookingHistoryViewModel extends BaseViewModel {
     // await pullRefresh();
     if (value == 0) {
       status = Contains.confirmed;
-      isToday=true;
+      currentTab=0;
     } else if (value == 1) {
       status = Contains.confirmed;
-      isToday=false;
+      currentTab=1;
     } else if (value == 2) {
+      status = Contains.confirmed;
+      currentTab=2;
+    }else if (value == 3) {
       status = Contains.done;
+      currentTab=3;
     } else {
       status = Contains.canceled;
+      currentTab=4;
     }
     notifyListeners();
   }
@@ -265,29 +324,25 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  Future<List<MyBookingModel>> setListMyBooking({String? status, 
-    bool isToday=false, List<MyBookingModel>? value,})async{
-      final list=<MyBookingModel>[];
-      if(status==Contains.confirmed && isToday==false){
-        value!.forEach((element) {
-          if(AppDateUtils.formatDateLocal(element.date!).split(' ')[0]
-            != DateTime.now().toString().split(' ')[0]){
-            list.add(element);
-          }
-        });
-        return list;
-      }
-      return value!;
-  }
+  // Future<List<MyBookingModel>> setListMyBooking({String? status, 
+  //   bool isToday=false, List<MyBookingModel>? value,})async{
+  //     final list=<MyBookingModel>[];
+  //     if(status==Contains.confirmed && isToday==false){
+  //       value!.forEach((element) {
+  //         if(AppDateUtils.formatDateLocal(element.date!).split(' ')[0]
+  //           != DateTime.now().toString().split(' ')[0]){
+  //           list.add(element);
+  //         }
+  //       });
+  //       return list;
+  //     }
+  //     return value!;
+  // }
 
-  Future<void> getMyBooking({int? page, String? status, bool isToday=false}) 
+  Future<void> getMyBooking(MyBookingParams myBookingParams) 
   async {
     final result = await myBookingApi.getMyBooking(
-      MyBookingParams(
-        page: page,
-        status: status,
-        isToday: isToday,
-      ),
+      myBookingParams,
     );
 
     final value = switch (result) {
@@ -301,10 +356,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       isLoading = true;
     } else {
       isLoading = false;
-      listMyBooking= await setListMyBooking(
-        status: status, isToday: isToday, 
-        value: value as List<MyBookingModel>,
-      );
+      listMyBooking= value as List<MyBookingModel>;
     }
     isLoading = false;
     notifyListeners();

@@ -4,6 +4,7 @@ class HistoryLanguage {
   static final pay = S.current.pay;
   static final total = S.current.total;
   static final today  = S.current.today;
+  static final daysBefore  = S.current.daysBefore;
   static final editAppointmentSchedule = S.current.editAppointmentSchedule;
   static final deleteAppointmentSchedule = S.current.deleteAppointmentSchedule;
   static final call = S.current.call;

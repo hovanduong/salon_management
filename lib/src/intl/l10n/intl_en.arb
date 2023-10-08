@@ -184,5 +184,6 @@
     "hourAgo":"{days} hours ago",
     "invoice": "Invoice",
     "paymentConfirmation": "Payment Confirmation",
+    "daysBefore": "Days Before",
     "lastLine": ""
 }

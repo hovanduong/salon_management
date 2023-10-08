@@ -94,13 +94,15 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           _viewModel!.setStatus(value);
         },
         tabs: [
+          Tab(text: HistoryLanguage.daysBefore,),
           Tab(text: HistoryLanguage.today,),
           Tab(text: HistoryLanguage.upcoming,),
           Tab(text: HistoryLanguage.done,),
           Tab(text: HistoryLanguage.canceled,),
         ],
+        isScrollable: true,
         labelPadding: EdgeInsets.symmetric(
-          horizontal: SizeToPadding.sizeVeryVerySmall),
+          horizontal: SizeToPadding.sizeSmall,),
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
         unselectedLabelColor: AppColors.BLACK_400,
@@ -129,7 +131,29 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-  Widget buildFirstTab() {
+  Widget buildTabDaysBefore() {
+    return ScreenTap(
+      listCurrent: _viewModel!.listCurrentDaysBefore,
+      isButton: true,
+      isLoadMore: _viewModel!.isLoadMore,
+      scrollController: _viewModel!.scrollDaysBefore,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context, 
+        MyBookingParams(id: id),
+      ),
+      onTapPhone: diaLogPhone,
+      onRefresh: () async {await _viewModel!.pullRefresh();},
+      onChangedStatus: (value, id) =>
+          _viewModel!.dialogStatus(value: value, context: context, id: id),
+      onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
+      onTapEditBooking: (myBookingModel) => _viewModel!
+          .goToAddBooking(context: context, myBookingModel: myBookingModel),
+      onPay: (id) => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(id: id, isPayment: true),),
+    );
+  }
+
+  Widget buildTabToday() {
     return ScreenTap(
       listCurrent: _viewModel!.listCurrentToday,
       isButton: true,
@@ -151,7 +175,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-  Widget buildSecondTab() {
+  Widget buildTabUpcoming() {
     return ScreenTap(
       listCurrent: _viewModel!.listCurrentUpcoming,
       isButton: true,
@@ -173,7 +197,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-  Widget buildThirdTab() {
+  Widget buildTabDone() {
      return ScreenTap(
       widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
@@ -188,7 +212,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-   Widget buildFourthTab() {
+   Widget buildTabCanceled() {
     return ScreenTap(
       widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
@@ -229,10 +253,11 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
             padding: EdgeInsets.all(SpaceBox.sizeMedium),
             child: TabBarView(
               children: [
-                buildFirstTab(),
-                buildSecondTab(),
-                buildThirdTab(),
-                buildFourthTab(),
+                buildTabDaysBefore(),
+                buildTabToday(),
+                buildTabUpcoming(),
+                buildTabDone(),
+                buildTabCanceled(),
               ],
             ),
           ),
@@ -243,7 +268,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildItemScreen() {
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: SafeArea(
         top: true,
         left: false,
