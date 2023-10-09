@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -20,8 +22,13 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
   bool isColorProvinces = false;
   bool enableSubmit = false;
+  bool isPayments=false;
 
-  Future<void> init() async {}
+  Timer? timer;
+
+  Future<void> init(bool isPayment) async {
+    isPayments=isPayment;
+  }
 
   void closeDialog(BuildContext context) {
     Timer(
@@ -112,6 +119,12 @@ class MyCustomerAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void closeScreen(){
+    if(isPayments==true){
+      timer = Timer(const Duration(seconds: 2), ()=> Navigator.pop(context));
+    }
+  }
+
   Future<void> postMyCustomer() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.postMyCustomer(
@@ -136,7 +149,14 @@ class MyCustomerAddViewModel extends BaseViewModel {
       LoadingDialog.hideLoadingDialog(context);
       clearData();
       await showSuccessDialog(context);
+      closeScreen();
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

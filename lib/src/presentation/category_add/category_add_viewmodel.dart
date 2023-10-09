@@ -17,6 +17,8 @@ class CategoryAddViewModel extends BaseViewModel {
 
   String? messageErrorCategory;
 
+  Timer? timer;
+
   CategoryApi categoryApi = CategoryApi();
   CategoryModel? categoryModel;
 
@@ -68,7 +70,7 @@ class CategoryAddViewModel extends BaseViewModel {
   Future<void> setSourceButton() async {
     if (categoryModel != null) {
       await putCategory();
-      Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
+      timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
     } else {
       await postCategory(categoryController.text);
       categoryController.text = '';
@@ -156,5 +158,11 @@ class CategoryAddViewModel extends BaseViewModel {
       await showSuccessDiaglog(context);
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

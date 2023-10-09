@@ -11,21 +11,34 @@ class MyBookingParams {
     this.id,
     this.page, 
     this.status,
-    this.isButtonBookingDetails=false,
+    this.isPayment=false,
+    this.isToday=false,
+    this.isDaysBefore=false,
+    this.isUpcoming=false,
+    this.date
   });
   final int? id;
   final int? page;
   final String? status;
-  final bool isButtonBookingDetails;
+  final bool isPayment;
+  final bool isToday;
+  final bool isDaysBefore;
+  final bool isUpcoming;
+  final DateTime? date;
 }
 
 class MyBookingApi {
   Future<Result<List<MyBookingModel>, Exception>> getMyBooking(
-      MyBookingParams params) async {
+      MyBookingParams params,) async {
     try {
       final response = await HttpRemote.get(
-        url:
-            '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
+        url: params.isDaysBefore ?
+          '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&unpaid=true&status=Confirmed'
+          :  params.isToday
+          ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&date=${DateTime.now()}'
+          :  params.isUpcoming
+          ? '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&isUpComing=true&status=Confirmed'
+          : '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
@@ -43,7 +56,7 @@ class MyBookingApi {
   }
 
   Future<Result<List<MyBookingModel>, Exception>> getMyBookingUser(
-      String id) async {
+      String id,) async {
     try {
       final response = await HttpRemote.get(
         url: '/my-booking/$id',
@@ -64,10 +77,10 @@ class MyBookingApi {
   }
 
   Future<Result<bool, Exception>> putStatusAppointment(
-      MyBookingParams params) async {
+      MyBookingParams params,) async {
     try {
       final response = await HttpRemote.put(
-        url: '/my-booking/${params.id}/Canceled',
+        url: '/my-booking/${params.id}/${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {
@@ -82,7 +95,7 @@ class MyBookingApi {
   }
 
   Future<Result<bool, Exception>> deleteBookingHistory(
-      MyBookingParams params) async {
+      MyBookingParams params,) async {
     try {
       final response = await HttpRemote.delete(
         url: '/my-booking/${params.id}',

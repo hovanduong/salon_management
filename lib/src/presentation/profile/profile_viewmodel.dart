@@ -16,6 +16,9 @@ class ProfileViewModel extends BaseViewModel {
 
   Future<void> goToMyCustomer(BuildContext context) =>
       Navigator.pushNamed(context, Routers.myCustomer);
+  
+  Future<void> goToPayment(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.payment);
 
   Future<void> logOut() async {
     await AppPref.logout();

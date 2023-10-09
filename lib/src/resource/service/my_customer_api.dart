@@ -45,7 +45,7 @@ class MyCustomerApi {
   }
 
   Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer({
-      int? page, required bool getAll,}) async {
+      required bool getAll, int? page,}) async {
     try {
       final response = await HttpRemote.get(
         url: getAll?'/my-customer':'/my-customer?pageSize=10&page=$page',
@@ -80,7 +80,8 @@ class MyCustomerApi {
     }
   }
 
-  Future<Result<bool, Exception>> putMyCustomer(MyCustomerParams? params) async {
+  Future<Result<bool, Exception>> putMyCustomer(MyCustomerParams? params) 
+  async {
     try {
       final response = await HttpRemote.put(
         url: '/my-customer/${params!.id}',
@@ -101,7 +102,8 @@ class MyCustomerApi {
     }
   }
 
-  Future<Result<bool, Exception>> postMyCustomer(MyCustomerParams params) async {
+  Future<Result<bool, Exception>> postMyCustomer(MyCustomerParams params)
+  async {
     try {
       final response = await HttpRemote.post(
         url: '/my-customer', 

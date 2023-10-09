@@ -24,6 +24,8 @@ class MyCustomerViewModel extends BaseViewModel{
   bool isLoading = true;
   bool loadingMore = false;
 
+  Timer? timer;
+
   int page=1;
 
   Future<void> init() async {
@@ -85,8 +87,10 @@ class MyCustomerViewModel extends BaseViewModel{
   Future<void> goToAddMyCustomer(BuildContext context)
     => Navigator.pushNamed(context, Routers.myCustomerAdd);
 
-  Future<void> goToMyCustomerEdit(BuildContext context, MyCustomerModel myCustomerModel)
-    => Navigator.pushNamed(context, Routers.myCustomerEdit, arguments: myCustomerModel);
+  Future<void> goToMyCustomerEdit(
+    BuildContext context, MyCustomerModel myCustomerModel,)
+      => Navigator.pushNamed(
+        context, Routers.myCustomerEdit, arguments: myCustomerModel,);
 
 
   dynamic showDialogNetwork(_) {
@@ -177,7 +181,7 @@ class MyCustomerViewModel extends BaseViewModel{
   }
 
   void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+    timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
   }
 
   Future<void> getMyCustomer(int page) async {
@@ -244,5 +248,11 @@ class MyCustomerViewModel extends BaseViewModel{
     }
     isLoading = false;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

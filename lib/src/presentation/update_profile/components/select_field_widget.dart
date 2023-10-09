@@ -13,7 +13,7 @@ class BuildSelectFieldWidget extends StatelessWidget {
     final String? labelText;
     final String? content;
     final bool isDate;
-    final Function? onTap;
+    final Function()? onTap;
     final String? validator;
 
   @override

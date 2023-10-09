@@ -29,7 +29,7 @@ class Transaction extends StatelessWidget {
         child: Paragraph(
           content: alphabet,
           style: STYLE_BIG.copyWith(
-              fontWeight: FontWeight.w600, color: AppColors.COLOR_WHITE),
+              fontWeight: FontWeight.w600, color: AppColors.COLOR_WHITE,),
         ),
       ),
       title: Paragraph(
@@ -43,7 +43,7 @@ class Transaction extends StatelessWidget {
         ),
       ),
       trailing: Paragraph(
-        content: money == null ? '' : '$money VNĐ',
+        content: money ?? '',
         style: STYLE_MEDIUM_BOLD.copyWith(
           color: isColor == '+' ? AppColors.FIELD_GREEN : AppColors.PRIMARY_RED,
         ),

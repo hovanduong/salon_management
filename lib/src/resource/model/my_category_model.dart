@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'my_service_model.dart';
 
 class CategoryModel {
+  bool isIconCategory;
   int? id;
   String? name;
   int? userId;
@@ -12,6 +13,7 @@ class CategoryModel {
   List<MyServiceModel>? myServices;
 
   CategoryModel({
+    this.isIconCategory=true,
     this.id,
     this.name,
     this.userId,

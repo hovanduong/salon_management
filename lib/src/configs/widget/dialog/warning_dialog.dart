@@ -57,7 +57,8 @@ class WarningDialog extends StatelessWidget {
               height: 25,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeToPadding.sizeMedium,),
               child: Paragraph(
                 textAlign: TextAlign.center,
                 content: title,
@@ -80,7 +81,7 @@ class WarningDialog extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 5),
+                    padding: const EdgeInsets.only(left: 15, right: 10),
                     child: AppOutlineButton(
                       content: leftButtonName,
                       onTap: () => onTapLeft!(),
@@ -89,7 +90,7 @@ class WarningDialog extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 15),
+                    padding: const EdgeInsets.only(left: 10, right: 15),
                     child: AppButton(
                       enableButton: true,
                       content: rightButtonName,
@@ -98,7 +99,7 @@ class WarningDialog extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

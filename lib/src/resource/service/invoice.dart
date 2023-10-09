@@ -30,7 +30,6 @@ class InvoiceApi {
           'discount': 0,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);

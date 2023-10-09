@@ -78,7 +78,7 @@ class WarningOneDialog extends StatelessWidget {
                   content: buttonName,
                   onTap: () => onTap!(),
                 ),
-              )
+              ),
           ],
         ),
       ),

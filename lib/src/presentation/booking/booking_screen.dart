@@ -1,3 +1,5 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +32,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return BaseWidget<BookingViewModel>(
       viewModel: BookingViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
-        dataBooking as MyBookingModel?
+        dataBooking as MyBookingModel?,
       ),
       builder: (context, viewModel, child) => buildBookingScreen(),
     );
@@ -43,6 +45,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       right: false,
       left: false,
       child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -57,7 +60,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                 buildNotes(),
                 buildConfirmButton(),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -130,9 +133,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
             Paragraph(
               style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
               content: _viewModel!.moneyController.text,
-            )
+            ),
           ],
-        ));
+        ),);
   }
 
   Widget buildListService() {
@@ -184,7 +187,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
             color: Colors.grey.withOpacity(0.3),
             height: 0.5,
             width: double.infinity,
-          )
+          ),
         ],
       ),
     );
@@ -204,7 +207,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           onPressed: () async {
             showSelectCategory(context);
           },
-        )
+        ),
       ],
     );
   }
@@ -292,10 +295,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           children: [
             buildTitleSelectTime(),
             buildTimeSelect(),
-            buildButtonSelectTime()
+            buildButtonSelectTime(),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -318,7 +321,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           _viewModel!.updateDateTime(value! as DateTime);
           Navigator.pop(context);
         },
-      )
+      ),
     );
   }
 
@@ -413,7 +416,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
-          _viewModel!.setNameCustomer(value);
+          _viewModel!..setNameCustomer(value)..enableConfirmButton();
         },
       ),
     );
@@ -429,7 +432,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         if(_viewModel!.dataMyBooking== null){
           showSelectPhone(context);
         }
-      } 
+      }, 
     );
   }
 
@@ -458,7 +461,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           Paragraph(
             style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),
             content: _viewModel!.moneyController.text,
-          )
+          ),
         ],
       ),
     );
@@ -485,7 +488,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeMedium * 2,
-        horizontal: SizeToPadding.sizeSmall
+        horizontal: SizeToPadding.sizeSmall,
       ),
       child: AppButton(
         content: ServiceAddLanguage.confirm,

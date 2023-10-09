@@ -38,7 +38,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+          icon: const Icon(
+            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
         ),
         title: Paragraph(
           content: ServiceAddLanguage.serviceAdd,
@@ -75,7 +76,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     return AppFormField(
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-        FilteringTextInputFormatter.digitsOnly
+        FilteringTextInputFormatter.digitsOnly,
       ],
       keyboardType: TextInputType.number,
       labelText: ServiceAddLanguage.amountOfMoney,
@@ -107,7 +108,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
           onPressed: () async{
             showSelectCategory(context);
           },
-        )
+        ),
       ],
     );
   }
@@ -129,7 +130,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       runSpacing: -5,
       spacing: SpaceBox.sizeSmall,
       children: List.generate(_viewModel!.selectedCategory.length, 
-        buildSelectedCategory,)
+        buildSelectedCategory,),
     );
   }
 
@@ -153,7 +154,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         listItems: _viewModel!.mapCategory,
         initValues: _viewModel!.categoryId,
         onTapSubmit: (value) {
-            _viewModel!..changeValueCategory(value)..setCategoryId()..onSubmit();
+            _viewModel!..changeValueCategory(value)
+            ..setCategoryId()..onSubmit();
         },
       ),
     );
@@ -167,7 +169,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,)
+              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,),
           ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),

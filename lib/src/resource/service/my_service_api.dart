@@ -46,7 +46,7 @@ class MyServiceApi {
         body: {
           'name': params!.name,
           'money': params.money,
-          'categories': params.listCategory
+          'categories': params.listCategory,
         },
       );
       print(response?.statusCode);
@@ -61,7 +61,8 @@ class MyServiceApi {
     }
   }
 
-  Future<Result<bool, Exception>> deleteService(int idCategory, int idService) async {
+  Future<Result<bool, Exception>> deleteService(int idCategory, int idService)
+  async {
     try {
       final response = await HttpRemote.delete(
         url: '/my-service/$idService/$idCategory',

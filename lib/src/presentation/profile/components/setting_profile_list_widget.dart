@@ -31,7 +31,7 @@ class SettingProfileListWidget extends StatelessWidget {
         horizontal: SizeToPadding.sizeVeryBig,
         vertical: SizeToPadding.sizeSmall / 1.1,
       ),
-      child: GestureDetector(
+      child: InkWell(
         onTap: () {
           onTap!();
         },
@@ -56,7 +56,7 @@ class SettingProfileListWidget extends StatelessWidget {
                       ),
                 ),
                 const Spacer(),
-                const Icon(Icons.arrow_forward_ios)
+                const Icon(Icons.arrow_forward_ios),
               ],
             ),
             SizedBox(

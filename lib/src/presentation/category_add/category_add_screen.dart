@@ -93,7 +93,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,)
+              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,),
           ],
           color: AppColors.COLOR_WHITE,
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),

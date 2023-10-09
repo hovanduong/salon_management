@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
+import 'app/splash.dart';
 import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
-import 'invoice/invoice_screen.dart';
-import 'myCustomer_edit/my_customer_edit_screen.dart';
-import 'my_customer/my_customer.dart';
-import 'my_customer_add/my_customer_add_screen.dart';
-import 'service_add/service_add.dart';
-import 'app/splash.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
 import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'create_password/create_password.dart';
+import 'invoice/invoice_screen.dart';
+import 'myCustomer_edit/my_customer_edit_screen.dart';
+import 'my_customer/my_customer.dart';
+import 'my_customer_add/my_customer_add_screen.dart';
+import 'payment/payment.dart';
+import 'service_add/service_add.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
 import 'update_profile/update_profile.dart';
@@ -56,6 +57,7 @@ class Routers {
   static const String myCustomerEdit = '/myCustomerEdit';
   static const String addBooking = '/addBooking';
   static const String invoice = '/invoice';
+  static const String payment = '/payment';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -77,6 +79,14 @@ class Routers {
           arguments: arguments,
         );
         
+      case payment:
+        return animRoute(
+          const PaymentScreen(),
+          beginOffset: right,
+          name: payment,
+          arguments: arguments,
+        );
+
       case invoice:
         return animRoute(
           const InvoiceScreen(),

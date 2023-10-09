@@ -40,7 +40,7 @@ class ItemWidget extends StatelessWidget {
         Paragraph(
           content: content ?? '',
           style: STYLE_MEDIUM.copyWith(
-              color: color, fontWeight: fontWeightContent),
+              color: color, fontWeight: fontWeightContent,),
         ),
       ],
     );

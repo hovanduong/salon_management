@@ -12,9 +12,6 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
 import '../model/model.dart';
-import '../model/my_category_model.dart';
-import '../model/my_service_model.dart';
-import '../model/user_model.dart';
 
 class AuthParams {
   const AuthParams({
@@ -31,7 +28,7 @@ class AuthParams {
     this.listCategory,
     this.page, 
     this.status,
-    this.myCustomerModel
+    this.myCustomerModel,
   });
   final int? id;
   final String? name;
@@ -137,7 +134,7 @@ class AuthApi {
           'lastName': params.user!.lastName,
           'middleName': '',
           'phone': params.user!.phone,
-          'password': params.password
+          'password': params.password,
         },
       );
       print(response?.statusCode);

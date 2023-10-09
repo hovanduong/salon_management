@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,12 +24,6 @@ class BookingDetailsScreen extends StatefulWidget {
 
 class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   BookingDetailsViewModel? _viewModel;
-
-  @override
-  void dispose() {
-    _viewModel?.timer.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +53,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         color: AppColors.PRIMARY_GREEN,
       ),
       title: Paragraph(
-        content: _viewModel!.listMyBooking[index].address,
+        content: _viewModel!.listMyBooking[index].address =='Trống'?'':
+          _viewModel!.listMyBooking[index].address,
         style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
       ),
     );
@@ -283,17 +280,20 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   Widget buildButtonPay(){
     if(_viewModel!.dataMyBooking != null){
-      return _viewModel!.dataMyBooking!.isButtonBookingDetails? Positioned(
-        bottom: 20,
+      return _viewModel!.dataMyBooking!.isPayment? Positioned(
+        bottom: 30,
         left: 0,
         right: 0,
         child: Padding(
-          padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+          padding: EdgeInsets.only(
+            top: SizeToPadding.sizeSmall,
+            left: SizeToPadding.sizeMedium,
+            right: SizeToPadding.sizeMedium,),
           child: AppButton(
             enableButton: true,
-            content: BookingDetailsLanguage.pay,
+            content: BookingDetailsLanguage.paymentConfirmation,
             onTap: (){
-              _viewModel!.postInvoice(_viewModel!.dataMyBooking!.id!);
+              _viewModel!.showWaningDiaglog(_viewModel!.dataMyBooking!.id!);
             },
           ),
         ),
@@ -311,16 +311,23 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       right: false,
       child: Scaffold(
         body: SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _viewModel!.listMyBooking.length,
-            itemBuilder: (context, index) => Column(
-              children: [
-                buildHeader(index),
-                buildInfoCard(index),
-                buildCardService(index),
-              ],
-            ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height-70,
+                width: double.maxFinite,
+                child: ListView.builder(
+                  itemCount: _viewModel!.listMyBooking.length,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      buildHeader(index),
+                      buildInfoCard(index),
+                      buildCardService(index),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

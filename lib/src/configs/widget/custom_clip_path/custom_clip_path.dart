@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:flutter/material.dart';
 
 import '../../configs.dart';
@@ -16,9 +18,9 @@ class CustomBackGround extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               AppColors.FIELD_GREEN,
-              AppColors.PRIMARY_GREEN
-            ]
-          )
+              AppColors.PRIMARY_GREEN,
+            ],
+          ),
         ),
       ),
     );
@@ -33,7 +35,7 @@ class CustomClipPath extends CustomClipper<Path> {
     final filledRectangle =
         Rect.fromLTRB(0, 0, size.width, size.height - roundingHeight);
     final roundingRectangle = Rect.fromLTRB(
-        0, size.height - roundingHeight * 2, size.width , size.height);
+        0, size.height - roundingHeight * 2, size.width , size.height,);
 
     final path = Path();
     path.addRect(filledRectangle);

@@ -1,3 +1,5 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 import 'package:flutter/material.dart';
 
 import '../../configs/constants/app_space.dart';

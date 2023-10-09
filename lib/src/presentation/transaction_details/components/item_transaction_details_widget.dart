@@ -41,7 +41,7 @@ class ItemTransactionDetailsWidget extends StatelessWidget {
                 STYLE_MEDIUM_BOLD.copyWith(
                   color: colorContent ?? AppColors.BLACK_500,
                 ),
-          )
+          ),
         ],
       ),
     );

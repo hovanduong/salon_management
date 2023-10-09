@@ -5,6 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:spa_app_management/src/utils/date_format_utils.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
@@ -42,6 +43,8 @@ class BookingViewModel extends BaseViewModel {
   num updatedTotalCost = 0;
 
   DateTime dateTime = DateTime.now();
+  // DateTime dateTime = DateTime.now();
+
 
   MyBookingModel? dataMyBooking;
 
@@ -108,6 +111,9 @@ class BookingViewModel extends BaseViewModel {
       addressController.text = dataMyBooking!.address!;
       noteController.text =
           dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
+      dateTime= DateTime.parse(AppDateUtils.formatDateLocal(
+          dataMyBooking!.date!,
+        ),);
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -124,7 +130,7 @@ class BookingViewModel extends BaseViewModel {
           isSelected: true,
           id: service.id,
           name: '${service.name}/${currencyFormatter.format(service.money)}',
-        ));
+        ),);
       });
     }
   }
@@ -196,7 +202,7 @@ class BookingViewModel extends BaseViewModel {
       mapService.addAll(
         {
           element.id!:
-              ' ${element.name}/${currencyFormatter.format(element.money)} '
+              ' ${element.name}/${currencyFormatter.format(element.money)} ',
         },
       );
     });
@@ -378,16 +384,15 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> postBooking() async {
-    log('message $dateTime');
+    LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,
       address: addressController.text.trim(),
       date: dateTime.toString().trim(),
-      discount: double.parse(
-          discountController.text.isEmpty ? '0' : discountController.text),
+      isBooking: true,
       note: noteController.text == '' ? 'Trống' : noteController.text,
-    ));
+    ),);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -416,9 +421,9 @@ class BookingViewModel extends BaseViewModel {
       address: addressController.text.trim(),
       date: dateTime.toString().trim(),
       discount: double.parse(
-          discountController.text.isEmpty ? '0' : discountController.text),
+          discountController.text.isEmpty ? '0' : discountController.text,),
       note: noteController.text == '' ? 'Trống' : noteController.text,
-    ));
+    ),);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,

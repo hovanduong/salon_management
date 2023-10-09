@@ -21,9 +21,11 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isPayment= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
       viewModel: MyCustomerAddViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel= viewModel?..init(),
+      onViewModelReady: (viewModel) => _viewModel= 
+        viewModel?..init(isPayment is bool),
       builder: (context, viewModel, child) => buildMyCustomerAddScreen(),
     );
   }

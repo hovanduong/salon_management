@@ -11,7 +11,7 @@ class NameFieldWidget extends StatelessWidget {
     this.hintText,
     this.textAlign, 
     this.onTap,
-    this.isOnTap=false
+    this.isOnTap=false,
   });
   final TextEditingController? nameController;
   final String? name;
