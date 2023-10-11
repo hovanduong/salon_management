@@ -1,14 +1,14 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
-import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../base/base.dart';
-import 'components/build_avatar.dart';
 import 'components/components.dart';
-import 'homepage_viewModel.dart';
+import 'homepage_viewmodel.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -17,277 +17,176 @@ class HomePageScreen extends StatefulWidget {
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen>
-    with AutomaticKeepAliveClientMixin {
+class _HomePageScreenState extends State<HomePageScreen> {
+
   HomePageViewModel? _viewModel;
+
   @override
   Widget build(BuildContext context) {
-    return BaseWidget<HomePageViewModel>(
-      viewModel: HomePageViewModel(),
+    return BaseWidget(
+      viewModel: HomePageViewModel(), 
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
-      builder: (context, viewModel, child) {
-        return buildHomePage();
-      },
+      builder: (context, viewModel, child) => buildLoading(),
     );
   }
 
-  Widget background() {
-    return const CustomBackGround();
-  }
-
-  Widget buildGreeting() {
-    return Paragraph(
-      content: 'Good afternoon,',
-      style: STYLE_MEDIUM.copyWith(
-        color: AppColors.COLOR_WHITE,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-
-  Widget buildUserName() {
-    return Paragraph(
-      content: 'Enjelin Morgeana',
-      style: STYLE_BIG.copyWith(
-        color: AppColors.COLOR_WHITE,
-        fontWeight: FontWeight.w700,
-      ),
-    );
-  }
-
-  Widget nameUser() {
-    return Positioned(
-      top: SpaceBox.sizeBig * 2.2,
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildGreeting(),
-              const SizedBox(height: 5),
-              buildUserName(),
-            ],
-          ),
-          SizedBox(
-            width: SizeToPadding.sizeBig * 7,
-          ),
-          SvgPicture.asset(AppImages.icBellWhite),
-        ],
-      ),
-    );
-  }
-
-  Widget buildHeaderCard() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Paragraph(
-              content: HomePageLanguage.totalBalance,
-              style: STYLE_MEDIUM.copyWith(
-                color: AppColors.COLOR_WHITE,
-                fontWeight: FontWeight.w500,
-              ),
+  Widget buildLoading(){
+    return Scaffold(
+      body: StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildHomePage(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  ),
+              ],
             ),
-            SvgPicture.asset(AppImages.icChevronDown),
-          ],
-        ),
-        SvgPicture.asset(AppImages.icDots),
-      ],
-    );
-  }
-
-  Widget buildMoney() {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: SpaceBox.sizeBig,
-        top: SpaceBox.sizeVerySmall,
-      ),
-      child: Paragraph(
-        content: r'$ 2,548.00',
-        style: STYLE_VERY_BIG.copyWith(
-          color: AppColors.COLOR_WHITE,
-          fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
   }
 
-  Widget buildIncome() {
-    return StatusCardMoney(
-      content: HomePageLanguage.inCome,
-      icon: Icons.arrow_downward_sharp,
-      money: r'$ 1,840.00',
-    );
-  }
-
-  Widget buildExpenses() {
-    return StatusCardMoney(
-      content: HomePageLanguage.expenses,
-      icon: Icons.arrow_upward,
-      money: r'$ 284.00',
-      crossAxisAlignment: CrossAxisAlignment.end,
-    );
-  }
-
-  Widget buildIncomeAndExpenses() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        buildIncome(),
-        buildExpenses(),
-      ],
-    );
-  }
-
-  Widget buildCardMoney() {
-    return Positioned(
-      top: 150,
-      child: Container(
-        width: 371,
-        height: 202,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.BLACK_500,
-              blurRadius: SpaceBox.sizeVerySmall,
+  Widget buildHeader(){
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      child: ListTile(
+        title: Center(
+          child: Paragraph(
+            content: HomePageLanguage.overview,
+            style: STYLE_LARGE.copyWith(
+              color: AppColors.COLOR_WHITE,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-          color: AppColors.PRIMARY_GREEN,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(SpaceBox.sizeLarge),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildHeaderCard(),
-              buildMoney(),
-              buildIncomeAndExpenses(),
-            ],
           ),
         ),
       ),
     );
   }
 
-  Widget buildHeader() {
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        const SizedBox(
-          width: double.infinity,
-          height: 365,
-        ),
-        background(),
-        nameUser(),
-        buildCardMoney(),
-      ],
-    );
-  }
-
-  Widget transactionsHistory() {
-    return SectionTitle(
-      titleLeft: HomePageLanguage.transactionHistory,
-      titleRight: HomePageLanguage.seeAll,
-    );
-  }
-
-  Widget listAvatar() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
-      child: SizedBox(
-        width: double.maxFinite,
-        height: SpaceBox.sizeBig * 2.4,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (context, index) => const BuildAvatar(),
-        ),
-      ),
-    );
-  }
-
-  Widget upWork() {
-    return const Transaction(
-      image: AppImages.pngUpWork,
-      money: r'+ $ 850.00',
-      subtile: 'Today',
-      title: 'Upwork',
-    );
-  }
-
-  Widget transfer() {
-    return const Transaction(
-      image: AppImages.pngTransfer,
-      money: r'- $ 85.00',
-      subtile: 'Yesterday',
-      title: 'Transfer',
-    );
-  }
-
-  Widget paypal() {
-    return const Transaction(
-      image: AppImages.pngPaypal,
-      money: r'+ $ 1,406.00',
-      subtile: 'Jan 30,2022',
-      title: 'Palpal',
-    );
-  }
-
-  Widget youtube() {
-    return const Transaction(
-      image: AppImages.pngYoutube,
-      money: r'- $ 11.99',
-      subtile: 'Jan 16, 2022',
-      title: 'Youtube',
-    );
-  }
-
-  Widget sendAgain() {
-    return SectionTitle(
-      titleLeft: HomePageLanguage.sendAgain,
-      titleRight: HomePageLanguage.seeAll,
-    );
-  }
-
-  Widget buildBody() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SpaceBox.sizeLarge,
-      ),
-      child: Column(
-        children: [
-          Column(
-            children: [
-              transactionsHistory(),
-              upWork(),
-              transfer(),
-              paypal(),
-              youtube(),
-              sendAgain(),
-              listAvatar(),
-            ],
-          ),
+  Widget buildAppBar() {
+    return Container(
+      color: AppColors.COLOR_WHITE,
+      child: TabBar(
+        onTap: (value) {
+          _viewModel!.setDataPage(value);
+        },
+        tabs: [
+          Tab(text: HomePageLanguage.yesterday,),
+          Tab(text: HomePageLanguage.today,),
+          Tab(text: HomePageLanguage.thisWeek,),
+          Tab(text: HomePageLanguage.thisMonth,),
         ],
+        isScrollable: true,
+        labelPadding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeBig,),
+        indicatorColor: AppColors.PRIMARY_PINK,
+        labelStyle: STYLE_MEDIUM_BOLD,
+        unselectedLabelColor: AppColors.BLACK_400,
+        labelColor: AppColors.PRIMARY_PINK,
       ),
     );
   }
 
-  Widget buildHomePage() {
+  Widget buildContentTab(){
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildHeader(),
-          buildBody(),
+          BuildDateWidget(date: _viewModel!.date),
+          FieldRevenueWidget(
+            totalRevenue: _viewModel!.totalRevenue,
+            growthRevenue: _viewModel!.growthRevenue,
+            totalBeforeRevenue: _viewModel!.totalBeforeRevenue,
+            totalAppointmentConfirm: _viewModel!.totalAppointmentConfirm,
+            totalBeforeAppointmentConfirm: _viewModel!.totalBeforeAppointmentConfirm,
+            growthAppointmentConfirm: _viewModel!.growthAppointmentConfirm,
+            totalAppointmentCancel: _viewModel!.totalAppointmentCancel,
+            totalBeforeAppointmentCancel: _viewModel!.totalBeforeAppointmentCancel,
+            growthAppointmentCancel: _viewModel!.growthAppointmentCancel,
+            totalClient: _viewModel!.totalClient,
+            totalBeforeClient: _viewModel!.totalBeforeClient,
+            growthClient: _viewModel!.growthClient,
+          ),
+          ChartWidget(data:_viewModel!.dataChart ),
+          SizedBox(height: SpaceBox.sizeMedium,),
+          // TopWidget(
+          //   title: HomePageLanguage.totalRevenueExpenditure,
+          //   widget: Paragraph(content: '0 đ',
+          //     style: STYLE_MEDIUM.copyWith(color: AppColors.COLOR_GREY_BLUE),
+          //   ),
+          // ),
+          TopWidget(title: HomePageLanguage.revenue,
+            isShowTop: _viewModel!.showRevenue,
+            onTap: () => _viewModel!.showListRevenue(),),
+          TopWidget(title: HomePageLanguage.topService,
+            isShowTop: _viewModel!.showTopService,
+            onTap: () => _viewModel!.showListTopService(),),
+          TopWidget(title: HomePageLanguage.topServicePackage,
+            isShowTop: _viewModel!.showTopServicePackage,
+            onTap: () => _viewModel!.showListTopServicePackage(),),
         ],
       ),
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  Widget buildTabToday(){
+    return buildContentTab();
+  }
+
+  Widget buildTabYesterday(){
+    return buildContentTab();
+  }
+
+  Widget buildTabThisWeek(){
+    return  buildContentTab();
+  }
+
+  Widget buildTabThisMonth(){
+    return buildContentTab();
+  }
+
+  Widget buildListTab() {
+    return SizedBox(
+      width: double.maxFinite,
+      height: MediaQuery.of(context).size.height - 200,
+      child: Padding(
+        padding: EdgeInsets.all(SpaceBox.sizeSmall),
+        child: TabBarView(
+          children: [
+            buildTabYesterday(),
+            buildTabToday(),
+            buildTabThisWeek(),
+            buildTabThisMonth(),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget buildHomePage() {
+    return SafeArea(
+      child: DefaultTabController(
+        length: 4,
+        initialIndex: 1,
+        child: Column(
+          children: [
+            buildHeader(),
+            buildAppBar(),
+            buildListTab(),
+          ],
+        ),
+      ),
+    );
+  }
 }

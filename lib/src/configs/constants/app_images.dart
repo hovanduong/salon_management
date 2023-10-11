@@ -17,6 +17,10 @@ class AppImages {
 
   static const String addImage = 'assets/images/add-image.png';
 
+  static const String arrowDownIcon = 'assets/images/arrow-down-icon.jpg';
+
+  static const String arrowUpIcon = 'assets/images/arrow-up_icon.png';
+
   static const String workService = 'assets/icons/work-icon.svg';
 
   static const String missSercice = 'assets/icons/miss-icon.svg';

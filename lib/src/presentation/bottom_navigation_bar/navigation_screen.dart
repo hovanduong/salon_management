@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/language/navigate_language.dart';
 import '../base/base.dart';
 
 import '../booking_history/booking_history.dart';
@@ -45,14 +46,14 @@ class _NavigateScreenState extends State<NavigateScreen> {
           else
             Container(),
           if (_viewModel!.selectedIndex == 1)
-            const BookingHistoryScreen(
-              key: PageStorageKey('BookingPage'),
+            const InvoiceScreen(
+              key: PageStorageKey('invoicePage'),
             )
           else
             Container(),
           if (_viewModel!.selectedIndex == 2)
-            const InvoiceScreen(
-              key: PageStorageKey('invoicePage'),
+            const BookingHistoryScreen(
+              key: PageStorageKey('BookingPage'),
             )
           else
             Container(),
@@ -86,23 +87,23 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 ? AppImages.icHome
                 : AppImages.icHomeLine,
           ),
-          label: 'Home',
+          label: NavigateLanguage.overview,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
             name: _viewModel!.selectedIndex == 1
-                ? AppImages.icStatist
-                : AppImages.icStatistLine,
+                ? AppImages.icWallet
+                : AppImages.icWalletLine,
           ),
-          label: 'Lich hẹn',
+          label: NavigateLanguage.invoice,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
             name: _viewModel!.selectedIndex == 2
-                ? AppImages.icWallet
-                : AppImages.icWalletLine,
+                ? AppImages.icStatist
+                : AppImages.icStatistLine,
           ),
-          label: 'Hóa đơn',
+          label: NavigateLanguage.appointmentSchedule,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
@@ -110,7 +111,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 ? AppImages.icProfile
                 : AppImages.icProfileLine,
           ),
-          label: 'Tài khoản',
+          label: NavigateLanguage.account,
         ),
       ],
     );
