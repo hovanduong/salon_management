@@ -269,6 +269,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   Widget buildItemScreen() {
     return DefaultTabController(
       length: 5,
+      initialIndex: 1,
       child: SafeArea(
         top: true,
         left: false,

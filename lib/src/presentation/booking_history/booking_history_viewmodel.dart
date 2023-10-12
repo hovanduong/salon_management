@@ -416,7 +416,14 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   @override
   void dispose() {
-    timer?.cancel();
-    super.dispose();
+    Future.delayed(const Duration(seconds: 2), () {
+      timer?.cancel();
+      scrollCanceled.dispose();
+      scrollDaysBefore.dispose();
+      scrollDone.dispose();
+      scrollToday.dispose();
+      scrollUpComing.dispose();
+      super.dispose();
+    },);
   }
 }

@@ -385,6 +385,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
+    log(dateTime.toString());
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,

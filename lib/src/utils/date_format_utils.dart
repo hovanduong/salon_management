@@ -61,4 +61,12 @@ class AppDateUtils {
       return DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now());
     }
   }
+
+  static DateTime parseDate(dynamic time) {
+    try {
+      return DateFormat('yyyy-MM-dd').parse(time);
+    } catch (e) {
+      return DateFormat('dd-MM-yyyy').parse(DateTime.now().toString());
+    }
+  }
 }

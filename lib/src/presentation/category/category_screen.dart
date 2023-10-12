@@ -17,7 +17,6 @@ class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
   @override
-  @override
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
