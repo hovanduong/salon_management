@@ -9,6 +9,6 @@ class MyCustomerAddLanguage {
   static final enterPhoneNumber = S.current.enterPhoneNumber;
   static final emptyFullNameError = S.current.emptyFullNameError;
   static final emptyPhoneError = S.current.emptyPhoneError;
-  static final nameMinLength = S.current.serviceNameMinLength;
+  // static final nameMinLength = S.current.serviceNameMinLength;
   
 }

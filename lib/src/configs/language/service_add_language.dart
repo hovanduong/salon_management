@@ -3,7 +3,6 @@
 import '../../intl/generated/l10n.dart';
 
 class ServiceAddLanguage {
-  
   static final chooseTime = S.current.chooseTime;
   static final chooseDay = S.current.chooseDay;
 
@@ -30,7 +29,7 @@ class ServiceAddLanguage {
   static final emptyDescriptionError = S.current.emptyDescriptionError;
 
   static final specialCharsError = S.current.specialCharsError;
-  static final serviceNameMinLength = S.current.serviceNameMinLength;
+  // static final serviceNameMinLength = S.current.serviceNameMinLength;
   static final descriptionMinLength = S.current.descriptionMinLenght;
   static final onlyDenominations = S.current.onlyDenominations;
   static final onlyNumberOfTime = S.current.onlyNumberOfTime;
@@ -43,5 +42,4 @@ class ServiceAddLanguage {
 
   static final selectedCategories = S.current.selectedCategories;
   static final validName = S.current.validName;
-
 }
