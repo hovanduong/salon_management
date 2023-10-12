@@ -199,5 +199,6 @@
     "appointmentNumber": "Số lịch hẹn",
     "appointmentCanceled": "Số lịch hẹn đã hủy",
     "newClient": "Khách hàng mới",
+    "customer":"Khách hàng",
     "lastLine": ""
 }

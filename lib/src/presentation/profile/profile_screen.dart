@@ -104,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildPersonalProfileWidget() {
     return SettingProfileListWidget(
       image: AppImages.icPeople,
-      title: ProfileLanguage.personalProfile,
+      title: ProfileLanguage.customer,
       onTap: () => _viewModel!.goToMyCustomer(context),
     );
   }
@@ -188,8 +188,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildAccountInfoWidget(),
             buildPersonalProfileWidget(),
             buildCategoryWidget(),
-            buildLoginAndSecurity(),
-            buildDataAndPrivacyWidget(),
+            // buildLoginAndSecurity(),
+            // buildDataAndPrivacyWidget(),
             buildLogoutWidget(),
           ],
         ),

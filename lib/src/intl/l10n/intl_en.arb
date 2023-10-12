@@ -199,5 +199,6 @@
     "appointmentNumber": "Appointments Number",
     "appointmentCanceled": "Appointments Canceled",
     "newClient": "New Client",
+    "customer":"Customer",
     "lastLine": ""
 }

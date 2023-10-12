@@ -16,4 +16,6 @@ class ProfileLanguage {
   static final dataAndPrivacy = S.current.dataAndPrivacy;
 
   static final profile = S.current.profile;
+
+  static final customer = S.current.customer;
 }
