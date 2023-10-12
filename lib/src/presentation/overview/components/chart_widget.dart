@@ -8,10 +8,16 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/homepage_language.dart';
 import '../../../resource/model/model.dart';
+import '../../../utils/date_format_utils.dart';
 
 class ChartWidget extends StatelessWidget {
-  const ChartWidget({required this.data, super.key});
+  const ChartWidget({
+    required this.data, 
+    super.key, 
+    this.daysInterval,
+  });
   final List<RevenueChartModel> data;
+  final int? daysInterval;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,20 +87,27 @@ class ChartWidget extends StatelessWidget {
                 rightTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                leftTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: true, interval: 10),
-                  axisNameSize: 20,
-                  drawBelowEverything: true
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 50,
+                    interval: Duration(days: daysInterval ?? 15)
+                      .inMilliseconds
+                      .toDouble(),
+                  ),
                 ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (value, meta) {
                       final day = value.toInt() < data.length
-                          ? DateTime.parse(data[value.toInt()].date!.split('T')[0]).day
-                          : '';
+                        ? AppDateUtils.parseDate(
+                          AppDateUtils.formatDateLocal(
+                            data[value.toInt()].date.toString(),
+                          ).split(' ')[0],).day
+                        : 0;
                       return SideTitleWidget(axisSide: meta.axisSide, 
-                        child: Text(day.toString()),);
+                        child: Text(day!=0? day.toString(): ''),);
                     },
                   ),
                 ),

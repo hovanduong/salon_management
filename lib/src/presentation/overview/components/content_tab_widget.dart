@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/homepage_language.dart';
 import '../../../resource/model/model.dart';

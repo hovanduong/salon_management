@@ -8,23 +8,23 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
 import '../base/base.dart';
 import 'components/components.dart';
-import 'homepage_viewmodel.dart';
+import 'overview_viewmodel.dart';
 
-class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+class OverViewScreen extends StatefulWidget {
+  const OverViewScreen({super.key});
 
   @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
+  State<OverViewScreen> createState() => _OverViewScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class _OverViewScreenState extends State<OverViewScreen> {
 
-  HomePageViewModel? _viewModel;
+  OverViewViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: HomePageViewModel(), 
+      viewModel: OverViewViewModel(), 
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) => buildLoading(),
     );
@@ -118,7 +118,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
             totalBeforeClient: _viewModel!.totalBeforeClient,
             growthClient: _viewModel!.growthClient,
           ),
-          ChartWidget(data:_viewModel!.dataChart ),
+          ChartWidget(data:_viewModel!.dataChart,
+            daysInterval: _viewModel!.daysInterval,),
           SizedBox(height: SpaceBox.sizeMedium,),
           // TopWidget(
           //   title: HomePageLanguage.totalRevenueExpenditure,
@@ -128,12 +129,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
           // ),
           TopWidget(title: HomePageLanguage.revenue,
             isShowTop: _viewModel!.showRevenue,
+            topService: _viewModel!.topService,
             onTap: () => _viewModel!.showListRevenue(),),
           TopWidget(title: HomePageLanguage.topService,
             isShowTop: _viewModel!.showTopService,
+            topService: _viewModel!.topService,
             onTap: () => _viewModel!.showListTopService(),),
           TopWidget(title: HomePageLanguage.topServicePackage,
             isShowTop: _viewModel!.showTopServicePackage,
+            topService: _viewModel!.topService,
             onTap: () => _viewModel!.showListTopServicePackage(),),
         ],
       ),

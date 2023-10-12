@@ -29,7 +29,6 @@ class IncomeApi {
       final response = await HttpRemote.get(
         url: '/income/statistics?currentDate=${DateTime.now()}&timeZone=${params.timeZone}',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
@@ -50,7 +49,6 @@ class IncomeApi {
       final response = await HttpRemote.get(
         url: '/income?paymentStatus=Paid&timeZone=${params.timeZone}&startDate=${params.startDate}&endDate=${params.endDate}',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
@@ -65,18 +63,17 @@ class IncomeApi {
     }
   }
 
-  Future<Result<List<RevenueChartModel>, Exception>> getTopRevenue(
+  Future<Result<StatisticsServiceModel, Exception>> getTopRevenue(
       IncomeParams params,) async {
     try {
       final response = await HttpRemote.get(
         url: '/income/top-service?date=${params.startDate}',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
-          final income = RevenueChartModelFactory.createList(data);
+          final income = StatisticsServiceModelFactory.create(data);
           return Success(income);
         default:
           return Failure(Exception(response!.reasonPhrase));

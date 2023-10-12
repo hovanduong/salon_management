@@ -1,15 +1,15 @@
 // ignore_for_file: unnecessary_lambdas
 import 'dart:convert';
 
+// import 'model.dart';
+
 class TopServiceModel {
-  String? nameService;
-  String? date;
-  double? dailyRevenue;
+  Map<String, dynamic>? serviceCounts;
+  Map<String, dynamic>? serviceMoney;
 
   TopServiceModel({
-    this.nameService,
-    this.dailyRevenue,
-    this.date,
+    this.serviceCounts,
+    this.serviceMoney,
   });
 }
 
@@ -37,18 +37,16 @@ abstract class TopServiceModelFactory {
     TopServiceModel revenueChartModel,
   ) {
     final data = <String, dynamic>{};
-    data['nameService'] = revenueChartModel.nameService;
-    data['date'] = revenueChartModel.date;
-    data['dailyRevenue'] = revenueChartModel.dailyRevenue;
+    data['serviceCounts'] = revenueChartModel.serviceCounts;
+    data['serviceMoney'] = revenueChartModel.serviceMoney;
 
     return data;
   }
 
   static TopServiceModel _fromJson(Map<String, dynamic> json) {
     final revenueChart = TopServiceModel()
-      ..nameService = json['nameService']
-      ..date = json['date'] 
-      ..dailyRevenue = double.parse(json['dailyRevenue']);
+      ..serviceCounts = json['serviceCounts'] 
+      ..serviceMoney = json['serviceMoney'];
     return revenueChart;
   }
 }

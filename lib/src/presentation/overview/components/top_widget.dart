@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/homepage_language.dart';
+import '../../../resource/model/model.dart';
 
 class TopWidget extends StatelessWidget {
   const TopWidget({
@@ -12,13 +13,15 @@ class TopWidget extends StatelessWidget {
     this.title, 
     this.widget,
     this.isShowTop=false,
-    this.onTap,
+    this.onTap, 
+    this.topService,
   });
 
   final String? title;
   final Widget? widget;
   final bool isShowTop;
   final Function()? onTap;
+  final List<DataTopService>? topService;
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +100,17 @@ class TopWidget extends StatelessWidget {
           ],
         ),
         ...List.generate(
-          5, (index) => TableRow(
-            children: [
-              buildTitleTop(content: '${index+1}'),
-              buildTitleTop(content: 'ten dich vu'),
-              buildTitleTop(content: 'doanh thu'),
-            ]
-          )
+          topService?.length??0, (index) {
+            final revenue= (topService?[index].quantity ?? 0 )
+              * (topService?[index].revenue ?? 0);
+            return TableRow(
+              children: [
+                buildTitleTop(content: '${index+1}'),
+                buildTitleTop(content: topService?[index].nameService),
+                buildTitleTop(content: revenue.toString()),
+              ]
+            );
+          }
         )
       ],
     ) 

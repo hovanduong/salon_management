@@ -5,8 +5,8 @@ import '../../configs/language/navigate_language.dart';
 import '../base/base.dart';
 
 import '../booking_history/booking_history.dart';
-import '../homepage/homepage_screen.dart';
 import '../invoice/invoice_screen.dart';
+import '../overview/overview.dart';
 import '../profile/profile_screen.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
@@ -40,7 +40,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
         index: _viewModel!.selectedIndex,
         children: [
           if (_viewModel!.selectedIndex == 0)
-            const HomePageScreen(
+            const OverViewScreen(
               key: PageStorageKey('HomePage'),
             )
           else

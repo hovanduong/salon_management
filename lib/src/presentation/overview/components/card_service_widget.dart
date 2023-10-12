@@ -22,7 +22,9 @@ class CardServiceWidget extends StatelessWidget {
       growth= money!.split(' ')[1].split('')[1];
     }
     return Container(
-      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      height: 130,
+      margin: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
+      padding: EdgeInsets.all(SizeToPadding.sizeSmall),
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeSmall)),
@@ -37,14 +39,14 @@ class CardServiceWidget extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: STYLE_MEDIUM.copyWith(
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w700,
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: SizeToPadding.sizeVeryVerySmall,),
             child: Paragraph(content: total??'',
-              style: STYLE_BIG.copyWith(
+              style: STYLE_LARGE.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
