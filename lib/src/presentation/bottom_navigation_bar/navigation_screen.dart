@@ -23,11 +23,12 @@ class _NavigateScreenState extends State<NavigateScreen> {
   NavigateViewModel? _viewModel;
   @override
   Widget build(BuildContext context) {
+    final page= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
       onViewModelReady: (viewModel) {
         _viewModel = viewModel;
-        _viewModel!.init();
+        _viewModel!.init(page as int?);
       },
       builder: (context, viewModel, child) => buildNavigateScreen(),
     );
@@ -92,7 +93,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
         BottomNavigationBarItem(
           icon: IconTabWidget(
             name: _viewModel!.selectedIndex == 1
-                ? AppImages.icWallet
+                ? AppImages.icInvoice
                 : AppImages.icWalletLine,
           ),
           label: NavigateLanguage.invoice,

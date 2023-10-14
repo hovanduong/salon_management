@@ -400,7 +400,7 @@ class PaymentViewModel extends BaseViewModel {
       myCustomerId: myCustomerId,
       myServices: serviceId,
       date: setDateTime(),
-      address: addressController.text==''?'Trống'
+      address: addressController.text=='' ? 'Trống'
         :addressController.text.trim(),
       isBooking: false,
       note: noteController.text == '' ? 'Trống' : noteController.text,

@@ -135,6 +135,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
       child: ItemWidget(
+        width: MediaQuery.of(context).size.width-150,
         title: '${BookingDetailsLanguage.client}:',
         content: _viewModel!.listMyBooking[index].myCustomer!.fullName,
         fontWeightContent: FontWeight.w500,
@@ -183,9 +184,20 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   Widget buildTitleService(int index) {
     final lengthService = _viewModel!.listMyBooking[index].myServices!.length;
-    return Paragraph(
-      content: '${BookingDetailsLanguage.informationServices} ($lengthService)',
-      style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+    return InkWell(
+      onTap: () => _viewModel!.showListService(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Paragraph(
+            content: '${BookingDetailsLanguage.informationServices} ($lengthService)',
+            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+          ),
+          Icon(
+            _viewModel!.isShowListService ? Icons.keyboard_arrow_up
+            : Icons.keyboard_arrow_down, size: 30,),
+        ],
+      ),
     );
   }
 
@@ -233,26 +245,26 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildListService(int index) {
-    return Padding(
+    return _viewModel!.isShowListService? Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
       child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _viewModel!.listMyBooking[index].myServices?.length,
-          itemBuilder: (context, indexService) {
-            final money = _viewModel!
-                .listMyBooking[index].myServices![indexService].money;
-            final service =
-                _viewModel!.listMyBooking[index].myServices![indexService].name;
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: SizeToPadding.sizeVeryVerySmall,),
-              child: buildService(
-                AppCurrencyFormat.formatMoneyVND(money!),
-                service!,
-              ),
-            );
-          },),
-    );
+        shrinkWrap: true,
+        itemCount: _viewModel!.listMyBooking[index].myServices?.length,
+        itemBuilder: (context, indexService) {
+          final money = _viewModel!
+              .listMyBooking[index].myServices![indexService].money;
+          final service =
+              _viewModel!.listMyBooking[index].myServices![indexService].name;
+          return Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: SizeToPadding.sizeVeryVerySmall,),
+            child: buildService(
+              AppCurrencyFormat.formatMoneyVND(money!),
+              service!,
+            ),
+          );
+        },),
+    ): Container();
   }
 
   Widget buildCardService(int index) {

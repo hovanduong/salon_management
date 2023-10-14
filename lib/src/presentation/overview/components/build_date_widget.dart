@@ -33,7 +33,8 @@ class BuildDateWidget extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const Icon(Icons.calendar_month, size: 30,),
+          const Icon(Icons.calendar_month, size: 30, 
+            color: AppColors.PRIMARY_GREEN,),
         ],
       ),
     );

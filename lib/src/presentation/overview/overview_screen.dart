@@ -199,12 +199,14 @@ class _OverViewScreenState extends State<OverViewScreen> {
       child: DefaultTabController(
         length: 4,
         initialIndex: 1,
-        child: Column(
-          children: [
-            buildHeader(),
-            buildAppBar(),
-            buildListTab(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildHeader(),
+              buildAppBar(),
+              buildListTab(),
+            ],
+          ),
         ),
       ),
     );

@@ -11,7 +11,8 @@ class ItemWidget extends StatelessWidget {
     this.content,
     this.color,
     this.isSpaceBetween = false,
-    this.fontWeightContent,
+    this.fontWeightContent, 
+    this.width,
   });
 
   final String? title;
@@ -20,6 +21,7 @@ class ItemWidget extends StatelessWidget {
   final Color? color;
   final bool isSpaceBetween;
   final FontWeight? fontWeightContent;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +39,15 @@ class ItemWidget extends StatelessWidget {
         SizedBox(
           width: SpaceBox.sizeSmall,
         ),
-        Paragraph(
-          content: content ?? '',
-          style: STYLE_MEDIUM.copyWith(
-              color: color, fontWeight: fontWeightContent,),
+        SizedBox(
+          width: width ?? null,
+          child: Paragraph(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            content: content ?? '',
+            style: STYLE_MEDIUM.copyWith(
+                color: color, fontWeight: fontWeightContent,),
+          ),
         ),
       ],
     );

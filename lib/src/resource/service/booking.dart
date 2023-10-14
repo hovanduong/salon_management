@@ -43,7 +43,7 @@ class BookingApi {
           'note': prams.note,
           'isBooking': prams.isBooking,
         },
-      );
+      );  
       switch (response?.statusCode) {
         case 201:
           final jsonMap = json.decode(response!.body);

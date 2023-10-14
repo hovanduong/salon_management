@@ -54,6 +54,7 @@ class ScreenTap extends StatelessWidget {
             final date = listCurrent![index].date;
             final id = listCurrent![index].id;
             return NotificationService(
+              context: context,
               onPay: () => onPay!(id!),
               onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
               onTapDeleteBooking: () => onTapDeleteBooking!(id!),
@@ -67,7 +68,7 @@ class ScreenTap extends StatelessWidget {
                     )
                   : '',
               total: AppCurrencyFormat.formatMoneyVND(
-                listCurrent![index].total ?? 0,
+                listCurrent?[index].total ?? 0,
               ),
               nameUser: listCurrent![index].myCustomer?.fullName,
               phoneNumber: phone,

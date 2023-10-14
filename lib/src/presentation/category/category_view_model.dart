@@ -50,25 +50,32 @@ class CategoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> filterCategory(String searchCategory) async {
-    await getListCategory(searchCategory);
-    var listSearchCategory = <CategoryModel>[];
-    listSearchCategory = allCategory.where(
-      (element) => element.name!.toLowerCase().contains(searchCategory),)
-    .toList();
-    foundCategory=listSearchCategory;
-    notifyListeners();
-  }
-
   Future<void> onSearchCategory(String value) async{
     if(value.isNotEmpty){
       final searchCategory = value.toLowerCase();
-      await filterCategory(searchCategory);
+      Future.delayed(const Duration(seconds: 1), ()async => 
+        getListCategory(searchCategory),);
+      foundCategory=allCategory;
     }else{
       foundCategory = listCurrent; 
     }
     notifyListeners();
   }
+
+    // List<CategoryModel> onSearchCategory(String value) {
+  //   if(value.isNotEmpty){
+  //     final searchCategory = value.toLowerCase();
+  //     getListCategory(searchCategory);
+  //     return allCategory;
+  //   }else{
+  //     return listCurrent; 
+  //   }
+  // }
+
+  // void setDataFound(String search){
+  //   foundCategory = onSearchCategory(search) ;
+  //   notifyListeners();
+  // }
 
   Future<void> loadMoreData() async {
     page+=1;
@@ -201,23 +208,25 @@ class CategoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> getListCategory(String? search) async {
-    final result = await categoryApi.getListCategory(search);
+  Future<void> getListCategory(String search) async {
+    if(search.isNotEmpty && search!=''){
+      final result = await categoryApi.getListCategory(search);
 
-    final value = switch (result) {
-      Success(value: final listCategory) => listCategory,
-      Failure(exception: final exception) => exception,
-    };
+      final value = switch (result) {
+        Success(value: final listCategory) => listCategory,
+        Failure(exception: final exception) => exception,
+      };
 
-    if (!AppValid.isNetWork(value)) {
-      isLoading = true;
-    } else if (value is Exception) {
-      isLoading = true;
-    } else {
+      if (!AppValid.isNetWork(value)) {
+        isLoading = true;
+      } else if (value is Exception) {
+        isLoading = true;
+      } else {
+        isLoading = false;
+        allCategory = value as List<CategoryModel>;
+      }
       isLoading = false;
-      allCategory = value as List<CategoryModel>;
     }
-    isLoading = false;
     notifyListeners();
   }
 

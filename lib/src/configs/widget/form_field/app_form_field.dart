@@ -25,6 +25,7 @@ class AppFormField extends StatefulWidget {
     this.iconButton,
     this.suffixText, 
     this.inputFormatters,
+    this.isRequired=false
   });
   final Function()? onTap;
   final String? hintText;
@@ -42,6 +43,7 @@ class AppFormField extends StatefulWidget {
   final String? counterText;
   final IconButton? iconButton;
   final List<TextInputFormatter>? inputFormatters;
+  final bool isRequired;
   @override
   State<AppFormField> createState() => _AppFormFieldState();
 }
@@ -62,9 +64,18 @@ class _AppFormFieldState extends State<AppFormField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Paragraph(
-            content: widget.labelText ?? '',
-            fontWeight: FontWeight.w600,
+          Row(
+            children: [
+              Paragraph(
+                content: widget.labelText ?? '',
+                fontWeight: FontWeight.w600,
+              ),
+              if (widget.isRequired) const Paragraph(
+                content: '*',
+                fontWeight: FontWeight.w600,
+                color: AppColors.PRIMARY_RED,
+              ) else Container(),
+            ],
           ),
           SizedBox(
             height: SpaceBox.sizeVerySmall,
@@ -93,6 +104,7 @@ class _AppFormFieldState extends State<AppFormField> {
                 borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
                 borderSide: const BorderSide(
                   color: AppColors.FIELD_GREEN,
+                  width: 2
                 ),
               ),
               enabledBorder: OutlineInputBorder(

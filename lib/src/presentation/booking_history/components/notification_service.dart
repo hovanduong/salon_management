@@ -18,7 +18,7 @@ class NotificationService extends StatelessWidget {
     this.isButton=false, 
     this.onTapDeleteBooking, 
     this.onTapEditBooking, 
-    this.onPay,
+    this.onPay, this.context,
   });
 
   final String? date;
@@ -32,6 +32,7 @@ class NotificationService extends StatelessWidget {
   final Function()? onTapDeleteBooking;
   final Function()? onTapEditBooking;
   final Function()? onPay;
+  final BuildContext? context;
 
 
   Widget buildTitle({
@@ -54,10 +55,15 @@ class NotificationService extends StatelessWidget {
               SizedBox(
                 width: SpaceBox.sizeSmall,
               ),
-              Paragraph(
-                content: content ?? '',
-                style: STYLE_MEDIUM_BOLD.copyWith(
-                  color: color ?? AppColors.BLACK_400,
+              SizedBox(
+                width: MediaQuery.of(context!).size.width-220,
+                child: Paragraph(
+                  content: content ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: STYLE_MEDIUM_BOLD.copyWith(
+                    color: color ?? AppColors.BLACK_400,
+                  ),
                 ),
               ),
             ],

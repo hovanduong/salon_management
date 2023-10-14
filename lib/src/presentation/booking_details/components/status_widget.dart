@@ -19,7 +19,7 @@ class StatusWidget{
       default:
         return StatusService(
           content: HistoryLanguage.done,
-          color: AppColors.BLACK_500,
+          color: AppColors.COLOR_GREEN_LIST,
         );
     }
   }

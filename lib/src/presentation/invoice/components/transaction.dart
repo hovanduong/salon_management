@@ -45,7 +45,7 @@ class Transaction extends StatelessWidget {
       trailing: Paragraph(
         content: money ?? '',
         style: STYLE_MEDIUM_BOLD.copyWith(
-          color: isColor == '+' ? AppColors.FIELD_GREEN : AppColors.PRIMARY_RED,
+          color: isColor == '+' ? AppColors.Green_Money : AppColors.Red_Money,
         ),
       ),
     );

@@ -197,9 +197,18 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Paragraph(
-          content: BookingLanguage.selectServices,
-          style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+        Row(
+          children: [
+            Paragraph(
+              content: BookingLanguage.selectServices,
+              style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+            ),
+            const Paragraph(
+                content: '*',
+                fontWeight: FontWeight.w600,
+                color: AppColors.PRIMARY_RED,
+              ),
+          ],
         ),
         IconButton(
           icon: const Icon(Icons.add_circle),
@@ -438,6 +447,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildAddress() {
     return AppFormField(
+      isRequired: true,
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
       textEditingController: _viewModel!.addressController,
