@@ -9,6 +9,7 @@ import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/my_service_api.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
@@ -40,6 +41,15 @@ class ServiceAddViewModel extends BaseViewModel {
   Future<void> init() async {
     await getCategory();
     await initMapCategory();
+  }
+
+  void formatMoney(String? value) {
+    if (value != null) {
+      priceController.text = AppCurrencyFormat.formatMoney(
+        double.parse(value),
+      );
+    }
+    notifyListeners();
   }
 
   void closeDialog(BuildContext context) {
