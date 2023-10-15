@@ -28,7 +28,7 @@ class AppButton extends StatelessWidget {
             colors: [
               if (enableButton) AppColors.LINEAR_GREEN else AppColors.BLACK_200,
               if (enableButton)
-                AppColors.SECONDARY_PINK
+                AppColors.LINEAR_GREEN_Second
               else
                 AppColors.BLACK_200,
             ],

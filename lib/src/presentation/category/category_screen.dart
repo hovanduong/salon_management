@@ -138,11 +138,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildNameCategory(int index){
     return Container(
+      width: MediaQuery.of(context).size.width - 60,
       padding: EdgeInsets.only(
           right: SizeToPadding.sizeSmall,
           bottom: SizeToPadding.sizeMedium,
           top: SizeToPadding.sizeMedium,),
       child: Paragraph(
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         content: _viewModel!.foundCategory[index].name,
         style: STYLE_LARGE_BOLD,
       ),
@@ -150,8 +153,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildTitleCategory(int index) {
-    final id = _viewModel!.foundCategory[index].id;
-    final name = _viewModel!.foundCategory[index].name;
+    final id = _viewModel?.foundCategory[index].id;
+    final name = _viewModel?.foundCategory[index].name;
     return Padding(
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeVeryVerySmall),
       child: InkWell(
@@ -201,9 +204,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           icon: const Icon(Icons.search),
           color: AppColors.BLACK_300,
         ),
-        hintText: CategoryLanguage.search,
-        onChanged: (value) {
-          _viewModel!.onSearchCategory(value.trim());
+        hintText: CategoryLanguage.searchCategory,
+        onChanged: (value) async{
+          await _viewModel!.onSearchCategory(value.trim());
         },
       ),
     );

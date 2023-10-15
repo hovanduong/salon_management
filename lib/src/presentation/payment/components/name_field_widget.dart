@@ -34,9 +34,18 @@ class NameFieldWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Paragraph(
-                content: name,
-                fontWeight: FontWeight.w600,
+              Row(
+                children: [
+                  Paragraph(
+                    content: name,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  const Paragraph(
+                    content: '*',
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.PRIMARY_RED,
+                  ),
+                ],
               ),
               if (isAddCustomer) IconButton(
                 icon: const Icon(Icons.add_circle),

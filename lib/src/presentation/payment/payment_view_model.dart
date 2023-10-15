@@ -18,6 +18,7 @@ import '../../resource/service/my_customer_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
@@ -399,8 +400,8 @@ class PaymentViewModel extends BaseViewModel {
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,
-      date: setDateTime(),
-      address: addressController.text==''?'Trống'
+      date: DateTime.now().toString(),
+      address: addressController.text=='' ? 'Trống'
         :addressController.text.trim(),
       isBooking: false,
       note: noteController.text == '' ? 'Trống' : noteController.text,

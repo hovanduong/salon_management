@@ -321,9 +321,10 @@ class BookingViewModel extends BaseViewModel {
   Future<void> onServiceList(BuildContext context) =>
       Navigator.pushNamed(context, Routers.serviceList);
 
-  Future<void> goToHome() => Navigator.pushReplacementNamed(
+  Future<void> goToBooking() => Navigator.pushReplacementNamed(
         context,
         Routers.home,
+        arguments: 2,
       );
 
   dynamic showDialogSuccess(_) {
@@ -337,12 +338,12 @@ class BookingViewModel extends BaseViewModel {
           leftButtonName: SignUpLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: BookingLanguage.home,
+          rightButtonName: BookingLanguage.booking,
           onTapLeft: () {
             Navigator.pop(context);
           },
           onTapRight: () {
-            goToHome();
+            goToBooking();
           },
         );
       },
@@ -385,7 +386,6 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
-    log(dateTime.toString());
     final result = await bookingApi.postBooking(MyBookingPramsApi(
       myCustomerId: myCustomerId,
       myServices: serviceId,

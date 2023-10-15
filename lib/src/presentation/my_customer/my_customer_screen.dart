@@ -114,7 +114,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           icon: const Icon(Icons.search),
           color: AppColors.BLACK_300,
         ),
-        hintText: MyCustomerLanguage.search,
+        hintText: MyCustomerLanguage.searchPhone,
         onChanged: (value) {
           _viewModel!.onSearchCategory(value);
         },

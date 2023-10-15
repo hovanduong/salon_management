@@ -6,6 +6,7 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/homepage_language.dart';
 import '../../../resource/model/model.dart';
+import '../../../utils/app_currency.dart';
 
 class TopWidget extends StatelessWidget {
   const TopWidget({
@@ -31,39 +32,36 @@ class TopWidget extends StatelessWidget {
           onTap!();
         }
       },
-      child: Padding(
-        padding: EdgeInsets.all( SizeToPadding.sizeVerySmall),
-        child: Container(
-          padding: EdgeInsets.all(SizeToPadding.sizeMedium),
-          decoration: BoxDecoration(
-            color: AppColors.COLOR_WHITE,
-            borderRadius: BorderRadius.circular(
-              BorderRadiusSize.sizeSmall,),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: SpaceBox.sizeMedium,
-                color: AppColors.BLACK_200,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Paragraph(content: title ?? '',
-                    style: STYLE_MEDIUM.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+      child: Container(
+        padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+        decoration: BoxDecoration(
+          color: AppColors.COLOR_WHITE,
+          borderRadius: BorderRadius.circular(
+            BorderRadiusSize.sizeSmall,),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: SpaceBox.sizeMedium,
+              color: AppColors.BLACK_200,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Paragraph(content: title ?? '',
+                  style: STYLE_MEDIUM.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
-                  widget ?? Icon(
-                    isShowTop? Icons.keyboard_arrow_up
-                    : Icons.keyboard_arrow_down,),
-                ],
-              ),
-              showTop(),
-            ],
-          ),
+                ),
+                widget ?? Icon(
+                  isShowTop? Icons.keyboard_arrow_up
+                  : Icons.keyboard_arrow_down,),
+              ],
+            ),
+            showTop(),
+          ],
         ),
       ),
     );
@@ -73,7 +71,8 @@ class TopWidget extends StatelessWidget {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall,),
+        padding: EdgeInsets.symmetric(
+          vertical: SizeToPadding.sizeSmall,),
         child: Paragraph(
           content: content??'',
           style: STYLE_MEDIUM.copyWith(
@@ -107,11 +106,11 @@ class TopWidget extends StatelessWidget {
               children: [
                 buildTitleTop(content: '${index+1}'),
                 buildTitleTop(content: topService?[index].nameService),
-                buildTitleTop(content: revenue.toString()),
-              ]
+                buildTitleTop(content: AppCurrencyFormat.formatMoneyVND(revenue)),
+              ],
             );
           }
-        )
+        ),
       ],
     ) 
     : Container();

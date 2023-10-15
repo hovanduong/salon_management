@@ -200,5 +200,12 @@
     "appointmentCanceled": "Appointments Canceled",
     "newClient": "New Client",
     "customer":"Customer",
+    "searchPhone":"Search by phone number",
+    "searchCategory":"Search by category",
+    "billPayment":"Bill Payment",
+    "paymentSuccess":"Payment successfully",
+    "paymentMethod":"Payment method",
+    "transactionId":"Transaction ID",
+    "shareReceipt":"Share Receipt",
     "lastLine": ""
 }

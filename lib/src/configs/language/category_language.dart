@@ -12,6 +12,7 @@ class CategoryLanguage {
   static final editCategory= S.current.editCategory;
   static final enterCategory= S.current.enterCategory;
   static final search= S.current.search;
+  static final searchCategory= S.current.searchCategory;
   static final waningDeleteService= S.current.waningDeleteService;
 
 }

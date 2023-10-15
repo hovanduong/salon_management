@@ -18,7 +18,13 @@ class AppColors {
 
   static const Color LINEAR_GREEN = Color.fromRGBO(105, 174, 169, 1);
 
+  static const Color LINEAR_GREEN_Second = Color.fromRGBO(63, 135, 130, 1);
+
   static const Color FIELD_GREEN = Color.fromRGBO(67, 136, 131, 1);
+
+  static const Color FIELD_GREEN_First = Color.fromRGBO(67, 136, 131, 0);
+
+  static const Color FIELD_GREEN_Second = Color.fromRGBO(67, 136, 131, 0.3);
 
   static const Color COLOR_WHITE = Color.fromRGBO(255, 255, 255, 1);
 
@@ -49,6 +55,9 @@ class AppColors {
   static const Color LIGHT_PURPLE = Color.fromRGBO(185, 48, 227, 0.1);
 
   static const Color YELLOW_STATUS = Color.fromRGBO(253, 141, 20, 1);
+
+  static const Color Green_Money = Color.fromRGBO(37, 169, 105, 1);
+  static const Color Red_Money = Color.fromRGBO(249, 91, 81, 1);
 
   static const Color COLOR_PINK = Color.fromRGBO(242, 11, 106, 1);
   static const Color COLOR_GREY_DARK = Color.fromRGBO(239, 239, 239, 1);

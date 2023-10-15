@@ -58,11 +58,16 @@ class CardServiceWidget extends StatelessWidget {
                 size: 18,
                 color: growth=='-'? AppColors.PRIMARY_RED 
                 : AppColors.PRIMARY_GREEN,),
-              Paragraph(content: money??'',
-                style: STYLE_SMALL.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color:growth=='-'? AppColors.PRIMARY_RED
-                  : AppColors.PRIMARY_GREEN,
+              SizedBox(
+                width: MediaQuery.of(context).size.width/3.2,
+                child: Paragraph(content: money??'',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: STYLE_SMALL.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color:growth=='-'? AppColors.PRIMARY_RED
+                    : AppColors.PRIMARY_GREEN,
+                  ),
                 ),
               ),
             ],

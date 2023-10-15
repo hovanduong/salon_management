@@ -26,9 +26,18 @@ class NameFieldWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Paragraph(
-            content: name,
-            fontWeight: FontWeight.w600,
+          Row(
+            children: [
+              Paragraph(
+                content: name,
+                fontWeight: FontWeight.w600,
+              ),
+              const Paragraph(
+                content: '*',
+                fontWeight: FontWeight.w600,
+                color: AppColors.PRIMARY_RED,
+              ),
+            ],
           ),
           SizedBox(
             height: SpaceBox.sizeVerySmall,

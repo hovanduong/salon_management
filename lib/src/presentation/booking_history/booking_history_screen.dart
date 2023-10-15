@@ -126,6 +126,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         return DiaLogPhoneCustomer(
           phone: phone,
           onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
+          onTapText: () => _viewModel!.sendPhone(phone, 'sms'),
         );
       },
     );

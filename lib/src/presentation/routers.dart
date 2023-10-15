@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
 import 'app/splash.dart';
+import 'bill_payment/bill_payment_screen.dart';
 import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
@@ -58,6 +59,7 @@ class Routers {
   static const String addBooking = '/addBooking';
   static const String invoice = '/invoice';
   static const String payment = '/payment';
+  static const String bill = '/bill';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -75,7 +77,15 @@ class Routers {
         return animRoute(
           const NavigateScreen(),
           beginOffset: right,
-          name: verification,
+          name: navigation,
+          arguments: arguments,
+        );
+
+      case bill:
+        return animRoute(
+          const BillPaymentScreen(),
+          beginOffset: right,
+          name: bill,
           arguments: arguments,
         );
         
