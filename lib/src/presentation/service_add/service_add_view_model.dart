@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
@@ -38,15 +39,25 @@ class ServiceAddViewModel extends BaseViewModel {
 
   String? money;
 
+  static const _locale = 'en';
+
+  String formatNumber(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get currency =>
+      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
+
   Future<void> init() async {
     await getCategory();
     await initMapCategory();
   }
 
   void formatMoney(String? value) {
-    if (value != null) {
-      priceController.text = AppCurrencyFormat.formatMoney(
-        double.parse(value),
+    if (value != null && value.isNotEmpty) {
+      final valueFormat =
+          AppCurrencyFormat.formatNumberEnter(value.replaceAll(',', ''));
+      priceController.value = TextEditingValue(
+        text: valueFormat,
+        selection: TextSelection.collapsed(offset: valueFormat.length),
       );
     }
     notifyListeners();

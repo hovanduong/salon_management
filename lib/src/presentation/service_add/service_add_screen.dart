@@ -85,6 +85,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       textEditingController: _viewModel!.priceController,
       hintText: ServiceAddLanguage.enterAmountOfMoney,
       onChanged: (value) {
+      
+
         _viewModel!
           ..validPrice(value)
           ..formatMoney(value)
