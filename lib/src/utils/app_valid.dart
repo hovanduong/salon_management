@@ -7,6 +7,20 @@ class AppValid {
   static String? validateFullName(String? value) {
     if (value == null || value.isEmpty) {
       return S.current.validEnterFullName;
+    } else if (value.length < 6) {
+      return S.current.validEnterFullName;
+    }
+    final regex = RegExp(
+        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+    if (!regex.hasMatch(value)) {
+      return S.current.validFullName;
+    }
+    return null;
+  }
+
+  static String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return S.current.validEnterFullName;
     } else if (value.length < 2) {
       return S.current.validName;
     }

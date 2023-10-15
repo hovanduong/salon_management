@@ -49,7 +49,7 @@ class MyCustomerEditViewModel extends BaseViewModel {
   }
 
   void validName(String? value) {
-    final result = AppValid.validateFullName(value);
+    final result = AppValid.validateName(value);
     if (result != null) {
       messageErrorName = result;
     } else {

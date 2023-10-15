@@ -3,20 +3,22 @@
 import 'dart:convert';
 
 class UserModel {
-  String? phone;
-  String? firstName;
-  String? lastName;
-  String? middleName;
-  String? avatar;
-  String? birthDate;
+  String? fullName;
+  String? gender;
+  String? phoneNumber;
+  String? password;
+  String? email;
+  String? passwordConfirm;
+  num? id;
 
   UserModel({
-    this.phone,
-    this.firstName,
-    this.lastName,
-    this.middleName,
-    this.avatar,
-    this.birthDate,
+    this.id,
+    this.phoneNumber,
+    this.fullName,
+    this.gender,
+    this.password,
+    this.email, 
+    this.passwordConfirm,
   });
 }
 
@@ -44,24 +46,22 @@ abstract class UserModelFactory {
     UserModel userModel,
   ) {
     final data = <String, dynamic>{};
-    data['phone'] = userModel.phone;
-    data['firstName'] = userModel.firstName;
-    data['lastName'] = userModel.lastName;
-    data['middleName'] = userModel.middleName;
-    data['avatar'] = userModel.avatar;
-    data['birthDate'] = userModel.birthDate;
+    data['phoneNumber'] = userModel.phoneNumber;
+    data['fullName'] = userModel.fullName;
+    data['email'] = userModel.email;
+    data['gender'] = userModel.gender;
+    data['id'] = userModel.id;
 
     return data;
   }
 
   static UserModel _fromJson(Map<String, dynamic> json) {
     final userModel = UserModel()
-      ..phone = json['phone']
-      ..firstName = json['firstName']
-      ..lastName = json['lastName']
-      ..middleName = json['middleName']
-      ..avatar = json['avatar']
-      ..birthDate = json['birthDate'];
+      ..phoneNumber = json['phoneNumber']
+      ..fullName = json['fullName']
+      ..email = json['email']
+      ..gender = json['gender']
+      ..id = json['id'];
     return userModel;
   }
 }

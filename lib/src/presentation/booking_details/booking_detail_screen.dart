@@ -249,6 +249,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
       child: ListView.builder(
         shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
         itemCount: _viewModel!.listMyBooking[index].myServices?.length,
         itemBuilder: (context, indexService) {
           final money = _viewModel!

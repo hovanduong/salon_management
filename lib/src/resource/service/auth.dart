@@ -15,126 +15,36 @@ import '../model/model.dart';
 
 class AuthParams {
   const AuthParams({
-    this.id,
-    this.user,
-    this.birthDate,
-    this.name,
-    this.lastName,
-    this.middleName,
-    this.password,
+    this.userModel,
     this.phoneNumber,
-    this.category,
-    this.myServiceModel,
-    this.listCategory,
-    this.page, 
-    this.status,
-    this.myCustomerModel,
+    this.password,
+    this.fullName,
+    this.gender,
+    this.email, 
+    this.passwordConfirm,
   });
-  final int? id;
-  final String? name;
-  final String? lastName;
-  final String? middleName;
-  final String? birthDate;
+  final UserModel? userModel;
   final String? phoneNumber;
   final String? password;
-  final UserModel? user;
-  final CategoryModel? category;
-  final MyServiceModel? myServiceModel;
-  final List<int>? listCategory;
-  final int? page;
-  final String? status;
-  final MyCustomerModel? myCustomerModel;
+  final String? fullName;
+  final String? gender;
+  final String? email;
+  final String? passwordConfirm;
 }
 
 class AuthApi {
-  // Future<Result<Service, Exception>> detailsService({String? id}) async {
-  //   try {
-  //     final response = await HttpRemote.get(
-  //       url: '/my-service/$id',
-  //     );
-  //     switch (response?.statusCode) {
-  //       case 200:
-  //         final jsonMap = json.decode(response!.body);
-  //         final data = json.encode(jsonMap['data']);
-  //         final serviceDetails = ServiceFactory.create(data);
-  //         return Success(serviceDetails);
-  //       default:
-  //         return Failure(Exception(response!.reasonPhrase));
-  //     }
-  //   } on Exception catch (e) {
-  //     return Failure(e);
-  //   }
-  // }
-
-  Future<Result<bool, Exception>> sendOTP(
-    AuthParams? params,
-    BuildContext context,
-  ) async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        final auth = FirebaseAuth.instance;
-        await auth.verifyPhoneNumber(
-          phoneNumber: '+84 ${params!.user!.phone}',
-          verificationCompleted: (credential) {},
-          verificationFailed: (e) {
-            LoadingDialog.hideLoadingDialog(context);
-          },
-          codeSent: (verificationId, resendToken) {
-            LoadingDialog.hideLoadingDialog(context);
-            Navigator.pushNamed(
-              context,
-              Routers.verification,
-              arguments: RegisterArguments(
-                pass: params.password,
-                verificationId: verificationId,
-                userModel: params.user,
-              ),
-            );
-          },
-          codeAutoRetrievalTimeout: (verificationId) {},
-          timeout: const Duration(seconds: 60),
-        );
-      }
-      return const Success(true);
-    } on SocketException catch (e) {
-      return Failure(e);
-    }
-  }
-
-  Future<Result<bool, Exception>> checkPhoneNumberExists(
-    AuthParams? params,
-  ) async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        final data = await FirebaseFirestore.instance
-            .collection('phone')
-            .where('phone', isEqualTo: params!.phoneNumber)
-            .get();
-        final phone = data.docs.map((e) => e.data());
-        if (phone.isNotEmpty) {
-          return Failure(Exception(phone));
-        } else {
-          return const Success(true);
-        }
-      }
-      return Failure(Exception('no phone'));
-    } on SocketException catch (e) {
-      return Failure(e);
-    }
-  }
 
   Future<Result<bool, Exception>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/api/auth/register',
+        url: '/auth/register',
         body: {
-          'firstName': params!.user!.firstName,
-          'lastName': params.user!.lastName,
-          'middleName': '',
-          'phone': params.user!.phone,
+          'phoneNumber': params!.phoneNumber,
+          'fullName': params.fullName,
+          'gender': params.gender,
+          'email': params.email,
           'password': params.password,
+          'passwordConfirm': params.passwordConfirm,
         },
       );
       print(response?.statusCode);

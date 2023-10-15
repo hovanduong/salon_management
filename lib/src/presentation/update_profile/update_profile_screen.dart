@@ -1,13 +1,8 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/widget/select_date/select_date.dart';
-import '../../utils/city_vietnam.dart';
 import '../base/base.dart';
-import 'components/select_field_widget.dart';
 import 'update_profile.dart';
 
 class UpdateProfileSreen extends StatefulWidget {
@@ -37,7 +32,8 @@ class _UpdateProfileSreenState extends State<UpdateProfileSreen> {
 
   Widget buildProfile() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium,
+        bottom: SizeToPadding.sizeBig*2,),
       child: CustomerAppBar(
         title: UpdateProfileLanguage.updateProfile,
         onTap: (){
@@ -47,95 +43,36 @@ class _UpdateProfileSreenState extends State<UpdateProfileSreen> {
     );
   }
 
-  Widget buildAvatarEmpty(){
-    return DottedBorder(
-      borderType: BorderType.Circle,
-      radius: const Radius.circular(12),
-      dashPattern: const [4, 4],
-      padding: const EdgeInsets.all(6),
-      color: AppColors.PRIMARY_PINK,
-      child: const CircleAvatar(
-        backgroundColor: AppColors.BLACK_300,
-        maxRadius: 50,
-      ),
-    );
-  }
-
-  Widget buildAvatar(){
-    return InkWell(
-      onTap: () => _viewModel!.getImage(),
-      child: Stack(
-        children:[
-          if (_viewModel!.file != null) CircleAvatar(
-              radius: 60, 
-              backgroundImage: FileImage(_viewModel!.file!),
-          ) else buildAvatarEmpty(),
-          Positioned(
-            top: SpaceBox.sizeSmall,
-            right: SpaceBox.sizeSmall,
-            child: CircleAvatar(
-              backgroundColor: AppColors.COLOR_WHITE,
-              maxRadius: SpaceBox.sizeSmall,
-              child: Icon(
-                Icons.edit, 
-                size: SpaceBox.sizeSmall,
-                color: AppColors.BLACK_500,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildFieldFirstName() {
+  Widget buildFieldFullName() {
     return AppFormField(
-      labelText: UpdateProfileLanguage.firstName,
-      hintText: UpdateProfileLanguage.enterFirstName,
+      labelText: UpdateProfileLanguage.fullName,
+      hintText: UpdateProfileLanguage.enterName,
       onChanged: (value) {
         _viewModel!
-          ..validFirstName(value)
+          ..validFullName(value)
           ..onSignIn();
       },
-      validator: _viewModel!.messageFirstName ?? '',
+      validator: _viewModel!.messageFullName ?? '',
     );
   }
 
-  Widget buildFieldLastName() {
+  Widget buildFieldEmail() {
     return AppFormField(
-      labelText: UpdateProfileLanguage.lastName,
-      hintText: UpdateProfileLanguage.enterLastName,
+      labelText: UpdateProfileLanguage.email,
+      hintText: UpdateProfileLanguage.enterEmail,
       onChanged: (value) {
         _viewModel!
-          ..validLastName(value)
+          ..validEmail(value)
           ..onSignIn();
-
       },
-      validator: _viewModel!.messageLastName ?? '',
-    );
-  }
-
-  Widget buildDateOfBirth() {
-    return SelectDropDown(
-      height: 200,
-      onTap: () {
-        Navigator.pop(context);
-        _viewModel!.onSignIn();
-      },
-      picker: CupertinoDatePicker(
-        mode: CupertinoDatePickerMode.date,
-        initialDateTime: DateTime.now(),
-        maximumYear: DateTime.now().year,
-        onDateTimeChanged: (newDateTime) {
-          _viewModel!.setDate(newDateTime);
-        },
-      ),
+      validator: _viewModel!.messageEmail ?? '',
     );
   }
 
   Widget buildButtonSubmit(String phone) {
     return Padding(
-      padding: EdgeInsets.only(bottom: SpaceBox.sizeBig),
+      padding: EdgeInsets.only(top: SizeToPadding.sizeBig*3
+        ,bottom: SpaceBox.sizeBig,),
       child: AppButton(
         enableButton: _viewModel!.enableSignIn,
         content: UpdateProfileLanguage.submit,
@@ -146,99 +83,48 @@ class _UpdateProfileSreenState extends State<UpdateProfileSreen> {
     );
   }
 
-  Widget buildSelectPicker(
-      BuildContext context, String type, List<String> list,) {
-    return SelectDropDown(
-      onTap: () {
-        if (type == Constants.gender) {
-          _viewModel!.setNameGender();
-          Navigator.pop(context);
-        } else if (type == Constants.city) {
-          _viewModel!.setNameCity();
-          Navigator.pop(context);
-        }
-        _viewModel!.onSignIn();
-      },
-      picker: CupertinoPicker(
-        itemExtent: 32,
-        backgroundColor: CupertinoColors.white,
-        onSelectedItemChanged: (index) {
-          if (type == Constants.gender) {
-            _viewModel!.changeGenderIndex(index);
-          } else if (type == Constants.city) {
-            _viewModel!.changSelectedIndex(index);
-          }
-        },
-        children: List<Widget>.generate(list.length, (index) {
-          return Center(
-            child: Paragraph(
-              content: list[index],
-              style: STYLE_MEDIUM,
+  Widget buildSelectGender(){
+    return Container(
+      height: SpaceBox.sizeLarge*2,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
+        color: AppColors.PRIMARY_GREEN,
+      ),
+      child: DropdownButton(
+        padding: EdgeInsets.all(SpaceBox.sizeSmall),
+        value: _viewModel!.gender,
+        dropdownColor: AppColors.PRIMARY_GREEN,
+        iconEnabledColor: AppColors.COLOR_WHITE,
+        underline: Container(),
+        items: _viewModel!.genderList.map((value){
+          return DropdownMenuItem(
+            value: value,
+            child: Paragraph(content: value, 
+              style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.COLOR_WHITE),
             ),
           );
-        }),
-      ),
-    );
-  }
-
-  dynamic showDateDialog() {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (context) {
-        return buildDateOfBirth();
-      },
-    );
-  }
-
-  dynamic showSelectDialog(List<String>? list, String? type) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (context) {
-        return buildSelectPicker(context, type ?? '', list ?? []);
-      },
-    );
-  }
-
-  Widget buildSelectCity() {
-    return BuildSelectFieldWidget(
-      onTap: (){
-        showSelectDialog(AppCityVietNam.listCity,Constants.city);
-      },
-      validator: _viewModel!.messageCity,
-      labelText: UpdateProfileLanguage.city,
-      content:
-          _viewModel!.nameCity == '-' ? 
-          UpdateProfileLanguage.selectCity : _viewModel!.nameCity,
-    );
-  }
-
-  Widget buildSelectDate() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-      child: BuildSelectFieldWidget(
-        onTap: (){
-          showDateDialog();
+        }).toList(), 
+        onChanged: (value) {
+          _viewModel!.setGender(value!);
         },
-        validator: _viewModel!.messageDate,
-        isDate: true,
-        labelText: UpdateProfileLanguage.dateOfBirth,
-        content: _viewModel!.date == '-' ? 'dd//mm/yyyy' : _viewModel!.date,
       ),
     );
   }
 
-  Widget buildSelectGender() {
-    return Padding(
-      padding: EdgeInsets.only(bottom: SizeToPadding.sizeSmall),
-      child: BuildSelectFieldWidget(
-        onTap: (){
-          showSelectDialog(_viewModel!.genderList, Constants.gender);
-        },
-        validator: _viewModel!.messageGender,
-        labelText: UpdateProfileLanguage.gender,
-        content:
-            _viewModel!.gender == '-' ? UpdateProfileLanguage.selectGender : _viewModel!.gender,
-      ),
+  Widget buildTitleGender(){
+    return Paragraph(
+      content: UpdateProfileLanguage.selectGender,
+      style: STYLE_MEDIUM_BOLD,
+    );
+  }
+
+  Widget buildGender(){
+    return Row(
+      children: [
+        buildTitleGender(),
+        SizedBox(width: SpaceBox.sizeMedium,),
+        buildSelectGender(),
+      ],
     );
   }
 
@@ -252,12 +138,9 @@ class _UpdateProfileSreenState extends State<UpdateProfileSreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 buildProfile(),
-                buildAvatar(),
-                buildFieldFirstName(),
-                buildFieldLastName(),
-                buildSelectCity(),
-                buildSelectDate(),
-                buildSelectGender(),
+                buildFieldFullName(),
+                buildFieldEmail(),
+                buildGender(),
                 buildButtonSubmit(phone),
               ],
             ),
