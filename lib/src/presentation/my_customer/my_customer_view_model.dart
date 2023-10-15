@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tiengviet/tiengviet.dart';
@@ -53,6 +54,7 @@ class MyCustomerViewModel extends BaseViewModel {
 
   Future<void> onSearchCategory(String value) async {
     final searchCustomer = TiengViet.parse(value.toLowerCase());
+    print(searchCustomer);
     await getListSearch(searchCustomer);
     notifyListeners();
   }

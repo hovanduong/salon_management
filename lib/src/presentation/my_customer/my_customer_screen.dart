@@ -42,6 +42,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
 
   Widget buildCustomerScreen() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
         create: (context) =>
@@ -135,7 +136,6 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeVerySmall,
         ),
-        // height: MediaQuery.of(context).size.height-200,
         child: ListView.builder(
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
