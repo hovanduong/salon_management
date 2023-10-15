@@ -12,20 +12,18 @@ class SlidableActionWidget extends StatelessWidget {
     this.onTapButtonFirst, 
     this.onTapButtonSecond, 
     this.isEdit=false,
-    this.isSlidable=true,
   });
 
   final Widget? child;
   final Function(BuildContext context)? onTapButtonFirst;
   final Function(BuildContext context)? onTapButtonSecond;
   final bool isEdit;
-  final bool isSlidable;
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
       closeOnScroll: true,
-      endActionPane: isSlidable?  ActionPane(
+      endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
@@ -54,7 +52,7 @@ class SlidableActionWidget extends StatelessWidget {
               label: CategoryLanguage.edit,
             ),
         ],
-      ) : null,
+      ),
       child: child?? Container(),
     );
   }
