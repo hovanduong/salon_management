@@ -15,31 +15,14 @@ class CategoryParams {
   final String? name;
 }
 
-class CategoryApi{
+class CategoryApi {
   Future<Result<List<CategoryModel>, Exception>> getListCategory(
-    String? search,) async {
+    int page,
+    String? search,
+  ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/category?search=$search',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final listCategory = CategoryModelFactory.createList(data);
-          return Success(listCategory);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
-
-  Future<Result<List<CategoryModel>, Exception>> getCategory(int page) async {
-    try {
-      final response = await HttpRemote.get(
-        url: '/category?pageSize=15&page=$page',
+        url: '/category?pageSize=15&page=$page&search=${search ?? ''}',
       );
       switch (response?.statusCode) {
         case 200:
@@ -75,7 +58,9 @@ class CategoryApi{
   Future<Result<bool, Exception>> putCategory(CategoryParams? params) async {
     try {
       final response = await HttpRemote.put(
-          url: '/category/${params!.id}', body: {'name': params.name},);
+        url: '/category/${params!.id}',
+        body: {'name': params.name},
+      );
       print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:

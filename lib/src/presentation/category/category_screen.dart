@@ -92,12 +92,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildCardService(int index, int serviceIndex) {
     final idService =
-        _viewModel!.foundCategory[index].myServices?[serviceIndex].id;
-    final idCategory = _viewModel!.foundCategory[index].id;
+        _viewModel!.listCategory[index].myServices?[serviceIndex].id;
+    final idCategory = _viewModel!.listCategory[index].id;
     final money =
-        _viewModel!.foundCategory[index].myServices?[serviceIndex].money;
-    final name = 
-      _viewModel!.foundCategory[index].myServices?[serviceIndex].name;
+        _viewModel!.listCategory[index].myServices?[serviceIndex].money;
+    final name = _viewModel!.listCategory[index].myServices?[serviceIndex].name;
     return CardServiceWidget(
       money: money,
       name: name,
@@ -115,7 +114,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: _viewModel!.foundCategory[index].myServices?.length,
+        itemCount: _viewModel!.listCategory[index].myServices?.length,
         itemBuilder: (context, serviceIndex) =>
             buildCardService(index, serviceIndex),
       ),
@@ -123,38 +122,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildIconCategory(int index) {
-    if(_viewModel!.foundCategory.isNotEmpty){
-      return _viewModel!.foundCategory[index].myServices!.isNotEmpty? Icon(
-        _viewModel!.foundCategory[index].isIconCategory == true
-            ? Icons.arrow_drop_down_circle
-            : Icons.remove_circle,
-        color: AppColors.PRIMARY_GREEN,
-        size: 27,
-      ): Container();
-    }else {
+    if (_viewModel!.listCategory.isNotEmpty) {
+      return _viewModel!.listCategory[index].myServices!.isNotEmpty
+          ? Icon(
+              _viewModel!.listCategory[index].isIconCategory == true
+                  ? Icons.arrow_drop_down_circle
+                  : Icons.remove_circle,
+              color: AppColors.PRIMARY_GREEN,
+              size: 27,
+            )
+          : Container();
+    } else {
       return Container();
     }
   }
 
-  Widget buildNameCategory(int index){
+  Widget buildNameCategory(int index) {
     return Container(
       width: MediaQuery.of(context).size.width - 60,
       padding: EdgeInsets.only(
-          right: SizeToPadding.sizeSmall,
-          bottom: SizeToPadding.sizeMedium,
-          top: SizeToPadding.sizeMedium,),
+        right: SizeToPadding.sizeSmall,
+        bottom: SizeToPadding.sizeMedium,
+        top: SizeToPadding.sizeMedium,
+      ),
       child: Paragraph(
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        content: _viewModel!.foundCategory[index].name,
+        content: _viewModel!.listCategory[index].name,
         style: STYLE_LARGE_BOLD,
       ),
     );
   }
 
   Widget buildTitleCategory(int index) {
-    final id = _viewModel?.foundCategory[index].id;
-    final name = _viewModel?.foundCategory[index].name;
+    final id = _viewModel?.listCategory[index].id;
+    final name = _viewModel?.listCategory[index].name;
     return Padding(
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeVeryVerySmall),
       child: InkWell(
@@ -166,10 +168,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
           onTapButtonFirst: (context) => _viewModel!.showWaningDiaglog(
             onTapRight: () {
               _viewModel!.deleteCategory(id!);
-            },title: CategoryLanguage.waningDeleteCategory,),
+            },
+            title: CategoryLanguage.waningDeleteCategory,
+          ),
           onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
-            context: context, 
-            categoryModel: CategoryModel(id: id, name: name),),
+            context: context,
+            categoryModel: CategoryModel(id: id, name: name),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -187,7 +192,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildTitleCategory(index),
-        if (_viewModel!.foundCategory[index].isIconCategory == false)
+        if (_viewModel!.listCategory[index].isIconCategory == false)
           buildListService(index)
         else
           Container(),
@@ -195,7 +200,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget buildSearch(){
+  Widget buildSearch() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
       child: AppFormField(
@@ -205,28 +210,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
           color: AppColors.BLACK_300,
         ),
         hintText: CategoryLanguage.searchCategory,
-        onChanged: (value) async{
+        onChanged: (value) async {
           await _viewModel!.onSearchCategory(value.trim());
         },
       ),
     );
   }
 
-  Widget buildCategory(){
+  Widget buildCategory() {
     return Container(
       margin: EdgeInsets.only(
-          left: SizeToPadding.sizeSmall,
-          right: SizeToPadding.sizeVerySmall,),
-      height: MediaQuery.of(context).size.height-200,
+        left: SizeToPadding.sizeSmall,
+        right: SizeToPadding.sizeVerySmall,
+      ),
+      height: MediaQuery.of(context).size.height - 200,
       child: ListView.builder(
         controller: _viewModel!.scrollController,
         itemCount: _viewModel!.loadingMore
-          ? _viewModel!.foundCategory.length+1
-          : _viewModel!.foundCategory.length,
+            ? _viewModel!.listCategory.length + 1
+            : _viewModel!.listCategory.length,
         itemBuilder: (context, index) {
-          if(index<_viewModel!.foundCategory.length){
+          if (index < _viewModel!.listCategory.length) {
             return buildContentCategoryWidget(index);
-          }else{
+          } else {
             return const CupertinoActivityIndicator();
           }
         },
@@ -234,7 +240,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget showListCategory(){
+  Widget showListCategory() {
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
@@ -243,7 +249,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: buildCategory(),
-      ), 
+      ),
     );
   }
 
@@ -254,7 +260,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           color: AppColors.COLOR_WHITE,
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig,),
+              color: AppColors.BLACK_200,
+              blurRadius: SpaceBox.sizeBig,
+            ),
           ],
         ),
         child: SingleChildScrollView(

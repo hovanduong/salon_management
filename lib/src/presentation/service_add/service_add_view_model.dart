@@ -43,7 +43,7 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void closeDialog(BuildContext context) {
-    timer= Timer(
+    timer = Timer(
       const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
@@ -91,11 +91,10 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validPrice(String? value) {
-    money=value;
+    money = value;
     if (value == null || value.isEmpty) {
       messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
     } else {
-      
       messageErrorPrice = '';
     }
     notifyListeners();
@@ -161,7 +160,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Future<void> getCategory() async {
     listCategory.clear();
-    final result = await categoryApi.getCategory(1);
+    final result = await categoryApi.getListCategory(1, '');
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -191,7 +190,7 @@ class ServiceAddViewModel extends BaseViewModel {
     final result = await myServiceApi.postService(
       ServiceParams(
         name: nameServiceController.text,
-        money: int.parse(money??'0'),
+        money: int.parse(money ?? '0'),
         listCategory: categoryId,
       ),
     );
