@@ -225,6 +225,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       height: MediaQuery.of(context).size.height - 200,
       child: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
         controller: _viewModel!.scrollController,
         itemCount: _viewModel!.loadingMore
             ? _viewModel!.listCategory.length + 1
@@ -246,10 +247,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: buildCategory(),
-      ),
+      child: buildCategory(),
     );
   }
 
