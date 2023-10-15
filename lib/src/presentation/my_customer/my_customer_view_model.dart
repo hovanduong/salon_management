@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';
@@ -12,60 +15,52 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class MyCustomerViewModel extends BaseViewModel{
+class MyCustomerViewModel extends BaseViewModel {
   MyCustomerApi myCustomerApi = MyCustomerApi();
   ScrollController scrollController = ScrollController();
 
-  List<MyCustomerModel> listMyCustomer=[];
-  List<MyCustomerModel> listCurrent=[];
-  List<MyCustomerModel> listSearch=[];
-  List<MyCustomerModel> foundCustomer=[];
+  List<MyCustomerModel> listMyCustomer = [];
+  List<MyCustomerModel> listCurrent = [];
+  List<MyCustomerModel> newListCustomer = [];
 
   bool isLoading = true;
   bool loadingMore = false;
 
   Timer? timer;
 
-  int page=1;
+  int page = 1;
 
   Future<void> init() async {
-    page=1;
+    page = 1;
     isLoading = true;
-    await getMyCustomer(page);
+    await getMyCustomer(page, false);
     scrollController.addListener(scrollListener);
-    listCurrent=listMyCustomer;
-    foundCustomer=listMyCustomer;
     notifyListeners();
   }
 
-  Future<void> filterCategory(String searchCategory) async {
+  Future<void> goToAddMyCustomer(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.myCustomerAdd);
+
+  Future<void> goToMyCustomerEdit(
+    BuildContext context,
+    MyCustomerModel myCustomerModel,
+  ) =>
+      Navigator.pushNamed(
+        context,
+        Routers.myCustomerEdit,
+        arguments: myCustomerModel,
+      );
+
+  Future<void> onSearchCategory(String value) async {
+    final searchCategory = TiengViet.parse(value.toLowerCase());
     await getListSearch(searchCategory);
-    var listSearchCategory = <MyCustomerModel>[];
-    listSearchCategory = listSearch.where(
-      (element) => element.phoneNumber!.toLowerCase().contains(searchCategory) 
-      || element.fullName!.toLowerCase().contains(searchCategory),)
-    .toList();
-    foundCustomer=listSearchCategory;
-    notifyListeners();
-  }
-
-  Future<void> onSearchCategory(String value) async{
-    if(value.isNotEmpty){
-      final searchCategory = value.toLowerCase();
-      Future.delayed(const Duration(milliseconds: 500), ()async => 
-        getListSearch(searchCategory),);
-      foundCustomer=listSearch;
-    }else{
-      foundCustomer = listCurrent;  
-    }
     notifyListeners();
   }
 
   Future<void> loadMoreData() async {
-    page+=1;
-    await getMyCustomer(page);
-    listCurrent = [...listCurrent, ...listMyCustomer];
-    foundCustomer=listCurrent;
+    page += 1;
+    await getMyCustomer(page, true);
+    listMyCustomer = [...listMyCustomer, ...newListCustomer];
     loadingMore = false;
     notifyListeners();
   }
@@ -75,8 +70,8 @@ class MyCustomerViewModel extends BaseViewModel{
             scrollController.position.maxScrollExtent &&
         scrollController.position.pixels > 0) {
       loadingMore = true;
-      Future.delayed(const Duration(seconds: 2), loadMoreData);
- 
+      Future.delayed(const Duration(seconds: 1), loadMoreData);
+
       notifyListeners();
     }
   }
@@ -85,15 +80,6 @@ class MyCustomerViewModel extends BaseViewModel{
     await init();
     notifyListeners();
   }
-
-  Future<void> goToAddMyCustomer(BuildContext context)
-    => Navigator.pushNamed(context, Routers.myCustomerAdd);
-
-  Future<void> goToMyCustomerEdit(
-    BuildContext context, MyCustomerModel myCustomerModel,)
-      => Navigator.pushNamed(
-        context, Routers.myCustomerEdit, arguments: myCustomerModel,);
-
 
   dynamic showDialogNetwork(_) {
     showDialog(
@@ -133,7 +119,7 @@ class MyCustomerViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showWaningDiaglog(int id){
+  dynamic showWaningDiaglog(int id) {
     showDialog(
       context: context,
       builder: (context) {
@@ -145,7 +131,7 @@ class MyCustomerViewModel extends BaseViewModel{
             Navigator.pop(context);
           },
           rightButtonName: CategoryLanguage.yes,
-          onTapRight: (){
+          onTapRight: () {
             deleteMyCustomer(id);
             Navigator.pop(context);
           },
@@ -154,7 +140,7 @@ class MyCustomerViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showErrorDialog(_){
+  dynamic showErrorDialog(_) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -168,7 +154,7 @@ class MyCustomerViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showSuccessDiaglog(_){
+  dynamic showSuccessDiaglog(_) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -182,11 +168,14 @@ class MyCustomerViewModel extends BaseViewModel{
     );
   }
 
-  void closeDialog(BuildContext context){
-    timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+  void closeDialog(BuildContext context) {
+    timer = Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
   }
 
-  Future<void> getMyCustomer(int page) async {
+  Future<void> getMyCustomer(int page, bool isNewList) async {
     final result = await myCustomerApi.getMyCustomer(
       getAll: false,
       page: page,
@@ -203,6 +192,9 @@ class MyCustomerViewModel extends BaseViewModel{
       isLoading = true;
     } else {
       isLoading = false;
+      if (isNewList) {
+        newListCustomer = value as List<MyCustomerModel>;
+      }
       listMyCustomer = value as List<MyCustomerModel>;
     }
     isLoading = false;
@@ -232,8 +224,12 @@ class MyCustomerViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  Future<void> getListSearch(String search) async {
-    final result = await myCustomerApi.getListSearch(search);
+  Future<void> getListSearch(String? search) async {
+    final result = await myCustomerApi.getMyCustomer(
+      getAll: false,
+      page: page,
+      search: search,
+    );
 
     final value = switch (result) {
       Success(value: final listMyCustomer) => listMyCustomer,
@@ -246,7 +242,7 @@ class MyCustomerViewModel extends BaseViewModel{
       isLoading = true;
     } else {
       isLoading = false;
-      listSearch = value as List<MyCustomerModel>;
+      listMyCustomer = value as List<MyCustomerModel>;
     }
     isLoading = false;
     notifyListeners();
