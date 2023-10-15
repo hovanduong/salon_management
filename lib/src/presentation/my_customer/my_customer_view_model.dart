@@ -61,7 +61,6 @@ class MyCustomerViewModel extends BaseViewModel {
     page += 1;
     await getMyCustomer(page, true);
     listMyCustomer = [...listMyCustomer, ...newListCustomer];
-    loadingMore = false;
     notifyListeners();
   }
 
@@ -70,8 +69,10 @@ class MyCustomerViewModel extends BaseViewModel {
             scrollController.position.maxScrollExtent &&
         scrollController.position.pixels > 0) {
       loadingMore = true;
-      Future.delayed(const Duration(seconds: 1), loadMoreData);
-
+      Future.delayed(const Duration(seconds: 2), () {
+        loadMoreData();
+        loadingMore = false;
+      });
       notifyListeners();
     }
   }
@@ -194,8 +195,9 @@ class MyCustomerViewModel extends BaseViewModel {
       isLoading = false;
       if (isNewList) {
         newListCustomer = value as List<MyCustomerModel>;
+      } else {
+        listMyCustomer = value as List<MyCustomerModel>;
       }
-      listMyCustomer = value as List<MyCustomerModel>;
     }
     isLoading = false;
     notifyListeners();

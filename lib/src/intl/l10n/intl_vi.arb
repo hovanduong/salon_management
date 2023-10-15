@@ -200,7 +200,7 @@
     "appointmentCanceled": "Số lịch hẹn đã hủy",
     "newClient": "Khách hàng mới",
     "customer":"Khách hàng",
-    "searchPhone":"Tìm kiếm theo số điện thoại",
+    "searchPhone":"Tìm kiếm theo tên và số điện thoại",
     "searchCategory":"Tìm kiếm theo thể loại",
     "billPayment":"Hóa đơn thanh toán",
     "paymentSuccess":"Thanh toán thành công",

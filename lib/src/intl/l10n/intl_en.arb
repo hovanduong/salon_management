@@ -200,7 +200,7 @@
     "appointmentCanceled": "Appointments Canceled",
     "newClient": "New Client",
     "customer":"Customer",
-    "searchPhone":"Search by phone number",
+    "searchPhone":"Search by name & phone number",
     "searchCategory":"Search by category",
     "billPayment":"Bill Payment",
     "paymentSuccess":"Payment successfully",

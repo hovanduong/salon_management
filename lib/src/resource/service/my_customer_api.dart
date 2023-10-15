@@ -24,28 +24,6 @@ class MyCustomerParams {
 }
 
 class MyCustomerApi {
-  Future<Result<List<MyCustomerModel>, Exception>> getListSearch(
-    String? search,
-    int? page,
-  ) async {
-    try {
-      final response = await HttpRemote.get(
-        url: '/my-customer?pageSize=5&page=$page&search=${search ?? ''}',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final myCustomer = MyCustomerModelFactory.createList(data);
-          return Success(myCustomer);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
-
   Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer({
     required bool getAll,
     int? page,
