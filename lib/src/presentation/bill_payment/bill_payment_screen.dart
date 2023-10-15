@@ -47,7 +47,9 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         leading: IconButton(
-          onPressed: () => _viewModel!.goToInvoice,
+          onPressed: () {
+            _viewModel!.goToInvoice();
+          },
           icon: const Icon(
             Icons.arrow_back_ios, color: AppColors.COLOR_WHITE,),),
         title: Paragraph(
@@ -182,7 +184,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
         child: AppOutlineButton(
           content: BillPaymentLanguage.shareReceipt,
           onTap: () {
-            
+            _viewModel!.goToInvoice();
           },
         ),
       ),

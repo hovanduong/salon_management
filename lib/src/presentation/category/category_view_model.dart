@@ -53,11 +53,12 @@ class CategoryViewModel extends BaseViewModel {
   Future<void> onSearchCategory(String value) async{
     if(value.isNotEmpty){
       final searchCategory = value.toLowerCase();
-      Future.delayed(const Duration(seconds: 1), ()async => 
-        getListCategory(searchCategory),);
+      await getListCategory(searchCategory);
       foundCategory=allCategory;
     }else{
-      foundCategory = listCurrent; 
+      page=1;
+      await getCategory(page); 
+      foundCategory = allCategory;
     }
     notifyListeners();
   }

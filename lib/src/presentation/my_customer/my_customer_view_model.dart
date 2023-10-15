@@ -52,7 +52,7 @@ class MyCustomerViewModel extends BaseViewModel{
   Future<void> onSearchCategory(String value) async{
     if(value.isNotEmpty){
       final searchCategory = value.toLowerCase();
-      Future.delayed(const Duration(seconds: 1), ()async => 
+      Future.delayed(const Duration(milliseconds: 500), ()async => 
         getListSearch(searchCategory),);
       foundCustomer=listSearch;
     }else{

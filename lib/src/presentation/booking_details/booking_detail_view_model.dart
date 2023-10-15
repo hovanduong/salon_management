@@ -15,7 +15,7 @@ import '../routers.dart';
 
 class BookingDetailsViewModel extends BaseViewModel{
   bool isLoading=true;
-  bool isShowListService=false;
+  bool isShowListService=true;
 
   Timer? timer;
 
@@ -34,7 +34,7 @@ class BookingDetailsViewModel extends BaseViewModel{
   }
 
   Future<void> goToBill(BuildContext context) 
-    => Navigator.pushReplacementNamed(context, Routers.bill, 
+    => Navigator.pushNamed(context, Routers.bill, 
       arguments: listMyBooking[0].total,);
 
   void closeDialog(BuildContext context){

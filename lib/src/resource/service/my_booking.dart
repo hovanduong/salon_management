@@ -38,7 +38,7 @@ class MyBookingApi {
           ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&date=${DateTime.now()}'
           :  params.isUpcoming
           ? '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&isUpComing=true&status=Confirmed'
-          : '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
+          : '/my-booking?pageSize=20&page=${params.page}&status=${params.status}',
       );
       print(response?.statusCode);
       switch (response?.statusCode) {

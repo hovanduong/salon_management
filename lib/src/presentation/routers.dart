@@ -77,7 +77,7 @@ class Routers {
         return animRoute(
           const NavigateScreen(),
           beginOffset: right,
-          name: verification,
+          name: navigation,
           arguments: arguments,
         );
 

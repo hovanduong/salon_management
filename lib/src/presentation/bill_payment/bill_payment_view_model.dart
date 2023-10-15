@@ -5,24 +5,25 @@ import '../base/base.dart';
 import '../routers.dart';
 
 class BillPaymentViewModel extends BaseViewModel{
-  bool isShowTransaction= false;
+  bool isShowTransaction= true;
 
   late String time;
   late String date;
 
   num? totalMoney;
 
-  dynamic init(num? money){
-    if(totalMoney != null){
-      totalMoney=money;
-    }
+  Future<void> init(num? money)async{
+    totalMoney=money;
     time = AppDateUtils.formatDateTime('');
     date= AppDateUtils.formatTimeToHHMM(DateTime.now());
     notifyListeners();
   }
-
-  Future<void> goToInvoice(BuildContext context) =>
-      Navigator.pushReplacementNamed(context, Routers.navigation, arguments: 1);
+  
+  Future<void> goToInvoice() => Navigator.pushReplacementNamed(
+      context,
+      Routers.home,
+      arguments: 1,
+    );
 
   void showTransaction(){
     isShowTransaction=!isShowTransaction;
