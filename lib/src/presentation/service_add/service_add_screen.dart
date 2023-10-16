@@ -32,7 +32,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVerySmall,
-        vertical: Size.sizeMedium,
+        vertical: Size.sizeMedium * 2,
       ),
       child: ListTile(
         leading: IconButton(
@@ -204,19 +204,17 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Widget buildAddServiceCategoriesScreen() {
     return SingleChildScrollView(
-      child: SafeArea(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            const SizedBox(
-              width: double.maxFinite,
-              height: double.maxFinite,
-            ),
-            background(),
-            buildAppBar(),
-            buildCardField(),
-          ],
-        ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          const SizedBox(
+            width: double.maxFinite,
+            height: double.maxFinite,
+          ),
+          background(),
+          buildAppBar(),
+          buildCardField(),
+        ],
       ),
     );
   }
