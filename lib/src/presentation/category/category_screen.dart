@@ -1,5 +1,7 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,23 +73,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(SizeToPadding.sizeSmall),
-        child: CustomerAppBar(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          title: CategoryLanguage.category,
-        ),
-      ),
-    );
+        color: AppColors.PRIMARY_GREEN,
+        child: Padding(
+          padding:
+              EdgeInsets.only(top: Platform.isAndroid ? 20 : 60, bottom: 10),
+          child: CustomerAppBar(
+            color: AppColors.COLOR_WHITE,
+            style: STYLE_LARGE.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AppColors.COLOR_WHITE,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+            title: CategoryLanguage.category,
+          ),
+        ));
   }
 
   Widget buildCardService(int index, int serviceIndex) {
@@ -255,15 +256,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildBody() {
     return Expanded(
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.BLACK_200,
-              blurRadius: SpaceBox.sizeBig,
+        decoration: const BoxDecoration(
+            // color: AppColors.COLOR_WHITE,
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: AppColors.BLACK_200,
+            //     blurRadius: SpaceBox.sizeBig,
+            //   ),
+            // ],
             ),
-          ],
-        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -300,32 +301,30 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItemCategory() {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            buildHeader(),
-            buildBody(),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (!_viewModel!.isIconFloatingButton)
-              buildItemFloating()
-            else
-              Container(),
-            FloatingButtonWidget(
-              heroTag: 'btn',
-              iconData:
-                  _viewModel!.isIconFloatingButton ? Icons.menu : Icons.close,
-              onPressed: () {
-                _viewModel!.setIconFloating();
-              },
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: Column(
+        children: [
+          buildHeader(),
+          buildBody(),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (!_viewModel!.isIconFloatingButton)
+            buildItemFloating()
+          else
+            Container(),
+          FloatingButtonWidget(
+            heroTag: 'btn',
+            iconData:
+                _viewModel!.isIconFloatingButton ? Icons.menu : Icons.close,
+            onPressed: () {
+              _viewModel!.setIconFloating();
+            },
+          ),
+        ],
       ),
     );
   }
