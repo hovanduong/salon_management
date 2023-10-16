@@ -54,7 +54,6 @@ class MyCustomerViewModel extends BaseViewModel {
 
   Future<void> onSearchCategory(String value) async {
     final searchCustomer = TiengViet.parse(value.toLowerCase());
-    print(searchCustomer);
     await getListSearch(searchCustomer);
     notifyListeners();
   }
@@ -77,6 +76,10 @@ class MyCustomerViewModel extends BaseViewModel {
       });
       notifyListeners();
     }
+  }
+
+  void clearData(){
+    
   }
 
   Future<void> pullRefresh() async {
