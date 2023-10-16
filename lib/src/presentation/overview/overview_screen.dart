@@ -1,6 +1,9 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -60,13 +63,16 @@ class _OverViewScreenState extends State<OverViewScreen> {
   Widget buildHeader() {
     return Container(
       color: AppColors.PRIMARY_GREEN,
-      child: ListTile(
-        title: Center(
-          child: Paragraph(
-            content: HomePageLanguage.overview,
-            style: STYLE_LARGE.copyWith(
-              color: AppColors.COLOR_WHITE,
-              fontWeight: FontWeight.w600,
+      child: Padding(
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        child: ListTile(
+          title: Center(
+            child: Paragraph(
+              content: HomePageLanguage.overview,
+              style: STYLE_LARGE.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -195,18 +201,16 @@ class _OverViewScreenState extends State<OverViewScreen> {
   }
 
   Widget buildHomePage() {
-    return SafeArea(
-      child: DefaultTabController(
-        length: 4,
-        initialIndex: 1,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildHeader(),
-              buildAppBar(),
-              buildListTab(),
-            ],
-          ),
+    return DefaultTabController(
+      length: 4,
+      initialIndex: 1,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildHeader(),
+            buildAppBar(),
+            buildListTab(),
+          ],
         ),
       ),
     );
