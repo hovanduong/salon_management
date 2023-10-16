@@ -22,6 +22,7 @@ class SlidableActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      closeOnScroll: true,
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [

@@ -5,22 +5,86 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/service/auth.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/http_remote.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
 class SignUpViewModel extends BaseViewModel {
   AuthApi authApi = AuthApi();
-  bool enableNext = false;
-  String? messagePhone;
-  String? phone;
-  dynamic init() {}
 
-  Future<void> goToProfileUpdate() =>
-      Navigator.pushNamed(context, Routers.updateProfile, arguments: phone);
+  bool enableNext = false;
+  bool isPassword = false;
+  bool isConfirmPass = false;
+
+  String? messageConfirmPass;
+  String? messagePass;
+  String? messagePhone;
+  String? messageFullName;
+  String? messageEmail;
+  String? gender;
+
+  TextEditingController fullNameController= TextEditingController();
+  TextEditingController emailController= TextEditingController();
+  TextEditingController phoneController= TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController confirmPassController = TextEditingController();
+
+  dynamic init() {
+    gender= genderList.first;
+  }
+
+  List<String> genderList = [
+    UpdateProfileLanguage.male,
+    UpdateProfileLanguage.female,
+    UpdateProfileLanguage.other,
+  ];
 
   Future<void> goToSignIn() =>
       Navigator.pushReplacementNamed(context, Routers.signIn);
+      
+  Future<void> goToHome() 
+    => Navigator.pushReplacementNamed(context, Routers.navigation);
+
+  void setGender(String value) {
+    gender = value;
+    notifyListeners();
+  }
+
+  void validConfirmPass(String? confirmPass, String? pass) {
+    final result = AppValid.validatePasswordConfirm(pass!, confirmPass);
+    if (result != null) {
+      messageConfirmPass = result;
+      isConfirmPass = false;
+    } else {
+      messageConfirmPass = null;
+      isConfirmPass = true;
+    }
+    notifyListeners();
+  }
+
+  void validPass(String? value, String? confirmPass) {
+    final result = AppValid.validatePassword(value);
+    if (result != null) {
+      messagePass = result;
+      isPassword = false;
+    } else {
+      messagePass = null;
+      isPassword = true;
+    }
+    if (confirmPass!.isNotEmpty) {
+      final result = AppValid.validatePasswordConfirm(value!, confirmPass);
+      if (result != null) {
+        messageConfirmPass = result;
+        isConfirmPass = false;
+      } else {
+        messageConfirmPass = null;
+        isConfirmPass = true;
+      }
+    }
+    notifyListeners();
+  }
 
   void validPhone(String? value) {
     final result = AppValid.validatePhoneNumber(value);
@@ -32,8 +96,29 @@ class SignUpViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void onNext() {
-    if (messagePhone == null) {
+  void validFullName(String? value) {
+    final result = AppValid.validateFullName(value);
+    if (result != null) {
+      messageFullName = result;
+    } else {
+      messageFullName = null;
+    }
+    notifyListeners();
+  }
+
+  void validEmail(String? value) {
+    final result = AppValid.validateEmail(value);
+    if (result != null) {
+      messageEmail = result;
+    } else {
+      messageEmail = null;
+    }
+    notifyListeners();
+  }
+
+  void onSignUp() {
+    if (messagePhone == null && messageEmail==null
+      && messageFullName==null && isPassword && isConfirmPass) {
       enableNext = true;
     } else {
       enableNext = false;
@@ -83,13 +168,69 @@ class SignUpViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> checkPhoneExists() async {
-    LoadingDialog.showLoadingDialog(context);
-    final result = await authApi.checkPhoneNumberExists(
-      AuthParams(
-        phoneNumber: phone,
-      ),
+  dynamic showSuccessDiaglog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
     );
+  }
+
+  Future<void> closeDialog(BuildContext context) async{
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        Navigator.pop(context);
+        login();
+      } 
+    );
+  }
+
+  Future<void> saveToken(String value) async {
+    await AppPref.setToken(value);
+  }
+
+  Future<void> signUp() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await authApi.signUp(AuthParams(
+      email: emailController.text.trim(),
+      fullName: fullNameController.text.trim(),
+      gender: gender,
+      password: passController.text.trim(),
+      passwordConfirm: confirmPassController.text.trim(),
+      phoneNumber: phoneController.text.trim(),
+    ),);
+
+    final value = switch (result) {
+      Success(value: final boolean) => boolean,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showOpenDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> login() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await authApi.login(AuthParams(
+      phoneNumber: phoneController.text.trim(),
+      password: passController.text.trim(),
+    ),);
 
     final value = switch (result) {
       Success(value: final accessToken) => accessToken,
@@ -98,13 +239,26 @@ class SignUpViewModel extends BaseViewModel {
 
     if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
-      showDialogNetwork(context);
+      await showDialogNetwork(context);
     } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);
-      showOpenDialog(context);
+      await showOpenDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      await goToProfileUpdate();
+      await saveToken(value.toString());
+      await HttpRemote.init();
+      await goToHome();
     }
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    passController.dispose();
+    confirmPassController.dispose();
+    phoneController.dispose();
+    super.dispose();
   }
 }

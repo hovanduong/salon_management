@@ -114,7 +114,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: _viewModel!.listCategory[index].myServices?.length,
+        physics: const BouncingScrollPhysics(),
+        itemCount: _viewModel!.foundCategory[index].myServices?.length,
         itemBuilder: (context, serviceIndex) =>
             buildCardService(index, serviceIndex),
       ),

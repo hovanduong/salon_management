@@ -208,5 +208,7 @@
     "paymentMethod":"Phương thức thanh toán",
     "transactionId":"ID giao dịch",
     "shareReceipt":"Chia sẻ biên lai",
+    "fullName":"Tên đầy đủ",
+    "email":"Email",
     "lastLine": ""
 }

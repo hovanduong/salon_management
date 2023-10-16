@@ -3,12 +3,11 @@ import '../../intl/generated/l10n.dart';
 class UpdateProfileLanguage {
   static final gender = S.current.gender;
   static final updateProfile = S.current.updateProfile;
-  static final firstName = S.current.firstName;
-  static final lastName = S.current.lastName;
-  static final city = S.current.city;
-  static final dateOfBirth = S.current.dateOfBirth;
-  static final enterFirstName = S.current.enterFirstName;
-  static final enterLastName = S.current.enterLastName;
+  static final fullName = S.current.fullName;
+  static final email = S.current.email;
+  static final enterEmail = S.current.enterEmail;
+  static final validEmail = S.current.validEmail;
+  static final enterName = S.current.enterName;
   static final submit = S.current.submit;
   static final male = S.current.male;
   static final female = S.current.female;
@@ -18,5 +17,4 @@ class UpdateProfileLanguage {
   static final success = S.current.success;
   static final validCity = S.current.validCity;
   static final validGender = S.current.validGender;
-  static final validDateOfBirth = S.current.validDateOfBirth;
 }

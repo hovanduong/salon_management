@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
+import 'components/components.dart';
 import 'sign_up.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -63,13 +65,104 @@ class _SignUpScreenState extends State<SignUpScreen> {
       labelText: SignInLanguage.phoneNumber,
       hintText: SignInLanguage.enterPhoneNumber,
       keyboardType: TextInputType.phone,
+      textEditingController: _viewModel!.phoneController,
       onChanged: (value) {
-        _viewModel!.phone = value;
         _viewModel!
           ..validPhone(value)
-          ..onNext();
+          ..onSignUp();
       },
       validator: _viewModel!.messagePhone ?? '',
+    );
+  }
+
+  Widget buildFieldFullName() {
+    return AppFormField(
+      labelText: UpdateProfileLanguage.fullName,
+      hintText: UpdateProfileLanguage.enterName,
+      textEditingController: _viewModel!.fullNameController,
+      onChanged: (value) {
+        _viewModel!
+          ..validFullName(value)
+          ..onSignUp();
+      },
+      validator: _viewModel!.messageFullName ?? '',
+    );
+  }
+
+  Widget buildFieldEmail() {
+    return AppFormField(
+      labelText: UpdateProfileLanguage.email,
+      hintText: UpdateProfileLanguage.enterEmail,
+      textEditingController: _viewModel!.emailController,
+      onChanged: (value) {
+        _viewModel!
+          ..validEmail(value)
+          ..onSignUp();
+      },
+      validator: _viewModel!.messageEmail ?? '',
+    );
+  }
+
+  Widget buildSelectGender(){
+    return DropdownButtonWidget(
+      gender: _viewModel!.gender,
+      genderList: _viewModel!.genderList,
+      onChanged: (value) => _viewModel!.setGender(value),
+    );
+  }
+
+  Widget buildTitleGender(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
+      child: Paragraph(
+        content: UpdateProfileLanguage.selectGender,
+        style: STYLE_SMALL.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Widget buildGender(){
+    return Padding(
+      padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildTitleGender(),
+          buildSelectGender(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildFieldPass() {
+    return AppFormField(
+      labelText: CreatePasswordLanguage.password,
+      hintText: CreatePasswordLanguage.enterPassword,
+      textEditingController: _viewModel!.passController,
+      obscureText: true,
+      onChanged: (value) {
+        _viewModel!
+          ..validPass(value, _viewModel!.confirmPassController.text.trim())
+          ..onSignUp();
+      },
+      validator: _viewModel!.messagePass ?? '',
+    );
+  }
+
+  Widget buildFieldConfirmPass() {
+    return AppFormField(
+      labelText: CreatePasswordLanguage.enterConfirmPass,
+      hintText: CreatePasswordLanguage.confirmPass,
+      textEditingController: _viewModel!.confirmPassController,
+      obscureText: true,
+      onChanged: (value) {
+        _viewModel!
+          ..validConfirmPass(value, _viewModel!.passController.text.trim())
+          ..onSignUp();
+      },
+      validator: _viewModel!.messageConfirmPass ?? '',
     );
   }
 
@@ -79,8 +172,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: AppButton(
         enableButton: _viewModel!.enableNext,
         content: SignUpLanguage.continueSignUp,
-        onTap: () async {
-          await _viewModel!.checkPhoneExists();
+        onTap: () {
+          _viewModel!.signUp();
         },
       ),
     );
@@ -101,6 +194,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 buildRegister(),
                 buildWelComeBack(),
                 buildFieldPhoneNumber(),
+                buildFieldFullName(),
+                buildFieldEmail(),
+                buildGender(),
+                buildFieldPass(),
+                buildFieldConfirmPass(),
                 buildButtonSignIn(),
               ],
             ),

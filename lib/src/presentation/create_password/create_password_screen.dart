@@ -84,7 +84,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
         enableButton: _viewModel!.enableCreatePass,
         content: CreatePasswordLanguage.createPass,
         onTap: () {
-          _viewModel!.sendOTP(infoUser);
+          // _viewModel!.sendOTP(infoUser);
         },
       ),
     );

@@ -58,6 +58,7 @@ dependencies:
   change_app_package_name: ^1.1.0
   syncfusion_flutter_charts: ^22.2.9
   fl_chart: ^0.64.0
+  intl_phone_field: ^3.2.0
 
   flutter_localizations:
     sdk: flutter
