@@ -4,6 +4,7 @@
     "validEnterPhoneNumber": "Please enter your phone number",
     "validPhone": "No special characters and letters allowed",
     "validPhoneNumber": "Don’t enter less than 10 numbers and more than 11 numbers",
+    "invalidPhoneNumber": "Invalid phone number",
     "validEnterPass": "Please Enter Your Password",
     "validPass": "Password must be between 8 and 16 characters",
     "validEnterConfirmPass": "Please enter password confirmation",

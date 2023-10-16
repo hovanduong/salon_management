@@ -20,7 +20,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Map<int, String> mapCategory = {};
 
-  String messageErrorNameService = '';
+  String? messageErrorNameService;
   String messageErrorPrice = '';
 
   List<CategoryModel> listCategory = <CategoryModel>[];
@@ -101,12 +101,11 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validNameService(String? value) {
-    if (value == null || value.isEmpty) {
-      messageErrorNameService = ServiceAddLanguage.emptyNameError;
-    } else if (value.length < 2) {
-      messageErrorNameService = ServiceAddLanguage.validName;
+    final result = AppValid.validateFullName(value);
+    if (result != null) {
+      messageErrorNameService = result;
     } else {
-      messageErrorNameService = '';
+      messageErrorNameService = null;
     }
     notifyListeners();
   }
@@ -122,7 +121,7 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void onSubmit() {
-    if (messageErrorNameService == '' &&
+    if (messageErrorNameService == null &&
         nameServiceController.text != '' &&
         priceController.text != '' &&
         messageErrorPrice == '' &&

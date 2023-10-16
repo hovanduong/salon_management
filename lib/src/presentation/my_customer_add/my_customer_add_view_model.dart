@@ -15,7 +15,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  String messageErrorName = '';
+  String? messageErrorName ;
   String? messageErrorPhone;
 
   MyCustomerApi myCustomerApi = MyCustomerApi();
@@ -38,16 +38,17 @@ class MyCustomerAddViewModel extends BaseViewModel {
   }
 
   void validName(String? value) {
-    if (value == null || value.isEmpty) {
-      messageErrorName = MyCustomerAddLanguage.emptyFullNameError;
+    final result = AppValid.validateFullName(value);
+    if (result != null) {
+      messageErrorName = result;
     } else {
-      messageErrorName = '';
+      messageErrorName = null;
     }
     notifyListeners();
   }
 
   void validPhone(String? value) {
-    final result = AppValid.validPhone(value);
+    final result = AppValid.validatePhoneNumber(value);
     if (result != null) {
       messageErrorPhone = result;
     } else {
@@ -57,7 +58,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
   }
 
   void onSubmit() {
-    if (messageErrorName == '' &&
+    if (messageErrorName == null &&
         nameController.text != '' &&
         phoneController.text != '' &&
         messageErrorPhone == null) {

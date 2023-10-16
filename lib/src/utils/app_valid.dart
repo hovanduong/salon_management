@@ -77,15 +77,19 @@ class AppValid {
 
   static String? validatePhoneNumber(String? value) {
     final regex = RegExp(r'^(?:[+0]9)?[0-9]{10}$');
-
     if (value == null || value.isEmpty) {
       return S.current.validEnterPhoneNumber;
-    } else if (value.length != 10) {
-      return S.current.validPhoneNumber;
-    } else if (!regex.hasMatch(value)) {
-      return S.current.validPhone;
     } else {
-      return null;
+      final checkPhoneNumber= value.split('')[0];
+      if(checkPhoneNumber!='0'){
+        return S.current.invalidPhoneNumber;
+      } if (value.length != 10) {
+        return S.current.validPhoneNumber;
+      } else if (!regex.hasMatch(value)) {
+        return S.current.validPhone;
+      } else {
+        return null;
+      }
     }
   }
 
