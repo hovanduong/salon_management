@@ -4,30 +4,32 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/my_customer_add_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class MyCustomerAddViewModel extends BaseViewModel {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  String? messageErrorName ;
+  String? messageErrorName;
   String? messageErrorPhone;
 
   MyCustomerApi myCustomerApi = MyCustomerApi();
 
   bool isColorProvinces = false;
   bool enableSubmit = false;
-  bool isPayments=false;
+  bool isPayments = false;
 
   Timer? timer;
 
   Future<void> init(bool isPayment) async {
-    isPayments=isPayment;
+    isPayments = isPayment;
   }
 
   void closeDialog(BuildContext context) {
@@ -36,6 +38,9 @@ class MyCustomerAddViewModel extends BaseViewModel {
       () => Navigator.pop(context),
     );
   }
+
+  Future<void> _goToHome() =>
+      Navigator.pushReplacementNamed(context, Routers.navigation);
 
   void validName(String? value) {
     final result = AppValid.validateFullName(value);
@@ -108,7 +113,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
         closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
-          title: SignUpLanguage.success,
+          title: 'Thêm thành công',
         );
       },
     );
@@ -120,14 +125,70 @@ class MyCustomerAddViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void closeScreen(){
-    if(isPayments==true){
-      timer = Timer(const Duration(seconds: 2), ()=> Navigator.pop(context));
+  void closeScreen() {
+    if (isPayments == true) {
+      timer = Timer(const Duration(seconds: 2), () => Navigator.pop(context));
+    }
+  }
+
+  dynamic showOpenCustomerExits(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: 'Số điện thoại đã tồn tại. Xin vui lòng kiểm tra lại!',
+          image: AppImages.icPlus,
+          title: 'Thông báo',
+          leftButtonName: 'Đóng',
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: 'Trang chủ',
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: _goToHome,
+        );
+      },
+    );
+  }
+
+  dynamic showOpenDialog(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: 'Thêm khách hàng thất bại. Xin vui lòng kiểm tra lại sau!',
+          image: AppImages.icPlus,
+          title: 'Thông báo',
+          leftButtonName: 'Đóng',
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: 'Thử lại',
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () async {
+            Navigator.pop(context);
+            await postMyCustomer();
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> handleCustomerError(String message) async {
+    if (message.trim() == AppValues.customerExits) {
+      LoadingDialog.hideLoadingDialog(context);
+      return await showOpenCustomerExits(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      return await showOpenDialog(context);
     }
   }
 
   Future<void> postMyCustomer() async {
     LoadingDialog.showLoadingDialog(context);
+
     final result = await myCustomerApi.postMyCustomer(
       MyCustomerParams(
         phoneNumber: phoneController.text,
@@ -142,15 +203,20 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
     if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
-      await showDialogNetwork(context);
-    } else if (value is Exception) {
+      return await showDialogNetwork(context);
+    } else if (value is AppException) {
       LoadingDialog.hideLoadingDialog(context);
-      await showErrorDialog(context);
-    } else {
-      LoadingDialog.hideLoadingDialog(context);
-      clearData();
-      await showSuccessDialog(context);
-      closeScreen();
+      await handleCustomerError(value.message);
+    } else if (value is bool) {
+      if (value) {
+        LoadingDialog.hideLoadingDialog(context);
+        clearData();
+        await showSuccessDialog(context);
+        closeScreen();
+      } else {
+        LoadingDialog.hideLoadingDialog(context);
+        return await showOpenDialog(context);
+      }
     }
     notifyListeners();
   }
