@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,6 @@ import 'components/components.dart';
 const done = 'done';
 const canceled = 'Canceled';
 const upcoming = 'upcoming';
-
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -31,19 +32,18 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: BookingHistoryViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel?..init(),
-      builder: (context, viewModel, child) =>
-          AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
-          systemNavigationBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-          systemNavigationBarIconBrightness: Brightness.dark,
-        ),
-        child: buildHistoryScreen(),
-      ),
-    );
+        viewModel: BookingHistoryViewModel(),
+        onViewModelReady: (viewModel) => _viewModel = viewModel?..init(),
+        builder: (context, viewModel, child) =>
+            //   AnnotatedRegion<SystemUiOverlayStyle>(
+            // value: const SystemUiOverlayStyle(
+            //   statusBarColor: AppColors.PRIMARY_GREEN,
+            //   systemNavigationBarColor: Colors.white,
+            //   statusBarIconBrightness: Brightness.dark,
+            //   systemNavigationBarIconBrightness: Brightness.dark,
+            // ),
+            // child: ,
+            buildHistoryScreen());
   }
 
   Widget buildHistoryScreen() {
@@ -74,12 +74,18 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildHeader() {
     return Container(
-      color: AppColors.COLOR_WHITE,
-      child: ListTile(
-        title: Center(
-          child: Paragraph(
-            content: HistoryLanguage.appointmentSchedule,
-            style: STYLE_LARGE,
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        child: ListTile(
+          title: Center(
+            child: Paragraph(
+              content: HistoryLanguage.appointmentSchedule,
+              style: STYLE_LARGE.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ),
@@ -94,15 +100,26 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           _viewModel!.setStatus(value);
         },
         tabs: [
-          Tab(text: HistoryLanguage.daysBefore,),
-          Tab(text: HistoryLanguage.today,),
-          Tab(text: HistoryLanguage.upcoming,),
-          Tab(text: HistoryLanguage.done,),
-          Tab(text: HistoryLanguage.canceled,),
+          Tab(
+            text: HistoryLanguage.daysBefore,
+          ),
+          Tab(
+            text: HistoryLanguage.today,
+          ),
+          Tab(
+            text: HistoryLanguage.upcoming,
+          ),
+          Tab(
+            text: HistoryLanguage.done,
+          ),
+          Tab(
+            text: HistoryLanguage.canceled,
+          ),
         ],
         isScrollable: true,
         labelPadding: EdgeInsets.symmetric(
-          horizontal: SizeToPadding.sizeSmall,),
+          horizontal: SizeToPadding.sizeSmall,
+        ),
         indicatorColor: AppColors.PRIMARY_PINK,
         labelStyle: STYLE_MEDIUM_BOLD,
         unselectedLabelColor: AppColors.BLACK_400,
@@ -139,18 +156,22 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollDaysBefore,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
-        context, 
+        context,
         MyBookingParams(id: id),
       ),
       onTapPhone: diaLogPhone,
-      onRefresh: () async {await _viewModel!.pullRefresh();},
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
       onChangedStatus: (value, id) =>
           _viewModel!.dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!
           .goToAddBooking(context: context, myBookingModel: myBookingModel),
       onPay: (id) => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: id, isPayment: true),),
+        context,
+        MyBookingParams(id: id, isPayment: true),
+      ),
     );
   }
 
@@ -161,18 +182,22 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollToday,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
-        context, 
+        context,
         MyBookingParams(id: id),
       ),
       onTapPhone: diaLogPhone,
-      onRefresh: () async {await _viewModel!.pullRefresh();},
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
       onChangedStatus: (value, id) =>
           _viewModel!.dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!
           .goToAddBooking(context: context, myBookingModel: myBookingModel),
       onPay: (id) => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: id, isPayment: true),),
+        context,
+        MyBookingParams(id: id, isPayment: true),
+      ),
     );
   }
 
@@ -183,29 +208,35 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollUpComing,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
-        context, 
+        context,
         MyBookingParams(id: id),
       ),
       onTapPhone: diaLogPhone,
-      onRefresh: () async {await _viewModel!.pullRefresh();},
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
       onChangedStatus: (value, id) =>
           _viewModel!.dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!
           .goToAddBooking(context: context, myBookingModel: myBookingModel),
       onPay: (id) => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: id, isPayment: true),),
+        context,
+        MyBookingParams(id: id, isPayment: true),
+      ),
     );
   }
 
   Widget buildTabDone() {
-     return ScreenTap(
+    return ScreenTap(
       widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollDone,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: id),),
+        context,
+        MyBookingParams(id: id),
+      ),
       onTapPhone: diaLogPhone,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
@@ -213,14 +244,16 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
-   Widget buildTabCanceled() {
+  Widget buildTabCanceled() {
     return ScreenTap(
       widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollCanceled,
       onTapCard: (id) => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: id),),
+        context,
+        MyBookingParams(id: id),
+      ),
       onTapPhone: diaLogPhone,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
@@ -271,29 +304,23 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     return DefaultTabController(
       length: 5,
       initialIndex: 1,
-      child: SafeArea(
-        top: true,
-        left: false,
-        right: false,
-        bottom: false,
-        child: Scaffold(
-          floatingActionButton: Padding(
-            padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
-            child: FloatingActionButton(
-              heroTag: 'addBooking',
-              backgroundColor: AppColors.PRIMARY_GREEN,
-              onPressed: () => _viewModel!.goToAddBooking(context: context),
-              child: const Icon(Icons.add),
-            ),
+      child: Scaffold(
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
+          child: FloatingActionButton(
+            heroTag: 'addBooking',
+            backgroundColor: AppColors.PRIMARY_GREEN,
+            onPressed: () => _viewModel!.goToAddBooking(context: context),
+            child: const Icon(Icons.add),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildHeader(),
-                buildAppBar(),
-                buildContentTab(),
-              ],
-            ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildHeader(),
+              buildAppBar(),
+              buildContentTab(),
+            ],
           ),
         ),
       ),
