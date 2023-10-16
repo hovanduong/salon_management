@@ -115,7 +115,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: ListView.builder(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
-        itemCount: _viewModel!.foundCategory[index].myServices?.length,
+        itemCount: _viewModel!.listCategory[index].myServices?.length,
         itemBuilder: (context, serviceIndex) =>
             buildCardService(index, serviceIndex),
       ),

@@ -34,12 +34,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Widget buildStatisticsScreen() {
     return SafeArea(
-      top: true,
-      right: false,
-      left: false,
-      bottom: false,
-      child: Scaffold(
-        body: Column(
+        top: true,
+        right: false,
+        left: false,
+        bottom: false,
+        child: Column(
           children: [
             buildHeaderWidget(),
             Expanded(
@@ -53,9 +52,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 
   Widget buildBalanceWidget() {
