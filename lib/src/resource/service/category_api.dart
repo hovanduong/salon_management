@@ -22,7 +22,7 @@ class CategoryApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/category?pageSize=10&page=1',
+        url: '/category?pageSize=10&page=$page&search=${search ?? ''}',
       );
       switch (response?.statusCode) {
         case 200:
