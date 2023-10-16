@@ -91,20 +91,6 @@ class MyCustomerAddViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showErrorDialog(_) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        closeDialog(context);
-        return WarningOneDialog(
-          image: AppImages.icPlus,
-          title: SignUpLanguage.failed,
-        );
-      },
-    );
-  }
-
   dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
@@ -133,6 +119,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
   dynamic showOpenCustomerExits(_) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return WarningDialog(
@@ -146,7 +133,9 @@ class MyCustomerAddViewModel extends BaseViewModel {
           onTapLeft: () {
             Navigator.pop(context);
           },
-          onTapRight: _goToHome,
+          onTapRight: () async {
+            await _goToHome();
+          },
         );
       },
     );
@@ -154,6 +143,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
   dynamic showOpenDialog(_) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return WarningDialog(
@@ -179,10 +169,10 @@ class MyCustomerAddViewModel extends BaseViewModel {
   Future<void> handleCustomerError(String message) async {
     if (message.trim() == AppValues.customerExits) {
       LoadingDialog.hideLoadingDialog(context);
-      return await showOpenCustomerExits(context);
+      await showOpenCustomerExits(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      return await showOpenDialog(context);
+      await showOpenDialog(context);
     }
   }
 
@@ -203,9 +193,8 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
     if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
-      return await showDialogNetwork(context);
+      await showDialogNetwork(context);
     } else if (value is AppException) {
-      LoadingDialog.hideLoadingDialog(context);
       await handleCustomerError(value.message);
     } else if (value is bool) {
       if (value) {
@@ -215,7 +204,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
         closeScreen();
       } else {
         LoadingDialog.hideLoadingDialog(context);
-        return await showOpenDialog(context);
+        await showOpenDialog(context);
       }
     }
     notifyListeners();

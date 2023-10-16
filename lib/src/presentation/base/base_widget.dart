@@ -43,12 +43,12 @@ class _BaseWidgetState<T extends BaseViewModel> extends State<BaseWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        // statusBarColor: Theme.of(context).colorScheme.background,
-        statusBarColor: Colors.transparent,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     // statusBarColor: Theme.of(context).colorScheme.background,
+    //     statusBarColor: Colors.transparent,
+    //   ),
+    // );
     return Scaffold(
       body: ChangeNotifierProvider<T>(
         create: (context) => viewModel!..setContext(context),

@@ -90,7 +90,8 @@ class MyCustomerApi {
   }
 
   Future<Result<bool, AppException>> postMyCustomer(
-      MyCustomerParams params) async {
+    MyCustomerParams params,
+  ) async {
     try {
       final response = await HttpRemote.post(
         url: '/my-customer',

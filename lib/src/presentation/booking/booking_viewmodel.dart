@@ -45,7 +45,6 @@ class BookingViewModel extends BaseViewModel {
   DateTime dateTime = DateTime.now();
   // DateTime dateTime = DateTime.now();
 
-
   MyBookingModel? dataMyBooking;
 
   Map<int, String> mapService = {};
@@ -111,9 +110,11 @@ class BookingViewModel extends BaseViewModel {
       addressController.text = dataMyBooking!.address!;
       noteController.text =
           dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
-      dateTime= DateTime.parse(AppDateUtils.formatDateLocal(
+      dateTime = DateTime.parse(
+        AppDateUtils.formatDateLocal(
           dataMyBooking!.date!,
-        ),);
+        ),
+      );
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -126,11 +127,13 @@ class BookingViewModel extends BaseViewModel {
   void setSelectedService() {
     if (dataMyBooking!.myServices!.isNotEmpty) {
       dataMyBooking?.myServices!.forEach((service) {
-        selectedService.add(RadioModel(
-          isSelected: true,
-          id: service.id,
-          name: '${service.name}/${currencyFormatter.format(service.money)}',
-        ),);
+        selectedService.add(
+          RadioModel(
+            isSelected: true,
+            id: service.id,
+            name: '${service.name}/${currencyFormatter.format(service.money)}',
+          ),
+        );
       });
     }
   }
@@ -216,7 +219,7 @@ class BookingViewModel extends BaseViewModel {
         .first
         .fullName
         .toString();
-        
+
     myCustomerId = value.key;
 
     notifyListeners();
@@ -332,9 +335,8 @@ class BookingViewModel extends BaseViewModel {
       context: context,
       builder: (_) {
         return WarningDialog(
-          content: BookingLanguage.bookingSuccessful,
           image: AppImages.icCheck,
-          title: SignUpLanguage.success,
+          title: 'Đặt lịch hẹn thành công',
           leftButtonName: SignUpLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
@@ -386,14 +388,16 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.postBooking(MyBookingPramsApi(
-      myCustomerId: myCustomerId,
-      myServices: serviceId,
-      address: addressController.text.trim(),
-      date: dateTime.toString().trim(),
-      isBooking: true,
-      note: noteController.text == '' ? 'Trống' : noteController.text,
-    ),);
+    final result = await bookingApi.postBooking(
+      MyBookingPramsApi(
+        myCustomerId: myCustomerId,
+        myServices: serviceId,
+        address: addressController.text.trim(),
+        date: dateTime.toString().trim(),
+        isBooking: true,
+        note: noteController.text == '' ? 'Trống' : noteController.text,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -416,15 +420,18 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> putBooking() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.putBooking(MyBookingPramsApi(
-      id: dataMyBooking!.id,
-      myServices: serviceId,
-      address: addressController.text.trim(),
-      date: dateTime.toString().trim(),
-      discount: double.parse(
-          discountController.text.isEmpty ? '0' : discountController.text,),
-      note: noteController.text == '' ? 'Trống' : noteController.text,
-    ),);
+    final result = await bookingApi.putBooking(
+      MyBookingPramsApi(
+        id: dataMyBooking!.id,
+        myServices: serviceId,
+        address: addressController.text.trim(),
+        date: dateTime.toString().trim(),
+        discount: double.parse(
+          discountController.text.isEmpty ? '0' : discountController.text,
+        ),
+        note: noteController.text == '' ? 'Trống' : noteController.text,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,

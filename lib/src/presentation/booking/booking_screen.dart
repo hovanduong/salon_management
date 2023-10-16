@@ -1,5 +1,7 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,41 +30,36 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dataBooking= ModalRoute.of(context)?.settings.arguments;
+    final dataBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<BookingViewModel>(
       viewModel: BookingViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
-        dataBooking as MyBookingModel?,
-      ),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          dataBooking as MyBookingModel?,
+        ),
       builder: (context, viewModel, child) => buildBookingScreen(),
     );
   }
 
   Widget buildBookingScreen() {
-    return SafeArea(
-      top: true,
-      bottom: false,
-      right: false,
-      left: false,
-      child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildAppbar(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildInfo(),
-                buildLineWidget(),
-                buildServiceInfo(),
-                buildLineWidget(),
-                buildNotes(),
-                buildConfirmButton(),
-              ],
-            ),
-          ],
-        ),
+    return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildAppbar(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildInfo(),
+              buildLineWidget(),
+              buildServiceInfo(),
+              buildLineWidget(),
+              buildNotes(),
+              buildConfirmButton(),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -92,7 +89,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: [
           buildService(),
           buildListService(),
-          if(_viewModel!.selectedService.isNotEmpty)
+          if (_viewModel!.selectedService.isNotEmpty)
             Column(
               children: [
                 buildTotalNoDis(),
@@ -122,20 +119,21 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildTotalNoDis() {
     return Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Paragraph(
-              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: 'Thành tiền',
-            ),
-            Paragraph(
-              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: _viewModel!.moneyController.text,
-            ),
-          ],
-        ),);
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Paragraph(
+            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+            content: 'Thành tiền',
+          ),
+          Paragraph(
+            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+            content: _viewModel!.moneyController.text,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildListService() {
@@ -204,10 +202,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
               style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
             ),
             const Paragraph(
-                content: '*',
-                fontWeight: FontWeight.w600,
-                color: AppColors.PRIMARY_RED,
-              ),
+              content: '*',
+              fontWeight: FontWeight.w600,
+              color: AppColors.PRIMARY_RED,
+            ),
           ],
         ),
         IconButton(
@@ -257,7 +255,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildTitleSelectTime(){
+  Widget buildTitleSelectTime() {
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       child: Paragraph(
@@ -267,7 +265,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildTimeSelect(){
+  Widget buildTimeSelect() {
     return SizedBox(
       height: 180,
       child: CupertinoDatePicker(
@@ -282,23 +280,23 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildButtonSelectTime(){
+  Widget buildButtonSelectTime() {
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       child: AppButton(
         content: BookingLanguage.done,
         enableButton: true,
-        onTap: ()=> Navigator.pop(context),
+        onTap: () => Navigator.pop(context),
       ),
     );
   }
 
-  dynamic showSelectTime(){
+  dynamic showSelectTime() {
     showModalBottomSheet(
-      context: context, 
+      context: context,
       isDismissible: false,
       builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height/2.5,
+        height: MediaQuery.of(context).size.height / 2.5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -311,9 +309,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  dynamic showSelectDate(){
+  dynamic showSelectDate() {
     return showModalBottomSheet(
-      context: context, 
+      context: context,
       isDismissible: false,
       builder: (context) => SfDateRangePicker(
         minDate: DateTime.now(),
@@ -323,9 +321,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         showActionButtons: true,
         showNavigationArrow: true,
         onCancel: () {
-          _viewModel!.dateController.selectedDate=null;
+          _viewModel!.dateController.selectedDate = null;
           Navigator.pop(context);
-        } ,
+        },
         onSubmit: (value) {
           _viewModel!.updateDateTime(value! as DateTime);
           Navigator.pop(context);
@@ -397,16 +395,19 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildAppbar() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeMedium,
-      ),
+    return Container(
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 60, bottom: 10),
+      color: AppColors.PRIMARY_GREEN,
       child: CustomerAppBar(
+        color: AppColors.COLOR_WHITE,
+        style: STYLE_LARGE.copyWith(
+          fontWeight: FontWeight.w700,
+          color: AppColors.COLOR_WHITE,
+        ),
         onTap: () => Navigator.pop(context),
-        title:_viewModel!.dataMyBooking==null
-          ? BookingLanguage.booking
-          : BookingLanguage.bookingEdit,
+        title: _viewModel!.dataMyBooking == null
+            ? BookingLanguage.booking
+            : BookingLanguage.bookingEdit,
       ),
     );
   }
@@ -425,7 +426,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
-          _viewModel!..setNameCustomer(value)..enableConfirmButton();
+          _viewModel!
+            ..setNameCustomer(value)
+            ..enableConfirmButton();
         },
       ),
     );
@@ -436,12 +439,12 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       isOnTap: true,
       name: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.enterPhone,
-      nameController:_viewModel!.phoneController,
+      nameController: _viewModel!.phoneController,
       onTap: () {
-        if(_viewModel!.dataMyBooking== null){
+        if (_viewModel!.dataMyBooking == null) {
           showSelectPhone(context);
         }
-      }, 
+      },
     );
   }
 
@@ -453,7 +456,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       textEditingController: _viewModel!.addressController,
       validator: _viewModel!.addressMsg,
       onChanged: (value) {
-        _viewModel!..validAddress(value)..enableConfirmButton();
+        _viewModel!
+          ..validAddress(value)
+          ..enableConfirmButton();
       },
     );
   }
@@ -504,9 +509,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         content: ServiceAddLanguage.confirm,
         enableButton: _viewModel!.enableButton,
         onTap: () {
-          if(_viewModel!.dataMyBooking!=null){
+          if (_viewModel!.dataMyBooking != null) {
             _viewModel!.putBooking();
-          }else{
+          } else {
             _viewModel!
               ..confirmButton()
               ..postBooking();

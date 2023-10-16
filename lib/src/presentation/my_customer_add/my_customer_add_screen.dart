@@ -98,8 +98,8 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
     return AppButton(
       enableButton: _viewModel!.enableSubmit,
       content: MyCustomerAddLanguage.submit,
-      onTap: () {
-        _viewModel!.postMyCustomer();
+      onTap: () async {
+        await _viewModel!.postMyCustomer();
       },
     );
   }

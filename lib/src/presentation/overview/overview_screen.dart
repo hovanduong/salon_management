@@ -25,6 +25,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarIconBrightness: Brightness.light, // Màu chữ trắng
+    // ));
     return BaseWidget(
       viewModel: OverViewViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
