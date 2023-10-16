@@ -207,5 +207,7 @@
     "paymentMethod":"Payment method",
     "transactionId":"Transaction ID",
     "shareReceipt":"Share Receipt",
+    "fullName":"Full Name",
+    "email":"Email",
     "lastLine": ""
 }

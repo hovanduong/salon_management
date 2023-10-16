@@ -110,25 +110,24 @@ class CreatePasswordViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> sendOTP(RegisterArguments infoUser) async {
-    LoadingDialog.showLoadingDialog(context);
-    final result = await authApi.sendOTP(
-      AuthParams(
-        user: infoUser.userModel,
-        password: passController.text,
-      ),
-      context,
-    );
+  // Future<void> sendOTP(RegisterArguments infoUser) async {
+  //   LoadingDialog.showLoadingDialog(context);
+  //   final result = await authApi.sendOTP(
+  //     AuthParams(
+  //       userModel: infoUser.userModel,
+  //       password: passController.text,
+  //     ),
+  //     context,
+  //   );
 
-    final value = switch (result) {
-      Success(value: final verificationId) => verificationId,
-      Failure(exception: final exception) => exception,
-    };
+  //   final value = switch (result) {
+  //     Success(value: final verificationId) => verificationId,
+  //     Failure(exception: final exception) => exception,
+  //   };
 
-
-    if(!AppValid.isNetWork(value)){
-      LoadingDialog.hideLoadingDialog(context);
-      showDialogNetWork(context);
-    }
-  }
+  //   if(!AppValid.isNetWork(value)){
+  //     LoadingDialog.hideLoadingDialog(context);
+  //     showDialogNetWork(context);
+  //   }
+  // }
 }
