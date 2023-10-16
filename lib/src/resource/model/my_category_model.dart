@@ -13,7 +13,7 @@ class CategoryModel {
   List<MyServiceModel>? myServices;
 
   CategoryModel({
-    this.isIconCategory=true,
+    this.isIconCategory = true,
     this.id,
     this.name,
     this.userId,

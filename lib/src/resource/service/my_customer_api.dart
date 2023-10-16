@@ -11,7 +11,7 @@ class MyCustomerParams {
     this.id,
     this.fullName,
     this.phoneNumber,
-    this.page, 
+    this.page,
     this.email,
     this.gender,
   });
@@ -24,31 +24,16 @@ class MyCustomerParams {
 }
 
 class MyCustomerApi {
-  Future<Result<List<MyCustomerModel>, Exception>> getListSearch(String search)
-  async {
-    try {
-      final response = await HttpRemote.get(
-        url:'/my-customer?search=$search',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final myCustomer = MyCustomerModelFactory.createList(data);
-          return Success(myCustomer);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
-
   Future<Result<List<MyCustomerModel>, Exception>> getMyCustomer({
-      required bool getAll, int? page,}) async {
+    required bool getAll,
+    int? page,
+    String? search,
+  }) async {
     try {
       final response = await HttpRemote.get(
-        url: getAll?'/my-customer':'/my-customer?pageSize=10&page=$page',
+        url: getAll
+            ? '/my-customer'
+            : '/my-customer?pageSize=10&page=$page&search=${search ?? ''}',
       );
       switch (response?.statusCode) {
         case 200:
@@ -80,8 +65,9 @@ class MyCustomerApi {
     }
   }
 
-  Future<Result<bool, Exception>> putMyCustomer(MyCustomerParams? params) 
-  async {
+  Future<Result<bool, Exception>> putMyCustomer(
+    MyCustomerParams? params,
+  ) async {
     try {
       final response = await HttpRemote.put(
         url: '/my-customer/${params!.id}',
@@ -102,11 +88,11 @@ class MyCustomerApi {
     }
   }
 
-  Future<Result<bool, Exception>> postMyCustomer(MyCustomerParams params)
-  async {
+  Future<Result<bool, Exception>> postMyCustomer(
+      MyCustomerParams params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/my-customer', 
+        url: '/my-customer',
         body: {
           'phoneNumber': '${params.phoneNumber}',
           'fullName': params.fullName,

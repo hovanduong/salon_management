@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
@@ -9,6 +10,7 @@ import '../../resource/model/radio_model.dart';
 import '../../resource/service/auth.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/my_service_api.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 
@@ -18,7 +20,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Map<int, String> mapCategory = {};
 
-  String messageErrorNameService = '';
+  String? messageErrorNameService;
   String messageErrorPrice = '';
 
   List<CategoryModel> listCategory = <CategoryModel>[];
@@ -37,13 +39,32 @@ class ServiceAddViewModel extends BaseViewModel {
 
   String? money;
 
+  static const _locale = 'en';
+
+  String formatNumber(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get currency =>
+      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
+
   Future<void> init() async {
     await getCategory();
     await initMapCategory();
   }
 
+  void formatMoney(String? value) {
+    if (value != null && value.isNotEmpty) {
+      final valueFormat =
+          AppCurrencyFormat.formatNumberEnter(value.replaceAll(',', ''));
+      priceController.value = TextEditingValue(
+        text: valueFormat,
+        selection: TextSelection.collapsed(offset: valueFormat.length),
+      );
+    }
+    notifyListeners();
+  }
+
   void closeDialog(BuildContext context) {
-    timer= Timer(
+    timer = Timer(
       const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
@@ -80,29 +101,27 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validNameService(String? value) {
-    if (value == null || value.isEmpty) {
-      messageErrorNameService = ServiceAddLanguage.emptyNameError;
-    } else if (value.length < 2) {
-      messageErrorNameService = ServiceAddLanguage.validName;
+    final result = AppValid.validateFullName(value);
+    if (result != null) {
+      messageErrorNameService = result;
     } else {
-      messageErrorNameService = '';
+      messageErrorNameService = null;
     }
     notifyListeners();
   }
 
   void validPrice(String? value) {
-    money=value;
+    money = value;
     if (value == null || value.isEmpty) {
       messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
     } else {
-      
       messageErrorPrice = '';
     }
     notifyListeners();
   }
 
   void onSubmit() {
-    if (messageErrorNameService == '' &&
+    if (messageErrorNameService == null &&
         nameServiceController.text != '' &&
         priceController.text != '' &&
         messageErrorPrice == '' &&
@@ -161,7 +180,7 @@ class ServiceAddViewModel extends BaseViewModel {
 
   Future<void> getCategory() async {
     listCategory.clear();
-    final result = await categoryApi.getListCategory('');
+    final result = await categoryApi.getListCategory(1, '');
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -191,7 +210,7 @@ class ServiceAddViewModel extends BaseViewModel {
     final result = await myServiceApi.postService(
       ServiceParams(
         name: nameServiceController.text,
-        money: int.parse(money??'0'),
+        money: int.parse(money ?? '0'),
         listCategory: categoryId,
       ),
     );

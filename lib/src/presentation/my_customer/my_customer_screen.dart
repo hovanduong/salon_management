@@ -42,6 +42,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
 
   Widget buildCustomerScreen() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
         create: (context) =>
@@ -89,23 +90,25 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
     );
   }
 
-  Widget buildInfoCustomer (int index) {
-    final phone =_viewModel!.foundCustomer[index].phoneNumber;
-    final name = _viewModel!.foundCustomer[index].fullName;
-    final id = _viewModel!.foundCustomer[index].id;
+  Widget buildInfoCustomer(int index) {
+    final phone = _viewModel!.listMyCustomer[index].phoneNumber;
+    final name = _viewModel!.listMyCustomer[index].fullName;
+    final id = _viewModel!.listMyCustomer[index].id;
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
       child: CardCustomerWidget(
         phone: phone,
         name: name,
         onEdit: (context) => _viewModel!.goToMyCustomerEdit(
-          context, _viewModel!.foundCustomer[index],),
+          context,
+          _viewModel!.listMyCustomer[index],
+        ),
         onDelete: (context) => _viewModel!.showWaningDiaglog(id!),
       ),
     );
   }
 
-  Widget buildSearch(){
+  Widget buildSearch() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
       child: AppFormField(
@@ -122,32 +125,29 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
     );
   }
 
-  Widget showListCustomer(){
+  Widget showListCustomer() {
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          margin: EdgeInsets.only(
-              left: SizeToPadding.sizeSmall,
-              right: SizeToPadding.sizeVerySmall,),
-          height: MediaQuery.of(context).size.height-200,
-          child: ListView.builder(
-            controller: _viewModel!.scrollController,
-            itemCount: _viewModel!.loadingMore
-              ? _viewModel!.foundCustomer.length+1
-              : _viewModel!.foundCustomer.length,
-            itemBuilder: (context, index) {
-              if(index<_viewModel!.foundCustomer.length){
-                return buildInfoCustomer(index);
-              }else{
-                return const CupertinoActivityIndicator();
-              }
-            },
-          ),
+      child: Container(
+        margin: EdgeInsets.only(
+          left: SizeToPadding.sizeSmall,
+          right: SizeToPadding.sizeVerySmall,
+        ),
+        child: ListView.builder(
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.loadingMore
+              ? _viewModel!.listMyCustomer.length + 1
+              : _viewModel!.listMyCustomer.length,
+          itemBuilder: (context, index) {
+            if (index < _viewModel!.listMyCustomer.length) {
+              return buildInfoCustomer(index);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
         ),
       ),
     );
@@ -160,16 +160,16 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           color: AppColors.COLOR_WHITE,
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig,),
+              color: AppColors.BLACK_200,
+              blurRadius: SpaceBox.sizeBig,
+            ),
           ],
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildSearch(),
-              showListCustomer(),
-            ],
-          ),
+        child: Column(
+          children: [
+            buildSearch(),
+            Expanded(child: showListCustomer()),
+          ],
         ),
       ),
     );

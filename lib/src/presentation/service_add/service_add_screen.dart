@@ -17,19 +17,18 @@ class ServiceAddScreen extends StatefulWidget {
 }
 
 class _ServiceAddScreenState extends State<ServiceAddScreen> {
-
   ServiceAddViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: ServiceAddViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel= viewModel?..init(),
+      viewModel: ServiceAddViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel?..init(),
       builder: (context, viewModel, child) => buildAddServiceCategoriesScreen(),
     );
   }
 
-  Widget buildAppBar(){
+  Widget buildAppBar() {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVerySmall,
@@ -39,7 +38,9 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
-            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+            Icons.arrow_back_ios_new,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
         title: Paragraph(
           content: ServiceAddLanguage.serviceAdd,
@@ -55,7 +56,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     return const CustomBackGround();
   }
 
-  Widget buildFieldNameService(){
+  Widget buildFieldNameService() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
@@ -63,16 +64,17 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         textEditingController: _viewModel!.nameServiceController,
         hintText: ServiceAddLanguage.enterServiceName,
         onChanged: (value) {
-          _viewModel!..validNameService(value)
-          ..onSubmit();
+          _viewModel!
+            ..validNameService(value)
+            ..onSubmit();
         },
         validator: _viewModel!.messageErrorNameService,
-        isSpace: true, 
+        isSpace: true,
       ),
     );
   }
 
-  Widget buildFieldPrice(){
+  Widget buildFieldPrice() {
     return AppFormField(
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -83,18 +85,17 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       textEditingController: _viewModel!.priceController,
       hintText: ServiceAddLanguage.enterAmountOfMoney,
       onChanged: (value) {
-        _viewModel!..validPrice(value)
-        ..onSubmit();
-        _viewModel!.priceController.text= AppCurrencyFormat.formatMoney(
-          int.parse(value),
-        );
+        _viewModel!
+          ..validPrice(value)
+          ..formatMoney(value)
+          ..onSubmit();
       },
       validator: _viewModel!.messageErrorPrice,
-      isSpace: true, 
+      isSpace: true,
     );
   }
 
-  Widget buildFieldCategory(){
+  Widget buildFieldCategory() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -103,9 +104,9 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
         ),
         IconButton(
-          icon: const Icon(Icons.add_circle), 
+          icon: const Icon(Icons.add_circle),
           color: AppColors.PRIMARY_GREEN,
-          onPressed: () async{
+          onPressed: () async {
             showSelectCategory(context);
           },
         ),
@@ -113,28 +114,32 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
-  Widget buildSelectedCategory(int index){
+  Widget buildSelectedCategory(int index) {
     return Chip(
       label: Paragraph(
         content: _viewModel!.selectedCategory[index].name,
         style: STYLE_MEDIUM_BOLD,
         overflow: TextOverflow.ellipsis,
       ),
-      onDeleted: () => _viewModel!..removeCategory(index)
-        ..onSubmit()..setCategoryId(),
+      onDeleted: () => _viewModel!
+        ..removeCategory(index)
+        ..onSubmit()
+        ..setCategoryId(),
     );
   }
 
-  Widget buildListCategories(){
+  Widget buildListCategories() {
     return Wrap(
       runSpacing: -5,
       spacing: SpaceBox.sizeSmall,
-      children: List.generate(_viewModel!.selectedCategory.length, 
-        buildSelectedCategory,),
+      children: List.generate(
+        _viewModel!.selectedCategory.length,
+        buildSelectedCategory,
+      ),
     );
   }
 
-  Widget buildButtonApp(){
+  Widget buildButtonApp() {
     return AppButton(
       enableButton: _viewModel!.enableSubmit,
       content: UpdateProfileLanguage.submit,
@@ -146,7 +151,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   void showSelectCategory(_) {
     showModalBottomSheet(
-      context: context, 
+      context: context,
       isDismissible: true,
       isScrollControlled: true,
       builder: (context) => BottomSheetSingleRadio(
@@ -154,25 +159,31 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         listItems: _viewModel!.mapCategory,
         initValues: _viewModel!.categoryId,
         onTapSubmit: (value) {
-            _viewModel!..changeValueCategory(value)
-            ..setCategoryId()..onSubmit();
+          _viewModel!
+            ..changeValueCategory(value)
+            ..setCategoryId()
+            ..onSubmit();
         },
       ),
     );
   }
 
-  Widget buildCardField(){
+  Widget buildCardField() {
     return Positioned(
       top: 150,
       child: Container(
-        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
+        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig * 2,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,),
+              color: AppColors.BLACK_400,
+              blurRadius: SpaceBox.sizeVerySmall,
+            ),
           ],
           color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
+          borderRadius: BorderRadius.all(
+            Radius.circular(SpaceBox.sizeLarge),
+          ),
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
@@ -191,7 +202,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     );
   }
 
-  Widget buildAddServiceCategoriesScreen(){
+  Widget buildAddServiceCategoriesScreen() {
     return SingleChildScrollView(
       child: SafeArea(
         child: Stack(

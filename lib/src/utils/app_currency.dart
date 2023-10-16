@@ -3,12 +3,12 @@ import 'package:intl/intl.dart';
 
 class AppCurrencyFormat {
   static String formatMoneyDot(num value, {bool isDecimal = false}) {
-    if (isDecimal) return NumberFormat('###,###,###.##', 'en_us').format(value)
-              .replaceAll(RegExp('[,]'), '.');
+    if (isDecimal)
+      return NumberFormat('###,###,###.##', 'en_us')
+          .format(value)
+          .replaceAll(RegExp('[,]'), '.');
 
-
-    return NumberFormat('###,###,###', 'en_us')
-        .format(value);
+    return NumberFormat('###,###,###', 'en_us').format(value);
   }
 
   static String formatMoneyVND(num value) {
@@ -25,6 +25,14 @@ class AppCurrencyFormat {
         .format(point)
         .replaceAll(RegExp('[,]'), '.');
   }
+
+  static const _locale = 'en';
+
+  static String formatNumberEnter(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
+
+  static String get currency =>
+      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
 }
 
 class NumericTextFormatter extends TextInputFormatter {

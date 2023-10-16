@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
-import '../../intl/generated/l10n.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/category_api.dart';
 import '../../utils/app_valid.dart';
@@ -31,18 +30,17 @@ class CategoryAddViewModel extends BaseViewModel {
   }
 
   void validCategory(String? value) {
-    if (value == null || value.isEmpty) {
-      messageErrorCategory = ServiceAddLanguage.emptyNameError;
-    } else if (value.length < 2) {
-      messageErrorCategory = S.current.validName;
+    final result = AppValid.validateFullName(value);
+    if (result != null) {
+      messageErrorCategory = result;
     } else {
-      messageErrorCategory = '';
+      messageErrorCategory = null;
     }
     notifyListeners();
   }
 
   void onSubmit() {
-    if (messageErrorCategory == '' && categoryController.text != '') {
+    if (messageErrorCategory == null && categoryController.text != '') {
       enableButton = true;
     } else {
       enableButton = false;
