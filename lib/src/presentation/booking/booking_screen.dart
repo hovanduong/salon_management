@@ -192,30 +192,30 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildService() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Paragraph(
-              content: BookingLanguage.selectServices,
-              style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
-            ),
-            const Paragraph(
-              content: '*',
-              fontWeight: FontWeight.w600,
-              color: AppColors.PRIMARY_RED,
-            ),
-          ],
-        ),
-        IconButton(
-          icon: const Icon(Icons.add_circle),
-          color: AppColors.PRIMARY_GREEN,
-          onPressed: () async {
-            showSelectCategory(context);
-          },
-        ),
-      ],
+    return InkWell(
+      onTap: () => showSelectCategory(context),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Paragraph(
+                content: BookingLanguage.selectServices,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+              ),
+              const Paragraph(
+                content: '*',
+                fontWeight: FontWeight.w600,
+                color: AppColors.PRIMARY_RED,
+              ),
+            ],
+          ),
+          const Icon(
+            Icons.add_circle,
+            color: AppColors.PRIMARY_GREEN,
+          ),
+        ],
+      ),
     );
   }
 
@@ -396,7 +396,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 60, bottom: 10),
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 35 : 60, bottom: 10),
       color: AppColors.PRIMARY_GREEN,
       child: CustomerAppBar(
         color: AppColors.COLOR_WHITE,
@@ -438,7 +438,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return NameFieldWidget(
       isOnTap: true,
       name: BookingLanguage.phoneNumber,
-      hintText: BookingLanguage.enterPhone,
+      hintText: BookingLanguage.selectPhoneNumber,
       nameController: _viewModel!.phoneController,
       onTap: () {
         if (_viewModel!.dataMyBooking == null) {

@@ -33,5 +33,6 @@ class BookingLanguage {
   static final emptyAddress = S.current.emptyAddress;
   static final yes = S.current.yes;
   static final waningDeleteBooking = S.current.waningDeleteBooking;
+  static final bookingSuccess = S.current.bookingSuccess;
 
 }

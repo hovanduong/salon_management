@@ -76,7 +76,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         color: AppColors.PRIMARY_GREEN,
         child: Padding(
           padding:
-              EdgeInsets.only(top: Platform.isAndroid ? 20 : 60, bottom: 10),
+              EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
           child: CustomerAppBar(
             color: AppColors.COLOR_WHITE,
             style: STYLE_LARGE.copyWith(
@@ -227,6 +227,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       height: MediaQuery.of(context).size.height - 200,
       child: ListView.builder(
+        padding: EdgeInsets.zero,
         physics: const AlwaysScrollableScrollPhysics(),
         controller: _viewModel!.scrollController,
         itemCount: _viewModel!.loadingMore
@@ -255,23 +256,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildBody() {
     return Expanded(
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-            // color: AppColors.COLOR_WHITE,
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: AppColors.BLACK_200,
-            //     blurRadius: SpaceBox.sizeBig,
-            //   ),
-            // ],
-            ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildSearch(),
-              showListCategory(),
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildSearch(),
+            showListCategory(),
+          ],
         ),
       ),
     );

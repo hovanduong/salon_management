@@ -194,7 +194,7 @@ class BookingViewModel extends BaseViewModel {
   Future<void> initMapCustomer() async {
     myCustomer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}'},
+        {element.id!: '${element.phoneNumber} ${element.fullName}'},
       );
     });
     notifyListeners();
@@ -336,7 +336,7 @@ class BookingViewModel extends BaseViewModel {
       builder: (_) {
         return WarningDialog(
           image: AppImages.icCheck,
-          title: 'Đặt lịch hẹn thành công',
+          title: BookingLanguage.bookingSuccess,
           leftButtonName: SignUpLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
@@ -454,6 +454,9 @@ class BookingViewModel extends BaseViewModel {
   @override
   void dispose() {
     phoneController.dispose();
+    nameController.dispose();
+    addressController.dispose();
+    noteController.dispose();
     super.dispose();
   }
 }

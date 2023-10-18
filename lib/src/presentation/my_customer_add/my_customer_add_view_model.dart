@@ -99,7 +99,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
         closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
-          title: 'Thêm thành công',
+          title: MyCustomerAddLanguage.addSuccess,
         );
       },
     );
@@ -123,13 +123,13 @@ class MyCustomerAddViewModel extends BaseViewModel {
       context: context,
       builder: (context) {
         return WarningDialog(
-          content: 'Số điện thoại đã tồn tại. Xin vui lòng kiểm tra lại!',
+          content: MyCustomerAddLanguage.phoneNumberExists,
           image: AppImages.icPlus,
-          title: 'Thông báo',
-          leftButtonName: 'Đóng',
+          title: MyCustomerAddLanguage.notification,
+          leftButtonName: MyCustomerAddLanguage.close,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: 'Trang chủ',
+          rightButtonName: MyCustomerAddLanguage.home,
           onTapLeft: () {
             Navigator.pop(context);
           },
@@ -147,13 +147,13 @@ class MyCustomerAddViewModel extends BaseViewModel {
       context: context,
       builder: (context) {
         return WarningDialog(
-          content: 'Thêm khách hàng thất bại. Xin vui lòng kiểm tra lại sau!',
+          content: MyCustomerAddLanguage.addCustomerFailed,
           image: AppImages.icPlus,
-          title: 'Thông báo',
-          leftButtonName: 'Đóng',
+          title: MyCustomerAddLanguage.notification,
+          leftButtonName: MyCustomerAddLanguage.close,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: 'Thử lại',
+          rightButtonName: MyCustomerAddLanguage.tryAgain,
           onTapLeft: () {
             Navigator.pop(context);
           },

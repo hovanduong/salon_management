@@ -1,5 +1,7 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -243,14 +245,19 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildAppbar() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeMedium,
-      ),
-      child: CustomerAppBar(
-        onTap: () => Navigator.pop(context),
-        title: PaymentLanguage.pay,
+    return Container(
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 15 : 60, bottom: 10),
+      color: AppColors.PRIMARY_GREEN,
+      child: Center(
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.COLOR_WHITE,
+          ),
+          onTap: () => Navigator.pop(context),
+          title: PaymentLanguage.pay,
+        ),
       ),
     );
   }
@@ -279,7 +286,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return NameFieldWidget(
       isOnTap: true,
       name: BookingLanguage.phoneNumber,
-      hintText: BookingLanguage.enterPhone,
+      hintText: BookingLanguage.selectPhoneNumber,
       nameController:_viewModel!.phoneController,
       isAddCustomer: true,
       onAddPhone: () => _viewModel!.goToAddMyCustomer(context),

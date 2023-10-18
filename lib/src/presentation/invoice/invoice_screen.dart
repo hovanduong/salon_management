@@ -102,25 +102,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
   }
 
-  // Widget buildHeader() {
-  //   return Container(
-  //     // height: SpaceBox.sizeBig * 2,
-  //     width: double.maxFinite,
-  //     alignment: Alignment.center,
-  //     // margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
-  //     decoration: BoxDecoration(
-  //       color: AppColors.PRIMARY_GREEN,
-  //       boxShadow: [
-  //         // BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
-  //       ],
-  //     ),
-  //     child: Paragraph(
-  //       content: InvoiceLanguage.invoice,
-  //       style: STYLE_LARGE_BOLD,
-  //     ),
-  //   );
-  // }
-
   Widget invoiceUser(int index) {
     final money = _viewModel!.listCurrent[index].total;
     final date = _viewModel!.listCurrent[index].createdAt;
@@ -163,13 +144,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: Container(
-        margin: EdgeInsets.only(
-          left: SizeToPadding.sizeSmall,
-          right: SizeToPadding.sizeVerySmall,
-        ),
+      child: SizedBox(
         height: MediaQuery.of(context).size.height - 250,
         child: ListView.builder(
+          padding: EdgeInsets.zero,
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
               ? _viewModel!.listCurrent.length + 1

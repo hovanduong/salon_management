@@ -9,6 +9,7 @@ class SignUpLanguage {
   static final existsAccount = S.current.existsAccount;
   static final validOTP = S.current.validOTP;
   static final success = S.current.success;
+  static final addSuccess = S.current.addSuccess;
   static final cancel = S.current.cancel;
 
 }

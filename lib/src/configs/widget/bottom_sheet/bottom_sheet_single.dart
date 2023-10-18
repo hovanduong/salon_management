@@ -125,7 +125,8 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                 : ListView.builder(
                     itemCount: foundSearch.length,
                     itemBuilder: (context, i) {
-                      final name = foundSearch[i].name;
+                      final name = foundSearch[i].name?.split(' ')[1];
+                      final phone= foundSearch[i].name?.split(' ')[0];
                       final key = foundSearch[i].id;
                       // final name= foundSearch[i].entries.last;
                       // final key= foundSearch[i].entries.first;
@@ -133,7 +134,7 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                         // splashColor: AppColors.BLACK_200,
                         onTap: () {
                           selectValue = key;
-                          widget.onTapSubmit!(MapEntry(key, name));
+                          widget.onTapSubmit!(MapEntry(key, phone));
                           Navigator.pop(context);
                           setState(() {});
                         },
@@ -175,9 +176,23 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Paragraph(
-                                    content: name,
+                                  padding: EdgeInsets.all(SpaceBox.sizeLarge),
+                                  child: Row(
+                                    children: [
+                                      Paragraph(
+                                        content: '$name: ',
+                                        style: STYLE_MEDIUM.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(width: SpaceBox.sizeVerySmall,),
+                                      Paragraph(
+                                        content: phone,
+                                        style: STYLE_MEDIUM.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

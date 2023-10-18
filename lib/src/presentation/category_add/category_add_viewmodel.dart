@@ -30,7 +30,7 @@ class CategoryAddViewModel extends BaseViewModel {
   }
 
   void validCategory(String? value) {
-    final result = AppValid.validateFullName(value);
+    final result = AppValid.validateCategory(value);
     if (result != null) {
       messageErrorCategory = result;
     } else {
@@ -98,7 +98,7 @@ class CategoryAddViewModel extends BaseViewModel {
         closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
-          title: SignUpLanguage.success,
+          title: SignUpLanguage.addSuccess,
         );
       },
     );

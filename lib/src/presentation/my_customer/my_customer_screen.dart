@@ -75,7 +75,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 60, bottom: 10),
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
         child: CustomerAppBar(
           color: AppColors.COLOR_WHITE,
           style: STYLE_LARGE.copyWith(
@@ -138,6 +138,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           right: SizeToPadding.sizeVerySmall,
         ),
         child: ListView.builder(
+          padding: EdgeInsets.zero,
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
               ? _viewModel!.listMyCustomer.length + 1
@@ -156,22 +157,11 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
 
   Widget buildBody() {
     return Expanded(
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-            // color: AppColors.COLOR_WHITE,
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: AppColors.BLACK_200,
-            //     blurRadius: SpaceBox.sizeBig,
-            //   ),
-            // ],
-            ),
-        child: Column(
-          children: [
-            buildSearch(),
-            Expanded(child: showListCustomer()),
-          ],
-        ),
+      child: Column(
+        children: [
+          buildSearch(),
+          Expanded(child: showListCustomer()),
+        ],
       ),
     );
   }

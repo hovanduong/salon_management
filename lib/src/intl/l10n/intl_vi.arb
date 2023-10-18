@@ -11,6 +11,8 @@
     "validConfirmPass": "Mật khẩu xác nhận không hợp lệ",
     "validEnterEmail": "Vui lòng nhập email của bạn",
     "validEmail": "Không đúng định dạng email",
+    "validCategory": "Vui lòng nhập danh mục",
+    "validServiceName": "Vui lòng nhập tên dịch vụ",
     "phoneNumber": "Số điện thoại",
     "enterPhoneNumber": "Nhập số điện thoại",
     "enterName": "Nhập tên",
@@ -210,5 +212,12 @@
     "shareReceipt":"Chia sẻ biên lai",
     "fullName":"Tên đầy đủ",
     "email":"Email",
+    "addSuccess":"Thêm thành công",
+    "phoneNumberExists":"Số điện thoại đã tồn tại. Vui lòng kiểm tra lại!",
+    "notification":"Thông báo",
+    "close":"Đóng",
+    "tryAgain":"Thử lại",
+    "addCustomerFailed":"Thêm khách hàng không thành công. Vui lòng kiểm tra lại sau!",
+    "bookingSuccess":"Đặt lịch hẹn thành công",
     "lastLine": ""
 }
