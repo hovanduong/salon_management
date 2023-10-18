@@ -177,15 +177,16 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                               Flexible(
                                 child: Padding(
                                   padding: EdgeInsets.all(SpaceBox.sizeLarge),
-                                  child: Row(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Paragraph(
-                                        content: '$name: ',
+                                        content: name,
                                         style: STYLE_MEDIUM.copyWith(
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                      SizedBox(width: SpaceBox.sizeVerySmall,),
+                                      SizedBox(height: SpaceBox.sizeVerySmall,),
                                       Paragraph(
                                         content: phone,
                                         style: STYLE_MEDIUM.copyWith(

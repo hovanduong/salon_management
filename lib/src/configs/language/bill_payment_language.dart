@@ -13,5 +13,6 @@ class BillPaymentLanguage {
   static final fee= S.current.fee;
   static final total= S.current.total;
   static final shareReceipt= S.current.shareReceipt;
+  static final home= S.current.home;
   static final done= S.current.done;
 }

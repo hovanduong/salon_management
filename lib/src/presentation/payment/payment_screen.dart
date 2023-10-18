@@ -123,7 +123,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
           children: [
             Paragraph(
               style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: 'Thành tiền',
+              content: PaymentLanguage.intoMoney,
             ),
             Paragraph(
               style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
@@ -189,30 +189,32 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildService() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return InkWell(
+      onTap: () => showSelectCategory(context),
+      child: Padding(
+        padding:  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Paragraph(
-              content: BookingLanguage.selectServices,
-              style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+            Row(
+              children: [
+                Paragraph(
+                  content: BookingLanguage.selectServices,
+                  style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+                ),
+                const Paragraph(
+                  content: '*',
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.PRIMARY_RED,
+                ),
+              ],
             ),
-            const Paragraph(
-              content: '*',
-              fontWeight: FontWeight.w600,
-              color: AppColors.PRIMARY_RED,
+            const Icon(Icons.add_circle,
+              color: AppColors.PRIMARY_GREEN,
             ),
           ],
         ),
-        IconButton(
-          icon: const Icon(Icons.add_circle),
-          color: AppColors.PRIMARY_GREEN,
-          onPressed: () async {
-            showSelectCategory(context);
-          },
-        ),
-      ],
+      ),
     );
   }
 
@@ -222,7 +224,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       isDismissible: true,
       isScrollControlled: true,
       builder: (context) => BottomSheetMultipleRadio(
-        titleContent: BookingLanguage.selectServices,
+        titleContent: BookingLanguage.selectedCustomer,
         listItems: _viewModel!.mapService,
         initValues: _viewModel!.serviceId,
         onTapSubmit: (value) {
@@ -272,7 +274,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       isScrollControlled: true,
       builder: (context) => BottomSheetSingle(
         keyboardType: TextInputType.number,
-        titleContent: BookingLanguage.selectPhoneNumber,
+        titleContent: BookingLanguage.selectedCustomer,
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
@@ -315,7 +317,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         children: [
           Paragraph(
             style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
-            content: 'Tạm tính',
+            content: PaymentLanguage.temporary,
           ),
           Paragraph(
             style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),

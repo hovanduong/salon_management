@@ -103,7 +103,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   Widget invoiceUser(int index) {
-    final money = _viewModel!.listCurrent[index].total;
+    final money = _viewModel!.listCurrent[index].myBooking?.total;
     final date = _viewModel!.listCurrent[index].createdAt;
     final name = _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
     final idBooking = _viewModel!.listCurrent[index].myBookingId;
@@ -114,7 +114,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       ),
       child: Transaction(
         color: _viewModel!.colors[index % _viewModel!.colors.length],
-        money: '+ ${AppCurrencyFormat.formatMoneyVND(money!)}',
+        money: '+ ${AppCurrencyFormat.formatMoneyVND(money??0)}',
         subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
         name: name ?? '',
       ),

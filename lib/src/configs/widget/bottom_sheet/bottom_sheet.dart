@@ -8,7 +8,7 @@ class BottomSheetMultipleRadio extends StatefulWidget {
   const BottomSheetMultipleRadio({
     required this.listItems,
     Key? key,
-    this.titleContent = '',
+    this.titleContent,
     this.titleButton = 'Hoàn thành',
     this.onTapSubmit,
     this.initValues,

@@ -219,5 +219,8 @@
     "tryAgain":"Thử lại",
     "addCustomerFailed":"Thêm khách hàng không thành công. Vui lòng kiểm tra lại sau!",
     "bookingSuccess":"Đặt lịch hẹn thành công",
+    "selectedCustomer":"Chọn khách hàng",
+    "temporary":"Tạm tính",
+    "intoMoney":"Thành tiền",
     "lastLine": ""
 }

@@ -14,8 +14,8 @@ class BillPaymentViewModel extends BaseViewModel{
 
   Future<void> init(num? money)async{
     totalMoney=money;
-    time = AppDateUtils.formatDateTime('');
-    date= AppDateUtils.formatTimeToHHMM(DateTime.now());
+    date = AppDateUtils.formatDateTime('');
+    time= AppDateUtils.formatTimeToHHMM(DateTime.now());
     notifyListeners();
   }
   
@@ -23,6 +23,11 @@ class BillPaymentViewModel extends BaseViewModel{
       context,
       Routers.home,
       arguments: 1,
+    );
+  
+  Future<void> goToHome() => Navigator.pushReplacementNamed(
+      context,
+      Routers.home,
     );
 
   void showTransaction(){

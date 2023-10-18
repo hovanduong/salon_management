@@ -125,7 +125,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: [
           Paragraph(
             style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-            content: 'Thành tiền',
+            content: BookingLanguage.intoMoney,
           ),
           Paragraph(
             style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
@@ -422,7 +422,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       isScrollControlled: true,
       builder: (context) => BottomSheetSingle(
         keyboardType: TextInputType.number,
-        titleContent: BookingLanguage.selectPhoneNumber,
+        titleContent: BookingLanguage.selectedCustomer,
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
@@ -471,7 +471,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: [
           Paragraph(
             style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
-            content: 'Tạm tính',
+            content: BookingLanguage.temporary,
           ),
           Paragraph(
             style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),

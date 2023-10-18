@@ -196,7 +196,7 @@ class PaymentViewModel extends BaseViewModel {
   Future<void> initMapCustomer() async {
     myCustomer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}'},
+        {element.id!: '${element.phoneNumber} ${element.fullName}'},
       );
     });
     notifyListeners();

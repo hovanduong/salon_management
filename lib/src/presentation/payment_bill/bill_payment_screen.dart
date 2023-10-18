@@ -46,12 +46,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       right: 0,
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
-        leading: IconButton(
-          onPressed: () {
-            _viewModel!.goToInvoice();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios, color: AppColors.COLOR_WHITE,),),
+        
         title: Paragraph(
           textAlign: TextAlign.center,
           content: BillPaymentLanguage.billPayment,
@@ -60,8 +55,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        trailing: const Icon(
-          Icons.more_horiz, size: 35, color: AppColors.COLOR_WHITE,),
+       
       ),
     );
   }
@@ -140,11 +134,11 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
           title: BillPaymentLanguage.date,
           content: _viewModel!.date,
         ),
-        ItemTransactionWidget(
-          title: BillPaymentLanguage.transactionId,
-          content: '20339219392133212',
-          isIcon: true,
-        ),
+        // ItemTransactionWidget(
+        //   title: BillPaymentLanguage.transactionId,
+        //   content: '20339219392133212',
+        //   isIcon: true,
+        // ),
       ],
     ): Container();
   }
@@ -182,9 +176,9 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       child: Padding(
         padding: EdgeInsets.all(SizeToPadding.sizeMedium),
         child: AppOutlineButton(
-          content: BillPaymentLanguage.shareReceipt,
+          content: BillPaymentLanguage.home,
           onTap: () {
-            _viewModel!.goToInvoice();
+            _viewModel!.goToHome();
           },
         ),
       ),
@@ -224,7 +218,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       bottom: 0,
       left: 0,
       right: 0,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.COLOR_WHITE,
           boxShadow: [

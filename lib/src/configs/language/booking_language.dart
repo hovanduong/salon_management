@@ -17,6 +17,7 @@ class BookingLanguage {
   static final discountLenghtError = S.current.discountLenghtError;
   static final discount = S.current.discount;
   static final selectServices = S.current.selectServices;
+  static final selectedCustomer = S.current.selectedCustomer;
   static final name = S.current.name;
   static final address = S.current.address;
   static final hour = S.current.hour;
@@ -34,5 +35,6 @@ class BookingLanguage {
   static final yes = S.current.yes;
   static final waningDeleteBooking = S.current.waningDeleteBooking;
   static final bookingSuccess = S.current.bookingSuccess;
-
+  static final intoMoney= S.current.intoMoney;
+  static final temporary= S.current.temporary;
 }
