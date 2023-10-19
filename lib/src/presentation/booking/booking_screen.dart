@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -37,7 +38,35 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         ..init(
           dataBooking as MyBookingModel?,
         ),
-      builder: (context, viewModel, child) => buildBookingScreen(),
+      builder: (context, viewModel, child) => buildLoadingScreen(),
+    );
+  }
+
+  Widget buildLoadingScreen(){
+    return Scaffold(
+      body: StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildBookingScreen(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -396,7 +425,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 35 : 60, bottom: 10),
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
       color: AppColors.PRIMARY_GREEN,
       child: CustomerAppBar(
         color: AppColors.COLOR_WHITE,
@@ -413,9 +442,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   void showSelectPhone(_) {
+    _viewModel!.setLoading(false);
     showModalBottomSheet(
       context: context,
-      isDismissible: true,
+      isDismissible: false,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(SizeToPadding.sizeMedium),
       ),
@@ -442,7 +472,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       nameController: _viewModel!.phoneController,
       onTap: () {
         if (_viewModel!.dataMyBooking == null) {
-          showSelectPhone(context);
+          _viewModel!.setLoading(true);
+          Future.delayed(const Duration(milliseconds: 500),
+            () => showSelectPhone(context),);
         }
       },
     );

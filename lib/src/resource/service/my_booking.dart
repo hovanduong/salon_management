@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
-
 import 'dart:convert';
 
 import '../../configs/configs.dart';
@@ -11,11 +9,13 @@ class MyBookingParams {
     this.id,
     this.page, 
     this.status,
+    this.code,
     this.isPayment=false,
     this.isToday=false,
     this.isDaysBefore=false,
     this.isUpcoming=false,
-    this.date
+    this.isInvoice=false,
+    this.date,
   });
   final int? id;
   final int? page;
@@ -25,6 +25,8 @@ class MyBookingParams {
   final bool isDaysBefore;
   final bool isUpcoming;
   final DateTime? date;
+  final String?code;
+  final bool isInvoice;
 }
 
 class MyBookingApi {

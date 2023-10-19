@@ -358,4 +358,9 @@ class OverViewViewModel extends BaseViewModel{
     isLoading = false;
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

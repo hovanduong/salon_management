@@ -125,10 +125,10 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     return _viewModel!.isShowTransaction
         ? Column(
             children: [
-              ItemTransactionWidget(
-                title: BillPaymentLanguage.paymentMethod,
-                content: 'Debit Card',
-              ),
+              // ItemTransactionWidget(
+              //   title: BillPaymentLanguage.paymentMethod,
+              //   content: 'Debit Card',
+              // ),
               ItemTransactionWidget(
                 title: BillPaymentLanguage.status,
                 content: BillPaymentLanguage.done,

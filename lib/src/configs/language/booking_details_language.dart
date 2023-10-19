@@ -7,6 +7,7 @@ class BookingDetailsLanguage {
   static final note = S.current.note;
   static final pay = S.current.pay;
   static final yes = S.current.yes;
+  static final confirm = S.current.confirm;
   static final waningPayment = S.current.waningPayment;
   static final cancel = S.current.cancel;
   static final paymentConfirmation = S.current.paymentConfirmation;

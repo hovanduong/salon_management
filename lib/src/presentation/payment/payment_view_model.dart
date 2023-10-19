@@ -18,7 +18,6 @@ import '../../resource/service/my_customer_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
-import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
@@ -73,6 +72,7 @@ class PaymentViewModel extends BaseViewModel {
   bool onDiscount = true;
   bool isListViewVisible = false;
   bool enableButton = false;
+  bool isLoading=false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -196,9 +196,15 @@ class PaymentViewModel extends BaseViewModel {
   Future<void> initMapCustomer() async {
     myCustomer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber} ${element.fullName}'},
+        {element.id!: '${element.phoneNumber}/${element.fullName}'},
       );
     });
+    isLoading=false;
+    notifyListeners();
+  }
+
+  Future<void> setLoading()async{
+    isLoading=true;
     notifyListeners();
   }
 

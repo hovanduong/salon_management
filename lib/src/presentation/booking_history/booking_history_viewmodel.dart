@@ -253,7 +253,7 @@ class BookingHistoryViewModel extends BaseViewModel {
           onTapLeft: () {
             Navigator.pop(context);
           },
-          rightButtonName: BookingLanguage.yes,
+          rightButtonName: BookingLanguage.confirm,
           onTapRight: (){
             deleteBookingHistory(id);
             Navigator.pop(context);

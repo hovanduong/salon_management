@@ -125,8 +125,8 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                 : ListView.builder(
                     itemCount: foundSearch.length,
                     itemBuilder: (context, i) {
-                      final name = foundSearch[i].name?.split(' ')[1];
-                      final phone= foundSearch[i].name?.split(' ')[0];
+                      final name = foundSearch[i].name?.split('/')[1];
+                      final phone= foundSearch[i].name?.split('/')[0];
                       final key = foundSearch[i].id;
                       // final name= foundSearch[i].entries.last;
                       // final key= foundSearch[i].entries.first;

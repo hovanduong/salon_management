@@ -35,39 +35,42 @@ class _NavigateScreenState extends State<NavigateScreen> {
   }
 
   Widget buildNavigateScreen() {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: IndexedStack(
-        index: _viewModel!.selectedIndex,
-        children: [
-          if (_viewModel!.selectedIndex == 0)
-            const OverViewScreen(
-              key: PageStorageKey('HomePage'),
-            )
-          else
-            Container(),
-          if (_viewModel!.selectedIndex == 1)
-            const InvoiceScreen(
-              key: PageStorageKey('invoicePage'),
-            )
-          else
-            Container(),
-          if (_viewModel!.selectedIndex == 2)
-            const BookingHistoryScreen(
-              key: PageStorageKey('BookingPage'),
-            )
-          else
-            Container(),
-          if (_viewModel!.selectedIndex == 3)
-            const ProfileScreen(
-              key: PageStorageKey('ProfilePage'),
-            )
-          else
-            Container(),
-          if (_viewModel!.selectedIndex == 4) const SizedBox() else Container(),
-        ],
+    return WillPopScope(
+      onWillPop: () => _viewModel!.showExitPopup(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: IndexedStack(
+          index: _viewModel!.selectedIndex,
+          children: [
+            if (_viewModel!.selectedIndex == 0)
+              const OverViewScreen(
+                key: PageStorageKey('HomePage'),
+              )
+            else
+              Container(),
+            if (_viewModel!.selectedIndex == 1)
+              const InvoiceScreen(
+                key: PageStorageKey('invoicePage'),
+              )
+            else
+              Container(),
+            if (_viewModel!.selectedIndex == 2)
+              const BookingHistoryScreen(
+                key: PageStorageKey('BookingPage'),
+              )
+            else
+              Container(),
+            if (_viewModel!.selectedIndex == 3)
+              const ProfileScreen(
+                key: PageStorageKey('ProfilePage'),
+              )
+            else
+              Container(),
+            if (_viewModel!.selectedIndex == 4) const SizedBox() else Container(),
+          ],
+        ),
+        bottomNavigationBar: appBarNavigator(),
       ),
-      bottomNavigationBar: appBarNavigator(),
     );
   }
 

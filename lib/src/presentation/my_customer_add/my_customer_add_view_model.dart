@@ -43,7 +43,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
       Navigator.pushReplacementNamed(context, Routers.navigation);
 
   void validName(String? value) {
-    final result = AppValid.validateFullName(value);
+    final result = AppValid.validateName(value);
     if (result != null) {
       messageErrorName = result;
     } else {

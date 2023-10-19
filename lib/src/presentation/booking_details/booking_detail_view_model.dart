@@ -88,7 +88,7 @@ class BookingDetailsViewModel extends BaseViewModel{
           onTapLeft: () {
             Navigator.pop(context);
           },
-          rightButtonName: BookingDetailsLanguage.yes,
+          rightButtonName: BookingDetailsLanguage.confirm,
           onTapRight: (){
             postInvoice(id);
             Navigator.pop(context);

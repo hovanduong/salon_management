@@ -115,6 +115,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
       child: ListView.builder(
         shrinkWrap: true,
+        padding: EdgeInsets.zero,
         physics: const BouncingScrollPhysics(),
         itemCount: _viewModel!.listCategory[index].myServices?.length,
         itemBuilder: (context, serviceIndex) =>
@@ -163,7 +164,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeVeryVerySmall),
       child: InkWell(
         onTap: () {
-          _viewModel!.setIcon(index);
+          if (_viewModel!.listCategory[index].myServices!.isNotEmpty){
+            _viewModel!.setIcon(index);
+          }
         },
         child: SlidableActionWidget(
           isCheckCategory: true,
@@ -195,9 +198,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       children: [
         buildTitleCategory(index),
         if (_viewModel!.listCategory[index].isIconCategory == false)
-          buildListService(index)
-        else
-          Container(),
+          buildListService(index),
       ],
     );
   }

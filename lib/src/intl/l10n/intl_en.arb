@@ -219,8 +219,11 @@
     "tryAgain":"Try again",
     "addCustomerFailed":"Adding customer failed. Please check back later!",
     "bookingSuccess":"Schedule appointment successfully",
+    "updateBookingSuccess":"Appointment schedule updated successfully",
     "selectedCustomer":"Selected customer",
     "temporary":"Temporary",
     "intoMoney":"Into Money",
+    "exitApp":"Exit App",
+    "exitAppContent":"Do you want to exit an App?",
     "lastLine": ""
 }

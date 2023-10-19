@@ -35,6 +35,9 @@ class BookingLanguage {
   static final yes = S.current.yes;
   static final waningDeleteBooking = S.current.waningDeleteBooking;
   static final bookingSuccess = S.current.bookingSuccess;
+  static final updateBookingSuccess = S.current.updateBookingSuccess;
   static final intoMoney= S.current.intoMoney;
   static final temporary= S.current.temporary;
+  static final confirm = S.current.confirm;
+
 }

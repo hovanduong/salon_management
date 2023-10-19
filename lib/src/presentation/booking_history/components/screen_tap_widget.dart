@@ -46,6 +46,7 @@ class ScreenTap extends StatelessWidget {
       },
       child: ListView.builder(
         shrinkWrap: true,
+        padding: EdgeInsets.zero,
         controller: scrollController,
         itemCount: isLoadMore ? listCurrent!.length + 1 : listCurrent!.length,
         itemBuilder: (context, index) {

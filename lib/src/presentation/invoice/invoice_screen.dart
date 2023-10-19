@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -107,10 +106,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     final date = _viewModel!.listCurrent[index].createdAt;
     final name = _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
     final idBooking = _viewModel!.listCurrent[index].myBookingId;
+    final code = _viewModel!.listCurrent[index].code;
     return InkWell(
       onTap: () => _viewModel!.goToBookingDetails(
         context,
-        MyBookingParams(id: idBooking),
+        MyBookingParams(id: idBooking, code: code, isInvoice: true),
       ),
       child: Transaction(
         color: _viewModel!.colors[index % _viewModel!.colors.length],
@@ -148,6 +148,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         height: MediaQuery.of(context).size.height - 250,
         child: ListView.builder(
           padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
               ? _viewModel!.listCurrent.length + 1

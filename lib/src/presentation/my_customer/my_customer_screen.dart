@@ -139,6 +139,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
         ),
         child: ListView.builder(
           padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
               ? _viewModel!.listMyCustomer.length + 1

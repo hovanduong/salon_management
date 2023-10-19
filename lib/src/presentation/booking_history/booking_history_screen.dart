@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -77,7 +76,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40),
         child: ListTile(
           title: Center(
             child: Paragraph(

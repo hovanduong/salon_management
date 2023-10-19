@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/payment_language.dart';
@@ -35,7 +36,35 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         ..init(
           dataBooking as MyBookingModel?,
         ),
-      builder: (context, viewModel, child) => buildPaymentScreen(),
+      builder: (context, viewModel, child) => buildLoadingScreen(),
+    );
+  }
+
+  Widget buildLoadingScreen(){
+    return Scaffold(
+      body: StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildPaymentScreen(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -245,7 +274,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 15 : 60, bottom: 10),
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
       color: AppColors.PRIMARY_GREEN,
       child: Center(
         child: CustomerAppBar(
@@ -292,6 +321,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       isAddCustomer: true,
       onAddPhone: () => _viewModel!.goToAddMyCustomer(context),
       onTap: () async {
+        await _viewModel!.setLoading();
         await _viewModel!.fetchCustomer();
         await _viewModel!.initMapCustomer();
         showSelectPhone(context);

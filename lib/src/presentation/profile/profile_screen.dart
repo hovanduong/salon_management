@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildAvatarWidget() {
     return Positioned(
       top: 200,
-      left: 140,
+      left: MediaQuery.sizeOf(context).width/3.1,
       child: Container(
         width: 140,
         height: 140,
