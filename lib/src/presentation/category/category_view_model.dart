@@ -53,7 +53,7 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> onSearchCategory(String value) async {
     // final searchCategory = TiengViet.parse(value.toLowerCase());
-    final searchCategory= value.toLowerCase();
+    final searchCategory= value;
     await getListSearch(searchCategory);
     notifyListeners();
     notifyListeners();

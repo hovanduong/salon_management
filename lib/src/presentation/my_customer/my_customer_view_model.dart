@@ -54,7 +54,7 @@ class MyCustomerViewModel extends BaseViewModel {
 
   Future<void> onSearchCategory(String value) async {
     // final searchCustomer = TiengViet.parse(value.toLowerCase());
-    final searchCustomer= value.toLowerCase();
+    final searchCustomer= value;
     await getListSearch(searchCustomer);
     notifyListeners();
   }
