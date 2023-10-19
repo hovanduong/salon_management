@@ -40,29 +40,23 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildPaymentScreen() {
-    return SafeArea(
-      top: true,
-      bottom: false,
-      right: false,
-      left: false,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildAppbar(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildInfo(),
-                buildLineWidget(),
-                buildServiceInfo(),
-                buildLineWidget(),
-                buildNotes(),
-                buildConfirmButton(),
-              ],
-            ),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildAppbar(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildInfo(),
+              buildLineWidget(),
+              buildServiceInfo(),
+              buildLineWidget(),
+              buildNotes(),
+              buildConfirmButton(),
+            ],
+          ),
+        ],
       ),
     );
   }
