@@ -19,26 +19,26 @@ class BillPaymentScreen extends StatefulWidget {
 }
 
 class _BillPaymentScreenState extends State<BillPaymentScreen> {
-
   BillPaymentViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     final totalMoney = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
-      viewModel: BillPaymentViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        totalMoney as num?,
-      ),
+      viewModel: BillPaymentViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          totalMoney as num?,
+        ),
       builder: (context, viewModel, child) => buildBillScreen(),
     );
   }
 
-  Widget buildBackground(){
+  Widget buildBackground() {
     return Image.asset(AppImages.backgroundHomePage);
   }
 
-  Widget buildAppBar(){
+  Widget buildAppBar() {
     return Positioned(
       top: SizeToPadding.sizeBig,
       bottom: 0,
@@ -46,7 +46,6 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       right: 0,
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
-        
         title: Paragraph(
           textAlign: TextAlign.center,
           content: BillPaymentLanguage.billPayment,
@@ -55,12 +54,11 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
             fontWeight: FontWeight.w700,
           ),
         ),
-       
       ),
     );
   }
 
-  Widget buildHeader(){
+  Widget buildHeader() {
     return Stack(
       children: [
         SizedBox(
@@ -72,15 +70,19 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       ],
     );
   }
-  
-  Widget buildIconSuccess(){
+
+  Widget buildIconSuccess() {
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeBig),
-      child: SvgPicture.asset(AppImages.icCheck, height: 90, width: 90,),
+      child: SvgPicture.asset(
+        AppImages.icCheck,
+        height: 90,
+        width: 90,
+      ),
     );
   }
 
-  Widget buildTitleSuccess(){
+  Widget buildTitleSuccess() {
     return Paragraph(
       content: BillPaymentLanguage.paymentSuccess,
       style: STYLE_LARGE.copyWith(
@@ -90,12 +92,14 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     );
   }
 
-  Widget buildTitleTransaction(){
+  Widget buildTitleTransaction() {
     return InkWell(
       onTap: () => _viewModel!.showTransaction(),
       child: Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeMedium,
-          bottom: SizeToPadding.sizeVeryVerySmall,),
+        padding: EdgeInsets.only(
+          top: SizeToPadding.sizeMedium,
+          bottom: SizeToPadding.sizeVeryVerySmall,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -106,69 +110,74 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               ),
             ),
             Icon(
-              _viewModel!.isShowTransaction ? Icons.keyboard_arrow_up
-              : Icons.keyboard_arrow_down, size: 30,),
+              _viewModel!.isShowTransaction
+                  ? Icons.keyboard_arrow_up
+                  : Icons.keyboard_arrow_down,
+              size: 30,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildContentTransaction(){
-    return _viewModel!.isShowTransaction? Column(
-      children: [
-        ItemTransactionWidget(
-          title: BillPaymentLanguage.paymentMethod,
-          content: 'Debit Card',
-        ),
-        ItemTransactionWidget(
-          title: BillPaymentLanguage.status,
-          content: BillPaymentLanguage.done,
-          color: AppColors.PRIMARY_GREEN,
-        ),
-        ItemTransactionWidget(
-          title: BillPaymentLanguage.time,
-          content: _viewModel!.time,
-        ),
-        ItemTransactionWidget(
-          title: BillPaymentLanguage.date,
-          content: _viewModel!.date,
-        ),
-        // ItemTransactionWidget(
-        //   title: BillPaymentLanguage.transactionId,
-        //   content: '20339219392133212',
-        //   isIcon: true,
-        // ),
-      ],
-    ): Container();
+  Widget buildContentTransaction() {
+    return _viewModel!.isShowTransaction
+        ? Column(
+            children: [
+              ItemTransactionWidget(
+                title: BillPaymentLanguage.paymentMethod,
+                content: 'Debit Card',
+              ),
+              ItemTransactionWidget(
+                title: BillPaymentLanguage.status,
+                content: BillPaymentLanguage.done,
+                color: AppColors.PRIMARY_GREEN,
+              ),
+              ItemTransactionWidget(
+                title: BillPaymentLanguage.time,
+                content: _viewModel!.time,
+              ),
+              ItemTransactionWidget(
+                title: BillPaymentLanguage.date,
+                content: _viewModel!.date,
+              ),
+              // ItemTransactionWidget(
+              //   title: BillPaymentLanguage.transactionId,
+              //   content: '20339219392133212',
+              //   isIcon: true,
+              // ),
+            ],
+          )
+        : Container();
   }
 
-  Widget buildDivider(){
+  Widget buildDivider() {
     return const Divider(color: AppColors.BLACK_200, thickness: 1.3);
   }
 
-  Widget buildPrice(){
+  Widget buildPrice() {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.price,
-      content: AppCurrencyFormat.formatMoneyVND(_viewModel!.totalMoney??0),
+      content: AppCurrencyFormat.formatMoneyVND(_viewModel!.totalMoney ?? 0),
     );
   }
 
-  Widget buildFee(){
+  Widget buildFee() {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.fee,
       content: AppCurrencyFormat.formatMoneyVND(0),
     );
   }
 
-  Widget buildTotal(){
+  Widget buildTotal() {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.total,
-      content: AppCurrencyFormat.formatMoneyVND(_viewModel!.totalMoney??0),
+      content: AppCurrencyFormat.formatMoneyVND(_viewModel!.totalMoney ?? 0),
     );
   }
 
-  Widget buildButtonShare(){
+  Widget buildButtonShare() {
     return Positioned(
       bottom: 90,
       left: 0,
@@ -185,7 +194,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     );
   }
 
-  Widget buildTransactionDetails(){
+  Widget buildTransactionDetails() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       child: Column(
@@ -202,7 +211,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     );
   }
 
-  Widget buildContentBill(){
+  Widget buildContentBill() {
     return Column(
       children: [
         buildIconSuccess(),
@@ -212,7 +221,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     );
   }
 
-  Widget buildCardBill(){
+  Widget buildCardBill() {
     return Positioned(
       top: 150,
       bottom: 0,
@@ -222,7 +231,8 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
         decoration: BoxDecoration(
           color: AppColors.COLOR_WHITE,
           boxShadow: [
-            BoxShadow(blurRadius: SpaceBox.sizeMedium,
+            BoxShadow(
+              blurRadius: SpaceBox.sizeMedium,
               color: AppColors.BLACK_400,
             ),
           ],
@@ -233,7 +243,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     );
   }
 
-  Widget buildBillScreen(){
+  Widget buildBillScreen() {
     return SafeArea(
       top: true,
       bottom: false,

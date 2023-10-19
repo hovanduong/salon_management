@@ -32,10 +32,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
       builder: (context, viewModel, child) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
+            statusBarColor: AppColors.PRIMARY_GREEN,
             systemNavigationBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarIconBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.light,
+            systemNavigationBarIconBrightness: Brightness.light,
           ),
           child: buildCategoryScreen(),
         );

@@ -28,12 +28,13 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dataBooking= ModalRoute.of(context)?.settings.arguments;
+    final dataBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<PaymentViewModel>(
-      viewModel: PaymentViewModel (),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
-        dataBooking as MyBookingModel?,
-      ),
+      viewModel: PaymentViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          dataBooking as MyBookingModel?,
+        ),
       builder: (context, viewModel, child) => buildPaymentScreen(),
     );
   }
@@ -86,7 +87,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         children: [
           buildService(),
           buildListService(),
-          if(_viewModel!.selectedService.isNotEmpty)
+          if (_viewModel!.selectedService.isNotEmpty)
             Column(
               children: [
                 buildTotalNoDis(),
@@ -117,20 +118,21 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildTotalNoDis() {
     return Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Paragraph(
-              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: PaymentLanguage.intoMoney,
-            ),
-            Paragraph(
-              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: _viewModel!.moneyController.text,
-            ),
-          ],
-        ),);
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Paragraph(
+            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+            content: PaymentLanguage.intoMoney,
+          ),
+          Paragraph(
+            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+            content: _viewModel!.moneyController.text,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildListService() {
@@ -192,7 +194,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return InkWell(
       onTap: () => showSelectCategory(context),
       child: Padding(
-        padding:  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -209,7 +211,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
                 ),
               ],
             ),
-            const Icon(Icons.add_circle,
+            const Icon(
+              Icons.add_circle,
               color: AppColors.PRIMARY_GREEN,
             ),
           ],
@@ -278,7 +281,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
-          _viewModel!..setNameCustomer(value)..enableConfirmButton();
+          _viewModel!
+            ..setNameCustomer(value)
+            ..enableConfirmButton();
         },
       ),
     );
@@ -289,14 +294,14 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       isOnTap: true,
       name: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.selectPhoneNumber,
-      nameController:_viewModel!.phoneController,
+      nameController: _viewModel!.phoneController,
       isAddCustomer: true,
       onAddPhone: () => _viewModel!.goToAddMyCustomer(context),
-      onTap: () async{
+      onTap: () async {
         await _viewModel!.fetchCustomer();
         await _viewModel!.initMapCustomer();
         showSelectPhone(context);
-      }, 
+      },
     );
   }
 
