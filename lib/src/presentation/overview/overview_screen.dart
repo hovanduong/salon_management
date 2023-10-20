@@ -214,9 +214,18 @@ class _OverViewScreenState extends State<OverViewScreen> {
       length: 4,
       child: Column(
         children: [
-          buildHeader(),
-          buildAppBar(),
-          buildListTab(),
+          Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  buildHeader(),
+                  buildAppBar(),
+                ],
+              )),
+          Expanded(
+            flex: 4,
+            child: buildListTab(),
+          )
         ],
       ),
     );
