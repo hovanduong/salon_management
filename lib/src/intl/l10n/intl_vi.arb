@@ -197,6 +197,7 @@
     "topServicePackage": "Top gói dịch vụ",
     "totalRevenueExpenditure": "Tổng thu - chi",
     "top": "Đứng đầu",
+    "stt": "Stt",
     "nameService": "Tên dịch vụ",
     "account": "Tài khoản",
     "appointmentNumber": "Số lịch hẹn",
@@ -225,5 +226,7 @@
     "intoMoney":"Thành tiền",
     "exitApp":"Thoát ứng dụng",
     "exitAppContent":"Bạn muốn thoát ứng dụng không?",
+    "quantity":"Số lượng",
+    "paid":"Đã thanh toán",
     "lastLine": ""
 }

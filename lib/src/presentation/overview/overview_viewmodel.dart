@@ -5,6 +5,8 @@
 
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../resource/model/model.dart';
@@ -224,6 +226,7 @@ class OverViewViewModel extends BaseViewModel {
         });
       },
     );
+    topService.sort((a, b) => a.quantity!.compareTo(b.quantity!));
     notifyListeners();
   }
 

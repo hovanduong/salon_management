@@ -117,56 +117,59 @@ class _OverViewScreenState extends State<OverViewScreen> {
 
   Widget buildContentTab() {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          BuildDateWidget(date: _viewModel!.date),
-          FieldRevenueWidget(
-            totalRevenue: _viewModel!.totalRevenue,
-            growthRevenue: _viewModel!.growthRevenue,
-            totalBeforeRevenue: _viewModel!.totalBeforeRevenue,
-            totalAppointmentConfirm: _viewModel!.totalAppointmentConfirm,
-            totalBeforeAppointmentConfirm:
-                _viewModel!.totalBeforeAppointmentConfirm,
-            growthAppointmentConfirm: _viewModel!.growthAppointmentConfirm,
-            totalAppointmentCancel: _viewModel!.totalAppointmentCancel,
-            totalBeforeAppointmentCancel:
-                _viewModel!.totalBeforeAppointmentCancel,
-            growthAppointmentCancel: _viewModel!.growthAppointmentCancel,
-            totalClient: _viewModel!.totalClient,
-            totalBeforeClient: _viewModel!.totalBeforeClient,
-            growthClient: _viewModel!.growthClient,
-          ),
-          ChartWidget(
-            data: _viewModel!.dataChart,
-            daysInterval: _viewModel!.daysInterval,
-          ),
-          SizedBox(
-            height: SpaceBox.sizeMedium,
-          ),
-          // TopWidget(
-          //   title: HomePageLanguage.totalRevenueExpenditure,
-          //   widget: Paragraph(content: '0 đ',
-          //     style: STYLE_MEDIUM.copyWith(color: AppColors.COLOR_GREY_BLUE),
-          //   ),
-          // ),
-          // TopWidget(title: HomePageLanguage.revenue,
-          //   isShowTop: _viewModel!.showRevenue,
-          //   topService: _viewModel!.topService,
-          //   onTap: () => _viewModel!.showListRevenue(),),
-          TopWidget(
-            title: HomePageLanguage.topService,
-            isShowTop: _viewModel!.showTopService,
-            topService: _viewModel!.topService,
-            onTap: () => _viewModel!.showListTopService(),
-          ),
-          // SizedBox(
-          //   height: SpaceBox.sizeMedium * 3,
-          // ),
-          // TopWidget(title: HomePageLanguage.topServicePackage,
-          //   isShowTop: _viewModel!.showTopServicePackage,
-          //   topService: _viewModel!.topService,
-          //   onTap: () => _viewModel!.showListTopServicePackage(),),
-        ],
+      child: Padding(
+        padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
+        child: Column(
+          children: [
+            BuildDateWidget(date: _viewModel!.date),
+            FieldRevenueWidget(
+              totalRevenue: _viewModel!.totalRevenue,
+              growthRevenue: _viewModel!.growthRevenue,
+              totalBeforeRevenue: _viewModel!.totalBeforeRevenue,
+              totalAppointmentConfirm: _viewModel!.totalAppointmentConfirm,
+              totalBeforeAppointmentConfirm:
+                  _viewModel!.totalBeforeAppointmentConfirm,
+              growthAppointmentConfirm: _viewModel!.growthAppointmentConfirm,
+              totalAppointmentCancel: _viewModel!.totalAppointmentCancel,
+              totalBeforeAppointmentCancel:
+                  _viewModel!.totalBeforeAppointmentCancel,
+              growthAppointmentCancel: _viewModel!.growthAppointmentCancel,
+              totalClient: _viewModel!.totalClient,
+              totalBeforeClient: _viewModel!.totalBeforeClient,
+              growthClient: _viewModel!.growthClient,
+            ),
+            ChartWidget(
+              data: _viewModel!.dataChart,
+              daysInterval: _viewModel!.daysInterval,
+            ),
+            SizedBox(
+              height: SpaceBox.sizeMedium,
+            ),
+            // TopWidget(
+            //   title: HomePageLanguage.totalRevenueExpenditure,
+            //   widget: Paragraph(content: '0 đ',
+            //     style: STYLE_MEDIUM.copyWith(color: AppColors.COLOR_GREY_BLUE),
+            //   ),
+            // ),
+            // TopWidget(title: HomePageLanguage.revenue,
+            //   isShowTop: _viewModel!.showRevenue,
+            //   topService: _viewModel!.topService,
+            //   onTap: () => _viewModel!.showListRevenue(),),
+            TopWidget(
+              title: HomePageLanguage.topService,
+              isShowTop: _viewModel!.showTopService,
+              topService: _viewModel!.topService,
+              onTap: () => _viewModel!.showListTopService(),
+            ),
+            // SizedBox(
+            //   height: SpaceBox.sizeMedium * 3,
+            // ),
+            // TopWidget(title: HomePageLanguage.topServicePackage,
+            //   isShowTop: _viewModel!.showTopServicePackage,
+            //   topService: _viewModel!.topService,
+            //   onTap: () => _viewModel!.showListTopServicePackage(),),
+          ],
+        ),
       ),
     );
   }
@@ -207,16 +210,14 @@ class _OverViewScreenState extends State<OverViewScreen> {
 
   Widget buildHomePage() {
     return DefaultTabController(
-      length: 4,
       initialIndex: 1,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildHeader(),
-            buildAppBar(),
-            buildListTab(),
-          ],
-        ),
+      length: 4,
+      child: Column(
+        children: [
+          buildHeader(),
+          buildAppBar(),
+          buildListTab(),
+        ],
       ),
     );
   }

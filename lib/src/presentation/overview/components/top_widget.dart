@@ -81,9 +81,10 @@ class TopWidget extends StatelessWidget {
         ),
         child: Paragraph(
           content: content ?? '',
+          textAlign: TextAlign.center,
           style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w600,
-              color: isTitle ? AppColors.PRIMARY_GREEN : AppColors.BLACK_500),
+              color: isTitle ? AppColors.PRIMARY_GREEN : AppColors.BLACK_500,),
         ),
       ),
     );
@@ -92,33 +93,44 @@ class TopWidget extends StatelessWidget {
   Widget showTop() {
     return isShowTop
         ? Table(
-            border: const TableBorder(
-              horizontalInside: BorderSide(color: AppColors.BLACK_200),
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          columnWidths: const {
+            0: FlexColumnWidth(1),
+            1: FlexColumnWidth(4),
+            2: FlexColumnWidth(3),
+            3: FlexColumnWidth(4),
+          }, 
+          border: const TableBorder(
+            horizontalInside: BorderSide(color: AppColors.BLACK_200),
+          ),
+          children: [
+            TableRow(
+              decoration: const BoxDecoration(color: AppColors.COLOR_WHITE),
+              children: [
+                buildTitleTop(content: HomePageLanguage.stt, isTitle: true),
+                buildTitleTop(
+                    content: HomePageLanguage.nameService, isTitle: true,),
+                buildTitleTop(
+                    content: HomePageLanguage.quantity, isTitle: true,),
+                buildTitleTop(
+                    content: HomePageLanguage.revenue, isTitle: true,),
+              ],
             ),
-            children: [
-              TableRow(
-                decoration: const BoxDecoration(color: AppColors.COLOR_WHITE),
+            ...List.generate(topService?.length ?? 0, (index) {
+              final revenue = topService?[index].revenue ?? 0;
+              return TableRow(
                 children: [
-                  buildTitleTop(content: HomePageLanguage.top, isTitle: true),
+                  buildTitleTop(content: '${index + 1}'),
+                  buildTitleTop(content: topService?[index].nameService),
                   buildTitleTop(
-                      content: HomePageLanguage.nameService, isTitle: true),
+                    content: topService?[index].quantity.toString(),),
                   buildTitleTop(
-                      content: HomePageLanguage.revenue, isTitle: true),
+                      content: AppCurrencyFormat.formatMoneyVND(revenue),),
                 ],
-              ),
-              ...List.generate(topService?.length ?? 0, (index) {
-                final revenue = topService?[index].revenue ?? 0;
-                return TableRow(
-                  children: [
-                    buildTitleTop(content: '${index + 1}'),
-                    buildTitleTop(content: topService?[index].nameService),
-                    buildTitleTop(
-                        content: AppCurrencyFormat.formatMoneyVND(revenue)),
-                  ],
-                );
-              }),
-            ],
-          )
-        : Container();
+              );
+            }),
+          ],
+        )
+      : Container();
   }
 }

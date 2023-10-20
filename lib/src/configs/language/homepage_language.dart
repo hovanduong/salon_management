@@ -29,8 +29,10 @@ class HomePageLanguage {
   static final totalRevenueExpenditure = S.current.totalRevenueExpenditure;
   static final top = S.current.top;
   static final nameService = S.current.nameService;
+  static final quantity = S.current.quantity;
   static final appointmentNumber = S.current.appointmentNumber;
   static final appointmentCanceled = S.current.appointmentCanceled;
   static final newClient = S.current.newClient;
+  static final stt = S.current.stt;
 
 }

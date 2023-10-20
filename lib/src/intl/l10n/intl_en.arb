@@ -197,6 +197,7 @@
     "topServicePackage": "Top Service Package",
     "totalRevenueExpenditure": "Total revenue - expenditure",
     "top": "Top",
+    "stt": "Stt",
     "nameService": "Name service",
     "account": "Account",
     "appointmentNumber": "Appointments Number",
@@ -225,5 +226,7 @@
     "intoMoney":"Into Money",
     "exitApp":"Exit App",
     "exitAppContent":"Do you want to exit an App?",
+    "quantity":"Quantity",
+    "paid":"Paid",
     "lastLine": ""
 }
