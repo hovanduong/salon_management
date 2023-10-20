@@ -4,6 +4,7 @@ import '../../configs.dart';
 
 class DecoratedContainer extends StatelessWidget {
   const DecoratedContainer({super.key, this.widget});
+
   final Widget? widget;
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class DecoratedContainer extends StatelessWidget {
             AppColors.FIELD_GREEN,
           ],
         ),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        // borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: widget ?? const SizedBox(),
     );
