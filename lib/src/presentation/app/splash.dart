@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../configs/constants/app_images.dart';
 import '../../utils/utils.dart';
 import '../routers.dart';
 
@@ -47,24 +48,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Stack(
-          children: [
-            // Image.asset(
-            //   ImageAssets.imgSplashScreen,
-            //   fit: BoxFit.cover,
-            //   height: double.infinity,
-            //   width: double.infinity,
-            //   alignment: Alignment.center,
-            // ),
-            // Align(
-            //   alignment: Alignment.center,
-            //   child: Image.asset(
-            //     ImageAssets.imgLogoSpa,
-            //   ),
-            // )
-          ],
+        child: Image.asset(
+          AppImages.imageSplash,
+          fit: BoxFit.cover,
+          height: double.infinity,
+          width: double.infinity,
+          alignment: Alignment.center,
         ),
       ),
     );
