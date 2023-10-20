@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/invoice_model.dart';
@@ -20,31 +23,41 @@ class InvoiceViewModel extends BaseViewModel {
     AppColors.PRIMARY_PINK,
   ];
 
-  List<InvoiceModel> listInvoice=[];
-  List<InvoiceModel> listFoundInvoice=[];
-  List<InvoiceModel> listCurrent=[];
-
+  List<InvoiceModel> listInvoice = [];
+  List<InvoiceModel> listFoundInvoice = [];
+  List<InvoiceModel> listCurrent = [];
 
   ScrollController scrollController = ScrollController();
 
   bool isLoading = true;
-  bool loadingMore=false;
+  bool loadingMore = false;
 
-  int page=1;
-   
-  Future<void> init() async{
-    page=1;
-    await getInvoice(page);
-    scrollController.addListener(scrollListener);
-    listCurrent=listInvoice;
-    listFoundInvoice=listInvoice;
+  int page = 1;
+
+  Timer? _timer;
+
+  Future<void> init() async {
+    _startDelay();
   }
 
-  Future<void> goToBookingDetails(BuildContext context, MyBookingParams params) 
-    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: params);
-  
-  Future<void> goToAddInvoice(BuildContext context)
-    => Navigator.pushNamed(context, Routers.payment);
+  Timer _startDelay() =>
+      _timer = Timer(const Duration(milliseconds: 1500), fetchData);
+
+  Future<void> fetchData() async {
+    page = 1;
+    await getInvoice(page);
+    scrollController.addListener(scrollListener);
+    listCurrent = listInvoice;
+    listFoundInvoice = listInvoice;
+    notifyListeners();
+  }
+
+  Future<void> goToBookingDetails(
+          BuildContext context, MyBookingParams params) =>
+      Navigator.pushNamed(context, Routers.bookingDetails, arguments: params);
+
+  Future<void> goToAddInvoice(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.payment);
 
   Future<void> pullRefresh() async {
     await init();
@@ -52,10 +65,10 @@ class InvoiceViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    page+=1;
+    page += 1;
     await getInvoice(page);
     listCurrent = [...listCurrent, ...listInvoice];
-    listFoundInvoice=listCurrent;
+    listFoundInvoice = listCurrent;
     loadingMore = false;
     notifyListeners();
   }
@@ -66,26 +79,30 @@ class InvoiceViewModel extends BaseViewModel {
         scrollController.position.pixels > 0) {
       loadingMore = true;
       Future.delayed(const Duration(seconds: 2), loadMoreData);
- 
+
       notifyListeners();
     }
   }
 
   Future<void> filterCategory(String searchCategory) async {
     var listSearchCategory = <InvoiceModel>[];
-    listSearchCategory = listInvoice.where(
-      (element) => element.code!.toLowerCase().contains(searchCategory) 
-      || element.myBooking!.myCustomer!.fullName!.toLowerCase()
-        .contains(searchCategory),)
-    .toList();
-    listFoundInvoice=listSearchCategory;
+    listSearchCategory = listInvoice
+        .where(
+          (element) =>
+              element.code!.toLowerCase().contains(searchCategory) ||
+              element.myBooking!.myCustomer!.fullName!
+                  .toLowerCase()
+                  .contains(searchCategory),
+        )
+        .toList();
+    listFoundInvoice = listSearchCategory;
     notifyListeners();
   }
 
-  Future<void> onSearchCategory(String value) async{
-    if(value.isEmpty){
-      listFoundInvoice = listInvoice;  
-    }else{
+  Future<void> onSearchCategory(String value) async {
+    if (value.isEmpty) {
+      listFoundInvoice = listInvoice;
+    } else {
       final searchCategory = value.toLowerCase();
       await filterCategory(searchCategory);
     }
@@ -114,5 +131,11 @@ class InvoiceViewModel extends BaseViewModel {
     }
     isLoading = false;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer?.cancel();
   }
 }

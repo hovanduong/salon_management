@@ -3,6 +3,8 @@
 // import 'package:timezone/data/latest.dart' as tz;
 // import 'package:timezone/timezone.dart' as tz;
 
+import 'dart:async';
+
 import '../../configs/configs.dart';
 import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../resource/model/model.dart';
@@ -45,9 +47,14 @@ class OverViewViewModel extends BaseViewModel {
   String? dayStart;
   String? dayEnd;
 
+  Timer? _timer;
+
   dynamic init() {
-    fetchData();
+    _startDelay();
   }
+
+  Timer _startDelay() =>
+      _timer = Timer(const Duration(milliseconds: 1500), fetchData);
 
   Future<void> fetchData() async {
     isLoading = true;
@@ -380,6 +387,7 @@ class OverViewViewModel extends BaseViewModel {
 
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 }
