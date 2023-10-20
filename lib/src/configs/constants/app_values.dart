@@ -3,4 +3,5 @@ class AppValues {
   // static const String APP_NAME = "FLUTTER APPLICATION";
   // static const double INPUT_FORM_HEIGHT = 55;
   static const customerExits = '"CUSTOMER_EXITS"';
+  static const appName='ApCare';
 }
