@@ -40,7 +40,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
 
   Widget buildAppBar() {
     return Positioned(
-      top: SizeToPadding.sizeBig,
+      top: SizeToPadding.sizeBig * 2,
       bottom: 0,
       left: 0,
       right: 0,
@@ -244,19 +244,13 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
   }
 
   Widget buildBillScreen() {
-    return SafeArea(
-      top: true,
-      bottom: false,
-      left: false,
-      right: false,
-      child: SingleChildScrollView(
-        child: Stack(
-          children: [
-            buildHeader(),
-            buildCardBill(),
-            buildButtonShare(),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          buildHeader(),
+          buildCardBill(),
+          buildButtonShare(),
+        ],
       ),
     );
   }
