@@ -9,9 +9,9 @@ import '../model/invoice_model.dart';
 class InvoiceParams {
   const InvoiceParams({
     this.id,
-    this.page, 
+    this.page,
     this.status,
-    this.isButtonBookingDetails=false,
+    this.isButtonBookingDetails = false,
   });
   final int? id;
   final int? page;
@@ -21,7 +21,8 @@ class InvoiceParams {
 
 class InvoiceApi {
   Future<Result<bool, Exception>> postInvoice(
-      InvoiceParams params,) async {
+    InvoiceParams params,
+  ) async {
     try {
       final response = await HttpRemote.post(
         url: '/invoice',
@@ -42,12 +43,12 @@ class InvoiceApi {
   }
 
   Future<Result<List<InvoiceModel>, Exception>> getInvoice(
-      InvoiceParams params,) async {
+    InvoiceParams params,
+  ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/invoice?pageSize=10&page=${params.page??0}&paymentStatus=Paid',
+        url: '/invoice?pageSize=10&page=${params.page ?? 0}&paymentStatus=Paid',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);

@@ -49,10 +49,13 @@ class OverViewViewModel extends BaseViewModel {
   String? dayStart;
   String? dayEnd;
 
+  TabController? tabController;
+
   Timer? _timer;
 
-  dynamic init() {
+  dynamic init({dynamic? dataThis}) {
     _startDelay();
+    tabController = TabController(length: 4, vsync: dataThis, initialIndex: 1);
   }
 
   Timer _startDelay() =>
@@ -214,7 +217,6 @@ class OverViewViewModel extends BaseViewModel {
         statisticsServiceModel?.serviceNameDay?.serviceMoney?.entries
             .forEach((element) {
           if (e.key.contains(element.key)) {
-            print(element.value);
             topService.add(
               DataTopService(
                 nameService: element.key,
@@ -391,6 +393,7 @@ class OverViewViewModel extends BaseViewModel {
   @override
   void dispose() {
     _timer?.cancel();
+    tabController?.dispose();
     super.dispose();
   }
 }

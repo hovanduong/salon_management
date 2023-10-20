@@ -20,7 +20,7 @@ class AuthParams {
     this.password,
     this.fullName,
     this.gender,
-    this.email, 
+    this.email,
     this.passwordConfirm,
   });
   final UserModel? userModel;
@@ -33,7 +33,6 @@ class AuthParams {
 }
 
 class AuthApi {
-
   Future<Result<bool, Exception>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
@@ -47,7 +46,6 @@ class AuthApi {
           'passwordConfirm': params.passwordConfirm,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);

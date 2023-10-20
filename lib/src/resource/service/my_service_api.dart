@@ -11,7 +11,7 @@ class ServiceParams {
     this.id,
     this.name,
     this.listCategory,
-    this.money, 
+    this.money,
   });
   final int? id;
   final String? name;
@@ -49,7 +49,6 @@ class MyServiceApi {
           'categories': params.listCategory,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
@@ -61,13 +60,12 @@ class MyServiceApi {
     }
   }
 
-  Future<Result<bool, Exception>> deleteService(int idCategory, int idService)
-  async {
+  Future<Result<bool, Exception>> deleteService(
+      int idCategory, int idService) async {
     try {
       final response = await HttpRemote.delete(
         url: '/my-service/$idService/$idCategory',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           return const Success(true);

@@ -19,7 +19,8 @@ class OverViewScreen extends StatefulWidget {
   State<OverViewScreen> createState() => _OverViewScreenState();
 }
 
-class _OverViewScreenState extends State<OverViewScreen> {
+class _OverViewScreenState extends State<OverViewScreen>
+    with SingleTickerProviderStateMixin {
   OverViewViewModel? _viewModel;
 
   @override
@@ -29,7 +30,8 @@ class _OverViewScreenState extends State<OverViewScreen> {
     // ));
     return BaseWidget(
       viewModel: OverViewViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) =>
+          _viewModel = viewModel!..init(dataThis: this),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -86,7 +88,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
     return Container(
       color: AppColors.COLOR_WHITE,
       child: TabBar(
+        controller: _viewModel!.tabController,
         onTap: (value) {
+          print(value);
           _viewModel!.setDataPage(value);
         },
         tabs: [
@@ -209,24 +213,28 @@ class _OverViewScreenState extends State<OverViewScreen> {
   }
 
   Widget buildHomePage() {
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 4,
-      child: Column(
-        children: [
-          Expanded(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: DefaultTabController(
+        initialIndex: 1,
+        length: 4,
+        child: Column(
+          children: [
+            Expanded(
               flex: 1,
               child: Column(
                 children: [
                   buildHeader(),
                   buildAppBar(),
                 ],
-              )),
-          Expanded(
-            flex: 4,
-            child: buildListTab(),
-          )
-        ],
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: buildListTab(),
+            )
+          ],
+        ),
       ),
     );
   }

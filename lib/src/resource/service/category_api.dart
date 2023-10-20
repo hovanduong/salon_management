@@ -43,7 +43,6 @@ class CategoryApi {
       final response = await HttpRemote.delete(
         url: '/category/$id',
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           return const Success(true);
@@ -61,7 +60,6 @@ class CategoryApi {
         url: '/category/${params!.id}',
         body: {'name': params.name},
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           return const Success(true);
@@ -77,7 +75,6 @@ class CategoryApi {
     try {
       final response =
           await HttpRemote.post(url: '/category', body: {'name': name});
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
