@@ -28,10 +28,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget buildLogin() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 70),
+      padding: const EdgeInsets.only(bottom: 40),
       child: Paragraph(
         content: SignInLanguage.signIn,
-        style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500, fontSize: 25),
+        style: STYLE_BIG.copyWith(fontWeight: FontWeight.w600, fontSize: 25),
       ),
     );
   }
@@ -148,7 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontSize: 50,
                 ),
               ),
-              SizedBox(height: SpaceBox.sizeBig),
+              SizedBox(height: SpaceBox.sizeSmall * 5),
               Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: SizeToPadding.sizeLarge),
@@ -176,7 +176,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           buildLogin(),
                           buildFieldPhoneNumber(),
                           buildFieldPass(),
-                          buildForgotPass(),
+                          // buildForgotPass(),
                           buildOnSignIn(),
                           buildNote(),
                         ],
