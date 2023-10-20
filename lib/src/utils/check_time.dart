@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import '../intl/generated/l10n.dart';
 import 'date_format_utils.dart';
 
 class AppCheckTime {
   static String checkTimeNotification(String date) {
     final dateNow = DateTime.now();
+    final dateLocal = DateTime.parse(date).toLocal().toString();
     final dateCreate = DateTime.parse(
-      AppDateUtils.formatDateTimeNotify(date),
+      AppDateUtils.formatDateTimeNotify(AppDateUtils.formatDateTT(dateLocal)),
     );
     final inMinutes = dateNow.difference(dateCreate).inMinutes;
     final inHours = dateNow.difference(dateCreate).inHours;
