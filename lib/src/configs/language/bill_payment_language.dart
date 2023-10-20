@@ -15,4 +15,9 @@ class BillPaymentLanguage {
   static final shareReceipt= S.current.shareReceipt;
   static final home= S.current.home;
   static final done= S.current.done;
+  static final name= S.current.name;
+  static final phoneNumber= S.current.phoneNumber;
+  static final address= S.current.address;
+  static final discount= S.current.discount;
+
 }

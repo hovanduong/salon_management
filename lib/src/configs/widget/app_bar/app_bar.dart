@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../configs.dart';
-import '../../constants/app_space.dart';
 
 class CustomerAppBar extends StatelessWidget {
   const CustomerAppBar(
@@ -38,7 +37,7 @@ class CustomerAppBar extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 12,
           child: Paragraph(
             content: title ?? '',
             textAlign: TextAlign.center,

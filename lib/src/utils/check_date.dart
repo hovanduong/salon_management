@@ -5,10 +5,19 @@ class AppCheckDate {
 
   static String subtractDate(String date){
     try {
-      return DateFormat('yyyy-MM-dd').format(parseDate(date).subtract(
+      return DateFormat('yyyy-MM-dd').format(parseDateYMD(date).subtract(
         const Duration(days: 6),),);
     } catch (e) {
-      return DateFormat('dd/MM/yyyy').format(DateTime.now());
+      return DateFormat('yyyy-MM-dd').format(DateTime.now());
+    }
+  }
+
+  static String addDate(String date){
+    try {
+      return DateFormat('yyyy-MM-dd').format(parseDate(date).add(
+        const Duration(days: 1),),);
+    } catch (e) {
+      return DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
   }
 
@@ -17,6 +26,14 @@ class AppCheckDate {
       return DateFormat('dd/MM/yyyy').parse(time);
     } catch (e) {
       return DateFormat('dd/MM/yyyy').parse(DateTime.now().toString());
+    }
+  }
+
+  static DateTime parseDateYMD(String time) {
+    try {
+      return DateFormat('yyyy-MM-dd').parse(time);
+    } catch (e) {
+      return DateFormat('yyyy-MM-dd').parse(DateTime.now().toString());
     }
   }
 

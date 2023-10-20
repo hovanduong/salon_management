@@ -56,7 +56,7 @@ class NotificationService extends StatelessWidget {
                 width: SpaceBox.sizeSmall,
               ),
               SizedBox(
-                width: MediaQuery.of(context!).size.width-220,
+                width: MediaQuery.of(context!).size.width-230,
                 child: Paragraph(
                   content: content ?? '',
                   maxLines: 1,

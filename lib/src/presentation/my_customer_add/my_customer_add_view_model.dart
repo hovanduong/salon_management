@@ -8,6 +8,7 @@ import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/my_customer_add_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/my_customer_model.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -113,7 +114,11 @@ class MyCustomerAddViewModel extends BaseViewModel {
 
   void closeScreen() {
     if (isPayments == true) {
-      timer = Timer(const Duration(seconds: 2), () => Navigator.pop(context));
+      timer = Timer(const Duration(seconds: 2), () => 
+        Navigator.pop(context, MyCustomerModel(
+          fullName: nameController.text.trim(),
+          phoneNumber: phoneController.text.trim(),
+        ),),);
     }
   }
 
@@ -199,7 +204,6 @@ class MyCustomerAddViewModel extends BaseViewModel {
     } else if (value is bool) {
       if (value) {
         LoadingDialog.hideLoadingDialog(context);
-        clearData();
         await showSuccessDialog(context);
         closeScreen();
       } else {

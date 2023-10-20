@@ -17,7 +17,7 @@ class SelectStatusWidget extends StatefulWidget {
   State<SelectStatusWidget> createState() => _SelectStatusWidgetState();
 }
 
-List<String> listStatus=[BookingLanguage.confirm, 'Canceled',];
+List<String> listStatus=['Confirmed', 'Canceled',];
 
 class _SelectStatusWidgetState extends State<SelectStatusWidget> {
 

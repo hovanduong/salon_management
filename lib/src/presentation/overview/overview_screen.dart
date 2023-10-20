@@ -230,9 +230,9 @@ class _OverViewScreenState extends State<OverViewScreen>
               ),
             ),
             Expanded(
-              flex: 4,
+              flex: Platform.isAndroid ? 5 : 4,
               child: buildListTab(),
-            )
+            ),
           ],
         ),
       ),

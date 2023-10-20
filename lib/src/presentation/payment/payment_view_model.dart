@@ -1,4 +1,4 @@
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: lines_longer_than_80_chars, cast_nullable_to_non_nullable
 
 import 'dart:async';
 
@@ -48,6 +48,7 @@ class PaymentViewModel extends BaseViewModel {
   DateTime dateTime = DateTime.now();
 
   MyBookingModel? dataMyBooking;
+  MyCustomerModel? myCustomerModel;
 
   Map<int, String> mapService = {};
   Map<int, String> mapPhone = {};
@@ -122,8 +123,21 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> goToAddMyCustomer(BuildContext context)
-    => Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true);
+  Future<void> goToAddMyCustomer(BuildContext context) async {
+    myCustomerModel= 
+      await Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true)
+      as MyCustomerModel?;
+    await setDataCustomer();
+  }
+
+  Future<void> setDataCustomer() async{
+    nameController.text=myCustomerModel!.fullName ?? '';
+    phoneController.text=myCustomerModel!.phoneNumber ?? '';
+    await fetchCustomer();
+    myCustomerId= myCustomer.where((element) => 
+      element.phoneNumber==myCustomerModel!.phoneNumber,).first.id;
+    notifyListeners();
+  }
 
   Future<void> goToBookingDetails(BuildContext context, MyBookingParams model) 
     => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);

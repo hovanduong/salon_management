@@ -38,6 +38,8 @@ class BookingLanguage {
   static final updateBookingSuccess = S.current.updateBookingSuccess;
   static final intoMoney= S.current.intoMoney;
   static final temporary= S.current.temporary;
+  static final confirmed = S.current.confirmed;
   static final confirm = S.current.confirm;
+  static final canceled = S.current.canceled;
 
 }

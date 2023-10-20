@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/bill_payment_language.dart';
+import '../../resource/model/model.dart';
 import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'bill_payment.dart';
@@ -23,12 +24,12 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final totalMoney = ModalRoute.of(context)?.settings.arguments;
+    final myBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
       viewModel: BillPaymentViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!
         ..init(
-          totalMoney as num?,
+          myBooking as MyBookingModel?,
         ),
       builder: (context, viewModel, child) => buildBillScreen(),
     );
@@ -123,33 +124,41 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
 
   Widget buildContentTransaction() {
     return _viewModel!.isShowTransaction
-        ? Column(
-            children: [
-              // ItemTransactionWidget(
-              //   title: BillPaymentLanguage.paymentMethod,
-              //   content: 'Debit Card',
-              // ),
-              ItemTransactionWidget(
-                title: BillPaymentLanguage.status,
-                content: BillPaymentLanguage.done,
-                color: AppColors.PRIMARY_GREEN,
-              ),
-              ItemTransactionWidget(
-                title: BillPaymentLanguage.time,
-                content: _viewModel!.time,
-              ),
-              ItemTransactionWidget(
-                title: BillPaymentLanguage.date,
-                content: _viewModel!.date,
-              ),
-              // ItemTransactionWidget(
-              //   title: BillPaymentLanguage.transactionId,
-              //   content: '20339219392133212',
-              //   isIcon: true,
-              // ),
-            ],
-          )
-        : Container();
+    ? Column(
+        children: [
+          // ItemTransactionWidget(
+          //   title: BillPaymentLanguage.paymentMethod,
+          //   content: 'Debit Card',
+          // ),
+          ItemTransactionWidget(
+            title: BillPaymentLanguage.name,
+            content: _viewModel!.myBookingModel?.myCustomer?.fullName,
+          ),
+          ItemTransactionWidget(
+            title: BillPaymentLanguage.phoneNumber,
+            content: _viewModel!.myBookingModel?.myCustomer?.phoneNumber,
+          ),
+          ItemTransactionWidget(
+            title: BillPaymentLanguage.address,
+            content: _viewModel!.myBookingModel?.address,
+          ),
+          ItemTransactionWidget(
+            title: BillPaymentLanguage.date,
+            content: _viewModel!.date,
+          ),
+          ItemTransactionWidget(
+            title: BillPaymentLanguage.status,
+            content: BillPaymentLanguage.done,
+            color: AppColors.PRIMARY_GREEN,
+          ),
+          // ItemTransactionWidget(
+          //   title: BillPaymentLanguage.transactionId,
+          //   content: '20339219392133212',
+          //   isIcon: true,
+          // ),
+        ],
+      )
+    : Container();
   }
 
   Widget buildDivider() {
@@ -159,21 +168,24 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
   Widget buildPrice() {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.price,
-      content: AppCurrencyFormat.formatMoneyVND(_viewModel!.totalMoney ?? 0),
+      content: AppCurrencyFormat.formatMoneyVND(
+        _viewModel!.myBookingModel?.total ?? 0,),
     );
   }
 
   Widget buildFee() {
     return ItemTransactionWidget(
-      title: BillPaymentLanguage.fee,
+      title: BillPaymentLanguage.discount,
       content: AppCurrencyFormat.formatMoneyVND(0),
     );
   }
 
   Widget buildTotal() {
     return ItemTransactionWidget(
+      isTotal: true,
       title: BillPaymentLanguage.total,
-      content: AppCurrencyFormat.formatMoneyVND(_viewModel!.totalMoney ?? 0),
+      content: AppCurrencyFormat.formatMoneyVND(
+        _viewModel!.myBookingModel?.total ?? 0,),
     );
   }
 

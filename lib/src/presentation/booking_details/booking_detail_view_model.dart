@@ -35,7 +35,7 @@ class BookingDetailsViewModel extends BaseViewModel{
 
   Future<void> goToBill(BuildContext context) 
     => Navigator.pushNamed(context, Routers.bill, 
-      arguments: listMyBooking[0].total,);
+      arguments: listMyBooking[0],);
 
   void closeDialog(BuildContext context){
     Timer(const Duration(seconds: 1), () => Navigator.pop(context),);

@@ -228,7 +228,7 @@ class OverViewViewModel extends BaseViewModel {
         });
       },
     );
-    topService.sort((a, b) => a.quantity!.compareTo(b.quantity!));
+    topService.sort((a, b) => b.quantity!.compareTo(a.quantity!));
     notifyListeners();
   }
 
@@ -251,6 +251,7 @@ class OverViewViewModel extends BaseViewModel {
         });
       },
     );
+    topService.sort((a, b) => b.quantity!.compareTo(a.quantity!));
     notifyListeners();
   }
 
@@ -272,6 +273,7 @@ class OverViewViewModel extends BaseViewModel {
         });
       },
     );
+    topService.sort((a, b) => b.quantity!.compareTo(a.quantity!));
     notifyListeners();
   }
 
@@ -293,16 +295,18 @@ class OverViewViewModel extends BaseViewModel {
         });
       },
     );
+    topService.sort((a, b) => b.quantity!.compareTo(a.quantity!));
     notifyListeners();
   }
 
   void setDateStartEnd(String date) {
+    final endDay= AppCheckDate.addDate(date);
     dayStart = date.contains('-')
-        ? AppCheckDate.formatYMD(date.split('-')[0].trim())
-        : AppCheckDate.subtractDate(date);
+        ? AppCheckDate.addDate(date.split('-')[0].trim())
+        : AppCheckDate.subtractDate(endDay);
     dayEnd = date.contains('-')
-        ? AppCheckDate.formatYMD(date.split('-')[1].trim())
-        : AppCheckDate.formatYMD(date);
+        ? AppCheckDate.addDate(date.split('-')[1].trim())
+        : endDay;
     notifyListeners();
   }
 
