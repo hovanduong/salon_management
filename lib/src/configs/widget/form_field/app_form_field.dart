@@ -7,26 +7,25 @@ import '../../constants/app_styles.dart';
 import '../text/paragraph.dart';
 
 class AppFormField extends StatefulWidget {
-  const AppFormField({
-    super.key,
-    this.hintText,
-    this.labelText,
-    this.validator,
-    this.textEditingController,
-    this.onChanged,
-    this.obscureText = false,
-    this.isSpace = false,
-    this.keyboardType,
-    this.maxLenght,
-    this.maxLines,
-    this.counterText,
-    this.onTap,
-    this.enabled,
-    this.iconButton,
-    this.suffixText, 
-    this.inputFormatters,
-    this.isRequired=false
-  });
+  const AppFormField(
+      {super.key,
+      this.hintText,
+      this.labelText,
+      this.validator,
+      this.textEditingController,
+      this.onChanged,
+      this.obscureText = false,
+      this.isSpace = false,
+      this.keyboardType,
+      this.maxLenght,
+      this.maxLines,
+      this.counterText,
+      this.onTap,
+      this.enabled = true,
+      this.iconButton,
+      this.suffixText,
+      this.inputFormatters,
+      this.isRequired = false});
   final Function()? onTap;
   final String? hintText;
   final String? labelText;
@@ -70,63 +69,79 @@ class _AppFormFieldState extends State<AppFormField> {
                 content: widget.labelText ?? '',
                 fontWeight: FontWeight.w600,
               ),
-              if (widget.isRequired) const Paragraph(
-                content: '*',
-                fontWeight: FontWeight.w600,
-                color: AppColors.PRIMARY_RED,
-              ) else Container(),
+              if (widget.isRequired)
+                const Paragraph(
+                  content: '*',
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.PRIMARY_RED,
+                )
+              else
+                Container(),
             ],
           ),
           SizedBox(
             height: SpaceBox.sizeVerySmall,
           ),
-          TextFormField(
-            inputFormatters: widget.inputFormatters,
-            enabled: widget.enabled,
-            maxLines: widget.maxLines ?? 1,
-            maxLength: widget.maxLenght,
-            keyboardType: widget.keyboardType,
-            controller: widget.textEditingController,
-            onChanged: widget.onChanged,
-            onTap: widget.onTap,
-            obscureText: hiddenPassword,
-            decoration: InputDecoration(
-              suffixText: widget.suffixText ?? '',
-              counterText: widget.counterText,
-              contentPadding: EdgeInsets.symmetric(
-                vertical: SizeToPadding.sizeSmall,
-                horizontal: SizeToPadding.sizeMedium,
-              ),
-              hintText: widget.hintText ?? '',
-              hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
-              fillColor: AppColors.COLOR_WHITE,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
-                borderSide: const BorderSide(
-                  color: AppColors.FIELD_GREEN,
-                  width: 2
+          DecoratedBox(
+            decoration: widget.enabled!
+                ? const BoxDecoration()
+                : BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(BorderRadiusSize.sizeSmall),
+                    border: Border.all(color: AppColors.BLACK_200),
+                  ),
+            child: TextFormField(
+              inputFormatters: widget.inputFormatters,
+              enabled: widget.enabled,
+              style: const TextStyle(color: Colors.black87),
+              maxLines: widget.maxLines ?? 1,
+              maxLength: widget.maxLenght,
+              keyboardType: widget.keyboardType,
+              controller: widget.textEditingController,
+              onChanged: widget.onChanged,
+              onTap: widget.onTap,
+              obscureText: hiddenPassword,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                suffixText: widget.suffixText ?? '',
+                counterText: widget.counterText,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: SizeToPadding.sizeSmall,
+                  horizontal: SizeToPadding.sizeMedium,
                 ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(BorderRadiusSize.sizeSmall),
-                borderSide: const BorderSide(
-                  color: AppColors.BLACK_200,
+                hintText: widget.hintText ?? '',
+                hintStyle: STYLE_MEDIUM.copyWith(color: AppColors.BLACK_400),
+                fillColor: AppColors.COLOR_WHITE,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(BorderRadiusSize.sizeSmall),
+                  borderSide:
+                      const BorderSide(color: AppColors.FIELD_GREEN, width: 2),
                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(BorderRadiusSize.sizeSmall),
+                  borderSide: const BorderSide(
+                    color: AppColors.BLACK_200,
+                  ),
+                ),
+                suffixIcon: (widget.obscureText)
+                    ? GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hiddenPassword = !hiddenPassword;
+                          });
+                        },
+                        child: Icon(
+                          hiddenPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: AppColors.BLACK_300,
+                        ),
+                      )
+                    : null,
+                prefixIcon: widget.iconButton,
               ),
-              suffixIcon: (widget.obscureText)
-                  ? GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          hiddenPassword = !hiddenPassword;
-                        });
-                      },
-                      child: Icon(
-                        hiddenPassword ? Icons.visibility : Icons.visibility_off,
-                        color: AppColors.BLACK_300,
-                      ),
-                    )
-                  : null,
-              prefixIcon: widget.iconButton,
             ),
           ),
           SizedBox(

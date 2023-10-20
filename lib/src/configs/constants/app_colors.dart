@@ -2,10 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-// const Color DARK_COLOR = Color(0xFF282828);
-// Color GREY_COLORS = Colors.grey[200]!;
-// Color GREEN_COLOR = Colors.green.shade600;
-// Color RED_COLOR = Colors.red[700]!;
 
 class AppColors {
   static const Color PRIMARY_PINK = Color.fromRGBO(47, 126, 121, 1);
@@ -19,6 +15,8 @@ class AppColors {
   static const Color LINEAR_GREEN = Color.fromRGBO(105, 174, 169, 1);
 
   static const Color LINEAR_GREEN_Second = Color.fromRGBO(63, 135, 130, 1);
+
+  static const Color LINEAR_GREEN_TOP = Color.fromRGBO(99, 181, 175, 1);
 
   static const Color FIELD_GREEN = Color.fromRGBO(67, 136, 131, 1);
 

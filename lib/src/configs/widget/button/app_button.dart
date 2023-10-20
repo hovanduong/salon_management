@@ -10,7 +10,8 @@ class AppButton extends StatelessWidget {
     Key? key,
     this.enableButton = false,
     this.content,
-    this.onTap, this.width, 
+    this.onTap,
+    this.width,
   }) : super(key: key);
   final Function? onTap;
   final bool enableButton;
@@ -21,7 +22,7 @@ class AppButton extends StatelessWidget {
     return InkWell(
       onTap: () => enableButton ? onTap!() : null,
       child: Container(
-        width: width?? MediaQuery.of(context).size.width,
+        width: width ?? MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
         decoration: BoxDecoration(
           gradient: LinearGradient(

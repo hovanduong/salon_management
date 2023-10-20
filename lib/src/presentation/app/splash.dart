@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../../configs/constants/app_images.dart';
+import '../../configs/configs.dart';
 import '../../utils/utils.dart';
 import '../routers.dart';
 
@@ -46,18 +46,24 @@ class _SplashScreenState extends State<SplashScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Image.asset(
-          AppImages.imageSplash,
-          fit: BoxFit.cover,
-          height: double.infinity,
-          width: double.infinity,
-          alignment: Alignment.center,
+  Widget buildDecoratedContainer() {
+    return DecoratedContainer(
+      widget: Center(
+        child:
+         Paragraph(
+          content: AppValues.appName,
+          style: STYLE_BIG.copyWith(
+            color: AppColors.COLOR_WHITE,
+            fontWeight: FontWeight.bold,
+            fontSize: 50,
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: buildDecoratedContainer());
   }
 }
