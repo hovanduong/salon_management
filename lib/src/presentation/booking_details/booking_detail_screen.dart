@@ -152,7 +152,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         title: BookingDetailsLanguage.total,
         content: AppCurrencyFormat.formatMoneyVND(
             _viewModel!.listMyBooking[index].total ?? 0,),
-        color: AppColors.PRIMARY_GREEN,
+        color: AppColors.Green_Money,
         isSpaceBetween: true,
         fontWeightContent: FontWeight.bold,
       ),
@@ -240,7 +240,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           title: titleService,
           fontWeightTitle: FontWeight.w500,
           isSpaceBetween: true,
-          color: AppColors.PRIMARY_GREEN,
+          color: AppColors.Green_Money,
           fontWeightContent: FontWeight.bold,
         ),
       ],

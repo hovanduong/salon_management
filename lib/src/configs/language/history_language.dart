@@ -22,5 +22,11 @@ class HistoryLanguage {
   static final confirmAppointment = S.current.confirmAppointment;
   static final confirm = S.current.confirm;
   static final paid = S.current.paid;
+  static final emptyAppointment = S.current.emptyAppointment;
+  static final notificationEmptyAppointment = S.current.notificationEmptyAppointment;
+  static final emptyDoneAppointment = S.current.emptyDoneAppointment;
+  static final notificationDoneAppointment = S.current.notificationDoneAppointment;
+  static final emptyCanceledAppointment = S.current.emptyCanceledAppointment;
+  static final notificationCanceledAppointment = S.current.notificationCanceledAppointment;
 
 }

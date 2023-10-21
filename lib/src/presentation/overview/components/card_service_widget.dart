@@ -22,7 +22,7 @@ class CardServiceWidget extends StatelessWidget {
       growth= money!.split(' ')[1].split('')[1];
     }
     return Container(
-      height: 130,
+      height: 140,
       margin: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
       padding: EdgeInsets.all(SizeToPadding.sizeSmall),
       decoration: BoxDecoration(
@@ -61,8 +61,6 @@ class CardServiceWidget extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width/3.2,
                 child: Paragraph(content: money??'',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: STYLE_SMALL.copyWith(
                     fontWeight: FontWeight.w700,
                     color:growth=='-'? AppColors.PRIMARY_RED

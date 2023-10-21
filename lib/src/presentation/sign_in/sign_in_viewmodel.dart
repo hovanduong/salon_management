@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/auth_model.dart';
 import '../../resource/service/auth.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
@@ -15,6 +16,8 @@ class Constants {
 
 class SignInViewModel extends BaseViewModel {
   AuthApi authApi = AuthApi();
+
+  AuthModel? authModel;
 
   bool enableSignIn = false;
 
@@ -127,6 +130,15 @@ class SignInViewModel extends BaseViewModel {
     return phone.substring(1, phone.length);
   }
 
+  Future<void> saveDataUser(AuthModel authModel) async {
+    await saveToken(authModel.accessToken.toString());
+    await AppPref.setDataUser('phoneNumber', authModel.userModel!.phoneNumber!);
+    await AppPref.setDataUser('fullName', authModel.userModel!.fullName!);
+    await AppPref.setDataUser('gender', authModel.userModel!.gender!);
+    await AppPref.setDataUser('email', authModel.userModel!.email!);
+    await AppPref.setDataUser('id', authModel.userModel!.id.toString());
+  }
+
   Future<void> onLogin({String? phone, String? password}) async {
     // final phoneNumber = handleNumberPhone(phone);
 
@@ -139,7 +151,7 @@ class SignInViewModel extends BaseViewModel {
     );
 
     final value = switch (result) {
-      Success(value: final accessToken) => accessToken,
+      Success(value: final dataUser) => dataUser,
       Failure(exception: final exception) => exception,
     };
 
@@ -151,9 +163,10 @@ class SignInViewModel extends BaseViewModel {
       showOpenDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
+      authModel= value as AuthModel;
+      await saveDataUser(authModel!);
       setEvenAnalytics(phone);
       setSignInScreen();
-      await saveToken(value.toString());
       await HttpRemote.init();
       await goToHome();
     }

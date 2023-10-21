@@ -222,7 +222,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildService() {
     return InkWell(
-      onTap: () => showSelectCategory(context),
+      onTap: () => showSelectService(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -248,7 +248,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  void showSelectCategory(_) {
+  void showSelectService(_) {
     showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -257,6 +257,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         titleContent: BookingLanguage.selectServices,
         listItems: _viewModel!.mapService,
         initValues: _viewModel!.serviceId,
+        contentEmpty: BookingLanguage.contentEmptyService,
+        titleEmpty: BookingLanguage.emptyService,
         onTapSubmit: (value) {
           _viewModel!
             ..changeValueService(value)
@@ -425,7 +427,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
+        left: SizeToPadding.sizeMedium,),
       color: AppColors.PRIMARY_GREEN,
       child: CustomerAppBar(
         color: AppColors.COLOR_WHITE,

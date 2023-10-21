@@ -214,23 +214,13 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   void dialogStatus({required BuildContext context, String? value, int? id}) {
-    if (value!.contains(Contains.confirmed)) {
-      showDialogStatus(
-        context: context,
-        content: HistoryLanguage.confirmAppointment,
-        title: HistoryLanguage.confirm,
-        status: value,
-        id: id,
-      );
-    } else {
-      showDialogStatus(
-        context: context,
-        content: HistoryLanguage.cancelAppointment,
-        title: HistoryLanguage.cancel,
-        status: value,
-        id: id,
-      );
-    }
+    showDialogStatus(
+      context: context,
+      content: HistoryLanguage.cancelAppointment,
+      title: HistoryLanguage.cancel,
+      status: value,
+      id: id,
+    );
   }
 
   Future<void> sendPhone(String phoneNumber, String scheme) async {
@@ -278,7 +268,7 @@ class BookingHistoryViewModel extends BaseViewModel {
           content: content,
           title: title,
           leftButtonName: SignUpLanguage.cancel,
-          rightButtonName: HistoryLanguage.confirmed,
+          rightButtonName: HistoryLanguage.confirm,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
           onTapLeft: () => Navigator.pop(context),

@@ -15,5 +15,8 @@ class PaymentLanguage {
   static final waningDeleteService= S.current.waningDeleteService;
   static final intoMoney= S.current.intoMoney;
   static final temporary= S.current.temporary;
+  static final emptyService= S.current.emptyService;
+  static final contentEmptyService= S.current.contentEmptyService;
+
 
 }

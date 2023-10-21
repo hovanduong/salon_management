@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
+import '../../../configs/constants/app_space.dart';
 import '../../../resource/model/my_booking_model.dart';
 import '../../../utils/app_currency.dart';
 import '../../../utils/date_format_utils.dart';
@@ -21,7 +22,9 @@ class ScreenTap extends StatelessWidget {
     this.onChangedStatus,
     this.onTapDeleteBooking,
     this.onTapEditBooking, 
-    this.onPay,
+    this.onPay, 
+    this.titleEmpty, 
+    this.contentEmpty,
   });
 
   final Function()? onRefresh;
@@ -36,10 +39,21 @@ class ScreenTap extends StatelessWidget {
   final Function(int id)? onTapDeleteBooking;
   final Function(MyBookingModel myBookingModel)? onTapEditBooking;
   final Function(int id)? onPay;
+  final String? titleEmpty;
+  final String? contentEmpty;
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return listCurrent!.isEmpty
+      ? Padding(
+          padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+          child: EmptyDataWidget(
+            title: titleEmpty ?? HistoryLanguage.emptyAppointment,
+            content: contentEmpty 
+              ?? HistoryLanguage.notificationEmptyAppointment,
+          ),
+        )
+      : RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await onRefresh!();
@@ -78,7 +92,7 @@ class ScreenTap extends StatelessWidget {
                   SelectStatusWidget(
                     status: listCurrent![index].status,
                     onChanged: (value) {
-                      if (!value.contains(listCurrent![index].status!)) {
+                      if (value.contains(HistoryLanguage.canceled)) {
                         onChangedStatus!(value, id!);
                       }
                     },

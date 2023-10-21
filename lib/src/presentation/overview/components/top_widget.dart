@@ -92,7 +92,14 @@ class TopWidget extends StatelessWidget {
 
   Widget showTop() {
     return isShowTop
-        ? Table(
+      ? topService!.isEmpty
+      ? Padding(
+        padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
+        child: EmptyDataWidget(
+          title: HomeLanguage.emptyTopService,
+          content: HomeLanguage.contentEmptyTopService,
+        ),
+      ): Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const {
             0: FlexColumnWidth(1),

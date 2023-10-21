@@ -215,7 +215,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildService() {
     return InkWell(
-      onTap: () => showSelectCategory(context),
+      onTap: () => showSelectService(context),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
         child: Row(
@@ -244,15 +244,17 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  void showSelectCategory(_) {
+  void showSelectService(_) {
     showModalBottomSheet(
       context: context,
       isDismissible: true,
       isScrollControlled: true,
       builder: (context) => BottomSheetMultipleRadio(
-        titleContent: BookingLanguage.selectedCustomer,
+        titleContent: BookingLanguage.selectServices,
         listItems: _viewModel!.mapService,
         initValues: _viewModel!.serviceId,
+        contentEmpty: PaymentLanguage.contentEmptyService,
+        titleEmpty: PaymentLanguage.emptyService,
         onTapSubmit: (value) {
           _viewModel!
             ..changeValueService(value)
@@ -274,7 +276,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
+        left: SizeToPadding.sizeMedium,),
       color: AppColors.PRIMARY_GREEN,
       child: Center(
         child: CustomerAppBar(

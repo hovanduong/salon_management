@@ -41,5 +41,8 @@ class BookingLanguage {
   static final confirmed = S.current.confirmed;
   static final confirm = S.current.confirm;
   static final canceled = S.current.canceled;
+  static final emptyService = S.current.emptyService;
+  static final contentEmptyService = S.current.contentEmptyService;
+
 
 }

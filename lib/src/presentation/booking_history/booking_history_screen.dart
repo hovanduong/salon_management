@@ -241,6 +241,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
+      titleEmpty: HistoryLanguage.emptyDoneAppointment,
+      contentEmpty: HistoryLanguage.notificationDoneAppointment,
     );
   }
 
@@ -258,6 +260,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
+      titleEmpty: HistoryLanguage.emptyCanceledAppointment,
+      contentEmpty: HistoryLanguage.notificationCanceledAppointment,
     );
   }
 

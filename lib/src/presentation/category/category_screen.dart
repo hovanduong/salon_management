@@ -76,7 +76,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
         color: AppColors.PRIMARY_GREEN,
         child: Padding(
           padding:
-              EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
+              EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
+                left: SizeToPadding.sizeMedium,),
           child: CustomerAppBar(
             color: AppColors.COLOR_WHITE,
             style: STYLE_LARGE.copyWith(
@@ -246,7 +247,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget showListCategory() {
-    return RefreshIndicator(
+    return _viewModel!.listCategory.isEmpty
+      ? Padding(
+        padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+        child: EmptyDataWidget(
+          title: CategoryLanguage.emptyCategory,
+          content: CategoryLanguage.notificationEmptyCategory,
+        ),
+      )
+      : RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await _viewModel!.pullRefresh();

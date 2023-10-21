@@ -75,7 +75,8 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10),
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
+          left: SizeToPadding.sizeMedium,),
         child: CustomerAppBar(
           color: AppColors.COLOR_WHITE,
           style: STYLE_LARGE.copyWith(
@@ -127,7 +128,15 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
   }
 
   Widget showListCustomer() {
-    return RefreshIndicator(
+    return _viewModel!.listMyCustomer.isEmpty
+      ? Padding(
+        padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+        child: EmptyDataWidget(
+          title: MyCustomerLanguage.emptyCustomer,
+          content: MyCustomerLanguage.notificationEmptyCustomer,
+        ),
+      )
+      :RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
