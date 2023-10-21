@@ -140,12 +140,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   Widget buildListInvoice() {
-    return _viewModel!.listCurrent.isEmpty 
+    return _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
         ? Padding(
             padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
             child: EmptyDataWidget(
-                title: InvoiceLanguage.blankInvoice,
-                content: InvoiceLanguage.notificationBlankInvoice,),
+              title: InvoiceLanguage.blankInvoice,
+              content: InvoiceLanguage.notificationBlankInvoice,
+            ),
           )
         : RefreshIndicator(
             color: AppColors.PRIMARY_GREEN,
