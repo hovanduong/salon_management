@@ -1,4 +1,4 @@
-// ignore_for_file: use_late_for_private_fields_and_variables
+// ignore_for_file: use_late_for_private_fields_and_variables, prefer_is_empty
 
 import 'dart:io';
 
@@ -140,7 +140,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   Widget buildListInvoice() {
-    return _viewModel!.listCurrent.isEmpty
+    return _viewModel!.listCurrent.length < 0
         ? Padding(
             padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
             child: EmptyDataWidget(
