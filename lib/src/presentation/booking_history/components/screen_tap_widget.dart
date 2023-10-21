@@ -21,9 +21,9 @@ class ScreenTap extends StatelessWidget {
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
-    this.onTapEditBooking, 
-    this.onPay, 
-    this.titleEmpty, 
+    this.onTapEditBooking,
+    this.onPay,
+    this.titleEmpty,
     this.contentEmpty,
   });
 
@@ -44,16 +44,7 @@ class ScreenTap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return listCurrent!.isEmpty
-      ? Padding(
-          padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-          child: EmptyDataWidget(
-            title: titleEmpty ?? HistoryLanguage.emptyAppointment,
-            content: contentEmpty 
-              ?? HistoryLanguage.notificationEmptyAppointment,
-          ),
-        )
-      : RefreshIndicator(
+    return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await onRefresh!();

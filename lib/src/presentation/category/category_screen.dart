@@ -75,9 +75,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Container(
         color: AppColors.PRIMARY_GREEN,
         child: Padding(
-          padding:
-              EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
-                left: SizeToPadding.sizeMedium,),
+          padding: EdgeInsets.only(
+            top: Platform.isAndroid ? 40 : 60,
+            bottom: 10,
+            left: SizeToPadding.sizeMedium,
+          ),
           child: CustomerAppBar(
             color: AppColors.COLOR_WHITE,
             style: STYLE_LARGE.copyWith(
@@ -165,7 +167,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeVeryVerySmall),
       child: InkWell(
         onTap: () {
-          if (_viewModel!.listCategory[index].myServices!.isNotEmpty){
+          if (_viewModel!.listCategory[index].myServices!.isNotEmpty) {
             _viewModel!.setIcon(index);
           }
         },
@@ -247,21 +249,21 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget showListCategory() {
-    return _viewModel!.listCategory.isEmpty
-      ? Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-        child: EmptyDataWidget(
-          title: CategoryLanguage.emptyCategory,
-          content: CategoryLanguage.notificationEmptyCategory,
-        ),
-      )
-      : RefreshIndicator(
-      color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async {
-        await _viewModel!.pullRefresh();
-      },
-      child: buildCategory(),
-    );
+    return _viewModel!.listCategory.isEmpty && !_viewModel!.isLoading
+        ? Padding(
+            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+            child: EmptyDataWidget(
+              title: CategoryLanguage.emptyCategory,
+              content: CategoryLanguage.notificationEmptyCategory,
+            ),
+          )
+        : RefreshIndicator(
+            color: AppColors.PRIMARY_GREEN,
+            onRefresh: () async {
+              await _viewModel!.pullRefresh();
+            },
+            child: buildCategory(),
+          );
   }
 
   Widget buildBody() {

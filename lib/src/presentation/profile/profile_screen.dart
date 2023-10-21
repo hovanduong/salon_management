@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildAvatarWidget() {
     return Positioned(
       top: 200,
-      left: MediaQuery.sizeOf(context).width/3.1,
+      left: MediaQuery.sizeOf(context).width / 3.1,
       child: Container(
         width: 140,
         height: 140,
@@ -155,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildInfoUSer(){
+  Widget buildInfoUSer() {
     return Positioned(
       top: 100,
       left: 0,
@@ -175,37 +175,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Paragraph(
             content: _viewModel!.userModel?.phoneNumber,
             style: STYLE_BIG.copyWith(
-              color: AppColors.COLOR_WHITE,
-              fontWeight: FontWeight.w700,
-            ),
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w700,
+                fontSize: 16),
           ),
         ],
       ),
     );
   }
 
-  Widget buildBody(){
+  Widget buildBody() {
     return Positioned(
       top: 240,
       left: 0,
       right: 0,
       child: Container(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeBig,),
-        height: MediaQuery.sizeOf(context).height/1.5,
-        decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(SpaceBox.sizeMedium),
-            topRight: Radius.circular(SpaceBox.sizeMedium),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.BLACK_400,
-              blurStyle: BlurStyle.solid,
-              blurRadius: SpaceBox.sizeMedium,
-            ),
-          ]
+        padding: EdgeInsets.only(
+          top: SizeToPadding.sizeBig,
         ),
+        height: MediaQuery.sizeOf(context).height / 1.5,
+        decoration: BoxDecoration(
+            color: AppColors.COLOR_WHITE,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(SpaceBox.sizeMedium),
+              topRight: Radius.circular(SpaceBox.sizeMedium),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.BLACK_400,
+                blurStyle: BlurStyle.solid,
+                blurRadius: SpaceBox.sizeMedium,
+              ),
+            ]),
         child: Column(
           children: [
             // buildNameUserWidget(),
@@ -223,32 +224,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildProfile() {
-    return SafeArea(
-      top: true,
-      bottom: false,
-      right: false,
-      left: false,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    color: AppColors.PRIMARY_GREEN,
-                    width: double.infinity,
-                    height: MediaQuery.sizeOf(context).height-100,
-                  ),
-                  // buildBackground(),
-                  buildHeaderWidget(),
-                  buildInfoUSer(),
-                  // buildAvatarWidget(),
-                  buildBody(),
-                ],
-              ),
-            ],
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  color: AppColors.PRIMARY_GREEN,
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height - 100,
+                ),
+                // buildBackground(),
+                // buildHeaderWidget(),
+                buildInfoUSer(),
+                // buildAvatarWidget(),
+                buildBody(),
+              ],
+            ),
+          ],
         ),
       ),
     );

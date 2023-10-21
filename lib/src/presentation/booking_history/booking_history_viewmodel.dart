@@ -12,7 +12,7 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class Contains{
+class Contains {
   static const confirmed = 'Confirmed';
   static const canceled = 'Canceled';
   static const done = 'Done';
@@ -25,25 +25,25 @@ class BookingHistoryViewModel extends BaseViewModel {
   ScrollController scrollDone = ScrollController();
   ScrollController scrollCanceled = ScrollController();
   ScrollController scrollToday = ScrollController();
-  ScrollController scrollDaysBefore= ScrollController();
+  ScrollController scrollDaysBefore = ScrollController();
 
   List<MyBookingModel> listMyBooking = [];
   List<MyBookingModel> listCurrentUpcoming = [];
   List<MyBookingModel> listCurrentToday = [];
   List<MyBookingModel> listCurrentDone = [];
   List<MyBookingModel> listCurrentCanceled = [];
-  List<MyBookingModel> listCurrentDaysBefore= [];
+  List<MyBookingModel> listCurrentDaysBefore = [];
 
   bool isLoadMore = false;
   bool isLoading = true;
-  bool isToday=true;
+  bool isToday = true;
 
   int pageUpComing = 1;
   int pageDone = 1;
   int pageCanceled = 1;
-  int pageToday=1;
-  int pageDaysBefore=1;
-  int currentTab=0;
+  int pageToday = 1;
+  int pageDaysBefore = 1;
+  int currentTab = 0;
 
   Timer? timer;
 
@@ -63,8 +63,9 @@ class BookingHistoryViewModel extends BaseViewModel {
         arguments: myBookingModel,
       );
 
-  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model) 
-    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
+  Future<void> goToBookingDetails(
+          BuildContext context, MyBookingParams model) =>
+      Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   Future<void> fetchData() async {
     listCurrentUpcoming.clear();
@@ -76,7 +77,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     pageUpComing = 1;
     pageDone = 1;
     pageCanceled = 1;
-    pageDaysBefore=1;
+    pageDaysBefore = 1;
 
     await getDataDaysBefore(pageDaysBefore);
     listCurrentDaysBefore = listMyBooking;
@@ -93,12 +94,23 @@ class BookingHistoryViewModel extends BaseViewModel {
     await getDataDone(pageDone);
     listCurrentDone = listMyBooking;
 
+    scrollDaysBefore.addListener(
+      () => scrollListener(scrollDaysBefore),
+    );
+    scrollToday.addListener(
+      () => scrollListener(scrollToday),
+    );
+    scrollUpComing.addListener(
+      () => scrollListener(scrollUpComing),
+    );
+    scrollCanceled.addListener(
+      () => scrollListener(scrollCanceled),
+    );
+    scrollDone.addListener(
+      () => scrollListener(scrollDone),
+    );
+
     isLoading = false;
-    scrollDaysBefore.addListener(() => scrollListener(scrollDaysBefore),);
-    scrollToday.addListener(() => scrollListener(scrollToday),);
-    scrollUpComing.addListener(() => scrollListener(scrollUpComing),);
-    scrollCanceled.addListener(() => scrollListener(scrollCanceled),);
-    scrollDone.addListener(() => scrollListener(scrollDone),);
 
     notifyListeners();
   }
@@ -109,25 +121,27 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> getDataDaysBefore(int page) async{
+  Future<void> getDataDaysBefore(int page) async {
     await getMyBooking(
       MyBookingParams(
-        page: page, isDaysBefore: true,
+        page: page,
+        isDaysBefore: true,
         status: Contains.confirmed,
       ),
     );
   }
 
-  Future<void> getDataToday(int page) async{
+  Future<void> getDataToday(int page) async {
     await getMyBooking(
       MyBookingParams(
-        page: page, isToday: true,
+        page: page,
+        isToday: true,
         status: Contains.confirmed,
       ),
     );
   }
 
-  Future<void> getDataUpcoming(int page) async{
+  Future<void> getDataUpcoming(int page) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
@@ -137,7 +151,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> getDataDone(int page) async{
+  Future<void> getDataDone(int page) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
@@ -146,7 +160,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> getDataCanceled(int page) async{
+  Future<void> getDataCanceled(int page) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
@@ -166,24 +180,24 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
-    if (currentTab==0) {
-      pageDaysBefore+=1;
+    if (currentTab == 0) {
+      pageDaysBefore += 1;
       await getDataDaysBefore(pageDaysBefore);
       listCurrentDaysBefore = [...listCurrentDaysBefore, ...listMyBooking];
-    } else if (currentTab==1) {
+    } else if (currentTab == 1) {
       pageToday += 1;
       await getDataToday(pageToday);
       listCurrentToday = [...listCurrentToday, ...listMyBooking];
-    } else if(currentTab==2){
+    } else if (currentTab == 2) {
       pageUpComing += 1;
       await getDataUpcoming(pageUpComing);
       listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
-    } else if(currentTab==3){
-      pageDone+=1;
+    } else if (currentTab == 3) {
+      pageDone += 1;
       await getDataDone(pageDone);
       listCurrentDone = [...listCurrentDone, ...listMyBooking];
-    }else{
-      pageCanceled+=1;
+    } else {
+      pageCanceled += 1;
       await getDataCanceled(pageCanceled);
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
     }
@@ -196,19 +210,19 @@ class BookingHistoryViewModel extends BaseViewModel {
     // await pullRefresh();
     if (value == 0) {
       status = Contains.confirmed;
-      currentTab=0;
+      currentTab = 0;
     } else if (value == 1) {
       status = Contains.confirmed;
-      currentTab=1;
+      currentTab = 1;
     } else if (value == 2) {
       status = Contains.confirmed;
-      currentTab=2;
-    }else if (value == 3) {
+      currentTab = 2;
+    } else if (value == 3) {
       status = Contains.done;
-      currentTab=3;
+      currentTab = 3;
     } else {
       status = Contains.canceled;
-      currentTab=4;
+      currentTab = 4;
     }
     notifyListeners();
   }
@@ -232,7 +246,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     await launchUrl(launchUri);
   }
 
-  dynamic showWaningDiaglog(int id){
+  dynamic showWaningDiaglog(int id) {
     showDialog(
       context: context,
       builder: (context) {
@@ -244,7 +258,7 @@ class BookingHistoryViewModel extends BaseViewModel {
             Navigator.pop(context);
           },
           rightButtonName: BookingLanguage.confirm,
-          onTapRight: (){
+          onTapRight: () {
             deleteBookingHistory(id);
             Navigator.pop(context);
           },
@@ -281,11 +295,14 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  void closeDialog(BuildContext context){
-    timer= Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+  void closeDialog(BuildContext context) {
+    timer = Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
   }
 
-  dynamic showSuccessDiaglog(_) async{
+  dynamic showSuccessDiaglog(_) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -314,7 +331,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  // Future<List<MyBookingModel>> setListMyBooking({String? status, 
+  // Future<List<MyBookingModel>> setListMyBooking({String? status,
   //   bool isToday=false, List<MyBookingModel>? value,})async{
   //     final list=<MyBookingModel>[];
   //     if(status==Contains.confirmed && isToday==false){
@@ -329,8 +346,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   //     return value!;
   // }
 
-  Future<void> getMyBooking(MyBookingParams myBookingParams) 
-  async {
+  Future<void> getMyBooking(MyBookingParams myBookingParams) async {
     final result = await myBookingApi.getMyBooking(
       myBookingParams,
     );
@@ -346,7 +362,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       isLoading = true;
     } else {
       isLoading = false;
-      listMyBooking= value as List<MyBookingModel>;
+      listMyBooking = value as List<MyBookingModel>;
     }
     isLoading = false;
     notifyListeners();
@@ -406,14 +422,17 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   @override
   void dispose() {
-    Future.delayed(const Duration(seconds: 2), () {
-      timer?.cancel();
-      scrollCanceled.dispose();
-      scrollDaysBefore.dispose();
-      scrollDone.dispose();
-      scrollToday.dispose();
-      scrollUpComing.dispose();
-      super.dispose();
-    },);
+    Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        timer?.cancel();
+        scrollCanceled.dispose();
+        scrollDaysBefore.dispose();
+        scrollDone.dispose();
+        scrollToday.dispose();
+        scrollUpComing.dispose();
+        super.dispose();
+      },
+    );
   }
 }
