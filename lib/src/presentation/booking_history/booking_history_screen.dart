@@ -149,76 +149,66 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   }
 
   Widget buildTabDaysBefore() {
-    return _viewModel!.listCurrentDaysBefore.isEmpty && !_viewModel!.isLoading
-        ? Padding(
-            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-            child: EmptyDataWidget(
-              title: HistoryLanguage.emptyAppointment,
-              content: HistoryLanguage.notificationEmptyAppointment,
-            ),
-          )
-        : ScreenTap(
-            listCurrent: _viewModel!.listCurrentDaysBefore,
-            isButton: true,
-            isLoadMore: _viewModel!.isLoadMore,
-            scrollController: _viewModel!.scrollDaysBefore,
-            onTapCard: (id) => _viewModel!.goToBookingDetails(
-              context,
-              MyBookingParams(id: id),
-            ),
-            onTapPhone: diaLogPhone,
-            onRefresh: () async {
-              await _viewModel!.pullRefresh();
-            },
-            onChangedStatus: (value, id) => _viewModel!
-                .dialogStatus(value: value, context: context, id: id),
-            onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
-            onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-                context: context, myBookingModel: myBookingModel),
-            onPay: (id) => _viewModel!.goToBookingDetails(
-              context,
-              MyBookingParams(id: id, isPayment: true),
-            ),
-          );
+    return ScreenTap(
+      listCurrent: _viewModel!.listCurrentDaysBefore,
+      isLoading: _viewModel!.isLoading,
+      isPullRefresh: _viewModel!.isPullRefresh,
+      isButton: true,
+      isLoadMore: _viewModel!.isLoadMore,
+      scrollController: _viewModel!.scrollDaysBefore,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context,
+        MyBookingParams(id: id),
+      ),
+      onTapPhone: diaLogPhone,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      onChangedStatus: (value, id) => _viewModel!
+          .dialogStatus(value: value, context: context, id: id),
+      onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
+      onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
+          context: context, myBookingModel: myBookingModel),
+      onPay: (id) => _viewModel!.goToBookingDetails(
+        context,
+        MyBookingParams(id: id, isPayment: true),
+      ),
+    );
   }
 
   Widget buildTabToday() {
-    return _viewModel!.listCurrentToday.isEmpty && !_viewModel!.isLoading
-        ? Padding(
-            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-            child: EmptyDataWidget(
-              title: HistoryLanguage.emptyAppointment,
-              content: HistoryLanguage.notificationEmptyAppointment,
-            ),
-          )
-        : ScreenTap(
-            listCurrent: _viewModel!.listCurrentToday,
-            isButton: true,
-            isLoadMore: _viewModel!.isLoadMore,
-            scrollController: _viewModel!.scrollToday,
-            onTapCard: (id) => _viewModel!.goToBookingDetails(
-              context,
-              MyBookingParams(id: id),
-            ),
-            onTapPhone: diaLogPhone,
-            onRefresh: () async {
-              await _viewModel!.pullRefresh();
-            },
-            onChangedStatus: (value, id) => _viewModel!
-                .dialogStatus(value: value, context: context, id: id),
-            onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
-            onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-                context: context, myBookingModel: myBookingModel),
-            onPay: (id) => _viewModel!.goToBookingDetails(
-              context,
-              MyBookingParams(id: id, isPayment: true),
-            ),
-          );
+    return ScreenTap(
+      listCurrent: _viewModel!.listCurrentToday,
+      isLoading: _viewModel!.isLoading,
+      isPullRefresh: _viewModel!.isPullRefresh,
+      isButton: true,
+      isLoadMore: _viewModel!.isLoadMore,
+      scrollController: _viewModel!.scrollToday,
+      onTapCard: (id) => _viewModel!.goToBookingDetails(
+        context,
+        MyBookingParams(id: id),
+      ),
+      onTapPhone: diaLogPhone,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      onChangedStatus: (value, id) => _viewModel!
+          .dialogStatus(value: value, context: context, id: id),
+      onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
+      onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
+          context: context, myBookingModel: myBookingModel),
+      onPay: (id) => _viewModel!.goToBookingDetails(
+        context,
+        MyBookingParams(id: id, isPayment: true),
+      ),
+    );
   }
 
   Widget buildTabUpcoming() {
     return ScreenTap(
+      isLoading: _viewModel!.isLoading,
       listCurrent: _viewModel!.listCurrentUpcoming,
+      isPullRefresh: _viewModel!.isPullRefresh,
       isButton: true,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollUpComing,
@@ -243,7 +233,10 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   }
 
   Widget buildTabDone() {
+    print(_viewModel!.isLoading);
     return ScreenTap(
+      isLoading: _viewModel!.isLoading,
+      isPullRefresh: _viewModel!.isPullRefresh,
       widget: setStatusNotification(done),
       listCurrent: _viewModel!.listCurrentDone,
       isLoadMore: _viewModel!.isLoadMore,
@@ -263,6 +256,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabCanceled() {
     return ScreenTap(
+      isLoading: _viewModel!.isLoading,
+      isPullRefresh: _viewModel!.isPullRefresh,
       widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,

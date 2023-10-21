@@ -144,7 +144,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
           ),
           ItemTransactionWidget(
             title: BillPaymentLanguage.date,
-            content: _viewModel!.date,
+            content: _viewModel!.dateTime,
           ),
           ItemTransactionWidget(
             title: BillPaymentLanguage.status,

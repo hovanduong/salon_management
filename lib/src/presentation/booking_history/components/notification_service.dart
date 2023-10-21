@@ -40,6 +40,7 @@ class NotificationService extends StatelessWidget {
     String? content,
     Widget? trailing,
     Color? color,
+    double? width,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
@@ -56,7 +57,7 @@ class NotificationService extends StatelessWidget {
                 width: SpaceBox.sizeSmall,
               ),
               SizedBox(
-                width: MediaQuery.of(context!).size.width-230,
+                width: width?? MediaQuery.of(context!).size.width-150,
                 child: Paragraph(
                   content: content ?? '',
                   maxLines: 1,
@@ -81,6 +82,7 @@ class NotificationService extends StatelessWidget {
           content: date,
           icon: Icons.alarm,
           trailing: widget,
+          width:  MediaQuery.of(context!).size.width-250,
         ),
         buildTitle(
           content: nameUser,

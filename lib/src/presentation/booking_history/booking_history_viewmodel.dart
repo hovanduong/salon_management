@@ -37,6 +37,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   bool isLoadMore = false;
   bool isLoading = true;
   bool isToday = true;
+  bool isPullRefresh = false;
 
   int pageUpComing = 1;
   int pageDone = 1;
@@ -109,13 +110,13 @@ class BookingHistoryViewModel extends BaseViewModel {
     scrollDone.addListener(
       () => scrollListener(scrollDone),
     );
-
-    isLoading = false;
-
+    isPullRefresh=false;
     notifyListeners();
   }
 
   Future<void> pullRefresh() async {
+    isPullRefresh=true;
+    notifyListeners();
     await init();
     isLoadMore = false;
     notifyListeners();

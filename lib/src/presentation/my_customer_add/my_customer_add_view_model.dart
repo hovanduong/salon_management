@@ -107,8 +107,10 @@ class MyCustomerAddViewModel extends BaseViewModel {
   }
 
   void clearData() {
-    nameController.text = '';
-    phoneController.text = '';
+    if(!isPayments){
+      nameController.text = '';
+      phoneController.text = '';
+    }
     notifyListeners();
   }
 
@@ -205,6 +207,7 @@ class MyCustomerAddViewModel extends BaseViewModel {
       if (value) {
         LoadingDialog.hideLoadingDialog(context);
         await showSuccessDialog(context);
+        clearData();
         closeScreen();
       } else {
         LoadingDialog.hideLoadingDialog(context);

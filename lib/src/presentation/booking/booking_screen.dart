@@ -428,7 +428,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildAppbar() {
     return Container(
       padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
-        left: SizeToPadding.sizeMedium,),
+        left: SizeToPadding.sizeMedium, right: SizeToPadding.sizeMedium,),
       color: AppColors.PRIMARY_GREEN,
       child: CustomerAppBar(
         color: AppColors.COLOR_WHITE,
@@ -438,7 +438,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         ),
         onTap: () => Navigator.pop(context),
         title: _viewModel!.dataMyBooking == null
-            ? BookingLanguage.booking
+            ? BookingLanguage.createAppointment
             : BookingLanguage.bookingEdit,
       ),
     );

@@ -277,7 +277,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   Widget buildAppbar() {
     return Container(
       padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
-        left: SizeToPadding.sizeMedium,),
+        left: SizeToPadding.sizeMedium, right: SizeToPadding.sizeMedium,),
       color: AppColors.PRIMARY_GREEN,
       child: Center(
         child: CustomerAppBar(

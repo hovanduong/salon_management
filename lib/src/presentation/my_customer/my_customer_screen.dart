@@ -79,6 +79,7 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
           top: Platform.isAndroid ? 40 : 60,
           bottom: 10,
           left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
         ),
         child: CustomerAppBar(
           color: AppColors.COLOR_WHITE,
@@ -131,41 +132,43 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
   }
 
   Widget showListCustomer() {
-    return _viewModel!.listMyCustomer.isEmpty & !_viewModel!.isLoading
-        ? Padding(
-            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-            child: EmptyDataWidget(
-              title: MyCustomerLanguage.emptyCustomer,
-              content: MyCustomerLanguage.notificationEmptyCustomer,
-            ),
-          )
-        : RefreshIndicator(
-            color: AppColors.PRIMARY_GREEN,
-            onRefresh: () async {
-              await _viewModel!.pullRefresh();
-            },
-            child: Container(
-              margin: EdgeInsets.only(
-                left: SizeToPadding.sizeSmall,
-                right: SizeToPadding.sizeVerySmall,
-              ),
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                physics: const AlwaysScrollableScrollPhysics(),
-                controller: _viewModel!.scrollController,
-                itemCount: _viewModel!.loadingMore
-                    ? _viewModel!.listMyCustomer.length + 1
-                    : _viewModel!.listMyCustomer.length,
-                itemBuilder: (context, index) {
-                  if (index < _viewModel!.listMyCustomer.length) {
-                    return buildInfoCustomer(index);
-                  } else {
-                    return const CupertinoActivityIndicator();
-                  }
-                },
-              ),
-            ),
-          );
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: _viewModel!.listMyCustomer.isEmpty && !_viewModel!.isLoading
+      ? SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+          child: EmptyDataWidget(
+            title: MyCustomerLanguage.emptyCustomer,
+            content: MyCustomerLanguage.notificationEmptyCustomer,
+          ),
+        ),
+      ): Container(
+        margin: EdgeInsets.only(
+          left: SizeToPadding.sizeSmall,
+          right: SizeToPadding.sizeVerySmall,
+        ),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.loadingMore
+              ? _viewModel!.listMyCustomer.length + 1
+              : _viewModel!.listMyCustomer.length,
+          itemBuilder: (context, index) {
+            if (index < _viewModel!.listMyCustomer.length) {
+              return buildInfoCustomer(index);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget buildBody() {

@@ -140,20 +140,22 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   Widget buildListInvoice() {
-    return _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
-        ? Padding(
-            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-            child: EmptyDataWidget(
-              title: InvoiceLanguage.blankInvoice,
-              content: InvoiceLanguage.notificationBlankInvoice,
-            ),
-          )
-        : RefreshIndicator(
+    return RefreshIndicator(
             color: AppColors.PRIMARY_GREEN,
             onRefresh: () async {
               await _viewModel!.pullRefresh();
             },
-            child: SizedBox(
+            child:  _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
+            ? SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+                child: EmptyDataWidget(
+                  title: InvoiceLanguage.blankInvoice,
+                  content: InvoiceLanguage.notificationBlankInvoice,),
+                ),
+            )
+            :  SizedBox(
               height: MediaQuery.of(context).size.height - 250,
               child: ListView.builder(
                 padding: EdgeInsets.zero,

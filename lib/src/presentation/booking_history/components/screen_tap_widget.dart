@@ -18,6 +18,8 @@ class ScreenTap extends StatelessWidget {
     this.scrollController,
     this.isLoadMore = false,
     this.isButton = false,
+    this.isLoading=false,
+    this.isPullRefresh=false,
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
@@ -34,6 +36,8 @@ class ScreenTap extends StatelessWidget {
   final ScrollController? scrollController;
   final bool isLoadMore;
   final bool isButton;
+  final bool isLoading;
+  final bool isPullRefresh;
   final Function(int id)? onTapCard;
   final Function(String value, int id)? onChangedStatus;
   final Function(int id)? onTapDeleteBooking;
@@ -49,7 +53,15 @@ class ScreenTap extends StatelessWidget {
       onRefresh: () async {
         await onRefresh!();
       },
-      child: ListView.builder(
+      child:  listCurrent!.isEmpty && !isLoading && !isPullRefresh
+      ? Padding(
+        padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+        child: EmptyDataWidget(
+          title: titleEmpty?? HistoryLanguage.emptyAppointment,
+          content: contentEmpty?? HistoryLanguage.notificationEmptyAppointment,
+        ),
+      )
+      :   ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         controller: scrollController,
@@ -80,14 +92,14 @@ class ScreenTap extends StatelessWidget {
               phoneNumber: phone,
               onTapPhone: () => onTapPhone!(phone!),
               widget: widget ??
-                  SelectStatusWidget(
-                    status: listCurrent![index].status,
-                    onChanged: (value) {
-                      if (value.contains(HistoryLanguage.canceled)) {
-                        onChangedStatus!(value, id!);
-                      }
-                    },
-                  ),
+                SelectStatusWidget(
+                  status: listCurrent![index].status,
+                  onChanged: (value) {
+                    if (value.contains(HistoryLanguage.cancel)) {
+                      onChangedStatus!(value, id!);
+                    }
+                  },
+                ),
             );
           } else {
             return const CupertinoActivityIndicator();

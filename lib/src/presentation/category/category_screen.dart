@@ -79,6 +79,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             top: Platform.isAndroid ? 40 : 60,
             bottom: 10,
             left: SizeToPadding.sizeMedium,
+            right: SizeToPadding.sizeMedium,
           ),
           child: CustomerAppBar(
             color: AppColors.COLOR_WHITE,
@@ -249,21 +250,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget showListCategory() {
-    return _viewModel!.listCategory.isEmpty && !_viewModel!.isLoading
-        ? Padding(
-            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-            child: EmptyDataWidget(
-              title: CategoryLanguage.emptyCategory,
-              content: CategoryLanguage.notificationEmptyCategory,
-            ),
-          )
-        : RefreshIndicator(
-            color: AppColors.PRIMARY_GREEN,
-            onRefresh: () async {
-              await _viewModel!.pullRefresh();
-            },
-            child: buildCategory(),
-          );
+    return  RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: _viewModel!.listCategory.isEmpty && !_viewModel!.isLoading
+      ? SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+          child: EmptyDataWidget(
+            title: CategoryLanguage.emptyCategory,
+            content: CategoryLanguage.notificationEmptyCategory,
+          ),
+        ),
+      )
+      : buildCategory(),
+    );
   }
 
   Widget buildBody() {
