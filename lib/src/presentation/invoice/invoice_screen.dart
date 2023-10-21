@@ -140,30 +140,37 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   Widget buildListInvoice() {
-    return RefreshIndicator(
-      color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async {
-        await _viewModel!.pullRefresh();
-      },
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height - 250,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          physics: const AlwaysScrollableScrollPhysics(),
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-              ? _viewModel!.listCurrent.length + 1
-              : _viewModel!.listCurrent.length,
-          itemBuilder: (context, index) {
-            if (index < _viewModel!.listCurrent.length) {
-              return invoiceUser(index);
-            } else {
-              return const CupertinoActivityIndicator();
-            }
-          },
-        ),
-      ),
-    );
+    return _viewModel!.listCurrent.isEmpty
+        ? Padding(
+            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+            child: EmptyDataWidget(
+                title: 'Hóa đơn trống',
+                content: 'Hiện tại bạn chưa có hóa đơn nào.'),
+          )
+        : RefreshIndicator(
+            color: AppColors.PRIMARY_GREEN,
+            onRefresh: () async {
+              await _viewModel!.pullRefresh();
+            },
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 250,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: const AlwaysScrollableScrollPhysics(),
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    return invoiceUser(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              ),
+            ),
+          );
   }
 
   Widget buildBody() {

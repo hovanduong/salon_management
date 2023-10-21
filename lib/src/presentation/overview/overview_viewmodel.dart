@@ -300,7 +300,7 @@ class OverViewViewModel extends BaseViewModel {
   }
 
   void setDateStartEnd(String date) {
-    final endDay= AppCheckDate.addDate(date);
+    final endDay = AppCheckDate.addDate(date);
     dayStart = date.contains('-')
         ? AppCheckDate.addDate(date.split('-')[0].trim())
         : AppCheckDate.subtractDate(endDay);

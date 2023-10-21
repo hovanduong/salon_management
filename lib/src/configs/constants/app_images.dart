@@ -104,4 +104,6 @@ class AppImages {
   static const String icLocation = 'assets/icons/icLocation.svg';
 
   static const String icInvoice = 'assets/icons/invoice_ic.svg';
+
+  static const String icEmpty = 'assets/icons/empty.svg';
 }
