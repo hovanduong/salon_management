@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -25,9 +26,10 @@ class _OverViewScreenState extends State<OverViewScreen>
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarIconBrightness: Brightness.light, // Màu chữ trắng
-    // ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.light,
+    );
+
     return BaseWidget(
       viewModel: OverViewViewModel(),
       onViewModelReady: (viewModel) =>
