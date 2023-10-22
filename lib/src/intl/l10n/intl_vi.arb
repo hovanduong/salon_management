@@ -201,7 +201,7 @@
     "nameService": "Tên dịch vụ",
     "account": "Tài khoản",
     "appointmentNumber": "Số lịch hẹn",
-    "appointmentCanceled": "Số lịch hẹn đã hủy",
+    "appointmentCanceled": "Lịch hẹn đã hủy",
     "newClient": "Khách hàng mới",
     "customer":"Khách hàng",
     "searchPhone":"Tìm kiếm theo tên và số điện thoại",

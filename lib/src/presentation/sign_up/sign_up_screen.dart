@@ -46,10 +46,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Paragraph(
-            content: SignUpLanguage.welcomeBack,
-            style: STYLE_MEDIUM,
-          ),
+          // Paragraph(
+          //   content: SignUpLanguage.welcomeBack,
+          //   style: STYLE_MEDIUM,
+          // ),
           SizedBox(height: SizeToPadding.sizeVerySmall),
           Paragraph(
             content: SignUpLanguage.pleaseSignUp,
