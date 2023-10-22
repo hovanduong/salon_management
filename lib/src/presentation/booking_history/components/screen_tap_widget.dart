@@ -18,8 +18,8 @@ class ScreenTap extends StatelessWidget {
     this.scrollController,
     this.isLoadMore = false,
     this.isButton = false,
-    this.isLoading=false,
-    this.isPullRefresh=false,
+    this.isLoading = false,
+    this.isPullRefresh = false,
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
@@ -53,59 +53,62 @@ class ScreenTap extends StatelessWidget {
       onRefresh: () async {
         await onRefresh!();
       },
-      child:  listCurrent!.isEmpty && !isLoading && !isPullRefresh
-      ? Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-        child: EmptyDataWidget(
-          title: titleEmpty?? HistoryLanguage.emptyAppointment,
-          content: contentEmpty?? HistoryLanguage.notificationEmptyAppointment,
-        ),
-      )
-      :   ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        controller: scrollController,
-        itemCount: isLoadMore ? listCurrent!.length + 1 : listCurrent!.length,
-        itemBuilder: (context, index) {
-          if (index < listCurrent!.length) {
-            final phone = listCurrent![index].myCustomer?.phoneNumber;
-            final date = listCurrent![index].date;
-            final id = listCurrent![index].id;
-            return NotificationService(
-              context: context,
-              onPay: () => onPay!(id!),
-              onTapEditBooking: () => onTapEditBooking!(listCurrent![index]),
-              onTapDeleteBooking: () => onTapDeleteBooking!(id!),
-              onTapCard: () => onTapCard!(id!),
-              isButton: isButton,
-              date: date != null
-                  ? AppDateUtils.splitHourDate(
-                      AppDateUtils.formatDateLocal(
-                        date,
-                      ),
-                    )
-                  : '',
-              total: AppCurrencyFormat.formatMoneyVND(
-                listCurrent?[index].total ?? 0,
+      child: listCurrent!.isEmpty && !isLoading && !isPullRefresh
+          ? Padding(
+              padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+              child: EmptyDataWidget(
+                title: titleEmpty ?? HistoryLanguage.emptyAppointment,
+                content: contentEmpty ??
+                    HistoryLanguage.notificationEmptyAppointment,
               ),
-              nameUser: listCurrent![index].myCustomer?.fullName,
-              phoneNumber: phone,
-              onTapPhone: () => onTapPhone!(phone!),
-              widget: widget ??
-                SelectStatusWidget(
-                  status: listCurrent![index].status,
-                  onChanged: (value) {
-                    if (value.contains(HistoryLanguage.cancel)) {
-                      onChangedStatus!(value, id!);
-                    }
-                  },
-                ),
-            );
-          } else {
-            return const CupertinoActivityIndicator();
-          }
-        },
-      ),
+            )
+          : ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              controller: scrollController,
+              itemCount:
+                  isLoadMore ? listCurrent!.length + 1 : listCurrent!.length,
+              itemBuilder: (context, index) {
+                if (index < listCurrent!.length) {
+                  final phone = listCurrent![index].myCustomer?.phoneNumber;
+                  final date = listCurrent![index].date;
+                  final id = listCurrent![index].id;
+                  return NotificationService(
+                    context: context,
+                    onPay: () => onPay!(id!),
+                    onTapEditBooking: () =>
+                        onTapEditBooking!(listCurrent![index]),
+                    onTapDeleteBooking: () => onTapDeleteBooking!(id!),
+                    onTapCard: () => onTapCard!(id!),
+                    isButton: isButton,
+                    date: date != null
+                        ? AppDateUtils.splitHourDate(
+                            AppDateUtils.formatDateLocal(
+                              date,
+                            ),
+                          )
+                        : '',
+                    total: AppCurrencyFormat.formatMoneyVND(
+                      listCurrent?[index].total ?? 0,
+                    ),
+                    nameUser: listCurrent![index].myCustomer?.fullName,
+                    phoneNumber: phone,
+                    onTapPhone: () => onTapPhone!(phone!),
+                    widget: widget ??
+                        SelectStatusWidget(
+                          status: listCurrent![index].status,
+                          onChanged: (value) {
+                            if (value.contains(HistoryLanguage.cancel)) {
+                              onChangedStatus!(value, id!);
+                            }
+                          },
+                        ),
+                  );
+                } else {
+                  return const CupertinoActivityIndicator();
+                }
+              },
+            ),
     );
   }
 }
