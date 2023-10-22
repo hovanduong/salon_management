@@ -249,5 +249,18 @@
     "createAppointment":"Tạo Lịch hẹn",
     "deleteAccount":"Xóa tài khoản",
     "changePass":"Đổi mật khẩu",
+    "notificationChangePass":"Vui lòng nhập đầy đủ thông tin dưới đây để đổi mật khẩu mới",
+    "oldPass":"Mật khẩu cũ",
+    "newPass":"Mật khẩu mới",
+    "changePassSuccess":"Đổi mật mới khẩu thành công",
+    "oldPassWrong":"Mật khẩu cũ không chính xác. Vui lòng kiểm tra lại mật khẩu của bạn",
+    "changePassFail":"Đổi mật khẩu thất bại",
+    "validChangePass":"Mật khẩu mới không được trùng với mật khẩu cũ",
+    "deleteAccountSuccess":"Xóa tài khoản thành công",
+    "deleteAccountFail":"Xóa tài khoản thất bại, vui lòng thử lại sau.",
+    "contact":"Liên Hệ",
+    "waningDeleteAccount":"Bạn có muốn xóa tài khoản không?",
+    "notifiCheckPhone":"Vui lòng nhập số điện thoại của bạn để xác nhận",
+    "confirmDeleteAccount":"Xác nhận xóa tài khoản",
     "lastLine": ""
 }

@@ -7,5 +7,6 @@ class MyCustomerLanguage {
   static final waningDeleteCustomer = S.current.waningDeleteCustomer;
   static final emptyCustomer = S.current.emptyCustomer;
   static final notificationEmptyCustomer = S.current.notificationEmptyCustomer;
+  static final errorNetwork= S.current.errorNetwork;
   
 }

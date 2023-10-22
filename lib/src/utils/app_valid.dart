@@ -91,6 +91,13 @@ class AppValid {
     return null;
   }
 
+  static String? validateChangePass(String passOld, String? passNew) {
+    if (passOld == passNew) {
+      return S.current.validChangePass;
+    }
+    return null;
+  }
+
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return S.current.validEnterEmail;

@@ -17,5 +17,6 @@ class CategoryLanguage {
   static final confirm = S.current.confirm;
   static final emptyCategory = S.current.emptyCategory;
   static final notificationEmptyCategory = S.current.notificationEmptyCategory;
+  static final errorNetwork= S.current.errorNetwork;
 
 }

@@ -138,8 +138,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget buildFieldPass() {
     return AppFormField(
-      labelText: CreatePasswordLanguage.password,
-      hintText: CreatePasswordLanguage.enterPassword,
+      labelText: ChangePasswordLanguage.password,
+      hintText: ChangePasswordLanguage.enterPassword,
       textEditingController: _viewModel!.passController,
       obscureText: true,
       onChanged: (value) {
@@ -153,8 +153,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget buildFieldConfirmPass() {
     return AppFormField(
-      labelText: CreatePasswordLanguage.enterConfirmPass,
-      hintText: CreatePasswordLanguage.confirmPass,
+      labelText: ChangePasswordLanguage.enterConfirmPass,
+      hintText: ChangePasswordLanguage.confirmPass,
       textEditingController: _viewModel!.confirmPassController,
       obscureText: true,
       onChanged: (value) {

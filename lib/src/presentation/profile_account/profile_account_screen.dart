@@ -152,7 +152,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
         ],
       ),
       child: ListTile(
-        onTap: () {},
+        onTap: () => _viewModel!.gotoChangePass(),
         leading: const CircleAvatar(
           backgroundColor: AppColors.BLACK_500,
           radius: 12,
@@ -237,12 +237,12 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
       context: context,
       builder: (context) {
         return WarningDialog(
-          content: 'Vui lòng nhập số điện thoại của bạn để xác nhận',
-          title: 'Xác nhận xóa tài khoản',
-          leftButtonName: 'Hủy bỏ',
+          content: ProfileAccountLanguage.notifiCheckPhone,
+          title: ProfileAccountLanguage.confirmDeleteAccount,
+          leftButtonName: ProfileAccountLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: 'Xác nhận',
+          rightButtonName: ProfileAccountLanguage.confirm,
           controller: _viewModel!.phoneController,
           isForm: true,
           onTapLeft: () {
@@ -261,13 +261,13 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
       context: context,
       builder: (context) {
         return WarningDialog(
-          content: 'Bạn có muốn xóa tài khoản không?',
+          content: ProfileAccountLanguage.waningDeleteAccount,
           image: AppImages.icPlus,
-          title: 'Thông báo',
-          leftButtonName: 'Hủy bỏ',
+          title: ProfileAccountLanguage.notification,
+          leftButtonName: ProfileAccountLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: 'Xác nhận',
+          rightButtonName: ProfileAccountLanguage.confirm,
           onTapLeft: () {
             Navigator.pop(context, false);
           },

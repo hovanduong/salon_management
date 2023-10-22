@@ -25,7 +25,10 @@ class ProfileAccountViewModel extends BaseViewModel {
     await setDataUser();
   }
 
-  Future<void> setDataUser() async {
+  Future<void> gotoChangePass() 
+    => Navigator.pushNamed(context,Routers.changePassword,);
+
+  Future<void> setDataUser()async{
     userModel = UserModel(
       email: await AppPref.getDataUSer('email') ?? '',
       fullName: await AppPref.getDataUSer('fullName') ?? '',
@@ -41,13 +44,13 @@ class ProfileAccountViewModel extends BaseViewModel {
       context: context,
       builder: (context) {
         return WarningDialog(
-          content: 'Xóa tài khoản thất bại, vui lòng thử lại sau.',
+          content: ProfileAccountLanguage.accountInfo,
           image: AppImages.icPlus,
-          title: 'Thông báo',
-          leftButtonName: 'Hủy bỏ',
+          title: ProfileAccountLanguage.notification,
+          leftButtonName: ProfileAccountLanguage.close,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: 'Liên Hệ',
+          rightButtonName: ProfileAccountLanguage.contact,
           onTapLeft: () {
             Navigator.pop(context);
           },
@@ -71,9 +74,9 @@ class ProfileAccountViewModel extends BaseViewModel {
     showDialog(
       context: context,
       builder: (context) {
-        return const WarningOneDialog(
+        return WarningOneDialog(
           image: AppImages.icCheck,
-          title: 'Xóa tài khoản thành công',
+          title: ProfileAccountLanguage.deleteAccountSuccess,
         );
       },
     );

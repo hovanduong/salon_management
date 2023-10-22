@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/auth_model.dart';
@@ -16,10 +17,12 @@ class AuthParams {
     this.gender,
     this.email,
     this.passwordConfirm,
+    this.oldPass,
   });
   final UserModel? userModel;
   final String? phoneNumber;
   final String? password;
+  final String? oldPass;
   final String? fullName;
   final String? gender;
   final String? email;
@@ -86,6 +89,33 @@ class AuthApi {
           return Failure(Exception(response!.reasonPhrase));
       }
     } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, AppException>> changePassword(
+    AuthParams params,
+  ) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/auth/change-pass',
+        body: {
+          'oldPassword': params.oldPass,
+          'newPassword': params.password,
+        },
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        case 400:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['code']);
+          return Failure(AppException(data));
+        default:
+          return Failure(AppException(response!.reasonPhrase!));
+      }
+    } on AppException catch (e) {
       return Failure(e);
     }
   }

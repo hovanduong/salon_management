@@ -16,4 +16,5 @@ class MyCustomerAddLanguage {
   static final home = S.current.home;
   static final tryAgain = S.current.tryAgain;
   static final addCustomerFailed = S.current.addCustomerFailed;
+  static final errorNetwork= S.current.errorNetwork;
 }

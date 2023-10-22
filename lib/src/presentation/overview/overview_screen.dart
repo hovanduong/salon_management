@@ -92,7 +92,6 @@ class _OverViewScreenState extends State<OverViewScreen>
       child: TabBar(
         controller: _viewModel!.tabController,
         onTap: (value) {
-          print(value);
           _viewModel!.setDataPage(value);
         },
         tabs: [
