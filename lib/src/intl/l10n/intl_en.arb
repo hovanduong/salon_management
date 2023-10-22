@@ -247,5 +247,7 @@
     "contentLogout":"Log out of your account?",
     "logout":"Logout",
     "createAppointment":"Create appointment schedule",
+    "deleteAccount":"Delete the account",
+    "changePass":"Change Password",
     "lastLine": ""
 }

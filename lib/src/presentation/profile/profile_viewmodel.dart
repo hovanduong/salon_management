@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/profile_language.dart';
-import '../../resource/model/auth_model.dart';
 import '../../resource/model/model.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/http_remote.dart';
@@ -27,6 +25,9 @@ class ProfileViewModel extends BaseViewModel {
     );
     notifyListeners();
   }
+
+  Future<void> goToProfileAccount(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.profileAccount);
 
   Future<void> goToCategory(BuildContext context) =>
       Navigator.pushNamed(context, Routers.category);

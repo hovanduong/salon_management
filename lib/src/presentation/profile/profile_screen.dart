@@ -1,7 +1,6 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -90,6 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SettingProfileListWidget(
       image: AppImages.icPerson,
       title: ProfileLanguage.accountInfo,
+      onTap: () => _viewModel!.goToProfileAccount(context),
     );
   }
 
@@ -177,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: STYLE_BIG.copyWith(
                 color: AppColors.COLOR_WHITE,
                 fontWeight: FontWeight.w700,
-                fontSize: 16),
+                fontSize: 16,),
           ),
         ],
       ),

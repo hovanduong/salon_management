@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../resource/model/user_model.dart';
 import 'app/splash.dart';
-import 'payment_bill/bill_payment_screen.dart';
 import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
@@ -10,10 +9,12 @@ import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'create_password/create_password.dart';
 import 'invoice/invoice_screen.dart';
-import 'my_customer_edit/my_customer_edit_screen.dart';
 import 'my_customer/my_customer.dart';
 import 'my_customer_add/my_customer_add_screen.dart';
+import 'my_customer_edit/my_customer_edit_screen.dart';
 import 'payment/payment.dart';
+import 'payment_bill/bill_payment_screen.dart';
+import 'profile_account/profile_account.dart';
 import 'service_add/service_add.dart';
 import 'sign_in/sign_in.dart';
 import 'sign_up/sign_up_screen.dart';
@@ -60,6 +61,7 @@ class Routers {
   static const String invoice = '/invoice';
   static const String payment = '/payment';
   static const String bill = '/bill';
+  static const String profileAccount = '/profileAccount';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -81,6 +83,14 @@ class Routers {
           arguments: arguments,
         );
 
+      case profileAccount:
+        return animRoute(
+          const ProfileAccountScreen(),
+          beginOffset: right,
+          name: profileAccount,
+          arguments: arguments,
+        );
+      
       case bill:
         return animRoute(
           const BillPaymentScreen(),

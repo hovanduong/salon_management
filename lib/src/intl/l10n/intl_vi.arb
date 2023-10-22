@@ -247,5 +247,7 @@
     "contentLogout":"Đăng xuất tài khoản?",
     "logout":"Đăng xuất",
     "createAppointment":"Tạo Lịch hẹn",
+    "deleteAccount":"Xóa tài khoản",
+    "changePass":"Đổi mật khẩu",
     "lastLine": ""
 }
