@@ -71,7 +71,9 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeLarge),
       child: CustomerAppBar(
         onTap: () => Navigator.pop(context),
-        title: _viewModel!.listMyBooking[index].code !=null 
+        title: _viewModel!.dataMyBooking!.isInvoice ?
+          '#${_viewModel!.dataMyBooking?.code ?? ''}'
+        : _viewModel!.listMyBooking[index].code !=null 
         ? '#${_viewModel!.listMyBooking[index].code}' : '',
       ),
     );
@@ -150,7 +152,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         title: BookingDetailsLanguage.total,
         content: AppCurrencyFormat.formatMoneyVND(
             _viewModel!.listMyBooking[index].total ?? 0,),
-        color: AppColors.PRIMARY_GREEN,
+        color: AppColors.Green_Money,
         isSpaceBetween: true,
         fontWeightContent: FontWeight.bold,
       ),
@@ -205,7 +207,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     final note = _viewModel!.listMyBooking[index].note;
     return note != 'Trống'
         ? Padding(
-            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+            padding: EdgeInsets.only(top: SizeToPadding.sizeSmall,
+              bottom: SizeToPadding.sizeBig*2,),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -237,7 +240,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           title: titleService,
           fontWeightTitle: FontWeight.w500,
           isSpaceBetween: true,
-          color: AppColors.PRIMARY_GREEN,
+          color: AppColors.Green_Money,
           fontWeightContent: FontWeight.bold,
         ),
       ],

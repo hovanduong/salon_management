@@ -1,4 +1,4 @@
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: lines_longer_than_80_chars, cast_nullable_to_non_nullable
 
 import 'dart:async';
 
@@ -18,7 +18,6 @@ import '../../resource/service/my_customer_api.dart';
 import '../../resource/service/my_service_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
-import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
@@ -49,6 +48,7 @@ class PaymentViewModel extends BaseViewModel {
   DateTime dateTime = DateTime.now();
 
   MyBookingModel? dataMyBooking;
+  MyCustomerModel? myCustomerModel;
 
   Map<int, String> mapService = {};
   Map<int, String> mapPhone = {};
@@ -73,6 +73,7 @@ class PaymentViewModel extends BaseViewModel {
   bool onDiscount = true;
   bool isListViewVisible = false;
   bool enableButton = false;
+  bool isLoading=false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -122,8 +123,21 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> goToAddMyCustomer(BuildContext context)
-    => Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true);
+  Future<void> goToAddMyCustomer(BuildContext context) async {
+    myCustomerModel= 
+      await Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true)
+      as MyCustomerModel?;
+    await setDataCustomer();
+  }
+
+  Future<void> setDataCustomer() async{
+    nameController.text=myCustomerModel!.fullName ?? '';
+    phoneController.text=myCustomerModel!.phoneNumber ?? '';
+    await fetchCustomer();
+    myCustomerId= myCustomer.where((element) => 
+      element.phoneNumber==myCustomerModel!.phoneNumber,).first.id;
+    notifyListeners();
+  }
 
   Future<void> goToBookingDetails(BuildContext context, MyBookingParams model) 
     => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
@@ -196,9 +210,15 @@ class PaymentViewModel extends BaseViewModel {
   Future<void> initMapCustomer() async {
     myCustomer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}'},
+        {element.id!: '${element.phoneNumber}/${element.fullName}'},
       );
     });
+    isLoading=false;
+    notifyListeners();
+  }
+
+  Future<void> setLoading()async{
+    isLoading=true;
     notifyListeners();
   }
 

@@ -1,6 +1,7 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../configs/constants/app_space.dart';
 import '../base/base.dart';
@@ -34,12 +35,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Widget buildStatisticsScreen() {
     return SafeArea(
-      top: true,
-      right: false,
-      left: false,
-      bottom: false,
-      child: Scaffold(
-        body: Column(
+        top: true,
+        right: false,
+        left: false,
+        bottom: false,
+        child: Column(
           children: [
             buildHeaderWidget(),
             Expanded(
@@ -53,9 +53,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 
   Widget buildBalanceWidget() {

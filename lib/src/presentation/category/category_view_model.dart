@@ -52,7 +52,8 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> onSearchCategory(String value) async {
-    final searchCategory = TiengViet.parse(value.toLowerCase());
+    // final searchCategory = TiengViet.parse(value.toLowerCase());
+    final searchCategory= value;
     await getListSearch(searchCategory);
     notifyListeners();
     notifyListeners();
@@ -132,7 +133,7 @@ class CategoryViewModel extends BaseViewModel {
           onTapLeft: () {
             Navigator.pop(context);
           },
-          rightButtonName: CategoryLanguage.yes,
+          rightButtonName: CategoryLanguage.confirm,
           onTapRight: () async {
             await onTapRight!();
             Navigator.pop(context);

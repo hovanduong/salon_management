@@ -18,6 +18,16 @@ final class AppPref {
     return pref.setString(Constants.accessToken, value);
   }
 
+  static Future<bool> setDataUser(String nameSave, String value,) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.setString(nameSave, value);
+  }
+
+  static Future<String?>? getDataUSer(String nameSave) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getString(nameSave);
+  }
+
   static Future<bool> deleteToken() async {
     final pref = await SharedPreferences.getInstance();
     return pref.remove(Constants.accessToken);

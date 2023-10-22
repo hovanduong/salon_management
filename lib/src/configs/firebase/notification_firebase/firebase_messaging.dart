@@ -33,7 +33,6 @@ class FirebaseCloudMessaging {
   }
 
   static dynamic _handler(RemoteMessage message, {bool show = false}) {
-    print('a');
     if (show) {
       LocalNotification.showNotification(
         message.notification?.title,

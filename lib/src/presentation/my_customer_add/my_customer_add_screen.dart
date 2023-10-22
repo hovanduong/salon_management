@@ -16,31 +16,32 @@ class MyCustomerAddScreen extends StatefulWidget {
 }
 
 class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
-
   MyCustomerAddViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
-    final isPayment= ModalRoute.of(context)?.settings.arguments;
+    final isPayment = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
-      viewModel: MyCustomerAddViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel= 
-        viewModel?..init(isPayment is bool),
+      viewModel: MyCustomerAddViewModel(),
+      onViewModelReady: (viewModel) =>
+          _viewModel = viewModel?..init(isPayment is bool),
       builder: (context, viewModel, child) => buildMyCustomerAddScreen(),
     );
   }
 
-  Widget buildAppBar(){
+  Widget buildAppBar() {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVerySmall,
-        vertical: Size.sizeMedium,
+        vertical: Size.sizeMedium * 2,
       ),
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
-            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+            Icons.arrow_back_ios_new,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
         title: Paragraph(
           content: MyCustomerAddLanguage.addMyCustomer,
@@ -56,7 +57,7 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
     return const CustomBackGround();
   }
 
-  Widget buildFieldPhone(){
+  Widget buildFieldPhone() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
@@ -68,51 +69,57 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
         textEditingController: _viewModel!.phoneController,
         hintText: MyCustomerAddLanguage.enterPhoneNumber,
         onChanged: (value) {
-          _viewModel!..validPhone(value)
-          ..onSubmit();
+          _viewModel!
+            ..validPhone(value)
+            ..onSubmit();
         },
         validator: _viewModel!.messageErrorPhone,
-        isSpace: true, 
+        isSpace: true,
       ),
     );
   }
 
-  Widget buildFieldName(){
+  Widget buildFieldName() {
     return AppFormField(
       labelText: MyCustomerAddLanguage.name,
       textEditingController: _viewModel!.nameController,
       hintText: MyCustomerAddLanguage.enterName,
       onChanged: (value) {
-        _viewModel!..validName(value)
-        ..onSubmit();
+        _viewModel!
+          ..validName(value.trim())
+          ..onSubmit();
       },
       validator: _viewModel!.messageErrorName,
-      isSpace: true, 
+      isSpace: true,
     );
   }
 
-  Widget buildButtonApp(){
+  Widget buildButtonApp() {
     return AppButton(
       enableButton: _viewModel!.enableSubmit,
       content: MyCustomerAddLanguage.submit,
-      onTap: () {
-        _viewModel!.postMyCustomer();
+      onTap: () async {
+        await _viewModel!.postMyCustomer();
       },
     );
   }
 
-  Widget buildCardField(){
+  Widget buildCardField() {
     return Positioned(
       top: 150,
       child: Container(
-        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
+        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig * 2,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,),
+              color: AppColors.BLACK_400,
+              blurRadius: SpaceBox.sizeVerySmall,
+            ),
           ],
           color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
+          borderRadius: BorderRadius.all(
+            Radius.circular(SpaceBox.sizeLarge),
+          ),
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
@@ -129,21 +136,19 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
     );
   }
 
-  Widget buildMyCustomerAddScreen(){
+  Widget buildMyCustomerAddScreen() {
     return SingleChildScrollView(
-      child: SafeArea(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            const SizedBox(
-              width: double.maxFinite,
-              height: double.maxFinite,
-            ),
-            background(),
-            buildAppBar(),
-            buildCardField(),
-          ],
-        ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          const SizedBox(
+            width: double.maxFinite,
+            height: double.maxFinite,
+          ),
+          background(),
+          buildAppBar(),
+          buildCardField(),
+        ],
       ),
     );
   }

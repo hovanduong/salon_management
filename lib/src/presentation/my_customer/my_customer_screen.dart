@@ -1,5 +1,7 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,10 +31,10 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
       builder: (context, viewModel, child) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
+            statusBarColor: AppColors.PRIMARY_GREEN,
             systemNavigationBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarIconBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.light,
+            systemNavigationBarIconBrightness: Brightness.light,
           ),
           child: buildCustomerScreen(),
         );
@@ -71,16 +73,20 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
 
   Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
-        ],
-      ),
+      color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.all(SizeToPadding.sizeSmall),
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 40 : 60,
+          bottom: 10,
+          left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
+        ),
         child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.COLOR_WHITE,
+          ),
           onTap: () {
             Navigator.pop(context);
           },
@@ -131,12 +137,24 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: Container(
+      child: _viewModel!.listMyCustomer.isEmpty && !_viewModel!.isLoading
+      ? SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+          child: EmptyDataWidget(
+            title: MyCustomerLanguage.emptyCustomer,
+            content: MyCustomerLanguage.notificationEmptyCustomer,
+          ),
+        ),
+      ): Container(
         margin: EdgeInsets.only(
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeVerySmall,
         ),
         child: ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
               ? _viewModel!.listMyCustomer.length + 1
@@ -155,48 +173,35 @@ class _MyCustomerScreenState extends State<MyCustomerScreen> {
 
   Widget buildBody() {
     return Expanded(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.BLACK_200,
-              blurRadius: SpaceBox.sizeBig,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            buildSearch(),
-            Expanded(child: showListCustomer()),
-          ],
-        ),
+      child: Column(
+        children: [
+          buildSearch(),
+          Expanded(child: showListCustomer()),
+        ],
       ),
     );
   }
 
   Widget buildMyCustomer() {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            buildHeader(),
-            buildBody(),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingButtonWidget(
-              heroTag: 'btn',
-              iconData: Icons.add,
-              onPressed: () {
-                _viewModel!.goToAddMyCustomer(context);
-              },
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: Column(
+        children: [
+          buildHeader(),
+          buildBody(),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingButtonWidget(
+            heroTag: 'btn',
+            iconData: Icons.add,
+            onPressed: () {
+              _viewModel!.goToAddMyCustomer(context);
+            },
+          ),
+        ],
       ),
     );
   }

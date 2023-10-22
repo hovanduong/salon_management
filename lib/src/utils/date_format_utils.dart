@@ -69,4 +69,17 @@ class AppDateUtils {
       return DateFormat('dd-MM-yyyy').parse(DateTime.now().toString());
     }
   }
+
+  static String formatDateTT(String time) {
+    final inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+
+    // Định dạng ngày giờ đầu ra
+    final outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    // Chuyển đổi từ định dạng đầu vào sang định dạng đầu ra
+    final dateTime = inputFormat.parse(time);
+    final result = outputFormat.format(dateTime);
+
+    return result;
+  }
 }

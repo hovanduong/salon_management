@@ -13,7 +13,7 @@ class CustomBackGround extends StatelessWidget {
       clipper: CustomClipPath(),
       child: Container(
         width: double.maxFinite,
-        height: MediaQuery.of(context).size.height/3,
+        height: MediaQuery.of(context).size.height / 3,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -35,7 +35,11 @@ class CustomClipPath extends CustomClipper<Path> {
     final filledRectangle =
         Rect.fromLTRB(0, 0, size.width, size.height - roundingHeight);
     final roundingRectangle = Rect.fromLTRB(
-        0, size.height - roundingHeight * 2, size.width , size.height,);
+      0,
+      size.height - roundingHeight * 2,
+      size.width,
+      size.height,
+    );
 
     final path = Path();
     path.addRect(filledRectangle);

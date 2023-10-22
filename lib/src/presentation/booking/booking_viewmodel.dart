@@ -1,7 +1,6 @@
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +44,6 @@ class BookingViewModel extends BaseViewModel {
   DateTime dateTime = DateTime.now();
   // DateTime dateTime = DateTime.now();
 
-
   MyBookingModel? dataMyBooking;
 
   Map<int, String> mapService = {};
@@ -71,6 +69,7 @@ class BookingViewModel extends BaseViewModel {
   bool onDiscount = true;
   bool isListViewVisible = false;
   bool enableButton = false;
+  bool isLoading=false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -111,9 +110,11 @@ class BookingViewModel extends BaseViewModel {
       addressController.text = dataMyBooking!.address!;
       noteController.text =
           dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
-      dateTime= DateTime.parse(AppDateUtils.formatDateLocal(
+      dateTime = DateTime.parse(
+        AppDateUtils.formatDateLocal(
           dataMyBooking!.date!,
-        ),);
+        ),
+      );
       setSelectedService();
       await setServiceId();
       await fetchService();
@@ -126,11 +127,13 @@ class BookingViewModel extends BaseViewModel {
   void setSelectedService() {
     if (dataMyBooking!.myServices!.isNotEmpty) {
       dataMyBooking?.myServices!.forEach((service) {
-        selectedService.add(RadioModel(
-          isSelected: true,
-          id: service.id,
-          name: '${service.name}/${currencyFormatter.format(service.money)}',
-        ),);
+        selectedService.add(
+          RadioModel(
+            isSelected: true,
+            id: service.id,
+            name: '${service.name}/${currencyFormatter.format(service.money)}',
+          ),
+        );
       });
     }
   }
@@ -167,6 +170,11 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void setLoading(bool loading){
+    isLoading=loading;
+    notifyListeners();
+  }
+
   Future<void> changeValueService(List<RadioModel> value) async {
     selectedService.clear();
     selectedService = value;
@@ -191,9 +199,10 @@ class BookingViewModel extends BaseViewModel {
   Future<void> initMapCustomer() async {
     myCustomer.forEach((element) {
       mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}'},
+        {element.id!: '${element.phoneNumber}/${element.fullName}'},
       );
     });
+    isLoading=false;
     notifyListeners();
   }
 
@@ -216,7 +225,7 @@ class BookingViewModel extends BaseViewModel {
         .first
         .fullName
         .toString();
-        
+
     myCustomerId = value.key;
 
     notifyListeners();
@@ -327,14 +336,13 @@ class BookingViewModel extends BaseViewModel {
         arguments: 2,
       );
 
-  dynamic showDialogSuccess(_) {
+  dynamic showDialogSuccess(_, String title) {
     showDialog(
       context: context,
       builder: (_) {
         return WarningDialog(
-          content: BookingLanguage.bookingSuccessful,
           image: AppImages.icCheck,
-          title: SignUpLanguage.success,
+          title: title,
           leftButtonName: SignUpLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
@@ -386,14 +394,16 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.postBooking(MyBookingPramsApi(
-      myCustomerId: myCustomerId,
-      myServices: serviceId,
-      address: addressController.text.trim(),
-      date: dateTime.toString().trim(),
-      isBooking: true,
-      note: noteController.text == '' ? 'Trống' : noteController.text,
-    ),);
+    final result = await bookingApi.postBooking(
+      MyBookingPramsApi(
+        myCustomerId: myCustomerId,
+        myServices: serviceId,
+        address: addressController.text.trim(),
+        date: dateTime.toString().trim(),
+        isBooking: true,
+        note: noteController.text == '' ? 'Trống' : noteController.text,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -409,22 +419,25 @@ class BookingViewModel extends BaseViewModel {
     } else {
       LoadingDialog.hideLoadingDialog(context);
       clearData();
-      await showDialogSuccess(context);
+      await showDialogSuccess(context, BookingLanguage.bookingSuccess);
     }
     notifyListeners();
   }
 
   Future<void> putBooking() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.putBooking(MyBookingPramsApi(
-      id: dataMyBooking!.id,
-      myServices: serviceId,
-      address: addressController.text.trim(),
-      date: dateTime.toString().trim(),
-      discount: double.parse(
-          discountController.text.isEmpty ? '0' : discountController.text,),
-      note: noteController.text == '' ? 'Trống' : noteController.text,
-    ),);
+    final result = await bookingApi.putBooking(
+      MyBookingPramsApi(
+        id: dataMyBooking!.id,
+        myServices: serviceId,
+        address: addressController.text.trim(),
+        date: dateTime.toString().trim(),
+        discount: double.parse(
+          discountController.text.isEmpty ? '0' : discountController.text,
+        ),
+        note: noteController.text == '' ? 'Trống' : noteController.text,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -439,7 +452,7 @@ class BookingViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      await showDialogSuccess(context);
+      await showDialogSuccess(context, BookingLanguage.updateBookingSuccess);
     }
     notifyListeners();
   }
@@ -447,6 +460,9 @@ class BookingViewModel extends BaseViewModel {
   @override
   void dispose() {
     phoneController.dispose();
+    nameController.dispose();
+    addressController.dispose();
+    noteController.dispose();
     super.dispose();
   }
 }

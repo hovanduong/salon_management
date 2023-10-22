@@ -3,21 +3,26 @@ import 'package:flutter/material.dart';
 import '../../../resource/model/radio_model.dart';
 import '../../configs.dart';
 import '../../constants/app_space.dart';
+import '../../language/category_language.dart';
 
 class BottomSheetSingleRadio extends StatefulWidget {
   const BottomSheetSingleRadio({
     required this.listItems,
     Key? key,
     this.titleContent = '',
-    this.titleButton = 'Hoàn thành',
+    this.titleButton,
     this.onTapSubmit,
     this.initValues,
-    this.isSecondText = true,
+    this.isSecondText = true, 
+    this.titleEmpty, 
+    this.contentEmpty,
     // this.onSearch,
   }) : super(key: key);
 
   final String? titleContent;
   final String? titleButton;
+  final String? titleEmpty;
+  final String? contentEmpty;
   final Map<dynamic, dynamic> listItems;
   // final List<CategoryModel> listItems;
   final List<int>? initValues;
@@ -38,7 +43,6 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
   @override
   void initState() {
     super.initState();
-    print('value selected: ${widget.initValues}');
     if (widget.initValues != null) {
       widget.listItems.entries.forEach((e) {
         if (widget.initValues!.contains(e.key)) {
@@ -123,7 +127,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
                 //     ? AppColors.PRIMARY_PINK
                 // : AppColors.BLACK_300,
               ),
-              hintText: 'Tìm kiếm',
+              hintText: CategoryLanguage.search,
               onChanged: (value) {
                 // widget.onSearch!(value);
                 onSearchCategory(value);
@@ -138,8 +142,13 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
           ),
           Expanded(
             child: foundCategory.isEmpty
-                ? const Center(
-                    child: Paragraph(content: 'Không tìm thấy dữ liệu'))
+                ? Padding(
+                  padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
+                  child: EmptyDataWidget(
+                    title: widget.titleEmpty ?? '',
+                    content: widget.contentEmpty ?? '',
+                  ),
+                )
                 : ListView.builder(
                     itemCount: foundCategory.length,
                     itemBuilder: (context, i) {
@@ -170,7 +179,7 @@ class _BottomSheetSingleRadioState extends State<BottomSheetSingleRadio> {
           Padding(
             padding: EdgeInsets.all(SizeToPadding.sizeMedium),
             child: AppButton(
-              content: widget.titleButton,
+              content: widget.titleButton ?? CategoryLanguage.confirm,
               enableButton: enableButton,
               onTap: () {
                 listRadioData.forEach((i) {

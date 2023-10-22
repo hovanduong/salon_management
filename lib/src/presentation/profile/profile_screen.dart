@@ -39,22 +39,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         horizontal: SizeToPadding.sizeVeryBig,
         vertical: SizeToPadding.sizeVeryBig,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(
-            Icons.chevron_left,
-            size: Size.sizeMedium,
+      child: Center(
+        child: Paragraph(
+          content: ProfileLanguage.profile,
+          style: STYLE_BIG.copyWith(
+            fontWeight: FontWeight.w600,
             color: AppColors.COLOR_WHITE,
           ),
-          Paragraph(
-            content: ProfileLanguage.profile,
-            style: STYLE_LARGE_BOLD.copyWith(
-              color: AppColors.COLOR_WHITE,
-            ),
-          ),
-          SvgPicture.asset(AppImages.icBellWhite),
-        ],
+        ),
       ),
     );
   }
@@ -62,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildAvatarWidget() {
     return Positioned(
       top: 200,
-      left: 140,
+      left: MediaQuery.sizeOf(context).width / 3.1,
       child: Container(
         width: 140,
         height: 140,
@@ -156,41 +148,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildLogoutWidget() {
     return SettingProfileListWidget(
       image: AppImages.icSecurity,
-      title: 'Logout',
+      title: ProfileLanguage.logout,
       onTap: () async {
-        await _viewModel!.logOut();
+        await _viewModel!.showLogOutPopup();
       },
     );
   }
 
-  Widget buildProfile() {
-    return SafeArea(
-      top: true,
-      bottom: false,
-      right: false,
-      left: false,
-      child: SingleChildScrollView(
+  Widget buildInfoUSer() {
+    return Positioned(
+      top: 100,
+      left: 0,
+      right: 0,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: SpaceBox.sizeSmall),
+            child: Paragraph(
+              content: _viewModel!.userModel?.fullName,
+              style: STYLE_BIG.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          Paragraph(
+            content: _viewModel!.userModel?.phoneNumber,
+            style: STYLE_BIG.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w700,
+                fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildBody() {
+    return Positioned(
+      top: 240,
+      left: 0,
+      right: 0,
+      child: Container(
+        padding: EdgeInsets.only(
+          top: SizeToPadding.sizeBig,
+        ),
+        height: MediaQuery.sizeOf(context).height / 1.5,
+        decoration: BoxDecoration(
+            color: AppColors.COLOR_WHITE,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(SpaceBox.sizeMedium),
+              topRight: Radius.circular(SpaceBox.sizeMedium),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.BLACK_400,
+                blurStyle: BlurStyle.solid,
+                blurRadius: SpaceBox.sizeMedium,
+              ),
+            ]),
         child: Column(
           children: [
-            Stack(
-              children: [
-                const SizedBox(
-                  width: double.infinity,
-                  height: 365,
-                ),
-                buildBackground(),
-                buildHeaderWidget(),
-                buildAvatarWidget(),
-              ],
-            ),
-            buildNameUserWidget(),
-            buildLineWidget(),
+            // buildNameUserWidget(),
+            // buildLineWidget(),
             buildAccountInfoWidget(),
             buildPersonalProfileWidget(),
             buildCategoryWidget(),
             // buildLoginAndSecurity(),
             // buildDataAndPrivacyWidget(),
             buildLogoutWidget(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildProfile() {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  color: AppColors.PRIMARY_GREEN,
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height - 100,
+                ),
+                // buildBackground(),
+                // buildHeaderWidget(),
+                buildInfoUSer(),
+                // buildAvatarWidget(),
+                buildBody(),
+              ],
+            ),
           ],
         ),
       ),

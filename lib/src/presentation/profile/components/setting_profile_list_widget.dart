@@ -26,15 +26,15 @@ class SettingProfileListWidget extends StatelessWidget {
   final bool isOntap;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeToPadding.sizeVeryBig,
-        vertical: SizeToPadding.sizeSmall / 1.1,
-      ),
-      child: InkWell(
-        onTap: () {
-          onTap!();
-        },
+    return  InkWell(
+      onTap: () {
+        onTap!();
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeVeryBig,
+          vertical: SizeToPadding.sizeSmall / 1.1,
+        ),
         child: Column(
           children: [
             Row(
@@ -66,7 +66,7 @@ class SettingProfileListWidget extends StatelessWidget {
               width: double.infinity,
               height: 0.5,
               decoration: const BoxDecoration(
-                color: AppColors.COLOR_GREY,
+                color: AppColors.BLACK_200,
               ),
             ),
           ],

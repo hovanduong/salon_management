@@ -17,7 +17,7 @@ class MyBookingPramsApi {
   String? note;
   bool isBooking;
   MyBookingPramsApi({
-    this.isBooking=false,
+    this.isBooking = false,
     this.myCustomerId,
     this.myServices,
     this.address,
@@ -31,7 +31,8 @@ class MyBookingPramsApi {
 
 class BookingApi {
   Future<Result<List<MyBookingModel>, Exception>> postBooking(
-    MyBookingPramsApi? prams,) async {
+    MyBookingPramsApi? prams,
+  ) async {
     try {
       final response = await HttpRemote.post(
         url: '/my-booking',
@@ -43,8 +44,7 @@ class BookingApi {
           'note': prams.note,
           'isBooking': prams.isBooking,
         },
-      );  
-      print(response?.statusCode);
+      );
       switch (response?.statusCode) {
         case 201:
           final jsonMap = json.decode(response!.body);
@@ -70,7 +70,6 @@ class BookingApi {
           'note': prams.note,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           return const Success(true);

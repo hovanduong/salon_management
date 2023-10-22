@@ -32,6 +32,34 @@ class AppValid {
     return null;
   }
 
+  static String? validateServiceName(String? value) {
+    if (value == null || value.isEmpty) {
+      return S.current.validServiceName;
+    } else if (value.length < 2) {
+      return S.current.validName;
+    }
+    final regex = RegExp(
+        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+    if (!regex.hasMatch(value)) {
+      return S.current.validFullName;
+    }
+    return null;
+  }
+
+  static String? validateCategory(String? value) {
+    if (value == null || value.isEmpty) {
+      return S.current.validCategory;
+    } else if (value.length < 2) {
+      return S.current.validName;
+    }
+    final regex = RegExp(
+        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+    if (!regex.hasMatch(value)) {
+      return S.current.validFullName;
+    }
+    return null;
+  }
+
   static String? validatePhone(String? value) {
     if (value == null || value.isEmpty) {
       return S.current.validEnterPhoneNumber;

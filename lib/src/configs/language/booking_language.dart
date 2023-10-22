@@ -2,6 +2,7 @@ import '../../intl/generated/l10n.dart';
 
 class BookingLanguage {
    static final booking = S.current.booking;
+   static final createAppointment = S.current.createAppointment;
    static final bookingEdit = S.current.bookingEdit;
   static final numberBetween = S.current.numberBetween;
   static final bookingSuccessful = S.current.bookingSuccessful;
@@ -17,6 +18,7 @@ class BookingLanguage {
   static final discountLenghtError = S.current.discountLenghtError;
   static final discount = S.current.discount;
   static final selectServices = S.current.selectServices;
+  static final selectedCustomer = S.current.selectedCustomer;
   static final name = S.current.name;
   static final address = S.current.address;
   static final hour = S.current.hour;
@@ -33,5 +35,15 @@ class BookingLanguage {
   static final emptyAddress = S.current.emptyAddress;
   static final yes = S.current.yes;
   static final waningDeleteBooking = S.current.waningDeleteBooking;
+  static final bookingSuccess = S.current.bookingSuccess;
+  static final updateBookingSuccess = S.current.updateBookingSuccess;
+  static final intoMoney= S.current.intoMoney;
+  static final temporary= S.current.temporary;
+  static final confirmed = S.current.confirmed;
+  static final confirm = S.current.confirm;
+  static final canceled = S.current.canceled;
+  static final emptyService = S.current.emptyService;
+  static final contentEmptyService = S.current.contentEmptyService;
+
 
 }

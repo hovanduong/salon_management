@@ -101,7 +101,7 @@ class ServiceAddViewModel extends BaseViewModel {
   }
 
   void validNameService(String? value) {
-    final result = AppValid.validateFullName(value);
+    final result = AppValid.validateServiceName(value);
     if (result != null) {
       messageErrorNameService = result;
     } else {

@@ -10,12 +10,15 @@ class ItemTransactionWidget extends StatelessWidget {
     this.content, 
     this.color, 
     this.isIcon=false,
+    this.isTotal=false, 
+
   });
 
   final String? title;
   final String? content;
   final Color? color;
   final bool isIcon;
+  final bool isTotal;
 
   @override
   Widget build(BuildContext context) {
@@ -24,24 +27,31 @@ class ItemTransactionWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Paragraph(
+          if (isTotal) Paragraph(
+            content: title ?? '',
+            style: STYLE_LARGE.copyWith(
+              color:  AppColors.PRIMARY_GREEN,
+              fontWeight: FontWeight.w700,
+            ),
+          ) else Paragraph(
             content: title ?? '',
             style: STYLE_MEDIUM.copyWith(
-              color: AppColors.BLACK_400,
-              fontWeight: FontWeight.w600,  
+              color:  AppColors.BLACK_400,
+              fontWeight: FontWeight.w600,
             ),
           ),
           Row(
             children: [
               Container(
                 alignment: Alignment.topRight,
-                width: MediaQuery.of(context).size.width/2.4,
+                width: MediaQuery.of(context).size.width/1.6,
                 child: Paragraph(
-                  content: content ?? '',
+                  content: content=='Trống' ? '' : (content??''),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: STYLE_MEDIUM.copyWith(
                     color: color?? AppColors.BLACK_500,
+                    fontSize: isTotal? 20 : 16,
                     fontWeight: FontWeight.w600,  
                   ),
                 ),

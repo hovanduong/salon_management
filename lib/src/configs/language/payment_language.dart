@@ -13,5 +13,10 @@ class PaymentLanguage {
   static final enterCategory= S.current.enterCategory;
   static final search= S.current.search;
   static final waningDeleteService= S.current.waningDeleteService;
+  static final intoMoney= S.current.intoMoney;
+  static final temporary= S.current.temporary;
+  static final emptyService= S.current.emptyService;
+  static final contentEmptyService= S.current.contentEmptyService;
+
 
 }

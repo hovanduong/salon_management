@@ -14,11 +14,12 @@ class NotificationService extends StatelessWidget {
     this.total,
     this.nameUser,
     this.phoneNumber,
-    this.onTapPhone, 
-    this.isButton=false, 
-    this.onTapDeleteBooking, 
-    this.onTapEditBooking, 
-    this.onPay, this.context,
+    this.onTapPhone,
+    this.isButton = false,
+    this.onTapDeleteBooking,
+    this.onTapEditBooking,
+    this.onPay,
+    this.context,
   });
 
   final String? date;
@@ -34,12 +35,12 @@ class NotificationService extends StatelessWidget {
   final Function()? onPay;
   final BuildContext? context;
 
-
   Widget buildTitle({
     IconData? icon,
     String? content,
     Widget? trailing,
     Color? color,
+    double? width,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
@@ -56,12 +57,13 @@ class NotificationService extends StatelessWidget {
                 width: SpaceBox.sizeSmall,
               ),
               SizedBox(
-                width: MediaQuery.of(context!).size.width-220,
+                width: width ?? MediaQuery.of(context!).size.width - 150,
                 child: Paragraph(
                   content: content ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: STYLE_MEDIUM_BOLD.copyWith(
+                  style: STYLE_SMALL_BOLD.copyWith(
+                    fontSize: 15,
                     color: color ?? AppColors.BLACK_400,
                   ),
                 ),
@@ -81,6 +83,7 @@ class NotificationService extends StatelessWidget {
           content: date,
           icon: Icons.alarm,
           trailing: widget,
+          width: MediaQuery.of(context!).size.width - 250,
         ),
         buildTitle(
           content: nameUser,
@@ -196,7 +199,7 @@ class NotificationService extends StatelessWidget {
           children: [
             Expanded(
               child: AppButton(
-                onTap: (){
+                onTap: () {
                   onPay!();
                 },
                 content: HistoryLanguage.pay,

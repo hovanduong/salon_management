@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../resource/model/radio_model.dart';
 import '../../configs.dart';
 import '../../constants/app_space.dart';
+import '../../language/my_customer_language.dart';
 
 class BottomSheetSingle extends StatefulWidget {
   const BottomSheetSingle({
@@ -14,7 +15,9 @@ class BottomSheetSingle extends StatefulWidget {
     this.isAll = false,
     this.onSearch,
     this.changeColor = false, 
-    this.keyboardType,
+    this.keyboardType, 
+    this.titleEmpty,
+    this.contentEmpty,
   }) : super(key: key);
 
   final String? titleContent;
@@ -25,6 +28,8 @@ class BottomSheetSingle extends StatefulWidget {
   final Function(String)? onSearch;
   final bool? changeColor;
   final TextInputType? keyboardType;
+  final String? titleEmpty;
+  final String? contentEmpty;
 
   @override
   _BottomSheetSingleState createState() => _BottomSheetSingleState();
@@ -106,7 +111,7 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                     ? AppColors.PRIMARY_PINK
                     : AppColors.BLACK_300,
               ),
-              hintText: 'Tìm kiếm',
+              hintText: MyCustomerLanguage.search,
               onChanged: (value) {
                 // widget.onSearch!(value);
                 onSearch(value);
@@ -121,11 +126,20 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
           ),
           Expanded(
             child: foundSearch.isEmpty
-                ? const Center(child: Paragraph(content: 'Rỗng'))
+                ? Padding(
+                  padding: EdgeInsets.only(top: SizeToPadding.sizeBig*3),
+                  child: EmptyDataWidget(
+                    title: widget.titleEmpty 
+                      ?? MyCustomerLanguage.emptyCustomer,
+                    content: widget.contentEmpty 
+                      ?? MyCustomerLanguage.notificationEmptyCustomer,
+                  ),
+                )
                 : ListView.builder(
                     itemCount: foundSearch.length,
                     itemBuilder: (context, i) {
-                      final name = foundSearch[i].name;
+                      final name = foundSearch[i].name?.split('/')[1];
+                      final phone= foundSearch[i].name?.split('/')[0];
                       final key = foundSearch[i].id;
                       // final name= foundSearch[i].entries.last;
                       // final key= foundSearch[i].entries.first;
@@ -133,7 +147,7 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                         // splashColor: AppColors.BLACK_200,
                         onTap: () {
                           selectValue = key;
-                          widget.onTapSubmit!(MapEntry(key, name));
+                          widget.onTapSubmit!(MapEntry(key, phone));
                           Navigator.pop(context);
                           setState(() {});
                         },
@@ -175,9 +189,24 @@ class _BottomSheetSingleState extends State<BottomSheetSingle> {
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Paragraph(
-                                    content: name,
+                                  padding: EdgeInsets.all(SpaceBox.sizeLarge),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Paragraph(
+                                        content: name,
+                                        style: STYLE_MEDIUM.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(height: SpaceBox.sizeVerySmall,),
+                                      Paragraph(
+                                        content: phone,
+                                        style: STYLE_MEDIUM.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

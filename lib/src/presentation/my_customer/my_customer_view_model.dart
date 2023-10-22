@@ -53,7 +53,8 @@ class MyCustomerViewModel extends BaseViewModel {
       );
 
   Future<void> onSearchCategory(String value) async {
-    final searchCustomer = TiengViet.parse(value.toLowerCase());
+    // final searchCustomer = TiengViet.parse(value.toLowerCase());
+    final searchCustomer= value;
     await getListSearch(searchCustomer);
     notifyListeners();
   }
@@ -136,7 +137,7 @@ class MyCustomerViewModel extends BaseViewModel {
           onTapLeft: () {
             Navigator.pop(context);
           },
-          rightButtonName: CategoryLanguage.yes,
+          rightButtonName: CategoryLanguage.confirm,
           onTapRight: () {
             deleteMyCustomer(id);
             Navigator.pop(context);

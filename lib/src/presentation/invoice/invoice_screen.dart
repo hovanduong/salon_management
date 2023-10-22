@@ -1,8 +1,9 @@
-// ignore_for_file: use_late_for_private_fields_and_variables
+// ignore_for_file: use_late_for_private_fields_and_variables, prefer_is_empty
+
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -11,6 +12,7 @@ import '../../configs/language/invoice_language.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/check_time.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'invoice_view_model.dart';
@@ -30,15 +32,15 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       viewModel: InvoiceViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) {
-        return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            systemNavigationBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarIconBrightness: Brightness.dark,
-          ),
-          child: buildInvoice(),
-        );
+        // return AnnotatedRegion<SystemUiOverlayStyle>(
+        //   value: const SystemUiOverlayStyle(
+        //     statusBarColor: Colors.white,
+        //     systemNavigationBarColor: Colors.white,
+        //     statusBarIconBrightness: Brightness.dark,
+        //     systemNavigationBarIconBrightness: Brightness.dark,
+        //   ),
+        //   child: buildInvoice(),
+        return buildInvoice();
       },
     );
   }
@@ -82,41 +84,45 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   Widget buildHeader() {
     return Container(
-      height: SpaceBox.sizeBig*2,
-      width: double.maxFinite,
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(bottom: SpaceBox.sizeSmall),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
-        ],
-      ),
-      child: Paragraph(
-        content: InvoiceLanguage.invoice,
-        style: STYLE_LARGE_BOLD,
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        child: ListTile(
+          title: Center(
+            child: Paragraph(
+              content: InvoiceLanguage.invoice,
+              style: STYLE_LARGE.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
 
   Widget invoiceUser(int index) {
-    final money= _viewModel!.listCurrent[index].total;
-    final date= _viewModel!.listCurrent[index].createdAt;
-    final name= _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
-    final idBooking= _viewModel!.listCurrent[index].myBookingId;
+    final money = _viewModel!.listCurrent[index].myBooking?.total;
+    final date = _viewModel!.listCurrent[index].createdAt;
+    final name = _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
+    final idBooking = _viewModel!.listCurrent[index].myBookingId;
+    final code = _viewModel!.listCurrent[index].code;
     return InkWell(
       onTap: () => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(id: idBooking),),
+        context,
+        MyBookingParams(id: idBooking, code: code, isInvoice: true),
+      ),
       child: Transaction(
         color: _viewModel!.colors[index % _viewModel!.colors.length],
-        money: '+ ${AppCurrencyFormat.formatMoneyVND(money!)}',
+        money: '+ ${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
         subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
         name: name ?? '',
       ),
     );
   }
 
-   Widget buildSearch(){
+  Widget buildSearch() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
       child: AppFormField(
@@ -133,63 +139,62 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
   }
 
-  Widget buildListInvoice(){
+  Widget buildListInvoice() {
     return RefreshIndicator(
-      color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async {
-        await _viewModel!.pullRefresh();
-      },
-      child: Container(
-        margin: EdgeInsets.only(
-            left: SizeToPadding.sizeSmall,
-            right: SizeToPadding.sizeVerySmall,),
-        height: MediaQuery.of(context).size.height-250,
-        child: ListView.builder(
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-            ? _viewModel!.listCurrent.length +1 
-            : _viewModel!.listCurrent.length,
-          itemBuilder: (context, index) {
-            if(index<_viewModel!.listCurrent.length){
-              return invoiceUser(index);
-            }else{
-              return const CupertinoActivityIndicator();
-            }
-          }, 
-        ),
-      ),
-    );
+            color: AppColors.PRIMARY_GREEN,
+            onRefresh: () async {
+              await _viewModel!.pullRefresh();
+            },
+            child:  _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
+            ? SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+                child: EmptyDataWidget(
+                  title: InvoiceLanguage.blankInvoice,
+                  content: InvoiceLanguage.notificationBlankInvoice,),
+                ),
+            )
+            :  SizedBox(
+              height: MediaQuery.of(context).size.height - 250,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: const AlwaysScrollableScrollPhysics(),
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    return invoiceUser(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              ),
+            ),
+          );
   }
 
   Widget buildBody() {
     return Expanded(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          boxShadow: [
-            BoxShadow(color: AppColors.BLACK_200, blurRadius: SpaceBox.sizeBig),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildSearch(),
+            buildListInvoice(),
           ],
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildSearch(),
-              buildListInvoice(),
-            ],
-          ),
         ),
       ),
     );
   }
 
   Widget buildInvoiceScreen() {
-    return SafeArea(
-      child: Column(
-        children: [
-          buildHeader(),
-          buildBody(),
-        ],
-      ),
+    return Column(
+      children: [
+        buildHeader(),
+        buildBody(),
+      ],
     );
   }
 }

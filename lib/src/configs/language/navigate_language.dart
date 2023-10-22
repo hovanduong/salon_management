@@ -8,4 +8,9 @@ class NavigateLanguage {
   static final appointmentSchedule = S.current.appointmentSchedule;
 
   static final account = S.current.account;
+
+  static final exitApp = S.current.exitApp;
+
+  static final exitAppContent = S.current.exitAppContent;
+
 }

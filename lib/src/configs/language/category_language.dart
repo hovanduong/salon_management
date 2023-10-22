@@ -14,5 +14,8 @@ class CategoryLanguage {
   static final search= S.current.search;
   static final searchCategory= S.current.searchCategory;
   static final waningDeleteService= S.current.waningDeleteService;
+  static final confirm = S.current.confirm;
+  static final emptyCategory = S.current.emptyCategory;
+  static final notificationEmptyCategory = S.current.notificationEmptyCategory;
 
 }

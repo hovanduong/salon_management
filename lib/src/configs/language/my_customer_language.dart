@@ -5,5 +5,7 @@ class MyCustomerLanguage {
   static final search = S.current.search;
   static final searchPhone = S.current.searchPhone;
   static final waningDeleteCustomer = S.current.waningDeleteCustomer;
+  static final emptyCustomer = S.current.emptyCustomer;
+  static final notificationEmptyCustomer = S.current.notificationEmptyCustomer;
   
 }

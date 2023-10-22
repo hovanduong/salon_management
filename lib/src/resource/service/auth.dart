@@ -1,16 +1,10 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../configs/widget/loading/loading_diaglog.dart';
-import '../../presentation/routers.dart';
 import '../../utils/http_remote.dart';
+import '../model/auth_model.dart';
 import '../model/model.dart';
 
 class AuthParams {
@@ -20,7 +14,7 @@ class AuthParams {
     this.password,
     this.fullName,
     this.gender,
-    this.email, 
+    this.email,
     this.passwordConfirm,
   });
   final UserModel? userModel;
@@ -33,7 +27,6 @@ class AuthParams {
 }
 
 class AuthApi {
-
   Future<Result<bool, Exception>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
@@ -47,7 +40,6 @@ class AuthApi {
           'passwordConfirm': params.passwordConfirm,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
@@ -59,7 +51,7 @@ class AuthApi {
     }
   }
 
-  Future<Result<String, Exception>> login(AuthParams? params) async {
+  Future<Result<AuthModel, Exception>> login(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
         url: '/auth/login',
@@ -71,8 +63,9 @@ class AuthApi {
       switch (response?.statusCode) {
         case 201:
           final jsonMap = json.decode(response!.body);
-          final accessToken = jsonMap['data']['accessToken'];
-          return Success(accessToken);
+          final data = json.encode(jsonMap['data']);
+          final userData= AuthModelFactory.create(data);
+          return Success(userData);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }

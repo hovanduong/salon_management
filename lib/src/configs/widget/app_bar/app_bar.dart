@@ -2,44 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../configs.dart';
-import '../../constants/app_space.dart';
 
 class CustomerAppBar extends StatelessWidget {
-  const CustomerAppBar({
-    super.key,
-    this.title,
-    this.icon,
-    this.widget,
-    this.onTap,
-    this.rightIcon,
-    this.gestureDetector,
-  });
+  const CustomerAppBar(
+      {super.key,
+      this.title,
+      this.icon,
+      this.widget,
+      this.onTap,
+      this.rightIcon,
+      this.gestureDetector,
+      this.style,
+      this.color});
   final String? title;
   final String? icon;
   final Widget? widget;
   final VoidCallback? onTap;
   final IconButton? rightIcon;
   final GestureDetector? gestureDetector;
+  final TextStyle? style;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
-          onTap: onTap,
-          child: SvgPicture.asset(icon ?? AppImages.icArrowLeft),
+        Expanded(
+          child: GestureDetector(
+            onTap: onTap,
+            child: SvgPicture.asset(
+              icon ?? AppImages.icArrowLeft,
+              color: color,
+              height: 30,
+            ),
+          ),
         ),
-
-        SizedBox(
-          width: SpaceBox.sizeMedium * 2,
+        Expanded(
+          flex: 12,
+          child: Paragraph(
+            content: title ?? '',
+            textAlign: TextAlign.center,
+            style: style ?? STYLE_LARGE.copyWith(fontWeight: FontWeight.w700),
+          ),
         ),
-        Paragraph(
-          content: title ?? '',
-          style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w700),
-        ),
-        const Spacer(),
-        widget ?? const SizedBox(),
-        SizedBox(child: rightIcon),
-        SizedBox(child: gestureDetector),
+        Expanded(child: widget ?? const SizedBox()),
       ],
     );
   }

@@ -4,30 +4,33 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/my_customer_add_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/my_customer_model.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class MyCustomerAddViewModel extends BaseViewModel {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  String? messageErrorName ;
+  String? messageErrorName;
   String? messageErrorPhone;
 
   MyCustomerApi myCustomerApi = MyCustomerApi();
 
   bool isColorProvinces = false;
   bool enableSubmit = false;
-  bool isPayments=false;
+  bool isPayments = false;
 
   Timer? timer;
 
   Future<void> init(bool isPayment) async {
-    isPayments=isPayment;
+    isPayments = isPayment;
   }
 
   void closeDialog(BuildContext context) {
@@ -37,8 +40,11 @@ class MyCustomerAddViewModel extends BaseViewModel {
     );
   }
 
+  Future<void> _goToHome() =>
+      Navigator.pushReplacementNamed(context, Routers.navigation);
+
   void validName(String? value) {
-    final result = AppValid.validateFullName(value);
+    final result = AppValid.validateName(value);
     if (result != null) {
       messageErrorName = result;
     } else {
@@ -86,20 +92,6 @@ class MyCustomerAddViewModel extends BaseViewModel {
     );
   }
 
-  dynamic showErrorDialog(_) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        closeDialog(context);
-        return WarningOneDialog(
-          image: AppImages.icPlus,
-          title: SignUpLanguage.failed,
-        );
-      },
-    );
-  }
-
   dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
@@ -108,26 +100,92 @@ class MyCustomerAddViewModel extends BaseViewModel {
         closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
-          title: SignUpLanguage.success,
+          title: MyCustomerAddLanguage.addSuccess,
         );
       },
     );
   }
 
   void clearData() {
-    nameController.text = '';
-    phoneController.text = '';
+    if(!isPayments){
+      nameController.text = '';
+      phoneController.text = '';
+    }
     notifyListeners();
   }
 
-  void closeScreen(){
-    if(isPayments==true){
-      timer = Timer(const Duration(seconds: 2), ()=> Navigator.pop(context));
+  void closeScreen() {
+    if (isPayments == true) {
+      timer = Timer(const Duration(seconds: 2), () => 
+        Navigator.pop(context, MyCustomerModel(
+          fullName: nameController.text.trim(),
+          phoneNumber: phoneController.text.trim(),
+        ),),);
+    }
+  }
+
+  dynamic showOpenCustomerExits(_) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: MyCustomerAddLanguage.phoneNumberExists,
+          image: AppImages.icPlus,
+          title: MyCustomerAddLanguage.notification,
+          leftButtonName: MyCustomerAddLanguage.close,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: MyCustomerAddLanguage.home,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () async {
+            await _goToHome();
+          },
+        );
+      },
+    );
+  }
+
+  dynamic showOpenDialog(_) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: MyCustomerAddLanguage.addCustomerFailed,
+          image: AppImages.icPlus,
+          title: MyCustomerAddLanguage.notification,
+          leftButtonName: MyCustomerAddLanguage.close,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: MyCustomerAddLanguage.tryAgain,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () async {
+            Navigator.pop(context);
+            await postMyCustomer();
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> handleCustomerError(String message) async {
+    if (message.trim() == AppValues.customerExits) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showOpenCustomerExits(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await showOpenDialog(context);
     }
   }
 
   Future<void> postMyCustomer() async {
     LoadingDialog.showLoadingDialog(context);
+
     final result = await myCustomerApi.postMyCustomer(
       MyCustomerParams(
         phoneNumber: phoneController.text,
@@ -143,14 +201,18 @@ class MyCustomerAddViewModel extends BaseViewModel {
     if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
       await showDialogNetwork(context);
-    } else if (value is Exception) {
-      LoadingDialog.hideLoadingDialog(context);
-      await showErrorDialog(context);
-    } else {
-      LoadingDialog.hideLoadingDialog(context);
-      clearData();
-      await showSuccessDialog(context);
-      closeScreen();
+    } else if (value is AppException) {
+      await handleCustomerError(value.message);
+    } else if (value is bool) {
+      if (value) {
+        LoadingDialog.hideLoadingDialog(context);
+        await showSuccessDialog(context);
+        clearData();
+        closeScreen();
+      } else {
+        LoadingDialog.hideLoadingDialog(context);
+        await showOpenDialog(context);
+      }
     }
     notifyListeners();
   }

@@ -58,25 +58,27 @@ class WarningDialog extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: SizeToPadding.sizeMedium,),
+                horizontal: SizeToPadding.sizeMedium,
+              ),
               child: Paragraph(
                 textAlign: TextAlign.center,
                 content: title,
                 style: STYLE_BIG.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: SizeToPadding.sizeSmall,
-                vertical: SizeToPadding.sizeLarge,
+            if (content != null)
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeToPadding.sizeSmall,
+                  vertical: SizeToPadding.sizeLarge,
+                ),
+                child: Paragraph(
+                  textAlign: TextAlign.center,
+                  content: content ?? '',
+                  style: STYLE_MEDIUM,
+                ),
               ),
-              child: Paragraph(
-                textAlign: TextAlign.center,
-                content: content ?? '',
-                style: STYLE_MEDIUM,
-              ),
-            ),
-            const SizedBox(height: 10),
+            SizedBox(height: content != null ? 10 : 30),
             Row(
               children: [
                 Expanded(
@@ -84,7 +86,7 @@ class WarningDialog extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 15, right: 10),
                     child: AppOutlineButton(
                       content: leftButtonName,
-                      onTap: () => onTapLeft!(),
+                      onTap: onTapLeft,
                     ),
                   ),
                 ),
@@ -94,7 +96,7 @@ class WarningDialog extends StatelessWidget {
                     child: AppButton(
                       enableButton: true,
                       content: rightButtonName,
-                      onTap: () => onTapRight!(),
+                      onTap: onTapRight,
                     ),
                   ),
                 ),

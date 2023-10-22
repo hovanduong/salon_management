@@ -34,6 +34,15 @@ class FieldRevenueWidget extends StatelessWidget {
   final num? totalBeforeClient;
   final num? growthClient;
 
+  bool isInteger(String input) {
+  try {
+    int.parse(input);
+    return true; 
+  } catch (e) {
+    return false; 
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,7 +58,9 @@ class FieldRevenueWidget extends StatelessWidget {
                     totalRevenue ?? 0,
                   ):'',
                   money: growthRevenue!=null?
-                  '$totalBeforeRevenue (${growthRevenue!*100}%)'
+                  '${AppCurrencyFormat.formatMoney(totalBeforeRevenue)} (${
+                    isInteger(growthRevenue.toString())? growthRevenue!*100
+                    : (growthRevenue!*100).toStringAsFixed(2)}%)'
                   : '',
                 ),
               ),

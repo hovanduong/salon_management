@@ -1,6 +1,9 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/payment_language.dart';
@@ -26,40 +29,63 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dataBooking= ModalRoute.of(context)?.settings.arguments;
+    final dataBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<PaymentViewModel>(
-      viewModel: PaymentViewModel (),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
-        dataBooking as MyBookingModel?,
+      viewModel: PaymentViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          dataBooking as MyBookingModel?,
+        ),
+      builder: (context, viewModel, child) => buildLoadingScreen(),
+    );
+  }
+
+  Widget buildLoadingScreen(){
+    return Scaffold(
+      body: StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildPaymentScreen(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
       ),
-      builder: (context, viewModel, child) => buildPaymentScreen(),
     );
   }
 
   Widget buildPaymentScreen() {
-    return SafeArea(
-      top: true,
-      bottom: false,
-      right: false,
-      left: false,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildAppbar(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildInfo(),
-                buildLineWidget(),
-                buildServiceInfo(),
-                buildLineWidget(),
-                buildNotes(),
-                buildConfirmButton(),
-              ],
-            ),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildAppbar(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildInfo(),
+              buildLineWidget(),
+              buildServiceInfo(),
+              buildLineWidget(),
+              buildNotes(),
+              buildConfirmButton(),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -84,7 +110,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         children: [
           buildService(),
           buildListService(),
-          if(_viewModel!.selectedService.isNotEmpty)
+          if (_viewModel!.selectedService.isNotEmpty)
             Column(
               children: [
                 buildTotalNoDis(),
@@ -115,20 +141,21 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildTotalNoDis() {
     return Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Paragraph(
-              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: 'Thành tiền',
-            ),
-            Paragraph(
-              style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-              content: _viewModel!.moneyController.text,
-            ),
-          ],
-        ),);
+      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Paragraph(
+            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+            content: PaymentLanguage.intoMoney,
+          ),
+          Paragraph(
+            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+            content: _viewModel!.moneyController.text,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildListService() {
@@ -187,34 +214,37 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildService() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return InkWell(
+      onTap: () => showSelectService(context),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Paragraph(
-              content: BookingLanguage.selectServices,
-              style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+            Row(
+              children: [
+                Paragraph(
+                  content: BookingLanguage.selectServices,
+                  style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+                ),
+                const Paragraph(
+                  content: '*',
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.PRIMARY_RED,
+                ),
+              ],
             ),
-            const Paragraph(
-              content: '*',
-              fontWeight: FontWeight.w600,
-              color: AppColors.PRIMARY_RED,
+            const Icon(
+              Icons.add_circle,
+              color: AppColors.PRIMARY_GREEN,
             ),
           ],
         ),
-        IconButton(
-          icon: const Icon(Icons.add_circle),
-          color: AppColors.PRIMARY_GREEN,
-          onPressed: () async {
-            showSelectCategory(context);
-          },
-        ),
-      ],
+      ),
     );
   }
 
-  void showSelectCategory(_) {
+  void showSelectService(_) {
     showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -223,6 +253,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         titleContent: BookingLanguage.selectServices,
         listItems: _viewModel!.mapService,
         initValues: _viewModel!.serviceId,
+        contentEmpty: PaymentLanguage.contentEmptyService,
+        titleEmpty: PaymentLanguage.emptyService,
         onTapSubmit: (value) {
           _viewModel!
             ..changeValueService(value)
@@ -243,14 +275,20 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildAppbar() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeMedium,
-      ),
-      child: CustomerAppBar(
-        onTap: () => Navigator.pop(context),
-        title: PaymentLanguage.pay,
+    return Container(
+      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
+        left: SizeToPadding.sizeMedium, right: SizeToPadding.sizeMedium,),
+      color: AppColors.PRIMARY_GREEN,
+      child: Center(
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.COLOR_WHITE,
+          ),
+          onTap: () => Navigator.pop(context),
+          title: PaymentLanguage.pay,
+        ),
       ),
     );
   }
@@ -265,11 +303,13 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       isScrollControlled: true,
       builder: (context) => BottomSheetSingle(
         keyboardType: TextInputType.number,
-        titleContent: BookingLanguage.selectPhoneNumber,
+        titleContent: BookingLanguage.selectedCustomer,
         listItems: _viewModel!.mapPhone,
         initValues: 0,
         onTapSubmit: (value) {
-          _viewModel!..setNameCustomer(value)..enableConfirmButton();
+          _viewModel!
+            ..setNameCustomer(value)
+            ..enableConfirmButton();
         },
       ),
     );
@@ -279,15 +319,16 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return NameFieldWidget(
       isOnTap: true,
       name: BookingLanguage.phoneNumber,
-      hintText: BookingLanguage.enterPhone,
-      nameController:_viewModel!.phoneController,
+      hintText: BookingLanguage.selectPhoneNumber,
+      nameController: _viewModel!.phoneController,
       isAddCustomer: true,
       onAddPhone: () => _viewModel!.goToAddMyCustomer(context),
-      onTap: () async{
+      onTap: () async {
+        await _viewModel!.setLoading();
         await _viewModel!.fetchCustomer();
         await _viewModel!.initMapCustomer();
         showSelectPhone(context);
-      }, 
+      },
     );
   }
 
@@ -308,7 +349,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         children: [
           Paragraph(
             style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
-            content: 'Tạm tính',
+            content: PaymentLanguage.temporary,
           ),
           Paragraph(
             style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),

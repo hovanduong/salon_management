@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/model.dart';
@@ -88,8 +89,9 @@ class MyCustomerApi {
     }
   }
 
-  Future<Result<bool, Exception>> postMyCustomer(
-      MyCustomerParams params) async {
+  Future<Result<bool, AppException>> postMyCustomer(
+    MyCustomerParams params,
+  ) async {
     try {
       final response = await HttpRemote.post(
         url: '/my-customer',
@@ -101,10 +103,14 @@ class MyCustomerApi {
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
+        case 400:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['code']);
+          return Failure(AppException(data));
         default:
-          return Failure(Exception(response!.reasonPhrase));
+          return Failure(AppException(response!.reasonPhrase!));
       }
-    } on Exception catch (e) {
+    } on AppException catch (e) {
       return Failure(e);
     }
   }
