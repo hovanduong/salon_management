@@ -20,19 +20,18 @@ class HttpRemote {
   static final HttpRemote instance = HttpRemote._();
   static Future<void> init() async {
     accessToken = await AppPref.getToken() ?? '';
-    final fullName = await AppPref.getDataUSer('fullName') ?? '';
-    final id = await AppPref.getDataUSer('id') ?? '';
-    final email = await AppPref.getDataUSer('email') ?? '';
-    final gender = await AppPref.getDataUSer('gender') ?? '';
-    final phoneNumber = await AppPref.getDataUSer('phoneNumber') ?? '';
+    // final fullName = await AppPref.getDataUSer('fullName') ?? '';
+    // final id = await AppPref.getDataUSer('id') ?? '';
+    // final email = await AppPref.getDataUSer('email') ?? '';
+    // final gender = await AppPref.getDataUSer('gender') ?? '';
+    // final phoneNumber = await AppPref.getDataUSer('phoneNumber') ?? '';
 
-    log('accessToken: $accessToken');
-    log('fullName: $fullName');
-    log('id: $id');
-    log('email: $email');
-    log('gender: $gender');
-    log('phoneNumber: $phoneNumber');
-
+    // log('accessToken: $accessToken');
+    // log('fullName: $fullName');
+    // log('id: $id');
+    // log('email: $email');
+    // log('gender: $gender');
+    // log('phoneNumber: $phoneNumber');
 
     if (accessToken.isEmpty || accessToken == 'null') {
       requestHeaders = {

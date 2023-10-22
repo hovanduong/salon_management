@@ -47,7 +47,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     );
   }
 
-  Widget buildNameUser(){
+  Widget buildNameUser() {
     return ItemWidget(
       title: ProfileAccountLanguage.fullName,
       content: _viewModel!.userModel?.fullName,
@@ -55,7 +55,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     );
   }
 
-  Widget buildPhoneNumber(){
+  Widget buildPhoneNumber() {
     return ItemWidget(
       title: ProfileAccountLanguage.phoneNumber,
       content: _viewModel!.userModel?.phoneNumber,
@@ -70,7 +70,9 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-            blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
+            blurRadius: SpaceBox.sizeMedium,
+            color: AppColors.BLACK_200,
+          ),
         ],
       ),
       child: Column(
@@ -83,13 +85,13 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     );
   }
 
-  Widget buildBirthday(){
+  Widget buildBirthday() {
     return ItemWidget(
       title: ProfileAccountLanguage.dateOfBirth,
     );
   }
 
-  Widget buildGender(){
+  Widget buildGender() {
     return ItemWidget(
       title: ProfileAccountLanguage.gender,
       content: _viewModel!.userModel?.gender,
@@ -97,7 +99,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     );
   }
 
-  Widget buildEmail(){
+  Widget buildEmail() {
     return ItemWidget(
       title: ProfileAccountLanguage.email,
       content: _viewModel!.userModel?.email,
@@ -105,7 +107,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     );
   }
 
-  Widget buildAddress(){
+  Widget buildAddress() {
     return ItemWidget(
       title: ProfileAccountLanguage.address,
       dividerTop: true,
@@ -120,7 +122,9 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-              blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
+            blurRadius: SpaceBox.sizeMedium,
+            color: AppColors.BLACK_200,
+          ),
         ],
       ),
       child: Column(
@@ -142,39 +146,67 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-            blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
+            blurRadius: SpaceBox.sizeMedium,
+            color: AppColors.BLACK_200,
+          ),
         ],
       ),
       child: ListTile(
-        onTap: () { },
+        onTap: () {},
         leading: const CircleAvatar(
           backgroundColor: AppColors.BLACK_500,
           radius: 12,
-          child: Icon(Icons.lock, size: 15, color: AppColors.COLOR_WHITE,), 
+          child: Icon(
+            Icons.lock,
+            size: 15,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
         title: Paragraph(
           content: ProfileAccountLanguage.changePass,
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
         ),
-        trailing: const Icon(Icons.arrow_forward_ios, 
-          color: AppColors.BLACK_400,),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          color: AppColors.BLACK_400,
+        ),
       ),
     );
   }
 
   Widget buildDeleteAccount() {
-    return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeSmall),
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: SpaceBox.sizeMedium, color: AppColors.BLACK_200,),
-        ],
-      ),
-      child: ItemWidget(
-        title: ProfileAccountLanguage.deleteAccount,
+    return InkWell(
+      onTap: () async {
+        final result = await showOpenDialogRemoveAccount(context);
+        if (result) {
+          final isConfirm = await showOpenDialogConfirmRemoveAccount(context);
+          if (isConfirm) {
+            await _viewModel!.deleteAccount();
+            if (_viewModel!.removeAccount) {
+              // Navigator.pop(context);
+              _viewModel!
+                ..showDialogRemoveAccountSuccess()
+                ..startDelaySignIn();
+              await _viewModel!.logOut();
+            }
+          }
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: SizeToPadding.sizeSmall),
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+        decoration: BoxDecoration(
+          color: AppColors.COLOR_WHITE,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: SpaceBox.sizeMedium,
+              color: AppColors.BLACK_200,
+            ),
+          ],
+        ),
+        child: ItemWidget(
+          title: ProfileAccountLanguage.deleteAccount,
+        ),
       ),
     );
   }
@@ -197,6 +229,53 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  dynamic showOpenDialogConfirmRemoveAccount(_) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: 'Vui lòng nhập số điện thoại của bạn để xác nhận',
+          title: 'Xác nhận xóa tài khoản',
+          leftButtonName: 'Hủy bỏ',
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: 'Xác nhận',
+          controller: _viewModel!.phoneController,
+          isForm: true,
+          onTapLeft: () {
+            Navigator.pop(context, false);
+          },
+          onTapRight: () async {
+            Navigator.pop(context, true);
+          },
+        );
+      },
+    );
+  }
+
+  dynamic showOpenDialogRemoveAccount(_) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: 'Bạn có muốn xóa tài khoản không?',
+          image: AppImages.icPlus,
+          title: 'Thông báo',
+          leftButtonName: 'Hủy bỏ',
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: 'Xác nhận',
+          onTapLeft: () {
+            Navigator.pop(context, false);
+          },
+          onTapRight: () async {
+            Navigator.pop(context, true);
+          },
+        );
+      },
     );
   }
 }

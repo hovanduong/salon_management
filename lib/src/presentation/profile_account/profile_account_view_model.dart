@@ -1,16 +1,31 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../configs/configs.dart';
 import '../../resource/model/model.dart';
+import '../../resource/service/auth.dart';
 import '../../utils/app_pref.dart';
+import '../../utils/app_valid.dart';
+import '../../utils/http_remote.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
-class ProfileAccountViewModel extends BaseViewModel{
-
+class ProfileAccountViewModel extends BaseViewModel {
   UserModel? userModel;
+  late AuthApi authApi;
 
-  Future<void> init() async{
+  TextEditingController phoneController = TextEditingController();
+  late bool removeAccount = false;
+  Timer? _timer;
+
+  Future<void> init() async {
+    authApi = AuthApi();
     await setDataUser();
   }
 
-  Future<void> setDataUser()async{
+  Future<void> setDataUser() async {
     userModel = UserModel(
       email: await AppPref.getDataUSer('email') ?? '',
       fullName: await AppPref.getDataUSer('fullName') ?? '',
@@ -19,5 +34,86 @@ class ProfileAccountViewModel extends BaseViewModel{
       phoneNumber: await AppPref.getDataUSer('phoneNumber') ?? '',
     );
     notifyListeners();
+  }
+
+  dynamic showOpenDialogFail(_) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: 'Xóa tài khoản thất bại, vui lòng thử lại sau.',
+          image: AppImages.icPlus,
+          title: 'Thông báo',
+          leftButtonName: 'Hủy bỏ',
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: 'Liên Hệ',
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () async {
+            final url = Uri(scheme: 'tel', path: '0944010499');
+            await launchUrl(url);
+          },
+        );
+      },
+    );
+  }
+
+  Timer startDelaySignIn() => _timer = Timer(
+        const Duration(seconds: 1),
+        goToSignIn,
+      );
+  Future<void> goToSignIn() =>
+      Navigator.pushReplacementNamed(context, Routers.signIn);
+
+  dynamic showDialogRemoveAccountSuccess() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const WarningOneDialog(
+          image: AppImages.icCheck,
+          title: 'Xóa tài khoản thành công',
+        );
+      },
+    );
+  }
+
+  Future<void> deleteAccount() async {
+    final phone = userModel!.phoneNumber!.trim();
+    if (phone == phoneController.text.trim()) {
+      final result = await authApi.deleteAccount();
+
+      final value = switch (result) {
+        Success(value: final data) => data,
+        Failure(exception: final exception) => exception,
+      };
+
+      if (!AppValid.isNetWork(value)) {
+        await showDialogNetwork(context);
+      } else if (value is Exception) {
+        await showOpenDialogFail(context);
+      } else if (value is bool) {
+        removeAccount = value;
+      }
+    } else {
+      phoneController.clear();
+      await showOpenDialogFail(context);
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> logOut() async {
+    await AppPref.logout();
+    await HttpRemote.init();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _timer?.cancel();
+    phoneController.dispose();
+    super.dispose();
   }
 }
