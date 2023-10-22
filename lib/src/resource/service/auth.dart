@@ -64,8 +64,24 @@ class AuthApi {
         case 201:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']);
-          final userData= AuthModelFactory.create(data);
+          final userData = AuthModelFactory.create(data);
           return Success(userData);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> deleteAccount() async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/auth/remove-account',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
