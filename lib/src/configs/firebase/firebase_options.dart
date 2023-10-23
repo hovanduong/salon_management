@@ -44,42 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDtenkcp-8PdwNbHfvtwupeuekS7WKaMSA',
-    appId: '1:477302719227:web:052b4bd4fe7f41e1ade65e',
-    messagingSenderId: '477302719227',
-    projectId: 'dating-dev-b76a6',
-    authDomain: 'dating-dev-b76a6.firebaseapp.com',
-    storageBucket: 'dating-dev-b76a6.appspot.com',
-    measurementId: 'G-3KPDHRRM4H',
+    apiKey: 'AIzaSyBWmTZNpv9XuPfrm4penrN_FDiZl86E53M',
+    appId: '1:665751697700:web:44f0d92f59bb8cc1f95bb1',
+    messagingSenderId: '665751697700',
+    projectId: 'spadev-64c7e',
+    authDomain: 'spadev-64c7e.firebaseapp.com',
+    storageBucket: 'spadev-64c7e.appspot.com',
+    measurementId: 'G-FBCXZYXW8S',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAV2HU0GLOKUYIAgUHhDnnP4NiNQKKNEQA',
-    appId: '1:477302719227:android:59ed6133800781bbade65e',
-    messagingSenderId: '477302719227',
-    projectId: 'dating-dev-b76a6',
-    storageBucket: 'dating-dev-b76a6.appspot.com',
+    apiKey: 'AIzaSyABvJk9RCujmSQ_KtohA-dvMsz6OkYFaZo',
+    appId: '1:665751697700:android:45c18ed535c22a0bf95bb1',
+    messagingSenderId: '665751697700',
+    projectId: 'spadev-64c7e',
+    storageBucket: 'spadev-64c7e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyACt1b52ijHLODIk_rVmWPp5lnC-MP_W1g',
-    appId: '1:477302719227:ios:4c140e3e0cbc89a3ade65e',
-    messagingSenderId: '477302719227',
-    projectId: 'dating-dev-b76a6',
-    storageBucket: 'dating-dev-b76a6.appspot.com',
-    androidClientId: '477302719227-5udggpd1smlft4c7t0aonr3tfrbkmhuq.apps.googleusercontent.com',
-    iosClientId: '477302719227-025ijo01vmljf7m69e48uul667ul8iq6.apps.googleusercontent.com',
-    iosBundleId: 'dhy.company.booking.app',
+    apiKey: 'AIzaSyCqBIO-yec2wWr1DxJJ0cGozYS2EeHqiOg',
+    appId: '1:665751697700:ios:3e4ddec0ab8597d8f95bb1',
+    messagingSenderId: '665751697700',
+    projectId: 'spadev-64c7e',
+    storageBucket: 'spadev-64c7e.appspot.com',
+    iosClientId: '665751697700-1dik8gsbakqfv85l350ol6s21ene5unu.apps.googleusercontent.com',
+    iosBundleId: 'com.example.bookingApp.RunnerTests',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyACt1b52ijHLODIk_rVmWPp5lnC-MP_W1g',
-    appId: '1:477302719227:ios:1fefb8ab83825422ade65e',
-    messagingSenderId: '477302719227',
-    projectId: 'dating-dev-b76a6',
-    storageBucket: 'dating-dev-b76a6.appspot.com',
-    androidClientId: '477302719227-5udggpd1smlft4c7t0aonr3tfrbkmhuq.apps.googleusercontent.com',
-    iosClientId: '477302719227-l2829f2lo15hicupjfg0u2nai4qs3cn0.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCqBIO-yec2wWr1DxJJ0cGozYS2EeHqiOg',
+    appId: '1:665751697700:ios:3e4ddec0ab8597d8f95bb1',
+    messagingSenderId: '665751697700',
+    projectId: 'spadev-64c7e',
+    storageBucket: 'spadev-64c7e.appspot.com',
+    iosClientId: '665751697700-1dik8gsbakqfv85l350ol6s21ene5unu.apps.googleusercontent.com',
     iosBundleId: 'com.example.bookingApp.RunnerTests',
   );
 }
