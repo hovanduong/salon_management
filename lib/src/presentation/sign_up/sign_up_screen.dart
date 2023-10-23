@@ -99,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildSelectGender(){
+  Widget buildSelectGender() {
     return DropdownButtonWidget(
       gender: _viewModel!.gender,
       genderList: _viewModel!.genderList,
@@ -107,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildTitleGender(){
+  Widget buildTitleGender() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
       child: Paragraph(
@@ -119,7 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildGender(){
+  Widget buildGender() {
     return Padding(
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
       child: Column(
@@ -177,8 +177,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget buildNote() {
     return Padding(
-      padding: EdgeInsets.only(top: SizeToPadding.sizeLarge, 
-        bottom: SizeToPadding.sizeVerySmall),
+      padding: EdgeInsets.only(
+          top: SizeToPadding.sizeLarge, bottom: SizeToPadding.sizeVerySmall),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -204,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildFieldSignUp(){
+  Widget buildFieldSignUp() {
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -230,10 +230,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildFormSignUp(){
+  Widget buildFormSignUp() {
     return Padding(
-      padding:
-        EdgeInsets.symmetric(horizontal: SizeToPadding.sizeLarge),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeLarge),
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -252,31 +251,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget buildSignUp() {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () => _viewModel!.showExitPopup(),
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: DecoratedContainer(
+    return WillPopScope(
+      onWillPop: () => _viewModel!.showExitPopup(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: DecoratedContainer(
             widget: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Paragraph(
-                  //   content: AppValues.appName,
-                  //   style: STYLE_BIG.copyWith(
-                  //     color: AppColors.COLOR_WHITE,
-                  //     fontWeight: FontWeight.bold,
-                  //     fontSize: 50,
-                  //   ),
-                  // ),
-                  SizedBox(height: SpaceBox.sizeSmall),
-                  buildFormSignUp(),
-                ],
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Paragraph(
+                //   content: AppValues.appName,
+                //   style: STYLE_BIG.copyWith(
+                //     color: AppColors.COLOR_WHITE,
+                //     fontWeight: FontWeight.bold,
+                //     fontSize: 50,
+                //   ),
+                // ),
+                SizedBox(height: SpaceBox.sizeSmall * 10),
+                buildFormSignUp(),
+                SizedBox(height: SpaceBox.sizeSmall * 5),
+              ],
             ),
-          )),
-        ),
+          ),
+        )),
       ),
     );
   }
