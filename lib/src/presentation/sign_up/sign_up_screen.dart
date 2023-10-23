@@ -260,14 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Paragraph(
-                //   content: AppValues.appName,
-                //   style: STYLE_BIG.copyWith(
-                //     color: AppColors.COLOR_WHITE,
-                //     fontWeight: FontWeight.bold,
-                //     fontSize: 50,
-                //   ),
-                // ),
+              
                 SizedBox(height: SpaceBox.sizeSmall * 10),
                 buildFormSignUp(),
                 SizedBox(height: SpaceBox.sizeSmall * 5),

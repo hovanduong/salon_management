@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -84,13 +86,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildHeader(int index) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        // boxShadow: [
-        //   BoxShadow(
-        //     blurRadius: SpaceBox.sizeMedium,
-        //     color: AppColors.BLACK_200,
-        //   ),
-        // ],
+        color: AppColors.PRIMARY_PINK,
       ),
       child: Column(
         children: [
@@ -345,31 +341,34 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildItemScreen() {
-    return SafeArea(
-      top: true,
-      left: false,
-      bottom: false,
-      right: false,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 70,
-                width: double.maxFinite,
-                child: ListView.builder(
+    return Scaffold(
+      backgroundColor: AppColors.PRIMARY_PINK,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 70,
+              width: double.maxFinite,
+              child: ListView.builder(
                   itemCount: _viewModel!.listMyBooking.length,
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      buildHeader(index),
-                      buildInfoCard(index),
-                      buildCardService(index),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        buildHeader(index),
+                        Container(
+                          color: AppColors.COLOR_WHITE,
+                          child: Column(
+                            children: [
+                              buildInfoCard(index),
+                              buildCardService(index),
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  }),
+            ),
+          ],
         ),
       ),
     );
