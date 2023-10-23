@@ -133,62 +133,65 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget buildSignIn() {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: DecoratedContainer(
-          widget: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Paragraph(
-                content: AppValues.appName,
-                style: STYLE_BIG.copyWith(
-                  color: AppColors.COLOR_WHITE,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 50,
-                ),
-              ),
-              SizedBox(height: SpaceBox.sizeSmall * 5),
-              Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: SizeToPadding.sizeLarge),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[
-                        AppColors.COLOR_WHITE,
-                        AppColors.COLOR_WHITE.withOpacity(0.7)
-                      ],
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+    return WillPopScope(
+      onWillPop: () => _viewModel!.showExitPopup(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: DecoratedContainer(
+            widget: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Paragraph(
+                  content: AppValues.appName,
+                  style: STYLE_BIG.copyWith(
+                    color: AppColors.COLOR_WHITE,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 50,
                   ),
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: SizeToPadding.sizeBig * 2,
-                        horizontal: SizeToPadding.sizeSmall,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          buildLogin(),
-                          buildFieldPhoneNumber(),
-                          buildFieldPass(),
-                          // buildForgotPass(),
-                          buildOnSignIn(),
-                          buildNote(),
+                ),
+                SizedBox(height: SpaceBox.sizeSmall * 5),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: SizeToPadding.sizeLarge),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: <Color>[
+                          AppColors.COLOR_WHITE,
+                          AppColors.COLOR_WHITE.withOpacity(0.7)
                         ],
                       ),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: SizeToPadding.sizeBig * 2,
+                          horizontal: SizeToPadding.sizeSmall,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            buildLogin(),
+                            buildFieldPhoneNumber(),
+                            buildFieldPass(),
+                            // buildForgotPass(),
+                            buildOnSignIn(),
+                            buildNote(),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 }

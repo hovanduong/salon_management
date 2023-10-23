@@ -30,7 +30,7 @@ class AuthParams {
 }
 
 class AuthApi {
-  Future<Result<bool, Exception>> signUp(AuthParams? params) async {
+  Future<Result<bool, AppException>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
         url: '/auth/register',
@@ -46,10 +46,14 @@ class AuthApi {
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
+        case 400:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['code']);
+          return Failure(AppException(data));
         default:
-          return Failure(Exception(response!.reasonPhrase));
+          return Failure(AppException(response!.reasonPhrase!));
       }
-    } on Exception catch (e) {
+    } on AppException catch (e) {
       return Failure(e);
     }
   }
@@ -104,7 +108,6 @@ class AuthApi {
           'newPassword': params.password,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           return const Success(true);

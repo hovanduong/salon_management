@@ -91,7 +91,7 @@
     "date": "Ngày",
     "failed": "Thất bại",
     "success": "Thành công",
-    "existsAccount": "Tài khoản của bạn đã tồn tại. Vui lòng kiểm tra lại",
+    "existsAccount": "Tài khoản này đã tồn tại. Vui lòng kiểm tra lại",
     "cancel": "Hủy bỏ",
     "validOTP": "Mã xác thực không hợp lệ",
     "selectCity": "Chọn Thành Phố",
@@ -262,5 +262,7 @@
     "waningDeleteAccount":"Bạn có muốn xóa tài khoản không?",
     "notifiCheckPhone":"Vui lòng nhập số điện thoại của bạn để xác nhận",
     "confirmDeleteAccount":"Xác nhận xóa tài khoản",
+    "signUpFail":"Registration failed.",
+    "haveAccount":"Bạn đã có tài khoản?",
     "lastLine": ""
 }

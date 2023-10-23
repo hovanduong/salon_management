@@ -35,7 +35,9 @@ class DropdownButtonWidget extends StatelessWidget {
           return DropdownMenuItem(
             value: value,
             child: Paragraph(content: value, 
-              style: STYLE_MEDIUM_BOLD,
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w400
+              ),
             ),
           );
         }).toList(), 
