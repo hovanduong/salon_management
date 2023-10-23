@@ -20,4 +20,5 @@ class MyCustomerEditLanguage {
   static final gender = S.current.gender;
 
   static final update = S.current.update;
+  static final errorNetwork= S.current.errorNetwork;
 }

@@ -1,7 +1,8 @@
 export 'booking_language.dart';
-export 'create_pass_language.dart';
+export 'change_pass_language.dart';
 export 'history_language.dart';
 export 'home_language.dart';
+export 'profile_account_language.dart';
 export 'service_add_language.dart';
 export 'sign_in_language.dart';
 export 'sign_up_language.dart';

@@ -233,7 +233,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   }
 
   Widget buildTabDone() {
-    print(_viewModel!.isLoading);
     return ScreenTap(
       isLoading: _viewModel!.isLoading,
       isPullRefresh: _viewModel!.isPullRefresh,

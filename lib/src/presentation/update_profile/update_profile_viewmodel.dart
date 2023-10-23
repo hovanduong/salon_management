@@ -35,7 +35,7 @@ class UpdateProfileViewModel extends BaseViewModel {
       fullName: fullNameController.text,
       gender: gender
     );
-    await Navigator.pushNamed(context, Routers.createPassword, 
+    await Navigator.pushNamed(context, Routers.changePassword, 
         arguments: RegisterArguments( userModel: user),
       );
   }

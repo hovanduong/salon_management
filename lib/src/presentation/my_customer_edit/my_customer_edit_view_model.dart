@@ -85,7 +85,7 @@ class MyCustomerEditViewModel extends BaseViewModel {
       context: context,
       builder: (context) {
         return WarningOneDialog(
-          content: CreatePasswordLanguage.errorNetwork,
+          content: MyCustomerEditLanguage.errorNetwork,
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
           buttonName: SignUpLanguage.cancel,

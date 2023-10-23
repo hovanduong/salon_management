@@ -16,6 +16,8 @@ class WarningDialog extends StatelessWidget {
     this.rightButtonName,
     this.onTapLeft,
     this.onTapRight,
+    this.isForm = false,
+    this.controller,
   }) : super(key: key);
   final String? content;
   final String? title;
@@ -26,6 +28,8 @@ class WarningDialog extends StatelessWidget {
   final Color? colorNameLeft;
   final Function()? onTapLeft;
   final Function()? onTapRight;
+  final bool isForm;
+  final TextEditingController? controller;
 
   dynamic dialogContent(BuildContext context) {
     return DecoratedBox(
@@ -46,13 +50,14 @@ class WarningDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircleAvatar(
-              backgroundColor: AppColors.COLOR_WHITE,
-              radius: 35,
-              child: SvgPicture.asset(
-                image ?? '',
+            if (image != null)
+              CircleAvatar(
+                backgroundColor: AppColors.COLOR_WHITE,
+                radius: 35,
+                child: SvgPicture.asset(
+                  image ?? '',
+                ),
               ),
-            ),
             const SizedBox(
               height: 25,
             ),
@@ -76,6 +81,16 @@ class WarningDialog extends StatelessWidget {
                   textAlign: TextAlign.center,
                   content: content ?? '',
                   style: STYLE_MEDIUM,
+                ),
+              ),
+            if (!isForm) const SizedBox(height: 10),
+            if (isForm)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: AppFormField(
+                  keyboardType: TextInputType.phone,
+                  textEditingController: controller,
+                  hintText: 'Nhập số điện thoại',
                 ),
               ),
             SizedBox(height: content != null ? 10 : 30),

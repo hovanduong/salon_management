@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/auth_model.dart';
@@ -16,10 +17,12 @@ class AuthParams {
     this.gender,
     this.email,
     this.passwordConfirm,
+    this.oldPass,
   });
   final UserModel? userModel;
   final String? phoneNumber;
   final String? password;
+  final String? oldPass;
   final String? fullName;
   final String? gender;
   final String? email;
@@ -27,7 +30,7 @@ class AuthParams {
 }
 
 class AuthApi {
-  Future<Result<bool, Exception>> signUp(AuthParams? params) async {
+  Future<Result<bool, AppException>> signUp(AuthParams? params) async {
     try {
       final response = await HttpRemote.post(
         url: '/auth/register',
@@ -43,10 +46,14 @@ class AuthApi {
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
+        case 400:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['code']);
+          return Failure(AppException(data));
         default:
-          return Failure(Exception(response!.reasonPhrase));
+          return Failure(AppException(response!.reasonPhrase!));
       }
-    } on Exception catch (e) {
+    } on AppException catch (e) {
       return Failure(e);
     }
   }
@@ -64,12 +71,54 @@ class AuthApi {
         case 201:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']);
-          final userData= AuthModelFactory.create(data);
+          final userData = AuthModelFactory.create(data);
           return Success(userData);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
     } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> deleteAccount() async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/auth/remove-account',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, AppException>> changePassword(
+    AuthParams params,
+  ) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/auth/change-pass',
+        body: {
+          'oldPassword': params.oldPass,
+          'newPassword': params.password,
+        },
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        case 400:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['code']);
+          return Failure(AppException(data));
+        default:
+          return Failure(AppException(response!.reasonPhrase!));
+      }
+    } on AppException catch (e) {
       return Failure(e);
     }
   }

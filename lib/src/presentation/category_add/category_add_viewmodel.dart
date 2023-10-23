@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/language/category_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../resource/service/category_api.dart';
@@ -53,7 +54,7 @@ class CategoryAddViewModel extends BaseViewModel {
       context: context,
       builder: (context) {
         return WarningOneDialog(
-          content: CreatePasswordLanguage.errorNetwork,
+          content: CategoryLanguage.errorNetwork,
           image: AppImages.icPlus,
           title: SignUpLanguage.failed,
           buttonName: SignUpLanguage.cancel,
