@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/service/auth.dart';
@@ -126,42 +129,50 @@ class SignUpViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<bool> showExitPopup() async {
+    return await showDialog(
+      context: context,
+      builder: (_) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.exitApp,
+          content: SignUpLanguage.exitAppContent,
+          leftButtonName: SignUpLanguage.cancel,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: BookingLanguage.confirm,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () {
+            if (Platform.isAndroid) {
+              SystemNavigator.pop();
+            } else if (Platform.isIOS) {
+              exit(0);
+            }
+          },
+        );
+      },
+    )??false;
+  }
+
   dynamic showOpenDialog(_) {
     showDialog(
       context: context,
       builder: (context) {
         return WarningDialog(
-          content: SignUpLanguage.existsAccount,
+          content: SignUpLanguage.signUpFail,
           image: AppImages.icPlus,
-          title: SignUpLanguage.failed,
+          title: SignUpLanguage.notification,
           leftButtonName: SignUpLanguage.cancel,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
-          rightButtonName: SignInLanguage.signIn,
+          rightButtonName: SignInLanguage.tryAgain,
           onTapLeft: () {
             Navigator.pop(context);
           },
           onTapRight: () {
-            goToSignIn();
-          },
-        );
-      },
-    );
-  }
-
-  dynamic showDialogNetwork(_) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return WarningOneDialog(
-          content: ChangePasswordLanguage.errorNetwork,
-          image: AppImages.icPlus,
-          title: SignUpLanguage.failed,
-          buttonName: SignUpLanguage.cancel,
-          color: AppColors.BLACK_500,
-          colorNameLeft: AppColors.BLACK_500,
-          onTap: () {
-            Navigator.pop(context);
+            signUp();
           },
         );
       },
@@ -187,13 +198,47 @@ class SignUpViewModel extends BaseViewModel {
       const Duration(seconds: 1),
       () {
         Navigator.pop(context);
-        login();
+        goToSignIn();
       } 
     );
   }
 
   Future<void> saveToken(String value) async {
     await AppPref.setToken(value);
+  }
+
+  dynamic showOpenUserExits(_) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          content: SignUpLanguage.existsAccount,
+          image: AppImages.icPlus,
+          title: SignUpLanguage.notification,
+          leftButtonName: SignUpLanguage.close,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: SignUpLanguage.signIn,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () async {
+            await goToSignIn();
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> handleCustomerError(String message) async {
+    if (message.trim() == AppValues.userExits) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showOpenUserExits(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await showOpenDialog(context);
+    }
   }
 
   Future<void> signUp() async {
@@ -215,9 +260,8 @@ class SignUpViewModel extends BaseViewModel {
     if (!AppValid.isNetWork(value)) {
       LoadingDialog.hideLoadingDialog(context);
       await showDialogNetwork(context);
-    } else if (value is Exception) {
-      LoadingDialog.hideLoadingDialog(context);
-      await showOpenDialog(context);
+    } else if (value is AppException) {
+      await handleCustomerError(value.message);
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);

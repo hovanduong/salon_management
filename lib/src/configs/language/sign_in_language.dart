@@ -10,4 +10,7 @@ class SignInLanguage {
   static final contentNotAccount = S.current.contentNotAccount;
   static final nowSignUp = S.current.nowSignUp;
   static final validAccount = S.current.validAccount;
+  static final tryAgain = S.current.tryAgain;
+  static final exitApp = S.current.exitApp;
+  static final exitAppContent = S.current.exitAppContent;
 }

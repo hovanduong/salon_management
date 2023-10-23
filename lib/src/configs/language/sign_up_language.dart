@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../intl/generated/l10n.dart';
 
 class SignUpLanguage {
@@ -11,5 +13,14 @@ class SignUpLanguage {
   static final success = S.current.success;
   static final addSuccess = S.current.addSuccess;
   static final cancel = S.current.cancel;
+  static final phoneNumberExists = S.current.phoneNumberExists;
+  static final notification = S.current.notification;
+  static final close = S.current.close;
+  static final signIn = S.current.signIn;
+  static final confirm = S.current.confirm;
+  static final signUpFail = S.current.signUpFail;
+  static final exitApp = S.current.exitApp;
+  static final exitAppContent = S.current.exitAppContent;
+  static final haveAccount = S.current.haveAccount;
 
 }
