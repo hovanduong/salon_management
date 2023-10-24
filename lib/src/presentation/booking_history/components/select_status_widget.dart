@@ -49,7 +49,10 @@ class _SelectStatusWidgetState extends State<SelectStatusWidget> {
             value: value,
             child: Paragraph(
               content: value,
-              style: STYLE_SMALL_BOLD.copyWith(color: AppColors.COLOR_WHITE),
+              style: STYLE_MEDIUM.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           );
         }).toList(),

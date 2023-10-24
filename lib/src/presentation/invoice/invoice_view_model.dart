@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/invoice_model.dart';
 import '../../resource/service/invoice.dart';
 import '../../resource/service/my_booking.dart';
@@ -109,6 +110,41 @@ class InvoiceViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  dynamic showSuccessDiaglog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
+    );
+  }
+
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
   Future<void> getInvoice(int page) async {
     final result = await invoiceApi.getInvoice(
       InvoiceParams(
@@ -130,6 +166,28 @@ class InvoiceViewModel extends BaseViewModel {
       listInvoice = value as List<InvoiceModel>;
     }
     isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> deleteInvoice(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await invoiceApi.deleteInvoice(id);
+
+    final value = switch (result) {
+      Success(value: final isBool) => isBool,
+      Failure(exception: final exception) => exception,
+    };
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await showSuccessDiaglog(context);
+      await fetchData();
+    }
     notifyListeners();
   }
 
