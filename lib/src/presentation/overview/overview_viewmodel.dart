@@ -59,7 +59,7 @@ class OverViewViewModel extends BaseViewModel {
   }
 
   Timer _startDelay() =>
-      _timer = Timer(const Duration(milliseconds: 1500), fetchData);
+      _timer = Timer(const Duration(milliseconds: 1000), fetchData);
 
   Future<void> fetchData() async {
     isLoading = true;
