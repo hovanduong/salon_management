@@ -51,7 +51,6 @@ class SlidableActionWidget extends StatelessWidget {
               backgroundColor: AppColors.FIELD_GREEN,
               icon: Icons.edit,
               label: CategoryLanguage.edit,
-              autoClose: true,
             ),
         ],
       ),

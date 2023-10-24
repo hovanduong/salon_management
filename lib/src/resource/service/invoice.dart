@@ -47,7 +47,7 @@ class InvoiceApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/invoice?pageSize=10&page=${params.page ?? 0}&paymentStatus=Paid',
+        url: '/invoice?pageSize=10&page=${params.page}&paymentStatus=Paid',
       );
       switch (response?.statusCode) {
         case 200:
@@ -55,6 +55,23 @@ class InvoiceApi {
           final data = json.encode(jsonMap['data']['items']);
           final invoice = InvoiceModelFactory.createList(data);
           return Success(invoice);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> deleteInvoice(int id,) async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/invoice/$id',
+      );
+      print(response?.statusCode);
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }

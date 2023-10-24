@@ -113,12 +113,16 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         context,
         MyBookingParams(id: idBooking, code: code, isInvoice: true),
       ),
-      child: Transaction(
-        color: _viewModel!.colors[index % _viewModel!.colors.length],
-        money: '+ ${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
-        subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
-        name: name ?? '',
-      ),
+      child: SlidableActionWidget(
+        onTapButtonFirst: (context)
+          => _viewModel!.deleteInvoice(_viewModel!.listCurrent[index].id!),
+        child: Transaction(
+          color: _viewModel!.colors[index % _viewModel!.colors.length],
+          money: '+ ${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
+          subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
+          name: name ?? '',
+        ),
+      )
     );
   }
 
@@ -141,39 +145,39 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   Widget buildListInvoice() {
     return RefreshIndicator(
-            color: AppColors.PRIMARY_GREEN,
-            onRefresh: () async {
-              await _viewModel!.pullRefresh();
-            },
-            child:  _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
-            ? SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-                child: EmptyDataWidget(
-                  title: InvoiceLanguage.blankInvoice,
-                  content: InvoiceLanguage.notificationBlankInvoice,),
-                ),
-            )
-            :  SizedBox(
-              height: MediaQuery.of(context).size.height - 250,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                physics: const AlwaysScrollableScrollPhysics(),
-                controller: _viewModel!.scrollController,
-                itemCount: _viewModel!.loadingMore
-                    ? _viewModel!.listCurrent.length + 1
-                    : _viewModel!.listCurrent.length,
-                itemBuilder: (context, index) {
-                  if (index < _viewModel!.listCurrent.length) {
-                    return invoiceUser(index);
-                  } else {
-                    return const CupertinoActivityIndicator();
-                  }
-                },
-              ),
-            ),
-          );
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child:  _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
+      ? SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+          child: EmptyDataWidget(
+            title: InvoiceLanguage.blankInvoice,
+            content: InvoiceLanguage.notificationBlankInvoice,),
+          ),
+      )
+      :  SizedBox(
+        height: MediaQuery.of(context).size.height - 250,
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.loadingMore
+              ? _viewModel!.listCurrent.length + 1
+              : _viewModel!.listCurrent.length,
+          itemBuilder: (context, index) {
+            if (index < _viewModel!.listCurrent.length) {
+              return invoiceUser(index);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget buildBody() {

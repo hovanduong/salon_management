@@ -99,7 +99,7 @@ class ScreenTap extends StatelessWidget {
                           status: listCurrent![index].status,
                           onChanged: (value) {
                             if (value.contains(HistoryLanguage.cancel)) {
-                              onChangedStatus!(value, id!);
+                              onChangedStatus!('Canceled', id!);
                             }
                           },
                         ),

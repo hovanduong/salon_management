@@ -52,6 +52,7 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> init() async {
     await fetchData();
+    notifyListeners();
   }
 
   Future<void> goToAddBooking({
@@ -69,22 +70,11 @@ class BookingHistoryViewModel extends BaseViewModel {
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   Future<void> fetchData() async {
-    listCurrentUpcoming.clear();
-    listCurrentCanceled.clear();
-    listCurrentDone.clear();
-    listCurrentToday.clear();
-    listCurrentDaysBefore.clear();
-    pageToday = 1;
-    pageUpComing = 1;
-    pageDone = 1;
-    pageCanceled = 1;
-    pageDaysBefore = 1;
+    await getDataToday(pageToday);
+    listCurrentToday = listMyBooking;
 
     await getDataDaysBefore(pageDaysBefore);
     listCurrentDaysBefore = listMyBooking;
-
-    await getDataToday(pageToday);
-    listCurrentToday = listMyBooking;
 
     await getDataUpcoming(pageUpComing);
     listCurrentUpcoming = listMyBooking;
@@ -115,6 +105,16 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
+    listCurrentUpcoming.clear();
+    listCurrentCanceled.clear();
+    listCurrentDone.clear();
+    listCurrentToday.clear();
+    listCurrentDaysBefore.clear();
+    pageToday = 1;
+    pageUpComing = 1;
+    pageDone = 1;
+    pageCanceled = 1;
+    pageDaysBefore = 1;
     isPullRefresh=true;
     notifyListeners();
     await init();
@@ -362,8 +362,8 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value is Exception) {
       isLoading = true;
     } else {
-      isLoading = false;
       listMyBooking = value as List<MyBookingModel>;
+      isLoading = false;
     }
     isLoading = false;
     notifyListeners();
