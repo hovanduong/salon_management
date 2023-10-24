@@ -11,7 +11,8 @@ class AppValid {
       return S.current.validEnterFullName;
     }
     final regex = RegExp(
-        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+      r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',
+    );
     if (!regex.hasMatch(value)) {
       return S.current.validFullName;
     }
@@ -25,7 +26,8 @@ class AppValid {
       return S.current.validName;
     }
     final regex = RegExp(
-        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+      r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',
+    );
     if (!regex.hasMatch(value)) {
       return S.current.validFullName;
     }
@@ -39,7 +41,8 @@ class AppValid {
       return S.current.validName;
     }
     final regex = RegExp(
-        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+      r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',
+    );
     if (!regex.hasMatch(value)) {
       return S.current.validFullName;
     }
@@ -53,7 +56,8 @@ class AppValid {
       return S.current.validName;
     }
     final regex = RegExp(
-        r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',);
+      r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',
+    );
     if (!regex.hasMatch(value)) {
       return S.current.validFullName;
     }
@@ -75,7 +79,7 @@ class AppValid {
     if (value == null || value.isEmpty) {
       return S.current.validEnterPass;
     }
-    if (value.length < 6 || value.length > 16) {
+    if (value.length < 8 || value.length > 16) {
       return S.current.validPass;
     }
     return null;
@@ -103,7 +107,8 @@ class AppValid {
       return S.current.validEnterEmail;
     } else {
       final regex = RegExp(
-          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',);
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+      );
 
       if (!regex.hasMatch(value)) {
         return S.current.validEmail;
@@ -129,10 +134,11 @@ class AppValid {
     if (value == null || value.isEmpty) {
       return S.current.validEnterPhoneNumber;
     } else {
-      final checkPhoneNumber= value.split('')[0];
-      if(checkPhoneNumber!='0'){
+      final checkPhoneNumber = value.split('')[0];
+      if (checkPhoneNumber != '0') {
         return S.current.invalidPhoneNumber;
-      } if (value.length != 10) {
+      }
+      if (value.length != 10) {
         return S.current.validPhoneNumber;
       } else if (!regex.hasMatch(value)) {
         return S.current.validPhone;
@@ -160,7 +166,7 @@ class AppValid {
     if (value == null || value.isEmpty) {
       return S.current.validEnterPhoneNumber;
     } else if (!isNumeric(value)) {
-      return  S.current.validPhone;
+      return S.current.validPhone;
     } else if (value.length != 10) {
       return S.current.validPhoneNumber;
     } else {

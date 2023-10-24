@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:http/http.dart';
 
+import '../../utils/http_remote.dart';
+
 class ConfigPerformance {
   static final FirebasePerformance _performance = FirebasePerformance.instance;
   static const bool _isPerformanceCollectionEnabled = false;
   static const traceSignIn = 'traceSignIn';
   static const phoneNumber = 'phoneNumber';
   static const send = 'SEND';
-  static const url = 'https://spa-api.dhysolutions.net/api';
+  // static const url = 'https://spa-api.dhysolutions.net/api';
 
   static Future<void> init() async {
     await _togglePerformanceCollection();
@@ -37,7 +39,7 @@ class ConfigPerformance {
 
     final request = Request(
       send,
-      Uri.parse(url),
+      Uri.parse(Constants.baseUrl),
     );
 
     unawaited(metricHttpClient.send(request));

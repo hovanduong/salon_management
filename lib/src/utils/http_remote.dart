@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import '../presentation/app/app.dart';
+import '../presentation/routers.dart';
 import 'utils.dart';
 
 Client client = http.Client();
@@ -11,7 +13,9 @@ String accessToken = '';
 Map<String, String> requestHeaders = {};
 
 class Constants {
-  static String baseUrl = 'https://spa-api.dhysolutions.net/api';
+  // static String baseUrl = 'https://spa-api.dhysolutions.net/api';
+
+  static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
 }
 
 class HttpRemote {
@@ -42,6 +46,17 @@ class HttpRemote {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
+    }
+  }
+
+  static Future<void> goToLogin() async {
+    await navigatorKey.currentState?.pushReplacementNamed(Routers.signIn);
+  }
+
+  static Future<void> logOut(int statusCode) async {
+    if (statusCode == 401) {
+      await AppPref.logout();
+      await goToLogin();
     }
   }
 

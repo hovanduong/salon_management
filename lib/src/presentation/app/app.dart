@@ -13,11 +13,15 @@ class Constants {
   static const String fonts = 'Inter';
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
+
       key: key,
       debugShowCheckedModeBanner: false,
       // navigatorObservers: [ConfigAnalytics.observer],
