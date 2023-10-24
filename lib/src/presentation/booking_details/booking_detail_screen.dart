@@ -84,17 +84,12 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildHeader(int index) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.PRIMARY_PINK,
-      ),
-      child: Column(
-        children: [
-          buildAppBar(index),
-          buildDivider(),
-          buildAddress(index),
-        ],
-      ),
+    return Column(
+      children: [
+        buildAppBar(index),
+        buildDivider(),
+        Container(color: AppColors.COLOR_WHITE, child: buildAddress(index)),
+      ],
     );
   }
 
@@ -342,7 +337,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
   Widget buildItemScreen() {
     return Scaffold(
-      backgroundColor: AppColors.PRIMARY_PINK,
+      // backgroundColor: AppColors.PRIMARY_PINK,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -355,15 +350,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                     return Column(
                       children: [
                         buildHeader(index),
-                        Container(
-                          color: AppColors.COLOR_WHITE,
-                          child: Column(
-                            children: [
-                              buildInfoCard(index),
-                              buildCardService(index),
-                            ],
-                          ),
-                        )
+                        buildInfoCard(index),
+                        buildCardService(index)
                       ],
                     );
                   }),
