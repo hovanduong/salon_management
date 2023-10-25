@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'src/configs/configs.dart';
 import 'src/presentation/app/app.dart';
@@ -21,6 +22,9 @@ Future<void> main() async {
   await ConfigPerformance.init();
   await AppDeviceInfo.init();
   await HttpRemote.init();
+  await SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
   runApp(const MyApp());
   await trace.stop();
 }
