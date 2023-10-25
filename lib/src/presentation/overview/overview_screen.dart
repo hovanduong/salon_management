@@ -202,6 +202,7 @@ class _OverViewScreenState extends State<OverViewScreen>
       child: Padding(
         padding: EdgeInsets.all(SpaceBox.sizeSmall),
         child: TabBarView(
+          controller: _viewModel!.tabController,
           children: [
             buildTabYesterday(),
             buildTabToday(),

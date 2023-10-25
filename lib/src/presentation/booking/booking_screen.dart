@@ -492,7 +492,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       validator: _viewModel!.addressMsg,
       onChanged: (value) {
         _viewModel!
-          ..validAddress(value)
+          ..validAddress(value.trim())
           ..enableConfirmButton();
       },
     );

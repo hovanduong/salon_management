@@ -22,7 +22,7 @@ class BookingHistoryScreen extends StatefulWidget {
 }
 
 class _BookingHistoryScreenState extends State<BookingHistoryScreen>
-    with AutomaticKeepAliveClientMixin {
+  with TickerProviderStateMixin {
   BookingHistoryViewModel? _viewModel;
 
   @override
@@ -32,7 +32,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   Widget build(BuildContext context) {
     return BaseWidget(
         viewModel: BookingHistoryViewModel(),
-        onViewModelReady: (viewModel) => _viewModel = viewModel?..init(),
+        onViewModelReady: (viewModel) => _viewModel = viewModel?..init(
+          dataThis: this,
+        ),
         builder: (context, viewModel, child) =>
             //   AnnotatedRegion<SystemUiOverlayStyle>(
             // value: const SystemUiOverlayStyle(
@@ -95,6 +97,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     return Container(
       color: AppColors.COLOR_WHITE,
       child: TabBar(
+        controller: _viewModel!.tabController,
         onTap: (value) {
           _viewModel!.setStatus(value);
         },
@@ -150,6 +153,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabDaysBefore() {
     return ScreenTap(
+      contentEmpty: HistoryLanguage.notificationEmptyBefore,
       listCurrent: _viewModel!.listCurrentDaysBefore,
       isLoading: _viewModel!.isLoading,
       isPullRefresh: _viewModel!.isPullRefresh,
@@ -178,6 +182,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabToday() {
     return ScreenTap(
+      contentEmpty: HistoryLanguage.notificationEmptyToday,
       listCurrent: _viewModel!.listCurrentToday,
       isLoading: _viewModel!.isLoading,
       isPullRefresh: _viewModel!.isPullRefresh,
@@ -206,6 +211,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabUpcoming() {
     return ScreenTap(
+      contentEmpty: HistoryLanguage.notificationEmptyUpcoming,
       isLoading: _viewModel!.isLoading,
       listCurrent: _viewModel!.listCurrentUpcoming,
       isPullRefresh: _viewModel!.isPullRefresh,
@@ -299,6 +305,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           child: Padding(
             padding: EdgeInsets.all(SpaceBox.sizeMedium),
             child: TabBarView(
+              controller: _viewModel!.tabController,
               children: [
                 buildTabDaysBefore(),
                 buildTabToday(),
@@ -315,8 +322,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildItemScreen() {
     return DefaultTabController(
-      length: 5,
       initialIndex: 1,
+      length: 5,
       child: Scaffold(
         floatingActionButton: Padding(
           padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),

@@ -56,6 +56,11 @@ class OverViewViewModel extends BaseViewModel {
   dynamic init({dynamic? dataThis}) {
     _startDelay();
     tabController = TabController(length: 4, vsync: dataThis, initialIndex: 1);
+    tabController!.animation?.addListener(() {
+      final currentIndex = tabController!.animation!.value.round();
+      Future.delayed(const Duration(milliseconds: 500), 
+        () => setDataPage(currentIndex),);
+    });
   }
 
   Timer _startDelay() =>

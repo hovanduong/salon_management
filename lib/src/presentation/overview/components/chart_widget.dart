@@ -127,7 +127,7 @@ class ChartWidget extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                       // AppColors.FIELD_GREEN_Second, AppColors.FIELD_GREEN_First,
-                      AppColors.PRIMARY_GREEN, AppColors.COLOR_WHITE
+                      AppColors.PRIMARY_GREEN, AppColors.COLOR_WHITE,
                     ],),
                   ),
                   preventCurveOverShooting: true,

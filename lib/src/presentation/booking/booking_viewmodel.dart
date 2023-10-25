@@ -286,7 +286,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void validAddress(String value) {
-    if (addressController.text.isEmpty) {
+    if (addressController.text.trim().isEmpty) {
       addressMsg = BookingLanguage.emptyAddress;
     } else {
       addressMsg = '';
@@ -313,8 +313,8 @@ class BookingViewModel extends BaseViewModel {
     if (onPhone &&
         onAddress &&
         selectedService.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        addressController.text.isNotEmpty) {
+        phoneController.text.trim().isNotEmpty &&
+        addressController.text.trim().isNotEmpty) {
       enableButton = true;
     } else {
       enableButton = false;

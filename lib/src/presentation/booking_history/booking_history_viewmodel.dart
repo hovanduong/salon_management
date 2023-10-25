@@ -50,8 +50,11 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   String status = Contains.confirmed;
 
-  Future<void> init() async {
+  TabController? tabController;
+
+  Future<void> init({dynamic dataThis}) async {
     await fetchData();
+    tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
     notifyListeners();
   }
 
@@ -117,7 +120,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     pageDaysBefore = 1;
     isPullRefresh=true;
     notifyListeners();
-    await init();
+    await fetchData();
     isLoadMore = false;
     notifyListeners();
   }
@@ -348,6 +351,8 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
+    isLoading=true;
+    notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,
     );
@@ -427,6 +432,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       const Duration(seconds: 2),
       () {
         timer?.cancel();
+        tabController?.dispose();
         scrollCanceled.dispose();
         scrollDaysBefore.dispose();
         scrollDone.dispose();
