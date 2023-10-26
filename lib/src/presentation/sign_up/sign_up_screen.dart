@@ -40,9 +40,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget buildTitleSignUp() {
-    return Paragraph(
-      content: SignUpLanguage.signUp,
-      style: STYLE_BIG.copyWith(fontWeight: FontWeight.w600, fontSize: 25),
+    return Padding(
+      padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
+      child: Paragraph(
+        content: SignUpLanguage.signUp,
+        style: STYLE_BIG.copyWith(fontWeight: FontWeight.w600, fontSize: 25),
+      ),
     );
   }
 
@@ -215,7 +218,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             // buildRegister(),
             buildTitleSignUp(),
-            buildWelComeBack(),
+
+            // buildWelComeBack(),
             buildFieldPhoneNumber(),
             buildFieldFullName(),
             buildFieldEmail(),
@@ -260,7 +264,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-              
                 SizedBox(height: SpaceBox.sizeSmall * 10),
                 buildFormSignUp(),
                 SizedBox(height: SpaceBox.sizeSmall * 5),
