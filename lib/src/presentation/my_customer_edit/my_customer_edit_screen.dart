@@ -136,7 +136,7 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildFieldName(),
-              buildFieldMail(),
+              // buildFieldMail(),
               // buildSelectGender(),
               buildButtonApp(),
             ],

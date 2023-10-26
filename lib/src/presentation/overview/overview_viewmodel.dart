@@ -190,7 +190,6 @@ class OverViewViewModel extends BaseViewModel {
     showTopService = false;
     showTopServicePackage = false;
     daysInterval = 15;
-    isLoading = true;
     if (value == 0) {
       currentTab=0;
       date = AppCheckDate.getDateBefore();
@@ -366,7 +365,6 @@ class OverViewViewModel extends BaseViewModel {
 
   Future<void> getRevenueChart(String date) async {
     setDateStartEnd(date);
-    isLoading = true;
     final result = await incomeApi.getRevenueChart(
       IncomeParams(
         timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
