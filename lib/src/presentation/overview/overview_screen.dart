@@ -29,6 +29,11 @@ class _OverViewScreenState extends State<OverViewScreen>
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light,
     );
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+          statusBarColor: AppColors.PRIMARY_GREEN, // status bar color
+          ),
+    );
 
     return BaseWidget(
       viewModel: OverViewViewModel(),
@@ -230,11 +235,13 @@ class _OverViewScreenState extends State<OverViewScreen>
           children: [
             Expanded(
               flex: 1,
-              child: Column(
-                children: [
-                  buildHeader(),
-                  buildAppBar(),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    buildHeader(),
+                    buildAppBar(),
+                  ],
+                ),
               ),
             ),
             Expanded(
