@@ -7,11 +7,13 @@ class SelectStatusWidget extends StatefulWidget {
   const SelectStatusWidget({
     super.key,
     this.status,
-    this.onChanged,
+    this.onChanged, 
+    this.color,
   });
 
   final String? status;
   final Function(String value)? onChanged;
+  final Color? color;
 
   @override
   State<SelectStatusWidget> createState() => _SelectStatusWidgetState();
@@ -36,12 +38,12 @@ class _SelectStatusWidgetState extends State<SelectStatusWidget> {
       height: SpaceBox.sizeLarge * 2,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(SpaceBox.sizeVerySmall),
-        color: AppColors.PRIMARY_GREEN,
+        color: widget.color?? AppColors.PRIMARY_GREEN,
       ),
       child: DropdownButton(
         padding: EdgeInsets.all(SpaceBox.sizeSmall),
         value: dropValue,
-        dropdownColor: AppColors.PRIMARY_GREEN,
+        dropdownColor: widget.color?? AppColors.PRIMARY_GREEN,
         iconEnabledColor: AppColors.COLOR_WHITE,
         underline: Container(),
         items: listStatus.map((value) {

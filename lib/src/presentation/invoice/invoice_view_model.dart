@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/language/invoice_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/invoice_model.dart';
 import '../../resource/service/invoice.dart';
@@ -133,6 +134,28 @@ class InvoiceViewModel extends BaseViewModel {
         return WarningOneDialog(
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
+        );
+      },
+    );
+  }
+
+  dynamic showWaningDiaglog(int id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: InvoiceLanguage.notification,
+          content: InvoiceLanguage.warningDeleteInvoice,
+          leftButtonName: InvoiceLanguage.cancel,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          rightButtonName: InvoiceLanguage.confirm,
+          onTapRight: () {
+            deleteInvoice(id);
+            Navigator.pop(context);
+          },
         );
       },
     );

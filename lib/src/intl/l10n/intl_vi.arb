@@ -232,6 +232,9 @@
     "notificationBlankInvoice":"Hiện tại bạn bạn không có bất kỳ hóa đơn nào.",
     "emptyAppointment":"Cuộc hẹn trống",
     "notificationEmptyAppointment":"Hiện tại bạn không có cuộc hẹn nào.",
+    "notificationEmptyToday":"Hôm nay bạn không có cuộc hẹn nào.",
+    "notificationEmptyUpcoming":"Sắp tới bạn không có cuộc hẹn nào.",
+    "notificationEmptyBefore":"Ngày trước bạn không có cuộc hẹn nào.",
     "emptyDoneAppointment":"Cuộc hẹn đã thanh toán trống",
     "notificationDoneAppointment":"Hiện tại bạn không có cuộc hẹn nào đã thanh toán.",
     "emptyCanceledAppointment":"Cuộc hẹn đã hủy trống",
@@ -264,5 +267,7 @@
     "confirmDeleteAccount":"Xác nhận xóa tài khoản",
     "signUpFail":"Registration failed.",
     "haveAccount":"Bạn đã có tài khoản?",
+    "warningDeleteInvoice":"Bạn có muốn xóa hóa đơn này không?",
+    "contentCopyPhone":"Đã sao chép số điện thoại vào bảng nhớ tạm",
     "lastLine": ""
 }

@@ -70,9 +70,7 @@ class MyCustomerEditViewModel extends BaseViewModel {
 
   void onSubmit() {
     if (messageErrorName == null &&
-        nameController.text != '' &&
-        mailController.text != '' &&
-        messageErrorMail== null ) {
+        nameController.text != '' ) {
       enableSubmit = true;
     } else {
       enableSubmit = false;
@@ -132,14 +130,19 @@ class MyCustomerEditViewModel extends BaseViewModel {
     );
   }
 
+  void clearData(){
+    nameController.text='';
+    notifyListeners();
+  }
+
   Future<void> putMyCustomer() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await myCustomerApi.putMyCustomer(
       MyCustomerParams(
         id: id,
-        email: mailController.text,
+        // email: 'email',
         fullName: nameController.text,
-        gender: selectedGender,
+        gender: 'Nữ',
       ),
     );
 
@@ -157,6 +160,7 @@ class MyCustomerEditViewModel extends BaseViewModel {
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDialog(context);
+      clearData();
       timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context); });
     }
     notifyListeners();

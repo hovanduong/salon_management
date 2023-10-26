@@ -17,31 +17,34 @@ class MyCustomerEditScreen extends StatefulWidget {
 }
 
 class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
-
   MyCustomerEditViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     final modelData = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
-      viewModel: MyCustomerEditViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel= viewModel?..init(
-        modelData! as MyCustomerModel,),
+      viewModel: MyCustomerEditViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel
+        ?..init(
+          modelData! as MyCustomerModel,
+        ),
       builder: (context, viewModel, child) => buildMyCustomerAddScreen(),
     );
   }
 
-  Widget buildAppBar(){
+  Widget buildAppBar() {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeVerySmall,
-        vertical: Size.sizeMedium,
+        vertical: Size.sizeMedium * 2,
       ),
       child: ListTile(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
-            Icons.arrow_back_ios_new, color: AppColors.COLOR_WHITE,),
+            Icons.arrow_back_ios_new,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
         title: Paragraph(
           content: MyCustomerEditLanguage.updateMyCustomer,
@@ -57,7 +60,7 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
     return const CustomBackGround();
   }
 
-  Widget buildFieldMail(){
+  Widget buildFieldMail() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
@@ -65,29 +68,31 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
         textEditingController: _viewModel!.mailController,
         hintText: MyCustomerEditLanguage.enterEmail,
         onChanged: (value) {
-          _viewModel!..validMail(value)
-          ..onSubmit();
+          _viewModel!
+            ..validMail(value)
+            ..onSubmit();
         },
         validator: _viewModel!.messageErrorMail,
-        isSpace: true, 
+        isSpace: true,
       ),
     );
   }
 
-  Widget buildFieldName(){
+  Widget buildFieldName() {
     return AppFormField(
       labelText: MyCustomerEditLanguage.name,
       textEditingController: _viewModel!.nameController,
       hintText: MyCustomerEditLanguage.enterName,
       onChanged: (value) {
-        _viewModel!..validName(value)
-        ..onSubmit();
+        _viewModel!
+          ..validName(value)
+          ..onSubmit();
       },
       validator: _viewModel!.messageErrorName,
     );
   }
 
-  Widget buildButtonApp(){
+  Widget buildButtonApp() {
     return AppButton(
       enableButton: _viewModel!.enableSubmit,
       content: MyCustomerEditLanguage.update,
@@ -97,7 +102,7 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
     );
   }
 
-  Widget buildSelectGender(){
+  Widget buildSelectGender() {
     return Padding(
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
       child: Row(
@@ -106,7 +111,9 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
             content: MyCustomerEditLanguage.gender,
             style: STYLE_MEDIUM_BOLD,
           ),
-          SizedBox(width: SpaceBox.sizeMedium,),
+          SizedBox(
+            width: SpaceBox.sizeMedium,
+          ),
           SelectGenderWidget(
             onChanged: (value) {
               _viewModel!.setSelectedGender(value);
@@ -117,18 +124,22 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
     );
   }
 
-  Widget buildCardField(){
+  Widget buildCardField() {
     return Positioned(
       top: 150,
       child: Container(
-        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig*2,
+        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig * 2,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.BLACK_400, blurRadius: SpaceBox.sizeVerySmall,),
+              color: AppColors.BLACK_400,
+              blurRadius: SpaceBox.sizeVerySmall,
+            ),
           ],
           color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeLarge),),
+          borderRadius: BorderRadius.all(
+            Radius.circular(SpaceBox.sizeLarge),
+          ),
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
@@ -136,8 +147,8 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildFieldName(),
-              buildFieldMail(),
-              buildSelectGender(),
+              // buildFieldMail(),
+              // buildSelectGender(),
               buildButtonApp(),
             ],
           ),
@@ -146,21 +157,19 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
     );
   }
 
-  Widget buildMyCustomerAddScreen(){
+  Widget buildMyCustomerAddScreen() {
     return SingleChildScrollView(
-      child: SafeArea(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            const SizedBox(
-              width: double.maxFinite,
-              height: double.maxFinite,
-            ),
-            background(),
-            buildAppBar(),
-            buildCardField(),
-          ],
-        ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          const SizedBox(
+            width: double.maxFinite,
+            height: double.maxFinite,
+          ),
+          background(),
+          buildAppBar(),
+          buildCardField(),
+        ],
       ),
     );
   }

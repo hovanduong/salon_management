@@ -13,14 +13,16 @@ class DiaLogPhoneCustomer extends StatelessWidget {
     this.phone, 
     this.isCopy = true, 
     this.onTapCall, 
-    this.onTapText,
+    this.onTapText, 
+    this.onTapCopy,
   })
   : super(key: key);
 
   final String? phone;
-  final bool? isCopy;
+  final bool isCopy;
   final Function()? onTapCall;
   final Function()? onTapText;
+  final Function()? onTapCopy;
 
   Widget buildHeaderPhone(BuildContext context) {
     return Container(
@@ -135,14 +137,10 @@ class DiaLogPhoneCustomer extends StatelessWidget {
                   ),
                 ),
                 const Divider(height: 0, thickness: 1),
-                if (isCopy == true)
+                if (isCopy)
                   GestureDetector(
                     onTap: () {
-                      // FlutterClipboard.copy(phone).then((value) => showToast(
-                      //     'Đã sao chép ',
-                      //     gravity: Toast.bottom,
-                      //     duration: Toast.lengthLong,
-                      //     bgColor: Colors.black45));
+                      onTapCopy!();
                     },
                     child: Padding(
                       padding: EdgeInsets.all(SpaceBox.sizeMedium),

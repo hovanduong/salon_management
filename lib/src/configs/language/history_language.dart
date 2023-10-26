@@ -28,5 +28,8 @@ class HistoryLanguage {
   static final notificationDoneAppointment = S.current.notificationDoneAppointment;
   static final emptyCanceledAppointment = S.current.emptyCanceledAppointment;
   static final notificationCanceledAppointment = S.current.notificationCanceledAppointment;
+  static final notificationEmptyToday = S.current.notificationEmptyToday;
+  static final notificationEmptyBefore = S.current.notificationEmptyBefore;
+  static final notificationEmptyUpcoming = S.current.notificationEmptyUpcoming;
 
 }

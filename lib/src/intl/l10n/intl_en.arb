@@ -232,6 +232,9 @@
     "notificationBlankInvoice":"You currently do not have any invoices.",
     "emptyAppointment":"Appointment schedule is empty",
     "notificationEmptyAppointment":"You currently have no appointment.",
+    "notificationEmptyToday":"You don't have any appointments today.",
+    "notificationEmptyUpcoming":"You don't have any appointments coming up.",
+    "notificationEmptyBefore":"You don't have any appointments the day before.",
     "emptyDoneAppointment":"Paid appointment is empty",
     "notificationDoneAppointment":"You currently have no paid appointments.",
     "emptyCanceledAppointment":"Canceled appointment is empty",
@@ -264,5 +267,7 @@
     "confirmDeleteAccount":"Confirm account deletion",
     "signUpFail":"Đăng ký thất bại.",
     "haveAccount":"Do you have an account?",
+    "warningDeleteInvoice":"Do you want to delete this invoice?",
+    "contentCopyPhone":"Phone number copied to clipboard",
     "lastLine": ""
 }

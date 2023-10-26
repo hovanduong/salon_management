@@ -42,7 +42,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildLoadingScreen(){
+  Widget buildLoadingScreen() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -427,8 +427,12 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
-        left: SizeToPadding.sizeMedium, right: SizeToPadding.sizeMedium,),
+      padding: EdgeInsets.only(
+        top: Platform.isAndroid ? 40 : 60,
+        bottom: 10,
+        left: SizeToPadding.sizeMedium,
+        right: SizeToPadding.sizeMedium,
+      ),
       color: AppColors.PRIMARY_GREEN,
       child: CustomerAppBar(
         color: AppColors.COLOR_WHITE,
@@ -476,8 +480,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       onTap: () {
         if (_viewModel!.dataMyBooking == null) {
           _viewModel!.setLoading(true);
-          Future.delayed(const Duration(milliseconds: 500),
-            () => showSelectPhone(context),);
+          Future.delayed(
+            const Duration(milliseconds: 500),
+            () => showSelectPhone(context),
+          );
         }
       },
     );
@@ -492,7 +498,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       validator: _viewModel!.addressMsg,
       onChanged: (value) {
         _viewModel!
-          ..validAddress(value)
+          ..validAddress(value.trim())
           ..enableConfirmButton();
       },
     );

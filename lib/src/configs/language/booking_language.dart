@@ -44,6 +44,6 @@ class BookingLanguage {
   static final canceled = S.current.canceled;
   static final emptyService = S.current.emptyService;
   static final contentEmptyService = S.current.contentEmptyService;
-
+  static final contentCopyPhone = S.current.contentCopyPhone;
 
 }

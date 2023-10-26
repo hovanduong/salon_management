@@ -20,13 +20,16 @@ class ScreenTap extends StatelessWidget {
     this.isButton = false,
     this.isLoading = false,
     this.isPullRefresh = false,
+    this.isCanceled=false,
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
     this.onTapEditBooking,
     this.onPay,
     this.titleEmpty,
-    this.contentEmpty,
+    this.contentEmpty, 
+    this.colorStatus, 
+    this.status,
   });
 
   final Function()? onRefresh;
@@ -38,6 +41,7 @@ class ScreenTap extends StatelessWidget {
   final bool isButton;
   final bool isLoading;
   final bool isPullRefresh;
+  final bool isCanceled;
   final Function(int id)? onTapCard;
   final Function(String value, int id)? onChangedStatus;
   final Function(int id)? onTapDeleteBooking;
@@ -45,6 +49,8 @@ class ScreenTap extends StatelessWidget {
   final Function(int id)? onPay;
   final String? titleEmpty;
   final String? contentEmpty;
+  final Color? colorStatus;
+  final String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +102,16 @@ class ScreenTap extends StatelessWidget {
                     onTapPhone: () => onTapPhone!(phone!),
                     widget: widget ??
                         SelectStatusWidget(
-                          status: listCurrent![index].status,
+                          status: status ?? HistoryLanguage.confirmed,
                           onChanged: (value) {
-                            if (value.contains(HistoryLanguage.cancel)) {
-                              onChangedStatus!('Canceled', id!);
+                            if(isCanceled && value.contains(HistoryLanguage.confirmed)){
+                              onChangedStatus!('Confirmed', id!);
                             }
+                            if(!isCanceled && value.contains(HistoryLanguage.cancel)){
+                              onChangedStatus!('Canceled', id!);
+                            } 
                           },
+                          color: colorStatus,
                         ),
                   );
                 } else {
