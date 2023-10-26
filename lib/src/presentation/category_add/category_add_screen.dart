@@ -68,7 +68,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
         hintText: CategoryLanguage.enterCategory,
         onChanged: (value) {
           _viewModel!
-            ..validCategory(value)
+            ..validCategory(value.trim())
             ..onSubmit();
         },
         validator: _viewModel!.messageErrorCategory,

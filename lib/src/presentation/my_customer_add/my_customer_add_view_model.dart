@@ -44,9 +44,8 @@ class MyCustomerAddViewModel extends BaseViewModel {
       Navigator.pushReplacementNamed(context, Routers.navigation);
 
   void validName(String? value) {
-    final result = AppValid.validateName(value);
-    if (result != null) {
-      messageErrorName = result;
+    if (value!.trim().isEmpty || value.trim()=='') {
+      messageErrorName = SignUpLanguage.validEnterFullName;
     } else {
       messageErrorName = null;
     }

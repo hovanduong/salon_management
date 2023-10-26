@@ -65,7 +65,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         hintText: ServiceAddLanguage.enterServiceName,
         onChanged: (value) {
           _viewModel!
-            ..validNameService(value)
+            ..validNameService(value.trim())
             ..onSubmit();
         },
         validator: _viewModel!.messageErrorNameService,
@@ -86,8 +86,8 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       hintText: ServiceAddLanguage.enterAmountOfMoney,
       onChanged: (value) {
         _viewModel!
-          ..validPrice(value)
-          ..formatMoney(value)
+          ..validPrice(value.trim())
+          ..formatMoney(value.trim())
           ..onSubmit();
       },
       validator: _viewModel!.messageErrorPrice,

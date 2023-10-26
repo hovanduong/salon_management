@@ -100,9 +100,8 @@ class SignUpViewModel extends BaseViewModel {
   }
 
   void validFullName(String? value) {
-    final result = AppValid.validateFullName(value);
-    if (result != null) {
-      messageFullName = result;
+    if (value!.trim().isEmpty || value.trim()=='') {
+      messageFullName = SignUpLanguage.validEnterFullName;
     } else {
       messageFullName = null;
     }

@@ -1,6 +1,6 @@
 {
     "validFullName": "Không nhập kí tự đặc biệt và số",
-    "validEnterFullName": "Vui lòng nhập đày đủ tên của bạn",
+    "validEnterFullName": "Vui lòng nhập đầy đủ tên của bạn",
     "validEnterPhoneNumber": "Vui lòng nhập số điện thoại của bạn",
     "validPhone": "Không nhập kí tự đặc biệt và chữ",
     "validPhoneNumber": "Không nhập dưới 10 số và không vượt quá 11 số",

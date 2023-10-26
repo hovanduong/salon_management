@@ -49,9 +49,8 @@ class MyCustomerEditViewModel extends BaseViewModel {
   }
 
   void validName(String? value) {
-    final result = AppValid.validateName(value);
-    if (result != null) {
-      messageErrorName = result;
+    if (value!.trim().isEmpty || value.trim()=='') {
+      messageErrorName = SignUpLanguage.validEnterFullName;
     } else {
       messageErrorName = null;
     }
