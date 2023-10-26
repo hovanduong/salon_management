@@ -29,7 +29,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
       builder: (context, viewModel, child) =>
           AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
+          statusBarColor: AppColors.PRIMARY_GREEN,
           systemNavigationBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarIconBrightness: Brightness.dark,
