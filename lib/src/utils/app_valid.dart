@@ -8,7 +8,7 @@ class AppValid {
     if (value == null || value.isEmpty) {
       return S.current.validEnterFullName;
     } else if (value.length < 6) {
-      return S.current.validEnterFullName;
+      return S.current.serviceNameMinLength;
     }
     final regex = RegExp(
       r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',

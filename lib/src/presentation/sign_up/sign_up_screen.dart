@@ -64,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       textEditingController: _viewModel!.phoneController,
       onChanged: (value) {
         _viewModel!
-          ..validPhone(value)
+          ..validPhone(value.trim())
           ..onSignUp();
       },
       validator: _viewModel!.messagePhone ?? '',
@@ -78,7 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       textEditingController: _viewModel!.fullNameController,
       onChanged: (value) {
         _viewModel!
-          ..validFullName(value)
+          ..validFullName(value.trim())
           ..onSignUp();
       },
       validator: _viewModel!.messageFullName ?? '',
@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       textEditingController: _viewModel!.emailController,
       onChanged: (value) {
         _viewModel!
-          ..validEmail(value)
+          ..validEmail(value.trim())
           ..onSignUp();
       },
       validator: _viewModel!.messageEmail ?? '',

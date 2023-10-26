@@ -85,7 +85,7 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
       hintText: MyCustomerEditLanguage.enterName,
       onChanged: (value) {
         _viewModel!
-          ..validName(value)
+          ..validName(value.trim())
           ..onSubmit();
       },
       validator: _viewModel!.messageErrorName,

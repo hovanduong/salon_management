@@ -70,7 +70,7 @@ class _MyCustomerAddScreenState extends State<MyCustomerAddScreen> {
         hintText: MyCustomerAddLanguage.enterPhoneNumber,
         onChanged: (value) {
           _viewModel!
-            ..validPhone(value)
+            ..validPhone(value.trim())
             ..onSubmit();
         },
         validator: _viewModel!.messageErrorPhone,

@@ -38,7 +38,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       builder: (context, viewModel, child) =>
           AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
+          statusBarColor: AppColors.PRIMARY_GREEN,
           systemNavigationBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarIconBrightness: Brightness.dark,
@@ -75,7 +75,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
         padding: EdgeInsets.only(
-          top: Platform.isAndroid ? 20 : 60,
+          top: Platform.isAndroid ? 40 : 60,
           bottom: 10,
           left: SizeToPadding.sizeMedium,
           right: SizeToPadding.sizeMedium,
