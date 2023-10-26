@@ -219,7 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             buildFieldPhoneNumber(),
             buildFieldFullName(),
             buildFieldEmail(),
-            buildGender(),
+            // buildGender(),
             buildFieldPass(),
             buildFieldConfirmPass(),
             buildButtonSignIn(),

@@ -51,15 +51,27 @@ class OverViewViewModel extends BaseViewModel {
 
   TabController? tabController;
 
+  int currentTab=1;
+
   Timer? _timer;
 
   dynamic init({dynamic? dataThis}) {
     _startDelay();
     tabController = TabController(length: 4, vsync: dataThis, initialIndex: 1);
-    tabController!.animation?.addListener(() {
-      final currentIndex = tabController!.animation!.value.round();
-      Future.delayed(const Duration(milliseconds: 500), 
-        () => setDataPage(currentIndex),);
+    tabController!.addListener(handleTabChange);
+  }
+
+  void handleTabChange(){
+    final currentIndex = tabController!.index;
+    print(currentIndex);
+    setDataPage(currentIndex);
+    notifyListeners();
+  }
+
+  void setPage(){
+    tabController!.animation?.addListener(() async{
+      final indexCurrent= tabController!.animation!.value.round();
+      await setDataPage(indexCurrent);
     });
   }
 
@@ -71,6 +83,11 @@ class OverViewViewModel extends BaseViewModel {
     await getIncome();
     await getRevenueChart(date);
     await getTopService(AppCheckDate.formatYMD(date));
+    notifyListeners();
+  }
+
+  Future<void> pullRefresh() async {
+    await setDataPage(currentTab);
     notifyListeners();
   }
 
@@ -175,21 +192,25 @@ class OverViewViewModel extends BaseViewModel {
     daysInterval = 15;
     isLoading = true;
     if (value == 0) {
+      currentTab=0;
       date = AppCheckDate.getDateBefore();
       await getRevenueChart(date);
       setDataPageYesterday();
       setTopServiceYesterday();
     } else if (value == 1) {
+      currentTab=1;
       date = AppCheckDate.formatDate(DateTime.now());
       await getRevenueChart(date);
       setDataPageToday();
       setTopServiceToday();
     } else if (value == 2) {
+      currentTab=2;
       date = AppCheckDate.getDateOfWeek();
       await getRevenueChart(date);
       setDataPageWeek();
       setTopServiceWeek();
     } else {
+      currentTab=3;
       daysInterval = 30;
       date = AppCheckDate.getDateOfMonth();
       await getRevenueChart(date);
@@ -403,6 +424,7 @@ class OverViewViewModel extends BaseViewModel {
   void dispose() {
     _timer?.cancel();
     tabController?.dispose();
+    tabController!.removeListener(handleTabChange);
     super.dispose();
   }
 }

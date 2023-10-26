@@ -43,6 +43,11 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
       child: CustomerAppBar(
         onTap: () => Navigator.pop(context),
         title: ProfileAccountLanguage.accountInfo,
+        color: AppColors.COLOR_WHITE,
+        style: STYLE_LARGE.copyWith(
+          color: AppColors.COLOR_WHITE,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -51,7 +56,6 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     return ItemWidget(
       title: ProfileAccountLanguage.fullName,
       content: _viewModel!.userModel?.fullName,
-      dividerTop: true,
     );
   }
 
@@ -67,7 +71,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
+        color: AppColors.PRIMARY_GREEN,
         boxShadow: [
           BoxShadow(
             blurRadius: SpaceBox.sizeMedium,
@@ -75,13 +79,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          buildAppBar(),
-          buildNameUser(),
-          buildPhoneNumber(),
-        ],
-      ),
+      child: buildAppBar()
     );
   }
 
@@ -116,13 +114,14 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
 
   Widget buildInfoUser() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeMedium),
+      margin: EdgeInsets.only(bottom: SpaceBox.sizeMedium, ),
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.COLOR_WHITE,
         boxShadow: [
           BoxShadow(
-            blurRadius: SpaceBox.sizeMedium,
+            blurRadius: 2,
+            blurStyle: BlurStyle.normal,
             color: AppColors.BLACK_200,
           ),
         ],
@@ -131,10 +130,12 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildBirthday(),
-          buildGender(),
+          // buildBirthday(),
+          // buildGender(),
+          buildNameUser(),
+          buildPhoneNumber(),
           buildEmail(),
-          buildAddress(),
+          // buildAddress(),
         ],
       ),
     );

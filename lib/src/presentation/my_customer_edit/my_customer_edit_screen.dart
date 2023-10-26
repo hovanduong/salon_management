@@ -137,7 +137,7 @@ class _MyCustomerEditScreenState extends State<MyCustomerEditScreen> {
             children: [
               buildFieldName(),
               buildFieldMail(),
-              buildSelectGender(),
+              // buildSelectGender(),
               buildButtonApp(),
             ],
           ),

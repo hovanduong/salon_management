@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,15 +71,30 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildAppBar(int index) {
-    return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeLarge),
-      child: CustomerAppBar(
-        onTap: () => Navigator.pop(context),
-        title: _viewModel!.dataMyBooking!.isInvoice
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 20 : 60,
+          bottom: 10,
+          left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
+        ),
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.COLOR_WHITE,
+          ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          title: _viewModel!.dataMyBooking!.isInvoice
             ? '#${_viewModel!.dataMyBooking?.code ?? ''}'
             : _viewModel!.listMyBooking[index].code != null
                 ? '#${_viewModel!.listMyBooking[index].code}'
                 : '',
+        ),
       ),
     );
   }
@@ -87,8 +103,19 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     return Column(
       children: [
         buildAppBar(index),
-        buildDivider(),
-        Container(color: AppColors.COLOR_WHITE, child: buildAddress(index)),
+        DecoratedBox(
+          decoration: const BoxDecoration(
+            color: AppColors.COLOR_WHITE, 
+            boxShadow: [
+              BoxShadow(
+                blurStyle: BlurStyle.normal,
+                blurRadius: 2,
+                color: AppColors.BLACK_300,
+              ),
+            ],
+          ),
+          child: buildAddress(index),
+        ),
       ],
     );
   }

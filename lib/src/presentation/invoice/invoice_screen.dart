@@ -115,7 +115,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       ),
       child: SlidableActionWidget(
         onTapButtonFirst: (context)
-          => _viewModel!.deleteInvoice(_viewModel!.listCurrent[index].id!),
+          => _viewModel!.showWaningDiaglog(_viewModel!.listCurrent[index].id!),
         child: Transaction(
           color: _viewModel!.colors[index % _viewModel!.colors.length],
           money: '+ ${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',

@@ -44,25 +44,25 @@ class _NavigateScreenState extends State<NavigateScreen> {
           children: [
             if (_viewModel!.selectedIndex == 0)
               const OverViewScreen(
-                key: PageStorageKey('HomePage'),
+                // key: PageStorageKey('HomePage'),
               )
             else
               Container(),
             if (_viewModel!.selectedIndex == 1)
               const InvoiceScreen(
-                key: PageStorageKey('invoicePage'),
+                // key: PageStorageKey('invoicePage'),
               )
             else
               Container(),
             if (_viewModel!.selectedIndex == 2)
               const BookingHistoryScreen(
-                key: PageStorageKey('BookingPage'),
+                // key: PageStorageKey('BookingPage'),
               )
             else
               Container(),
             if (_viewModel!.selectedIndex == 3)
               const ProfileScreen(
-                key: PageStorageKey('ProfilePage'),
+                // key: PageStorageKey('ProfilePage'),
               )
             else
               Container(),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -24,9 +25,6 @@ class BookingHistoryScreen extends StatefulWidget {
 class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   with TickerProviderStateMixin {
   BookingHistoryViewModel? _viewModel;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +144,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           phone: phone,
           onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
           onTapText: () => _viewModel!.sendPhone(phone, 'sms'),
+          onTapCopy: () => _viewModel!.copyPhone(phone)
         );
       },
     );
@@ -263,7 +262,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     return ScreenTap(
       isLoading: _viewModel!.isLoading,
       isPullRefresh: _viewModel!.isPullRefresh,
-      widget: setStatusNotification(canceled),
+      colorStatus: AppColors.PRIMARY_RED,
+      status: HistoryLanguage.cancel,
+      // widget: setStatusNotification(canceled),
       listCurrent: _viewModel!.listCurrentCanceled,
       isLoadMore: _viewModel!.isLoadMore,
       scrollController: _viewModel!.scrollCanceled,
@@ -271,6 +272,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         context,
         MyBookingParams(id: id),
       ),
+      onChangedStatus: (value, id) =>
+          _viewModel!.dialogStatus(value: value, context: context, id: id),
+      isCanceled: true,
       onTapPhone: diaLogPhone,
       onRefresh: () async {
         await _viewModel!.pullRefresh();

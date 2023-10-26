@@ -246,7 +246,7 @@ class SignUpViewModel extends BaseViewModel {
     final result = await authApi.signUp(AuthParams(
       email: emailController.text.trim(),
       fullName: fullNameController.text.trim(),
-      gender: gender,
+      gender: 'Nữ',
       password: passController.text.trim(),
       passwordConfirm: confirmPassController.text.trim(),
       phoneNumber: phoneController.text.trim(),

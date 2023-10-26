@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/configs.dart';
@@ -69,7 +72,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       );
 
   Future<void> goToBookingDetails(
-          BuildContext context, MyBookingParams model) =>
+          BuildContext context, MyBookingParams model,) =>
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   Future<void> fetchData() async {
@@ -232,13 +235,23 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   void dialogStatus({required BuildContext context, String? value, int? id}) {
-    showDialogStatus(
-      context: context,
-      content: HistoryLanguage.cancelAppointment,
-      title: HistoryLanguage.cancel,
-      status: value,
-      id: id,
-    );
+    if(value == Contains.confirmed){
+      showDialogStatus(
+        context: context,
+        content: HistoryLanguage.confirmAppointment,
+        title: HistoryLanguage.confirm,
+        status: value,
+        id: id,
+      );
+    }else{
+      showDialogStatus(
+        context: context,
+        content: HistoryLanguage.cancelAppointment,
+        title: HistoryLanguage.cancel,
+        status: value,
+        id: id,
+      );
+    }
   }
 
   Future<void> sendPhone(String phoneNumber, String scheme) async {
@@ -248,6 +261,18 @@ class BookingHistoryViewModel extends BaseViewModel {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
+  }
+
+  void copyPhone(String phone){
+    Clipboard.setData(ClipboardData(text: phone)).then((_){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Paragraph(
+            content: BookingLanguage.contentCopyPhone,
+            style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),),);
+    });
   }
 
   dynamic showWaningDiaglog(int id) {
@@ -351,7 +376,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
-    isLoading=true;
+    isLoading= isPullRefresh? false: true;
     notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,
