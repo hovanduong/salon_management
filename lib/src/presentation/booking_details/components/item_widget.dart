@@ -11,7 +11,7 @@ class ItemWidget extends StatelessWidget {
     this.content,
     this.color,
     this.isSpaceBetween = false,
-    this.fontWeightContent, 
+    this.fontWeightContent,
     this.width,
   });
 
@@ -46,7 +46,9 @@ class ItemWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             content: content ?? '',
             style: STYLE_MEDIUM.copyWith(
-                color: color, fontWeight: fontWeightContent,),
+              color: color,
+              fontWeight: fontWeightContent,
+            ),
           ),
         ),
       ],
