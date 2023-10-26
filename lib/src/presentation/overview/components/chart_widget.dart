@@ -8,6 +8,7 @@ import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/homepage_language.dart';
 import '../../../resource/model/model.dart';
+import '../../../utils/app_currency.dart';
 import '../../../utils/date_format_utils.dart';
 
 class ChartWidget extends StatelessWidget {
@@ -62,6 +63,21 @@ class ChartWidget extends StatelessWidget {
               borderData: FlBorderData(
                 show: true,
                 border: Border.all(color: AppColors.PRIMARY_GREEN, width: 2),
+              ),
+              lineTouchData:  LineTouchData(
+                touchTooltipData: LineTouchTooltipData(
+                  tooltipBgColor: AppColors.COLOR_WHITE,
+                  getTooltipItems: (touchedSpots) {
+                    return touchedSpots.map((touchedSpot) {
+                      final text= AppCurrencyFormat.formatMoney(touchedSpot.y);
+                      const textStyle = TextStyle(
+                        color: AppColors.PRIMARY_GREEN,
+                        fontWeight: FontWeight.bold,
+                      );
+                      return LineTooltipItem(text, textStyle);
+                    }).toList();
+                  },
+                ),
               ),
               gridData: FlGridData(
                 show: true,
