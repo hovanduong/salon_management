@@ -265,9 +265,10 @@
     "waningDeleteAccount":"Bạn có muốn xóa tài khoản không?",
     "notifiCheckPhone":"Vui lòng nhập số điện thoại của bạn để xác nhận",
     "confirmDeleteAccount":"Xác nhận xóa tài khoản",
-    "signUpFail":"Registration failed.",
+    "signUpFail":"Đăng ký không thành công.",
     "haveAccount":"Bạn đã có tài khoản?",
     "warningDeleteInvoice":"Bạn có muốn xóa hóa đơn này không?",
     "contentCopyPhone":"Đã sao chép số điện thoại vào bảng nhớ tạm",
+    "calendar":"Lịch",
     "lastLine": ""
 }

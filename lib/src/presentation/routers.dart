@@ -5,6 +5,7 @@ import 'app/splash.dart';
 import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
+import 'calendar/calendar.dart';
 import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'change_password/change_password.dart';
@@ -62,6 +63,7 @@ class Routers {
   static const String payment = '/payment';
   static const String bill = '/bill';
   static const String profileAccount = '/profileAccount';
+  static const String calendar = '/calendar';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -80,6 +82,14 @@ class Routers {
           const NavigateScreen(),
           beginOffset: right,
           name: navigation,
+          arguments: arguments,
+        );
+      
+      case calendar:
+        return animRoute(
+          const CalendarScreen(),
+          beginOffset: right,
+          name: calendar,
           arguments: arguments,
         );
 

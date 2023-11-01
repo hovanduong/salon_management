@@ -15,6 +15,7 @@ import '../../utils/app_valid.dart';
 import '../../utils/check_date.dart';
 import '../../utils/time_zone.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class OverViewViewModel extends BaseViewModel {
   List<RevenueChartModel> dataChart = [];
@@ -55,11 +56,14 @@ class OverViewViewModel extends BaseViewModel {
 
   Timer? _timer;
 
-  dynamic init({dynamic? dataThis}) {
+  dynamic init({dynamic dataThis}) {
     _startDelay();
     tabController = TabController(length: 4, vsync: dataThis, initialIndex: 1);
     tabController!.addListener(handleTabChange);
   }
+
+  Future<void> goToCalendar() 
+    => Navigator.pushNamed(context, Routers.calendar);
 
   void handleTabChange(){
     final currentIndex = tabController!.index;
