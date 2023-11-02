@@ -7,10 +7,14 @@ import '../../../configs/constants/app_space.dart';
 class MonthCalendarWidget extends StatelessWidget {
   const MonthCalendarWidget({
     super.key, 
-    this.month,
+    this.month, 
+    this.subMonth, 
+    this.addMonth,
   });
 
   final String? month;
+  final Function()? subMonth;
+  final Function()? addMonth;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,7 @@ class MonthCalendarWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                onPressed: (){}, 
+                onPressed: ()=> subMonth!(), 
                 icon: const Icon(
                   Icons.arrow_back_ios_new, 
                   color: AppColors.LINEAR_GREEN,
@@ -49,7 +53,7 @@ class MonthCalendarWidget extends StatelessWidget {
               ),
               buildMonth(context),
               IconButton(
-                onPressed: (){}, 
+                onPressed: ()=> addMonth!(), 
                 alignment: Alignment.topLeft,
                 icon: const Icon(
                   Icons.arrow_forward_ios_sharp, 

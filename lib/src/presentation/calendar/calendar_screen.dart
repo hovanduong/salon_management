@@ -97,15 +97,59 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget buildMonthCalendar(){
-    return const MonthCalendarWidget(
-      month: '10/2023',
+    return MonthCalendarWidget(
+      month: '${_viewModel!.month}/${_viewModel!.year}',
+      addMonth:() => _viewModel!.addMonth(),
+      subMonth: () => _viewModel!.subMonth(),
     );
   }
 
   Widget buildCalendar(){
     return CalendarWidget(
-      listDay: _viewModel!.getListDay('11/2023'),
+      listDay: _viewModel!.getListDay(),
     );
+  }
+
+  Widget buildRevenue(){
+    return TotalMoneyWidget(
+      content: CalendarLanguage.revenue,
+      money: _viewModel!.revenue,
+      colorMoney: AppColors.Green_Money,
+    );
+  }
+  
+  Widget buildSpendingMoney(){
+    return TotalMoneyWidget(
+      content: CalendarLanguage.spendingMoney,
+      money: _viewModel!.spendingMoney,
+      colorMoney: AppColors.Red_Money,
+    );
+  }
+
+   Widget buildTotal(){
+    return TotalMoneyWidget(
+      content: CalendarLanguage.total,
+      money: _viewModel!.total,
+      colorMoney: AppColors.Green_Money,
+    );
+  }
+
+  Widget buildMoney(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildRevenue(),
+          buildSpendingMoney(),
+          buildTotal(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDivider(){
+    return const Divider(color: AppColors.BLACK_300,);
   }
 
   Widget buildCalendarScreen(){
@@ -115,6 +159,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           buildHeader(),
           buildMonthCalendar(),
           buildCalendar(),
+          buildDivider(),
+          buildMoney(),
         ],
       ),
     );

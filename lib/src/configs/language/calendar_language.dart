@@ -6,5 +6,8 @@ class CalendarLanguage {
   static final confirm = S.current.confirm;
   static final canceled = S.current.canceled;
   static final calendar = S.current.calendar;
+  static final total = S.current.total;
+  static final revenue = S.current.revenue;
+  static final spendingMoney = S.current.spendingMoney;
 
 }
