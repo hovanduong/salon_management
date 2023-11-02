@@ -47,7 +47,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageCanceled = 1;
   int pageToday = 1;
   int pageDaysBefore = 1;
-  int currentTab = 0;
+  int currentTab = 1;
 
   Timer? timer;
 
@@ -91,11 +91,11 @@ class BookingHistoryViewModel extends BaseViewModel {
     await getDataDone(pageDone);
     listCurrentDone = listMyBooking;
 
-    scrollDaysBefore.addListener(
-      () => scrollListener(scrollDaysBefore),
-    );
     scrollToday.addListener(
       () => scrollListener(scrollToday),
+    );
+    scrollDaysBefore.addListener(
+      () => scrollListener(scrollDaysBefore),
     );
     scrollUpComing.addListener(
       () => scrollListener(scrollUpComing),
@@ -208,8 +208,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       await getDataCanceled(pageCanceled);
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
     }
-    isLoadMore = false;
-
+    isLoadMore=false;
     notifyListeners();
   }
 
@@ -376,7 +375,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
-    isLoading= isPullRefresh? false: true;
+    isLoading= isPullRefresh || isLoadMore ? false: true;
     notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,
