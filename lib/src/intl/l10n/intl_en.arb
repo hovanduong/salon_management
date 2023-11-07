@@ -271,5 +271,16 @@
     "contentCopyPhone":"Phone number copied to clipboard",
     "calendar":"Calendar",
     "spendingMoney":"Spending money",
+    "collectMoney":"Collect money",
+    "nailCare":"Nail",
+    "lipSpray":"Lip spray",
+    "skinTreatment":"Skin treatment",
+    "bodyMassage":"Body massage",
+    "antiAging":"Anti-aging",
+    "nailArt":"Nail art",
+    "facelift":"Facelift",
+    "handMassage":"Hand massage",
+    "seeMore":"See more",
+    "footMassage":"Foot massage",
     "lastLine": ""
 }

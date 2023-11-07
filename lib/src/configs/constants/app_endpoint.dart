@@ -4,8 +4,8 @@
 class AppEndpoint {
   AppEndpoint._();
 
-  static const String BASE_APP_ENDPOINT = "https://ame.chuctet.online/api";
-  // static const String BASE_APP_ENDPOINT = 'https://nhaxemanhcuong.com/api';
+  // static const String BASE_APP_ENDPOINT = "https://ame.chuctet.online/api";
+  static const String BASE_APP_ENDPOINT = 'https://nhaxemanhcuong.com/api';
 
   static const int connectionTimeout = 100000;
   static const int receiveTimeout = 100000;

@@ -19,4 +19,14 @@ class CategoryLanguage {
   static final notificationEmptyCategory = S.current.notificationEmptyCategory;
   static final errorNetwork= S.current.errorNetwork;
 
+  static final more= S.current.seeMore;
+  static final nailCare= S.current.nailCare;
+  static final skinTreatment= S.current.skinTreatment;
+  static final lipSpray= S.current.lipSpray;
+  static final bodyMassage= S.current.bodyMassage;
+  static final nailArt= S.current.nailArt;
+  static final facelift= S.current.facelift;
+  static final handMassage= S.current.handMassage;
+  static final antiAging= S.current.antiAging;
+  static final footMassage= S.current.footMassage;
 }

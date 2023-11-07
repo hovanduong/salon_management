@@ -106,4 +106,23 @@ class AppImages {
   static const String icInvoice = 'assets/icons/invoice_ic.svg';
 
   static const String icEmpty = 'assets/icons/empty.svg';
+
+  static const String icAntiAging = 'assets/icons/anti-aging.svg';
+
+  static const String icBodyMassage = 'assets/icons/bodyMassage.svg';
+
+  static const String icFacelift = 'assets/icons/facelift.svg';
+
+  static const String icFootMassager = 'assets/icons/footMassager.svg';
+
+  static const String icLipSpray = 'assets/icons/lipSpray.svg';
+
+  static const String icNailArt = 'assets/icons/nailArt.svg';
+
+  static const String icNailCare = 'assets/icons/nailCare.svg';
+
+  static const String icSkinTreatment = 'assets/icons/skinTreatment.svg';
+
+  static const String icMore = 'assets/icons/more.svg';
+
 }
