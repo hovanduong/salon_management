@@ -30,6 +30,7 @@ class OverViewViewModel extends BaseViewModel {
   bool showTopService = false;
   bool showTopServicePackage = false;
   bool isLoading = true;
+  bool isShowBalance=true;
 
   num? totalRevenue;
   num? growthRevenue;
@@ -92,6 +93,11 @@ class OverViewViewModel extends BaseViewModel {
 
   Future<void> pullRefresh() async {
     await setDataPage(currentTab);
+    notifyListeners();
+  }
+
+  void setShowBalance(){
+    isShowBalance=!isShowBalance;
     notifyListeners();
   }
 

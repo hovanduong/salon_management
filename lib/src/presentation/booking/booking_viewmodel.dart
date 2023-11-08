@@ -310,10 +310,8 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void enableConfirmButton() {
-    if (onPhone &&
-        onAddress &&
+    if (onAddress &&
         selectedService.isNotEmpty &&
-        phoneController.text.trim().isNotEmpty &&
         addressController.text.trim().isNotEmpty) {
       enableButton = true;
     } else {

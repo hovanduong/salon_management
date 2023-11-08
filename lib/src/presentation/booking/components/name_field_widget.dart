@@ -11,7 +11,8 @@ class NameFieldWidget extends StatelessWidget {
     this.hintText,
     this.textAlign, 
     this.onTap,
-    this.isOnTap=false,
+    this.isOnTap=false,  
+    this.isRequired=false,
   });
   final TextEditingController? nameController;
   final String? name;
@@ -19,6 +20,7 @@ class NameFieldWidget extends StatelessWidget {
   final TextAlign? textAlign;
   final Function()? onTap;
   final bool isOnTap;
+  final bool isRequired;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,11 +34,11 @@ class NameFieldWidget extends StatelessWidget {
                 content: name,
                 fontWeight: FontWeight.w600,
               ),
-              const Paragraph(
+              if (isRequired) const Paragraph(
                 content: '*',
                 fontWeight: FontWeight.w600,
                 color: AppColors.PRIMARY_RED,
-              ),
+              ) else Container(),
             ],
           ),
           SizedBox(

@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tiengviet/tiengviet.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';

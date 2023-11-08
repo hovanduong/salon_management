@@ -23,9 +23,9 @@ class AppImages {
 
   static const String addImage = 'assets/images/add-image.png';
 
-  static const String arrowDownIcon = 'assets/images/arrow-down-icon.jpg';
+  static const String arrowDownIcon = 'assets/images/arrow_down.png';
 
-  static const String arrowUpIcon = 'assets/images/arrow-up_icon.png';
+  static const String arrowUpIcon = 'assets/images/arrow_up.png';
 
   static const String workService = 'assets/icons/work-icon.svg';
 

@@ -418,10 +418,11 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildName() {
-    return NameFieldWidget(
-      name: BookingLanguage.name,
+    return AppFormField(
       hintText: BookingLanguage.nameCustomer,
-      nameController: _viewModel!.nameController,
+      labelText: BookingLanguage.name,
+      textEditingController:  _viewModel!.nameController,
+      validator: _viewModel!.addressMsg,
     );
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../configs/constants/app_space.dart';
 import '../../../configs/language/homepage_language.dart';
 import '../../../utils/app_currency.dart';
 import 'components.dart';
@@ -45,60 +44,57 @@ class FieldRevenueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: CardServiceWidget(
-                  title: HomePageLanguage.revenue,
-                  total: totalRevenue!=null? AppCurrencyFormat.formatMoneyVND(
-                    totalRevenue ?? 0,
-                  ):'',
-                  money: growthRevenue!=null?
-                  '${AppCurrencyFormat.formatMoney(totalBeforeRevenue)} (${
-                    isInteger(growthRevenue.toString())? growthRevenue!*100
-                    : (growthRevenue!*100).toStringAsFixed(2)}%)'
-                  : '',
-                ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CardServiceWidget(
+                title: HomePageLanguage.revenue,
+                total: totalRevenue!=null? AppCurrencyFormat.formatMoneyVND(
+                  totalRevenue ?? 0,
+                ):'',
+                money: growthRevenue!=null?
+                '${AppCurrencyFormat.formatMoney(totalBeforeRevenue)} (${
+                  isInteger(growthRevenue.toString())? growthRevenue!*100
+                  : (growthRevenue!*100).toStringAsFixed(2)}%)'
+                : '',
               ),
-              Expanded(
-                child: CardServiceWidget(
-                  title: HomePageLanguage.appointmentNumber,
-                  total: totalAppointmentConfirm!=null?
-                    totalAppointmentConfirm.toString() : '',
-                  money:growthAppointmentConfirm!=null
-                  ?'$totalBeforeAppointmentConfirm (${growthAppointmentConfirm!*100}%)'
-                  : '',
-                ),
+            ),
+            Expanded(
+              child: CardServiceWidget(
+                title: HomePageLanguage.appointmentNumber,
+                total: totalAppointmentConfirm!=null?
+                  totalAppointmentConfirm.toString() : '',
+                money:growthAppointmentConfirm!=null
+                ?'$totalBeforeAppointmentConfirm (${growthAppointmentConfirm!*100}%)'
+                : '',
               ),
-            ],
+            ),
+          ],
+        ),
+        Row(children: [
+          Expanded(
+            child: CardServiceWidget(
+              title: HomePageLanguage.appointmentCanceled,
+              total: totalAppointmentCancel!=null?
+              totalAppointmentCancel.toString() :'',
+              money: growthAppointmentCancel!=null
+                ? '$totalBeforeAppointmentCancel (${growthAppointmentCancel!*100}%)'
+                :'',
+            ),
           ),
-          Row(children: [
-            Expanded(
-              child: CardServiceWidget(
-                title: HomePageLanguage.appointmentCanceled,
-                total: totalAppointmentCancel!=null?
-                totalAppointmentCancel.toString() :'',
-                money: growthAppointmentCancel!=null
-                  ? '$totalBeforeAppointmentCancel (${growthAppointmentCancel!*100}%)'
-                  :'',
-              ),
+          Expanded(
+            child: CardServiceWidget(
+              title: HomePageLanguage.newClient,
+              total: totalClient!=null? totalClient.toString():'',
+              money: growthClient!=null
+                ? '$totalBeforeClient (${growthClient!*100}%)'
+                : '',
             ),
-            Expanded(
-              child: CardServiceWidget(
-                title: HomePageLanguage.newClient,
-                total: totalClient!=null? totalClient.toString():'',
-                money: growthClient!=null
-                  ? '$totalBeforeClient (${growthClient!*100}%)'
-                  : '',
-              ),
-            ),
-          ],),
-        ],
-      ),
+          ),
+        ],),
+      ],
     );
   }
 }
