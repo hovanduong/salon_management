@@ -4,6 +4,7 @@ export 'data_top_service.dart';
 export 'expense_management_model.dart';
 export 'income.dart';
 export 'invoice_model.dart';
+export 'invoice_overview_model.dart';
 export 'my_booking_model.dart';
 export 'my_category_model.dart';
 export 'my_customer_model.dart';

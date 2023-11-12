@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
-import '../model/invoice_model.dart';
+import '../model/model.dart';
 
 class InvoiceParams {
   const InvoiceParams({
@@ -44,7 +44,7 @@ class InvoiceApi {
     }
   }
 
-  Future<Result<List<InvoiceModel>, Exception>> getInvoice(
+  Future<Result<List<InvoiceOverViewModel>, Exception>> getInvoice(
     InvoiceParams params,
   ) async {
     try {
@@ -55,7 +55,7 @@ class InvoiceApi {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
-          final invoice = InvoiceModelFactory.createList(data);
+          final invoice = InvoiceOverViewModelFactory.createList(data);
           return Success(invoice);
         default:
           return Failure(Exception(response!.reasonPhrase));

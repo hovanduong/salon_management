@@ -282,5 +282,14 @@
     "handMassage":"Xoa bóp thư giãn tay",
     "seeMore":"Xem nhiều hơn",
     "footMassage":"Mát xa chân",
+    "allTransactions":"Tất cả các giao dịch",
+    "month":"Tháng",
+    "sunday":"Chủ nhật",
+    "monday":"Thứ hai",
+    "tuesday":"Thứ ba",
+    "wednesday":"Thứ tư",
+    "thursday":"Thứ năm",
+    "friday":"Thứ sáu",
+    "saturday":"Thứ bảy",
     "lastLine": ""
 }

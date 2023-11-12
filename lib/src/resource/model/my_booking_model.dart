@@ -6,6 +6,8 @@ import 'model.dart';
 
 class MyBookingModel {
   int? id;
+  int? categoryId;
+  int? myCustomerId;
   String? address;
   String? date;
   String? note;
@@ -13,12 +15,15 @@ class MyBookingModel {
   String? status;
   int? invoiceId;
   num? money;
+  num? total;
   MyCustomerModel? myCustomer;
   CategoryModel? category;
   String? createdAt;
   String? deletedAt;
   List<int>? listId;
   String? code;
+  bool income;
+  bool isBooking;
 
   MyBookingModel({
     this.id,
@@ -34,6 +39,12 @@ class MyBookingModel {
     this.deletedAt,
     this.createdAt,
     this.code,
+    this.income=false,
+    this.isBooking=false,
+    this.myCustomerId,
+    this.myCustomer,
+    this.total,
+    this.categoryId,
   });
 }
 
@@ -74,14 +85,19 @@ abstract class MyBookingModelFactory {
   static MyBookingModel _fromJson(Map<String, dynamic> json) {
     final myBooking = MyBookingModel()
       ..id = json['id']
+      ..money = json['money']
       ..address = json['address']
       ..date = json['date']
-      ..note = json['note']
-      ..userId = json['userId']
       ..status = json['status']
-      ..money = json['money']
+      ..note = json['note']
       ..code=json['code']
+      ..income=json['income']
+      ..userId = json['userId']
+      ..myCustomerId=json['myCustomerId']
+      ..isBooking=json['isBooking']
+      ..total=json['total']
       ..invoiceId = json['invoiceId']
+      ..categoryId=json['categoryId']
       ..myCustomer = json['myCustomer'] != null
           ? MyCustomerModelFactory.create(jsonEncode(json['myCustomer']))
           : null

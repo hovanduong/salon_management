@@ -1,0 +1,191 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../configs/configs.dart';
+import '../../configs/constants/app_space.dart';
+import '../../configs/language/homepage_language.dart';
+import '../base/base.dart';
+import 'components/components.dart';
+import 'home.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  HomeViewModel? _viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseWidget(
+      viewModel: HomeViewModel(), 
+      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
+      builder: (context, viewModel, child) => buildLoading(),
+    );
+  }
+
+  Widget buildLoading() {
+    return Scaffold(
+      body: StreamProvider<NetworkStatus>(
+        initialData: NetworkStatus.online,
+        create: (context) =>
+            NetworkStatusService().networkStatusController.stream,
+        child: NetworkAwareWidget(
+          offlineChild: const ThreeBounceLoading(),
+          onlineChild: Container(
+            color: AppColors.COLOR_WHITE,
+            child: Stack(
+              children: [
+                buildHomePage(),
+                if (_viewModel!.isLoading)
+                  const Positioned(
+                    child: Align(
+                      alignment: FractionalOffset.center,
+                      child: ThreeBounceLoading(),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildHeader() {
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        child: ListTile(
+          title: Center(
+            child: Paragraph(
+              content: HomePageLanguage.home,
+              style: STYLE_LARGE.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCardMoney(){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+      child: CardMoneyWidget(
+        iconShowTotalBalance: _viewModel!.isShowBalance,
+        onShowTotalBalance: () => _viewModel!.setShowBalance(),
+        money: r'$ 2,547.00',
+        moneyExpenses: r'$340.00',
+        moneyIncome: r'$1,840.00',
+      ),
+    );
+  }
+
+  Widget buildTitleTransaction(){
+    return GestureDetector(
+      onTap: () => _viewModel!.setShowTransaction(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Paragraph(
+            content: HomePageLanguage.allTransactions,
+            style: STYLE_LARGE.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.PRIMARY_GREEN,
+            ),
+          ),
+          Icon(_viewModel!.isShowTransaction? Icons.arrow_drop_up
+            : Icons.arrow_drop_down, 
+            color: AppColors.PRIMARY_GREEN,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTitleCardTransaction(int index){
+    return ContentTransactionWidget(
+      date: _viewModel!.listInvoice?[index].date,
+      money: _viewModel!.listInvoice?[index].totalIncomeMoney,
+      isTitle: true,
+      nameService: _viewModel!.setDayOfWeek(index),
+    );
+  }
+
+  Widget buildContentTransaction(int index, int indexService){
+    final name= _viewModel!.listInvoice?[index].invoices
+      ?[indexService].myBooking?.category?.name;
+    return ContentTransactionWidget(
+      money: _viewModel!.listInvoice?[index].invoices?[indexService].myBooking?.money,
+      nameService: name,
+      color: _viewModel!.colors[indexService%_viewModel!.colors.length],
+    );
+  }
+
+  Widget buildCardTransaction(int index){
+    return Container(
+      margin: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeMedium,
+        horizontal: SizeToPadding.sizeSmall,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.COLOR_WHITE,
+        borderRadius: BorderRadius.all(
+          Radius.circular(BorderRadiusSize.sizeMedium),),
+        boxShadow: [
+          BoxShadow(color: AppColors.BLACK_200,
+            blurRadius: BorderRadiusSize.sizeMedium,
+            blurStyle: BlurStyle.solid,
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          buildTitleCardTransaction(index),
+          ...List.generate(
+            _viewModel!.listInvoice?[index].invoices?.length??0,
+            (indexService) => buildContentTransaction(index, indexService),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTransaction(){
+    return _viewModel!.isShowTransaction? Column(
+      children: [
+        ...List.generate(
+          _viewModel!.listInvoice?.length ?? 0, 
+          buildCardTransaction,
+        ),
+      ],
+    ): Container();
+  }
+
+  Widget buildHomePage() {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildHeader(),
+            buildCardMoney(),
+            buildTitleTransaction(),
+            buildTransaction(),
+          ],
+        ),
+      ),
+    );
+  }
+
+}

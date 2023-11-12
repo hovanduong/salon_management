@@ -5,15 +5,17 @@ import 'my_booking_model.dart';
 
 class InvoiceModel {
   int? id;
-  int? userId;
   String? code;
   String? status;
   num? discount;
   String? paymentStatus;
   num? total;
+  int? userId;
+  String? date;
   int? myBookingId;
   String? deletedAt;
   String? createdAt;
+  String? updatedAt;
   MyBookingModel? myBooking;
 
   InvoiceModel({
@@ -28,6 +30,8 @@ class InvoiceModel {
     this.myBookingId,
     this.paymentStatus,
     this.total,
+    this.date,
+    this.updatedAt,
   });
 }
 
@@ -71,11 +75,13 @@ abstract class InvoiceModelFactory {
       ..paymentStatus = json['paymentStatus']
       ..total = json['total']
       ..userId = json['userId']
+      ..date= json['date']
       ..myBookingId = json['myBookingId']
       ..myBooking = json['myBooking'] != null
           ? MyBookingModelFactory.create(jsonEncode(json['myBooking']))
           : null
       ..deletedAt = json['deletedAt']
+      ..updatedAt= json['updatedAt']
       ..createdAt = json['createdAt'];
     return invoice;
   }

@@ -282,5 +282,14 @@
     "handMassage":"Hand massage",
     "seeMore":"See more",
     "footMassage":"Foot massage",
+    "allTransactions":"All transactions",
+    "month":"Month",
+    "sunday":"Sunday",
+    "monday":"Thứ hai",
+    "tuesday":"Tuesday",
+    "wednesday":"Wednesday",
+    "thursday":"Thursday",
+    "friday":"Friday",
+    "saturday":"Saturday",
     "lastLine": ""
 }
