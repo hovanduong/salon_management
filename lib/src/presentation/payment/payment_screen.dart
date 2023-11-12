@@ -2,15 +2,18 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/payment_language.dart';
 import '../base/base.dart';
 
+import 'components/buildButtonDateTime.dart';
 import 'payment.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -78,7 +81,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       child: Container(
         padding: EdgeInsets.all(SizeToPadding.sizeMedium),
         decoration: BoxDecoration(
-          color: _viewModel!.categorySelected==index
+          color: _viewModel!.categoryId==_viewModel!.listCategory[index].id
           ? AppColors.LINEAR_GREEN.withOpacity(0.3)
           : AppColors.COLOR_WHITE,
           border: Border.all(color: AppColors.PRIMARY_GREEN),
@@ -86,15 +89,15 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             SvgPicture.asset(
-              _viewModel!.listCategory[index].image??'', 
+              _viewModel!.listImageCategory[index], 
               width: 50,
             ),
             SizedBox(height: SpaceBox.sizeSmall,),
             Paragraph(
               content: _viewModel!.listCategory[index].name,
+              fontWeight: FontWeight.w600,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.w600,
             ),
           ],
         ),
@@ -130,6 +133,103 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
+  Widget buildTitleSelectTime() {
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: Paragraph(
+        content: BookingLanguage.chooseTime,
+        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget buildTimeSelect() {
+    return SizedBox(
+      height: 180,
+      child: CupertinoDatePicker(
+        initialDateTime: _viewModel!.dateTime,
+        mode: CupertinoDatePickerMode.time,
+        // minimumDate: DateTime.now(),
+        use24hFormat: true,
+        onDateTimeChanged: (value) {
+          _viewModel!.updateDateTime(value);
+        },
+      ),
+    );
+  }
+
+  Widget buildButtonSelectTime() {
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: AppButton(
+        content: BookingLanguage.done,
+        enableButton: true,
+        onTap: () => Navigator.pop(context),
+      ),
+    );
+  }
+
+  dynamic showSelectTime() {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height / 2.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTitleSelectTime(),
+            buildTimeSelect(),
+            buildButtonSelectTime(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  dynamic showSelectDate() {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => SfDateRangePicker(
+        controller: _viewModel!.dateController,
+        selectionMode: DateRangePickerSelectionMode.single,
+        initialSelectedDate: _viewModel!.dateTime,
+        showActionButtons: true,
+        showNavigationArrow: true,
+        onCancel: () {
+          _viewModel!.dateController.selectedDate = null;
+          Navigator.pop(context);
+        },
+        onSubmit: (value) {
+          _viewModel!.updateDateTime(value! as DateTime);
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  Widget buildDateTime() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+      child: ButtonDateTimeWidget(
+        dateTime: _viewModel!.dateTime,
+        onShowSelectDate: showSelectDate,
+        onShowSelectTime: showSelectTime,
+      ),
+    );
+  }
+
+  Widget buildCategoryAndTime() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildCategory(),
+        buildDateTime(),
+      ],
+    );
+  }
+
   Widget buildPaymentScreen() {
     return SingleChildScrollView(
       child: Column(
@@ -138,7 +238,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
           buildInfo(),
           buildLineWidget(),
           // buildServiceInfo(),
-          buildCategory(),
+          buildCategoryAndTime(),
           buildConfirmButton(),
         ],
       ),
@@ -192,7 +292,6 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
           ..formatMoney(value.trim())
           ..enableConfirmButton();
       },
-      maxLenght: 15,
       validator: _viewModel!.messageErrorPrice,
       isSpace: true,
     );
@@ -225,7 +324,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Row(
       children: [
         buildButtonSelect(
-          PaymentLanguage.collectMoney, _viewModel!.isButtonCollect,),
+          PaymentLanguage.revenue, !_viewModel!.isButtonSpending,),
         buildButtonSelect(
           PaymentLanguage.spendingMoney, _viewModel!.isButtonSpending,),
       ],
@@ -455,7 +554,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         content: ServiceAddLanguage.confirm,
         enableButton: _viewModel!.enableButton,
         onTap: () {
-          _viewModel!.postBooking();
+          _viewModel!.checkCustomer();
         },
       ),
     );

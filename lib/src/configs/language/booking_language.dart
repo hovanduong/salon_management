@@ -45,5 +45,8 @@ class BookingLanguage {
   static final emptyService = S.current.emptyService;
   static final contentEmptyService = S.current.contentEmptyService;
   static final contentCopyPhone = S.current.contentCopyPhone;
+  static final amountOfMoney = S.current.amountOfMoney;
+  static final enterAmountOfMoney = S.current.enterAmountOfMoney;
+  static final addCategory = S.current.addCategory;
 
 }

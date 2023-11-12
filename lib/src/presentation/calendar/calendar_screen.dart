@@ -106,46 +106,34 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget buildCalendar(){
     return CalendarWidget(
-      listDay: _viewModel!.getListDay(),
+      listDay: _viewModel?.listDay,
+      isWeekend: _viewModel!.isWeekend,
     );
   }
 
-  Widget buildRevenue(){
+   Widget buildTotal(int index){
     return TotalMoneyWidget(
-      content: CalendarLanguage.revenue,
-      money: _viewModel!.revenue,
-      colorMoney: AppColors.Green_Money,
-    );
-  }
-  
-  Widget buildSpendingMoney(){
-    return TotalMoneyWidget(
-      content: CalendarLanguage.spendingMoney,
-      money: _viewModel!.spendingMoney,
-      colorMoney: AppColors.Red_Money,
-    );
-  }
-
-   Widget buildTotal(){
-    return TotalMoneyWidget(
-      content: CalendarLanguage.total,
-      money: _viewModel!.total,
-      colorMoney: AppColors.Green_Money,
+      content: (_viewModel!.expenseManagement?[index].revenue ?? false)
+        ? CalendarLanguage.total
+        : (_viewModel!.expenseManagement?[index].income?? false) ?
+          CalendarLanguage.revenue : CalendarLanguage.spendingMoney,
+      money: _viewModel!.expenseManagement?[index].money,
+      colorMoney: (_viewModel!.expenseManagement?[index].income ?? false
+        || (_viewModel!.expenseManagement?[index].revenue ?? false))
+        ? AppColors.Green_Money : AppColors.Red_Money,
     );
   }
 
   Widget buildMoney(){
-    return Padding(
+    return _viewModel!.listDay.isNotEmpty? Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          buildRevenue(),
-          buildSpendingMoney(),
-          buildTotal(),
-        ],
+        children: List.generate(_viewModel!.expenseManagement!.length, 
+          buildTotal,
+        ),
       ),
-    );
+    ): Container();
   }
 
   Widget buildDivider(){

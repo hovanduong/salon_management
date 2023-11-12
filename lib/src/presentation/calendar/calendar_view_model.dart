@@ -1,11 +1,28 @@
 // ignore_for_file: avoid_bool_literals_in_conditional_expressions
 
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import '../../configs/configs.dart';
 import '../../resource/model/calendar_model.dart';
+import '../../resource/model/model.dart';
+import '../../resource/service/report_api.dart';
+import '../../utils/app_valid.dart';
+import '../../utils/time_zone.dart';
 import '../base/base.dart';
 
 class CalendarViewModel extends BaseViewModel{
 
-  bool isLoading=false;
+  ReportApi reportApi= ReportApi();
+
+  List<ReportModel>? reportModel;
+  List<ExpenseManagementModel>? expenseManagement;
+  List<ReportModel> listDay=[];
+
+  bool isLoading=true;
+  bool isWeekend=false;
+  bool isDayCurrent=false;
 
   String? monthOfYear;
 
@@ -16,74 +33,77 @@ class CalendarViewModel extends BaseViewModel{
   num spendingMoney=0;
   num total=0;
 
-  dynamic init(){
-    if(monthOfYear!=null){
-      month= int.parse(monthOfYear!.split('/')[0] );
-      year= int.parse(monthOfYear!.split('/')[1] );
-    }
+  Future<void> init()async{
+    await getList();
     notifyListeners();
   }
 
-  void subMonth(){
+  Future<void> subMonth()async{
     if(month>1){
       month--;
     }else{
       month=12;
       year--;
     }
+    await getList();
     notifyListeners();
   }
 
-  void addMonth(){
+  Future<void> addMonth()async{
     if(month<12){
       month++;
     }else{
       month=1;
       year++;
     }
+    await getList();
     notifyListeners();
   }
 
-  List<CalendarModel> getListDay(){
-    final listDay=<CalendarModel>[];
+  void setWeekend(int weekday){
+    if(weekday==6 || weekday==7){
+      isWeekend=true;
+    }else{
+      isWeekend=false;
+    }
+    notifyListeners();
+  }
+
+  void getDataDay(){
     final lastDay= DateTime(year, month+1, 0).day;
     final date= DateTime(year, month, 1);
-    final lastDayOfMonthBefore= DateTime(year, month, 0).day;
-    revenue=0;
-    spendingMoney=0;
-    total=0;
-    if(date.weekday==1){
-      for(var i=1; i<=lastDay; i++){
-        listDay.add(
-          CalendarModel(
-            day: i,
-            isDayCurrent: checkCurrentDay(i)?true:false,
-          ),
-        );
-      }
-      for(var i=1; i<=(35-lastDay); i++){
-        listDay.add(CalendarModel(day: i));
-      }
-    }else{
-      for(var i=date.weekday-2; i>=0; i--){
-        listDay.add(CalendarModel(day: lastDayOfMonthBefore-i));
-      }
-      for(var i=1; i<=lastDay; i++){
-        listDay.add(CalendarModel(
-          day: i,
-          isDayCurrent:checkCurrentDay(i)?true:false,
-          moneyPay: 200000,
-          revenue: 1000000,
-        ),);
-        revenue+= listDay.last.revenue??0;
-        spendingMoney+= listDay.last.moneyPay??0;
-      }
-      for(var i=1; i<(35-lastDay-(date.weekday-2)); i++){
-        listDay.add(CalendarModel(day: i));
-      }
+    for(var i=0; i<reportModel!.length; i++){
+      listDay.add(
+        ReportModel(
+          revenueDay: reportModel?[i].revenueDay,
+          date: reportModel?[i].date,
+          isCurrentDay: checkCurrentDay(i+1),
+        ),
+      );
     }
-    total=revenue-spendingMoney;
-    return listDay;
+    for(var i=1; i<=(isWeekend?42:35 -lastDay-(date.weekday-2)); i++){
+      listDay.add(ReportModel());
+    }
+    notifyListeners();
+  }
+
+  Future<void> getList()async{
+    listDay.clear();
+    final date= DateTime(year, month, 1);
+    await getExpenseManagement(date.toString());
+    if(date.weekday==1){
+      setWeekend(date.weekday);
+      await getReport(date.toString());
+      getDataDay();
+    } else{
+      setWeekend(date.weekday);
+      await getReport(date.toString());
+      for(var i=date.weekday-2; i>=0; i--){
+        listDay.add(ReportModel());
+      }
+      getDataDay();
+    }
+    notifyListeners();
   }
 
   bool checkCurrentDay(num day){
@@ -95,4 +115,75 @@ class CalendarViewModel extends BaseViewModel{
     }
   }
 
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
+  Future<void> getReport(String date) async {
+    isLoading=true;
+    final result = await reportApi.getReport(ReportParams(
+      timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
+          DateTime.now().timeZoneName,
+        ),
+      date: date,
+    ),);
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      isLoading=false;
+      await showErrorDialog(context);
+    } else {
+      isLoading=false;
+      reportModel=value as List<ReportModel>;
+    }
+    notifyListeners();
+  }
+
+  Future<void> getExpenseManagement(String date) async {
+    final result = await reportApi.getExpenseManagement(ReportParams(
+      timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
+          DateTime.now().timeZoneName,
+        ),
+      date: date,
+    ),);
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      isLoading=false;
+      await showErrorDialog(context);
+    } else {
+      isLoading=false;
+      expenseManagement=value as List<ExpenseManagementModel>;
+    }
+    notifyListeners();
+  }
 }

@@ -26,5 +26,6 @@ class PaymentLanguage {
   static final spendingMoney= S.current.spendingMoney;
   static final collectMoney= S.current.collectMoney;
   static final category= S.current.category;
+  static final revenue= S.current.revenue;
 
 }

@@ -125,4 +125,11 @@ class AppImages {
 
   static const String icMore = 'assets/icons/more.svg';
 
+  static const String eyelash= 'assets/icons/eyelash.svg';
+
+  static const String makeHair = 'assets/icons/makeHair.svg';
+
+  static const String makeUp = 'assets/icons/makeUp.svg';
+
+  static const String tattoo = 'assets/icons/tattoo.svg';
 }

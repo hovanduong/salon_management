@@ -102,12 +102,16 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     return Column(
       children: [
         buildAppBar(index),
-        SizedBox(
-          height: SpaceBox.sizeSmall * 3,
-        ),
-        DecoratedBox(
-          decoration: const BoxDecoration(
+        Container(
+          margin: EdgeInsets.only(top: SizeToPadding.sizeVeryVerySmall),
+          decoration:  BoxDecoration(
             color: AppColors.COLOR_WHITE,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: SpaceBox.sizeVerySmall,
+                color: AppColors.BLACK_300,
+              ),
+            ],
           ),
           child: buildAddress(index),
         ),
@@ -156,7 +160,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       child: ItemWidget(
         width: MediaQuery.of(context).size.width - 150,
         title: '${BookingDetailsLanguage.client}:',
-        content: _viewModel!.listMyBooking[index].myCustomer!.fullName,
+        content: _viewModel!.listMyBooking[index].myCustomer?.fullName ?? '',
         fontWeightContent: FontWeight.w500,
       ),
     );
@@ -168,7 +172,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       child: ItemWidget(
         title: BookingDetailsLanguage.total,
         content: AppCurrencyFormat.formatMoneyVND(
-          _viewModel!.listMyBooking[index].total ?? 0,
+          _viewModel!.listMyBooking[index].money ?? 0,
         ),
         color: AppColors.Green_Money,
         isSpaceBetween: true,
@@ -205,7 +209,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildTitleService(int index) {
-    final lengthService = _viewModel!.listMyBooking[index].myServices!.length;
+    // final lengthService = _viewModel!.listMyBooking[index].myServices!.length;
     return InkWell(
       onTap: () => _viewModel!.showListService(),
       child: Padding(
@@ -214,8 +218,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Paragraph(
-              content:
-                  '${BookingDetailsLanguage.informationServices} ($lengthService)',
+              content: BookingDetailsLanguage.informationServices,
               style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
             ),
             Icon(
@@ -278,40 +281,50 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Widget buildListService(int index) {
+  Widget buildListCategory(int index){
     return _viewModel!.isShowListService
-        ? Column(
-            children: List.generate(
-                _viewModel!.listMyBooking[index].myServices!.length,
-                (indexService) {
-              final money = _viewModel!
-                  .listMyBooking[index].myServices![indexService].money;
-              final service = _viewModel!
-                  .listMyBooking[index].myServices![indexService].name;
-              return buildService(
-                AppCurrencyFormat.formatMoneyVND(money!),
-                service!,
-              );
-            }),
-          )
-
-        //  ListView.builder(
-        //     shrinkWrap: true,
-        //     physics: const BouncingScrollPhysics(),
-        //     itemCount: _viewModel!.listMyBooking[index].myServices?.length,
-        //     itemBuilder: (context, indexService) {
-        //       final money = _viewModel!
-        //           .listMyBooking[index].myServices![indexService].money;
-        //       final service = _viewModel!
-        //           .listMyBooking[index].myServices![indexService].name;
-        //       return buildService(
-        //         AppCurrencyFormat.formatMoneyVND(money!),
-        //         service!,
-        //       );
-        //     },
-        //   )
-        : Container();
+      ? buildService(
+          AppCurrencyFormat.formatMoneyVND(
+            _viewModel!.listMyBooking[index].money ?? 0,),
+          _viewModel!.listMyBooking[index].category?.name??'',
+        )
+      : Container();
   }
+
+  // Widget buildListCategory(int index) {
+  //   return _viewModel!.isShowListService
+  //       ? Column(
+  //           children: List.generate(
+  //               _viewModel!.listMyBooking[index].category!.length,
+  //               (indexService) {
+  //             final money = _viewModel!
+  //                 .listMyBooking[index].myServices![indexService].money;
+  //             final service = _viewModel!
+  //                 .listMyBooking[index].myServices![indexService].name;
+  //             return buildService(
+  //               AppCurrencyFormat.formatMoneyVND(money!),
+  //               service!,
+  //             );
+  //           }),
+  //         )
+
+  //       //  ListView.builder(
+  //       //     shrinkWrap: true,
+  //       //     physics: const BouncingScrollPhysics(),
+  //       //     itemCount: _viewModel!.listMyBooking[index].myServices?.length,
+  //       //     itemBuilder: (context, indexService) {
+  //       //       final money = _viewModel!
+  //       //           .listMyBooking[index].myServices![indexService].money;
+  //       //       final service = _viewModel!
+  //       //           .listMyBooking[index].myServices![indexService].name;
+  //       //       return buildService(
+  //       //         AppCurrencyFormat.formatMoneyVND(money!),
+  //       //         service!,
+  //       //       );
+  //       //     },
+  //       //   )
+  //       : Container();
+  // }
 
   Widget buildCardService(int index) {
     return Container(
@@ -330,7 +343,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildTitleService(index),
-          buildListService(index),
+          buildListCategory(index),
           buildDivider(),
           buildNoteService(index),
         ],

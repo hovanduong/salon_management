@@ -12,11 +12,13 @@ class InvoiceParams {
     this.page,
     this.status,
     this.isButtonBookingDetails = false,
+    this.date,
   });
   final int? id;
   final int? page;
   final String? status;
   final bool isButtonBookingDetails;
+  final String? date;
 }
 
 class InvoiceApi {
@@ -28,7 +30,7 @@ class InvoiceApi {
         url: '/invoice',
         body: {
           'myBookingId': params.id,
-          'discount': 0,
+          'date': params.date,
         },
       );
       switch (response?.statusCode) {

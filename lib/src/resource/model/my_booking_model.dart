@@ -12,9 +12,9 @@ class MyBookingModel {
   int? userId;
   String? status;
   int? invoiceId;
-  num? total;
+  num? money;
   MyCustomerModel? myCustomer;
-  List<MyServiceModel>? myServices;
+  CategoryModel? category;
   String? createdAt;
   String? deletedAt;
   List<int>? listId;
@@ -22,7 +22,7 @@ class MyBookingModel {
 
   MyBookingModel({
     this.id,
-    this.total,
+    this.money,
     this.userId,
     this.address,
     this.date,
@@ -30,7 +30,7 @@ class MyBookingModel {
     this.note,
     this.listId,
     this.invoiceId,
-    this.myServices,
+    this.category,
     this.deletedAt,
     this.createdAt,
     this.code,
@@ -61,7 +61,7 @@ abstract class MyBookingModelFactory {
     MyBookingModel myBookingModel,
   ) {
     final data = <String, dynamic>{};
-    data['total'] = myBookingModel.total;
+    data['money'] = myBookingModel.money;
     data['userId'] = myBookingModel.userId;
     data['deletedAt'] = myBookingModel.deletedAt;
     data['createdAt'] = myBookingModel.createdAt;
@@ -79,14 +79,14 @@ abstract class MyBookingModelFactory {
       ..note = json['note']
       ..userId = json['userId']
       ..status = json['status']
-      ..invoiceId = json['invoiceId']
-      ..total = json['total']
+      ..money = json['money']
       ..code=json['code']
+      ..invoiceId = json['invoiceId']
       ..myCustomer = json['myCustomer'] != null
           ? MyCustomerModelFactory.create(jsonEncode(json['myCustomer']))
           : null
-      ..myServices = json['myServices'] != null
-          ? MyServiceFactory.createList(jsonEncode(json['myServices']))
+      ..category = json['category'] != null
+          ? CategoryModelFactory.create(jsonEncode(json['category']))
           : null
       ..deletedAt = json['deletedAt']
       ..createdAt = json['createdAt'];

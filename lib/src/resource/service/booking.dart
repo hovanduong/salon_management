@@ -15,9 +15,15 @@ class MyBookingPramsApi {
   num? discount;
   String? status;
   String? note;
+  String? phoneNumber;
+  String? name;
+  num? money;
   bool isBooking;
+  bool isIncome;
+  int? idCategory;
   MyBookingPramsApi({
     this.isBooking = false,
+    this.isIncome=false,
     this.myCustomerId,
     this.myServices,
     this.address,
@@ -26,6 +32,10 @@ class MyBookingPramsApi {
     this.note,
     this.status,
     this.id,
+    this.idCategory,
+    this.money,
+    this.name,
+    this.phoneNumber,
   });
 }
 
@@ -38,11 +48,13 @@ class BookingApi {
         url: '/my-booking',
         body: {
           'myCustomerId': prams!.myCustomerId,
-          'myServices': prams.myServices,
+          'money': prams.money,
           'address': prams.address,
           'date': prams.date,
           'note': prams.note,
           'isBooking': prams.isBooking,
+          'income': prams.isIncome,
+          'categoryId': prams.idCategory,
         },
       );
       switch (response?.statusCode) {
@@ -64,10 +76,15 @@ class BookingApi {
       final response = await HttpRemote.put(
         url: '/my-booking/${prams!.id}',
         body: {
-          'myServices': prams.myServices,
           'address': prams.address,
-          'date': prams.date,
           'note': prams.note,
+          'date': prams.date,
+          'money': prams.money,
+          'fullName': prams.name,
+          'phoneNumber': prams.phoneNumber,
+          'categoryId': prams.idCategory,
+          'myCustomerId': prams.myCustomerId,
+          'status': 'Confirmed',
         },
       );
       switch (response?.statusCode) {

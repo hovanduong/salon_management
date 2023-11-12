@@ -5,22 +5,25 @@ import 'package:flutter/cupertino.dart';
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/constants/constants.dart';
 import '../../../configs/widget/widget.dart';
-import '../../../resource/model/calendar_model.dart';
+import '../../../resource/model/model.dart';
+import '../../../resource/model/revenue_day_model.dart';
 import '../../../utils/app_currency.dart';
 
 class CalendarWidget extends StatelessWidget {
   const CalendarWidget({
     super.key, 
     this.listDay,
+    this.isWeekend=false,
   });
 
-  final List<CalendarModel>? listDay;
+  final List<ReportModel>? listDay;
+  final bool isWeekend;
 
   @override
   Widget build(BuildContext context) {
     var day=0;
     return SingleChildScrollView(
-      child: Table(
+      child: (listDay!.isNotEmpty)? Table(
         border: const TableBorder(
           horizontalInside: BorderSide(color: AppColors.BLACK_200),
           verticalInside: BorderSide(color: AppColors.BLACK_200),
@@ -38,38 +41,40 @@ class CalendarWidget extends StatelessWidget {
               buildTitleTop(content: 'CN', isTitle: true,),
             ],
           ),
-          ...List.generate( 5 , (index) {
+          ...List.generate(isWeekend ? 6 : 5, (index) {
             return TableRow(
               children: List.generate(7, (d) {
                   day++;
                   return buildTitleTop(
-                    content: '${listDay![day-1].day}',
-                    revenue: listDay?[day-1].revenue,
-                    moneyPayment: listDay?[day-1].moneyPay,
-                    isDayCurrent: listDay![day-1].isDayCurrent,
+                    content: listDay?[day-1].date ?? '',
+                    revenueDay: listDay?[day-1].revenueDay,
+                    isCurrentDay: listDay![day-1].isCurrentDay,
                   );
                 }
               ),
             );
           }),
         ],
-      ),
+      ) : Container(),
     );
   }
 
   Widget buildTitleTop({String? content, bool isTitle = false, 
-    num? revenue, num? moneyPayment, bool isDayCurrent=false,})
+    List<RevenueDayModel>? revenueDay, bool isCurrentDay=false,})
   {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: Container(
+        height: isTitle? 45 : 80,
         padding: EdgeInsets.symmetric(
-          vertical: SizeToPadding.sizeVeryVerySmall,
+          vertical: SizeToPadding.sizeVerySmall,
           horizontal: isTitle?0: SizeToPadding.sizeVeryVerySmall,
         ),
-        color: isTitle? AppColors.PRIMARY_GREEN 
-          : isDayCurrent? AppColors.COLOR_OLIVE.withOpacity(0.2) 
-          :AppColors.COLOR_WHITE,
+        decoration: BoxDecoration(
+          color: isTitle? AppColors.PRIMARY_GREEN 
+            : isCurrentDay? AppColors.COLOR_OLIVE.withOpacity(0.2) 
+            :AppColors.COLOR_WHITE,
+        ),
         child: Column(
           crossAxisAlignment: isTitle? CrossAxisAlignment.center 
           : CrossAxisAlignment.start,
@@ -80,23 +85,22 @@ class CalendarWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: isTitle ? AppColors.COLOR_WHITE : AppColors.BLACK_500,),
             ),
-            if (revenue==null && moneyPayment==null) Container()
+            const Expanded(child: SizedBox()),
+            if (revenueDay==[] || revenueDay==null) Container()
             else Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Paragraph(
-                  content: AppCurrencyFormat.formatMoney(revenue),
-                  color: AppColors.Green_Money,
+              children: List.generate(revenueDay.length, 
+                (index) => Paragraph(
+                  content: AppCurrencyFormat.formatMoney(
+                    revenueDay[index].money ?? 0,
+                  ),
+                  color: (revenueDay[index].income ?? false)
+                    ? AppColors.Green_Money
+                    : AppColors.Red_Money,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Paragraph(
-                  content: AppCurrencyFormat.formatMoney(moneyPayment),
-                  color: AppColors.Red_Money,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+              ),
             ),
           ],
         ),

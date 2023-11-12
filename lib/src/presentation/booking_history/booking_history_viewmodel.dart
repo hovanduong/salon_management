@@ -111,11 +111,6 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
-    listCurrentUpcoming.clear();
-    listCurrentCanceled.clear();
-    listCurrentDone.clear();
-    listCurrentToday.clear();
-    listCurrentDaysBefore.clear();
     pageToday = 1;
     pageUpComing = 1;
     pageDone = 1;

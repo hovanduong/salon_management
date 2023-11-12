@@ -4,20 +4,16 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/widget/bottom_sheet/bottom_sheet.dart';
-import '../../configs/widget/bottom_sheet/bottom_sheet_single.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../base/base.dart';
 import 'booking.dart';
-
-import 'components/components.dart';
-
-import 'components/name_field_widget.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -82,9 +78,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
             children: [
               buildInfo(),
               buildLineWidget(),
-              buildServiceInfo(),
-              buildLineWidget(),
-              buildNotes(),
+              // buildServiceInfo(),
+              // buildLineWidget(),
+              buildCategoryAndTime(),
               buildConfirmButton(),
             ],
           ),
@@ -93,42 +89,113 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildNotes() {
+  Widget buildTitleCategory(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+      child: Paragraph(
+        content: BookingLanguage.addCategory,
+        style: STYLE_MEDIUM.copyWith(
+          fontWeight: FontWeight.w600
+        ),
+      ),
+    );
+  }
+
+  Widget buildListCategory(){
+    return GridView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+        mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+      ), 
+      itemCount: _viewModel!.listCategory.length,
+      itemBuilder: (context, index) => buildItemCategory(index),
+    );
+  }
+
+  Widget buildItemCategory(int index){
+    return InkWell(
+      onTap: () =>_viewModel!.setCategorySelected(index),
+      child: Container(
+        padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+        decoration: BoxDecoration(
+          color: _viewModel!.categoryId==_viewModel!.listCategory[index].id
+          ? AppColors.LINEAR_GREEN.withOpacity(0.3)
+          : AppColors.COLOR_WHITE,
+          border: Border.all(color: AppColors.PRIMARY_GREEN),
+        ),
+        child: Column(
+          children: [
+            SvgPicture.asset(
+              _viewModel!.listImageCategory[index], 
+              width: 50,
+            ),
+            SizedBox(height: SpaceBox.sizeSmall,),
+            Paragraph(
+              content: _viewModel!.listCategory[index].name,
+              fontWeight: FontWeight.w600,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildCategory(){
+    return Padding(
+      padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildTitleCategory(),
+          buildListCategory(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCategoryAndTime() {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeMedium,
         horizontal: SizeToPadding.sizeMedium,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildNote(),
+          buildCategory(),
           buildDateTime(),
         ],
       ),
     );
   }
 
-  Widget buildServiceInfo() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeMedium,
-      ),
-      child: Column(
-        children: [
-          buildService(),
-          buildListService(),
-          if (_viewModel!.selectedService.isNotEmpty)
-            Column(
-              children: [
-                buildTotalNoDis(),
-                buildMoney(),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
+  // Widget buildServiceInfo() {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(
+  //       vertical: SizeToPadding.sizeMedium,
+  //       horizontal: SizeToPadding.sizeMedium,
+  //     ),
+  //     child: Column(
+  //       children: [
+  //         buildService(),
+  //         buildListService(),
+  //         if (_viewModel!.selectedService.isNotEmpty)
+  //           Column(
+  //             children: [
+  //               buildTotalNoDis(),
+  //               buildMoney(),
+  //             ],
+  //           ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget buildInfo() {
     return Padding(
@@ -138,43 +205,45 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       child: Column(
         children: [
-          buildServicePhone(),
+          buildFieldPhone(),
           buildName(),
           buildAddress(),
+          buildNote(),
+          buildFieldMoney(),
         ],
       ),
     );
   }
 
-  Widget buildTotalNoDis() {
-    return Padding(
-      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Paragraph(
-            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-            content: BookingLanguage.intoMoney,
-          ),
-          Paragraph(
-            style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
-            content: _viewModel!.moneyController.text,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget buildTotalNoDis() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Paragraph(
+  //           style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+  //           content: BookingLanguage.intoMoney,
+  //         ),
+  //         Paragraph(
+  //           style: STYLE_LARGE.copyWith(fontWeight: FontWeight.w500),
+  //           content: _viewModel!.moneyController.text,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget buildListService() {
-    return Wrap(
-      runSpacing: -5,
-      spacing: SpaceBox.sizeSmall,
-      children: List.generate(
-        _viewModel!.selectedService.length,
-        buildItemService,
-      ),
-    );
-  }
+  // Widget buildListService() {
+  //   return Wrap(
+  //     runSpacing: -5,
+  //     spacing: SpaceBox.sizeSmall,
+  //     children: List.generate(
+  //       _viewModel!.selectedService.length,
+  //       buildItemService,
+  //     ),
+  //   );
+  // }
 
   Widget buildLineWidget() {
     return Container(
@@ -186,105 +255,105 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildItemService(int index) {
-    final serviceName = _viewModel!.selectedService[index].name!.split('/')[0];
-    final money = _viewModel!.selectedService[index].name!.split('/')[1];
+  // Widget buildItemService(int index) {
+  //   final serviceName = _viewModel!.selectedService[index].name!.split('/')[0];
+  //   final money = _viewModel!.selectedService[index].name!.split('/')[1];
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Paragraph(
-                content: serviceName,
-                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-              ),
-              Paragraph(
-                content: money,
-                style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Container(
-            color: Colors.grey.withOpacity(0.3),
-            height: 0.5,
-            width: double.infinity,
-          ),
-        ],
-      ),
-    );
-  }
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+  //     child: Column(
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Paragraph(
+  //               content: serviceName,
+  //               style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+  //               overflow: TextOverflow.ellipsis,
+  //             ),
+  //             Paragraph(
+  //               content: money,
+  //               style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
+  //               overflow: TextOverflow.ellipsis,
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 20),
+  //         Container(
+  //           color: Colors.grey.withOpacity(0.3),
+  //           height: 0.5,
+  //           width: double.infinity,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget buildService() {
-    return InkWell(
-      onTap: () => showSelectService(context),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Paragraph(
-                content: BookingLanguage.selectServices,
-                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
-              ),
-              const Paragraph(
-                content: '*',
-                fontWeight: FontWeight.w600,
-                color: AppColors.PRIMARY_RED,
-              ),
-            ],
-          ),
-          const Icon(
-            Icons.add_circle,
-            color: AppColors.PRIMARY_GREEN,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget buildService() {
+  //   return InkWell(
+  //     onTap: () => showSelectService(context),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Row(
+  //           children: [
+  //             Paragraph(
+  //               content: BookingLanguage.selectServices,
+  //               style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w500),
+  //             ),
+  //             const Paragraph(
+  //               content: '*',
+  //               fontWeight: FontWeight.w600,
+  //               color: AppColors.PRIMARY_RED,
+  //             ),
+  //           ],
+  //         ),
+  //         const Icon(
+  //           Icons.add_circle,
+  //           color: AppColors.PRIMARY_GREEN,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  void showSelectService(_) {
-    showModalBottomSheet(
-      context: context,
-      isDismissible: true,
-      isScrollControlled: true,
-      builder: (context) => BottomSheetMultipleRadio(
-        titleContent: BookingLanguage.selectServices,
-        listItems: _viewModel!.mapService,
-        initValues: _viewModel!.serviceId,
-        contentEmpty: BookingLanguage.contentEmptyService,
-        titleEmpty: BookingLanguage.emptyService,
-        onTapSubmit: (value) {
-          _viewModel!
-            ..changeValueService(value)
-            ..setServiceId()
-            ..calculateTotalPriceByName()
-            ..enableConfirmButton();
-        },
-      ),
-    );
-  }
+  // void showSelectService(_) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isDismissible: true,
+  //     isScrollControlled: true,
+  //     builder: (context) => BottomSheetMultipleRadio(
+  //       titleContent: BookingLanguage.selectServices,
+  //       listItems: _viewModel!.mapService,
+  //       initValues: _viewModel!.serviceId,
+  //       contentEmpty: BookingLanguage.contentEmptyService,
+  //       titleEmpty: BookingLanguage.emptyService,
+  //       onTapSubmit: (value) {
+  //         _viewModel!
+  //           ..changeValueService(value)
+  //           ..setServiceId()
+  //           ..calculateTotalPriceByName()
+  //           ..enableConfirmButton();
+  //       },
+  //     ),
+  //   );
+  // }
 
-  Widget buildDiscount() {
-    return AppFormField(
-      hintText: '0',
-      suffixText: '%',
-      labelText: BookingLanguage.discount,
-      validator: _viewModel!.discountErrorMsg,
-      keyboardType: TextInputType.number,
-      textEditingController: _viewModel!.discountController,
-      onChanged: (value) {
-        _viewModel!
-          ..checkDiscountInput(value)
-          ..totalDiscount();
-      },
-    );
-  }
+  // Widget buildDiscount() {
+  //   return AppFormField(
+  //     hintText: '0',
+  //     suffixText: '%',
+  //     labelText: BookingLanguage.discount,
+  //     validator: _viewModel!.discountErrorMsg,
+  //     keyboardType: TextInputType.number,
+  //     textEditingController: _viewModel!.discountController,
+  //     onChanged: (value) {
+  //       _viewModel!
+  //         ..checkDiscountInput(value)
+  //         ..totalDiscount();
+  //     },
+  //   );
+  // }
 
   Widget buildTitleSelectTime() {
     return Padding(
@@ -449,80 +518,89 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  void showSelectPhone(_) {
-    _viewModel!.setLoading(false);
-    showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(SizeToPadding.sizeMedium),
-      ),
-      isScrollControlled: true,
-      builder: (context) => BottomSheetSingle(
-        keyboardType: TextInputType.number,
-        titleContent: BookingLanguage.selectedCustomer,
-        listItems: _viewModel!.mapPhone,
-        initValues: 0,
-        onTapSubmit: (value) {
-          _viewModel!
-            ..setNameCustomer(value)
-            ..enableConfirmButton();
-        },
-      ),
-    );
-  }
+  // void showSelectPhone(_) {
+  //   _viewModel!.setLoading(false);
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isDismissible: false,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(SizeToPadding.sizeMedium),
+  //     ),
+  //     isScrollControlled: true,
+  //     builder: (context) => BottomSheetSingle(
+  //       keyboardType: TextInputType.number,
+  //       titleContent: BookingLanguage.selectedCustomer,
+  //       listItems: _viewModel!.mapPhone,
+  //       initValues: 0,
+  //       onTapSubmit: (value) {
+  //         _viewModel!
+  //           ..setNameCustomer(value)
+  //           ..enableConfirmButton();
+  //       },
+  //     ),
+  //   );
+  // }
 
-  Widget buildServicePhone() {
-    return NameFieldWidget(
-      isOnTap: true,
-      name: BookingLanguage.phoneNumber,
-      hintText: BookingLanguage.selectPhoneNumber,
-      nameController: _viewModel!.phoneController,
-      onTap: () {
-        if (_viewModel!.dataMyBooking == null) {
-          _viewModel!.setLoading(true);
-          Future.delayed(
-            const Duration(milliseconds: 500),
-            () => showSelectPhone(context),
-          );
-        }
-      },
+  // Widget buildServicePhone() {
+  //   return NameFieldWidget(
+  //     isOnTap: true,
+  //     name: BookingLanguage.phoneNumber,
+  //     hintText: BookingLanguage.selectPhoneNumber,
+  //     nameController: _viewModel!.phoneController,
+  //     onTap: () {
+  //       if (_viewModel!.dataMyBooking == null) {
+  //         _viewModel!.setLoading(true);
+  //         Future.delayed(
+  //           const Duration(milliseconds: 500),
+  //           () => showSelectPhone(context),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+
+  Widget buildFieldPhone(){
+    return AppFormField(
+      textEditingController: _viewModel!.phoneController,
+      labelText: BookingLanguage.phoneNumber,
+      hintText: BookingLanguage.enterPhone,
+      keyboardType: TextInputType.phone,
     );
   }
 
   Widget buildAddress() {
     return AppFormField(
-      isRequired: true,
+      // isRequired: true,
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
       textEditingController: _viewModel!.addressController,
       validator: _viewModel!.addressMsg,
-      onChanged: (value) {
-        _viewModel!
-          ..validAddress(value.trim())
-          ..enableConfirmButton();
-      },
+      // onChanged: (value) {
+      //   _viewModel!
+      //     ..validAddress(value.trim())
+      //     ..enableConfirmButton();
+      // },
     );
   }
 
-  Widget buildMoney() {
-    return Padding(
-      padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Paragraph(
-            style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
-            content: BookingLanguage.temporary,
-          ),
-          Paragraph(
-            style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),
-            content: _viewModel!.moneyController.text,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget buildMoney() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(top: SizeToPadding.sizeMedium),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Paragraph(
+  //           style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
+  //           content: BookingLanguage.temporary,
+  //         ),
+  //         Paragraph(
+  //           style: STYLE_LARGE_BOLD.copyWith(color: AppColors.PRIMARY_RED),
+  //           content: _viewModel!.moneyController.text,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget buildNote() {
     return Padding(
@@ -530,14 +608,34 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         vertical: SizeToPadding.sizeVerySmall,
       ),
       child: AppFormField(
-        maxLines: 3,
         textEditingController: _viewModel!.noteController,
         labelText: BookingLanguage.note,
         hintText: BookingLanguage.enterNote,
-        onChanged: (value) {
-          _viewModel!.enableConfirmButton();
-        },
+        // onChanged: (value) {
+        //   _viewModel!.enableConfirmButton();
+        // },
       ),
+    );
+  }
+
+  Widget buildFieldMoney(){
+    return AppFormField(
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        FilteringTextInputFormatter.digitsOnly,
+      ],
+      keyboardType: TextInputType.number,
+      labelText: BookingLanguage.amountOfMoney,
+      hintText: BookingLanguage.enterAmountOfMoney,
+      textEditingController: _viewModel!.moneyController,
+      onChanged: (value) {
+        _viewModel!
+          ..validPrice(value.trim())
+          ..formatMoney(value.trim())
+          ..enableConfirmButton();
+      },
+      validator: _viewModel!.messageErrorPrice,
+      isSpace: true,
     );
   }
 
@@ -551,28 +649,22 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         content: ServiceAddLanguage.confirm,
         enableButton: _viewModel!.enableButton,
         onTap: () {
-          if (_viewModel!.dataMyBooking != null) {
-            _viewModel!.putBooking();
-          } else {
-            _viewModel!
-              ..confirmButton()
-              ..postBooking();
-          }
+          _viewModel!.checkDataExist();
         },
       ),
     );
   }
 
-  Widget buildCancelText() {
-    return InkWell(
-      onTap: () => Navigator.pop(context),
-      child: Paragraph(
-        content: ServiceAddLanguage.cancel,
-        style: STYLE_MEDIUM_BOLD.copyWith(
-          fontSize: FONT_SIZE_LARGE,
-          color: AppColors.PRIMARY_PINK,
-        ),
-      ),
-    );
-  }
+  // Widget buildCancelText() {
+  //   return InkWell(
+  //     onTap: () => Navigator.pop(context),
+  //     child: Paragraph(
+  //       content: ServiceAddLanguage.cancel,
+  //       style: STYLE_MEDIUM_BOLD.copyWith(
+  //         fontSize: FONT_SIZE_LARGE,
+  //         color: AppColors.PRIMARY_PINK,
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -42,7 +42,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
             //   systemNavigationBarIconBrightness: Brightness.dark,
             // ),
             // child: buildHistoryScreen(),
-            buildHistoryScreen());
+            buildHistoryScreen(),);
   }
 
   Widget buildHistoryScreen() {
@@ -144,7 +144,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           phone: phone,
           onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
           onTapText: () => _viewModel!.sendPhone(phone, 'sms'),
-          onTapCopy: () => _viewModel!.copyPhone(phone)
+          onTapCopy: () => _viewModel!.copyPhone(phone),
         );
       },
     );
@@ -171,7 +171,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           .dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-          context: context, myBookingModel: myBookingModel),
+          context: context, myBookingModel: myBookingModel,),
       onPay: (id) => _viewModel!.goToBookingDetails(
         context,
         MyBookingParams(id: id, isPayment: true),
@@ -200,7 +200,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           .dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-          context: context, myBookingModel: myBookingModel),
+          context: context, myBookingModel: myBookingModel,),
       onPay: (id) => _viewModel!.goToBookingDetails(
         context,
         MyBookingParams(id: id, isPayment: true),

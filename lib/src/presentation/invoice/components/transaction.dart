@@ -19,18 +19,18 @@ class Transaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var isColor = '+';
-    final alphabet = name!.split('')[0].toUpperCase();
+    final alphabet = name!=null? name?.split('')[0].toUpperCase(): null;
     if (money != null) {
       isColor = money!.split(' ')[0];
     }
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: color,
-        child: Paragraph(
+        child:alphabet!=null? Paragraph(
           content: alphabet,
           style: STYLE_BIG.copyWith(
               fontWeight: FontWeight.w600, color: AppColors.COLOR_WHITE,),
-        ),
+        ): Container(),
       ),
       title: Paragraph(
         content: name ?? '',

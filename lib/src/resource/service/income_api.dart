@@ -5,7 +5,6 @@ import 'dart:convert';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/model.dart';
-import '../model/revenue_chart_model.dart';
 
 class IncomeParams {
   const IncomeParams(
