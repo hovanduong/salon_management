@@ -22,8 +22,8 @@ class MyBookingModel {
   String? deletedAt;
   List<int>? listId;
   String? code;
-  bool income;
-  bool isBooking;
+  bool? income;
+  bool? isBooking;
 
   MyBookingModel({
     this.id,
@@ -39,8 +39,8 @@ class MyBookingModel {
     this.deletedAt,
     this.createdAt,
     this.code,
-    this.income=false,
-    this.isBooking=false,
+    this.income,
+    this.isBooking,
     this.myCustomerId,
     this.myCustomer,
     this.total,

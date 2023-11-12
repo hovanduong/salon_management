@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/invoice_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
-import '../../resource/model/invoice_model.dart';
+import '../../resource/model/model.dart';
 import '../../resource/service/invoice.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
@@ -24,9 +24,9 @@ class InvoiceViewModel extends BaseViewModel {
     AppColors.PRIMARY_PINK,
   ];
 
-  List<InvoiceModel> listInvoice = [];
-  List<InvoiceModel> listFoundInvoice = [];
-  List<InvoiceModel> listCurrent = [];
+  List<InvoiceOverViewModel> listInvoice = [];
+  List<InvoiceOverViewModel> listFoundInvoice = [];
+  List<InvoiceOverViewModel> listCurrent = [];
 
   ScrollController scrollController = ScrollController();
 
@@ -86,16 +86,16 @@ class InvoiceViewModel extends BaseViewModel {
   }
 
   Future<void> filterCategory(String searchCategory) async {
-    var listSearchCategory = <InvoiceModel>[];
-    listSearchCategory = listInvoice
-        .where(
-          (element) =>
-              element.code!.toLowerCase().contains(searchCategory) ||
-              element.myBooking!.myCustomer!.fullName!
-                  .toLowerCase()
-                  .contains(searchCategory),
-        )
-        .toList();
+    var listSearchCategory = <InvoiceOverViewModel>[];
+    // listSearchCategory = listInvoice
+    //     .where((element) => element.invoices.where(
+    //       (element) => false)
+    //           element.code!.toLowerCase().contains(searchCategory) ||
+    //           element.myBooking!.myCustomer!.fullName!
+    //               .toLowerCase()
+    //               .contains(searchCategory),
+    //     )
+    //     .toList();
     listFoundInvoice = listSearchCategory;
     notifyListeners();
   }
@@ -185,7 +185,7 @@ class InvoiceViewModel extends BaseViewModel {
       isLoading = true;
     } else {
       isLoading = false;
-      listInvoice = value as List<InvoiceModel>;
+      listInvoice = value as List<InvoiceOverViewModel>;
     }
     isLoading = false;
     notifyListeners();
