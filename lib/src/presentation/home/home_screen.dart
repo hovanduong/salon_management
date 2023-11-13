@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -115,18 +116,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildTitleCardTransaction(int index){
     return ContentTransactionWidget(
-      date: _viewModel!.listInvoice?[index].date,
-      money: _viewModel!.listInvoice?[index].totalIncomeMoney,
+      date: _viewModel!.listCurrent[index].date,
+      money: _viewModel!.listCurrent[index].totalIncomeMoney,
       isTitle: true,
       nameService: _viewModel!.setDayOfWeek(index),
     );
   }
 
   Widget buildContentTransaction(int index, int indexService){
-    final name= _viewModel!.listInvoice?[index].invoices
+    final name= _viewModel!.listCurrent[index].invoices
       ?[indexService].myBooking?.category?.name;
     return ContentTransactionWidget(
-      money: _viewModel!.listInvoice?[index].invoices?[indexService].myBooking?.money,
+      money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
       nameService: name,
       color: _viewModel!.colors[indexService%_viewModel!.colors.length],
     );
@@ -153,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           buildTitleCardTransaction(index),
           ...List.generate(
-            _viewModel!.listInvoice?[index].invoices?.length??0,
+            _viewModel!.listCurrent[index].invoices!.length,
             (indexService) => buildContentTransaction(index, indexService),
           ),
         ],
@@ -162,14 +163,52 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildTransaction(){
-    return _viewModel!.isShowTransaction? Column(
-      children: [
-        ...List.generate(
-          _viewModel!.listInvoice?.length ?? 0, 
-          buildCardTransaction,
+    return _viewModel!.isShowTransaction?
+    (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)?
+    Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+      child: EmptyDataWidget(
+        title: HomePageLanguage.emptyTransaction,
+        content: HomePageLanguage.notificationEmptyTransaction,
+      ),
+    ): SizedBox(
+      height: MediaQuery.sizeOf(context).height/1.85,
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: _viewModel!.scrollController,
+          itemCount: _viewModel!.loadingMore
+              ? _viewModel!.listCurrent.length + 1
+              : _viewModel!.listCurrent.length,
+          itemBuilder: (context, index) {
+            if (index < _viewModel!.listCurrent.length) {
+              return buildCardTransaction(index);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
+      ),
+    ) : Container();
+  }
+
+  Widget buildBody(){
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () => _viewModel!.pullRefresh(),
+      child: SizedBox(
+        width: double.maxFinite,
+        height: MediaQuery.sizeOf(context).height-150,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildCardMoney(),
+              buildTitleTransaction(),
+              buildTransaction(),
+            ],
+          ),
         ),
-      ],
-    ): Container();
+      ),
+    );
   }
 
   Widget buildHomePage() {
@@ -179,9 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             buildHeader(),
-            buildCardMoney(),
-            buildTitleTransaction(),
-            buildTransaction(),
+            buildBody(),
           ],
         ),
       ),

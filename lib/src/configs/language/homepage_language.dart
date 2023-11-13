@@ -44,4 +44,6 @@ class HomePageLanguage {
   static final thursday = S.current.thursday;
   static final tuesday = S.current.tuesday;
   static final sunday = S.current.sunday;
+  static final emptyTransaction = S.current.emptyTransaction;
+  static final notificationEmptyTransaction = S.current.notificationEmptyTransaction;
 }

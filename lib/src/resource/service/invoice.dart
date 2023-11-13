@@ -49,7 +49,7 @@ class InvoiceApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/invoice?pageSize=10&page=${params.page}&paymentStatus=Paid',
+        url: '/invoice?pageSize=5&page=${params.page}&paymentStatus=Paid',
       );
       switch (response?.statusCode) {
         case 200:

@@ -285,11 +285,13 @@
     "allTransactions":"All transactions",
     "month":"Month",
     "sunday":"Sunday",
-    "monday":"Thứ hai",
+    "monday":"Monday",
     "tuesday":"Tuesday",
     "wednesday":"Wednesday",
     "thursday":"Thursday",
     "friday":"Friday",
     "saturday":"Saturday",
+    "emptyTransaction":"Empty transaction",
+    "notificationEmptyTransaction":"There are currently no transactions",
     "lastLine": ""
 }

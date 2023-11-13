@@ -77,10 +77,6 @@ class MyCustomerViewModel extends BaseViewModel {
     }
   }
 
-  void clearData(){
-    
-  }
-
   Future<void> pullRefresh() async {
     await init();
     notifyListeners();

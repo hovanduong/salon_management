@@ -291,5 +291,7 @@
     "thursday":"Thứ năm",
     "friday":"Thứ sáu",
     "saturday":"Thứ bảy",
+    "emptyTransaction":"Giao dịch trống",
+    "notificationEmptyTransaction":"Hiện tại không có giao dịch nào",
     "lastLine": ""
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../configs/configs.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../resource/model/model.dart';
@@ -10,6 +12,8 @@ class HomeViewModel extends BaseViewModel{
 
   InvoiceApi invoiceApi = InvoiceApi();
 
+  ScrollController scrollController=ScrollController();
+
   List colors = [
     AppColors.COLOR_TEAL,
     AppColors.COLOR_OLIVE,
@@ -19,23 +23,53 @@ class HomeViewModel extends BaseViewModel{
     AppColors.PRIMARY_PINK,
   ];
 
-  List<InvoiceOverViewModel>? listInvoice;
+  List<InvoiceOverViewModel> listInvoice=[];
+  List<InvoiceOverViewModel> listCurrent=[];
 
   bool isLoading=true;
   bool isShowBalance=true;
   bool isShowTransaction=true;
+  bool loadingMore = false;
 
   int page=1;
 
   Future<void> init()async {
     page=1;
     await getInvoice(page);
+    listCurrent=listInvoice;
+    scrollController.addListener(scrollListener,);
+    notifyListeners();
+  }
+
+  Future<void> loadMoreData() async {
+    page += 1;
+    await getInvoice(page,);
+    listCurrent = [...listCurrent, ...listInvoice];
+    notifyListeners();
+  }
+
+   dynamic scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 0) {
+      loadingMore = true;
+      Future.delayed(const Duration(seconds: 2), () {
+        loadMoreData();
+        loadingMore = false;
+      });
+      notifyListeners();
+    }
+  }
+
+  Future<void> pullRefresh()async{
+    await init();
     notifyListeners();
   }
 
   String setDayOfWeek(int index){
-    final now =AppDateUtils.parseDate(listInvoice?[index].date);
-    switch (now.weekday) {
+    final now = AppDateUtils.parseDate(listCurrent[index].date);
+    final dayOfWeek = now.weekday;
+    switch (dayOfWeek) {
       case 1:
         return HomePageLanguage.monday;
       case 2:
