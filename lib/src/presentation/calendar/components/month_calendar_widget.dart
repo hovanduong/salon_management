@@ -95,12 +95,14 @@ class MonthCalendarWidget extends StatelessWidget {
               content: month??'',
               style: STYLE_LARGE.copyWith(
                 fontWeight: FontWeight.w700,
+                color: AppColors.COLOR_WHITE
               ),
             ),
             Paragraph(
               content: '(01/$monthOfYear - $lastDay/$monthOfYear)',
               style: STYLE_SMALL.copyWith(
                 fontWeight: FontWeight.w500,
+                color: AppColors.COLOR_WHITE
               ),
             ),
           ],
