@@ -1,16 +1,25 @@
+// ignore_for_file: use_if_null_to_convert_nulls_to_bools
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/invoice.dart';
+import '../../resource/service/report_api.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
+import '../../utils/time_zone.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class HomeViewModel extends BaseViewModel{
 
   InvoiceApi invoiceApi = InvoiceApi();
+  ReportApi reportApi= ReportApi();
 
   ScrollController scrollController=ScrollController();
 
@@ -25,6 +34,7 @@ class HomeViewModel extends BaseViewModel{
 
   List<InvoiceOverViewModel> listInvoice=[];
   List<InvoiceOverViewModel> listCurrent=[];
+  List<ExpenseManagementModel> expenseManagement=[];
 
   bool isLoading=true;
   bool isShowBalance=true;
@@ -33,18 +43,30 @@ class HomeViewModel extends BaseViewModel{
 
   int page=1;
 
+  String? totalBalance;
+  String? totalIncome;
+  String? totalExpenses;
+
   Future<void> init()async {
     page=1;
     await getInvoice(page);
     listCurrent=listInvoice;
+    await getExpenseManagement(DateTime.now().toString());
     scrollController.addListener(scrollListener,);
     notifyListeners();
   }
+
+  Future<void> goToAddInvoice(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.payment);
+
+  Future<void> goToCalendar() 
+    => Navigator.pushNamed(context, Routers.calendar, arguments: true);
 
   Future<void> loadMoreData() async {
     page += 1;
     await getInvoice(page,);
     listCurrent = [...listCurrent, ...listInvoice];
+    isLoading=false;
     notifyListeners();
   }
 
@@ -89,6 +111,27 @@ class HomeViewModel extends BaseViewModel{
     }
   }
 
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
   void setShowBalance(){
     isShowBalance=!isShowBalance;
     notifyListeners();
@@ -96,6 +139,19 @@ class HomeViewModel extends BaseViewModel{
 
   void setShowTransaction(){
     isShowTransaction=!isShowTransaction;
+    notifyListeners();
+  }
+
+  void setMoney(){
+    expenseManagement.forEach((element) {
+      if(element.revenue==true){
+        totalBalance=AppCurrencyFormat.formatMoney(element.money);
+      }else if(element.income==true){
+        totalIncome=AppCurrencyFormat.formatMoney(element.money);
+      }else{
+        totalExpenses=AppCurrencyFormat.formatMoney(element.money);
+      }
+    });
     notifyListeners();
   }
 
@@ -116,10 +172,33 @@ class HomeViewModel extends BaseViewModel{
     } else if (value is Exception) {
       isLoading = true;
     } else {
-      isLoading = false;
       listInvoice = value as List<InvoiceOverViewModel>;
     }
-    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getExpenseManagement(String date) async {
+    final result = await reportApi.getExpenseManagement(ReportParams(
+      timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
+          DateTime.now().timeZoneName,
+        ),
+      date: date,
+    ),);
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      await showErrorDialog(context);
+    } else {
+      expenseManagement=value as List<ExpenseManagementModel>;
+      setMoney();
+    }
+    isLoading=false;
     notifyListeners();
   }
 

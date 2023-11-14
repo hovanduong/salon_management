@@ -36,9 +36,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
     );
 
+    final isScreen = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
       viewModel: CalendarViewModel(),
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
+        isScreen as bool?,),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -90,7 +92,27 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          title: CalendarLanguage.calendar,
+          title: CalendarLanguage.report,
+        ),
+      ),
+    );
+  }
+
+   Widget buildHeaderSecond() {
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        child: ListTile(
+          title: Center(
+            child: Paragraph(
+              content: CalendarLanguage.report,
+              style: STYLE_LARGE.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -144,7 +166,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildHeader(),
+          if (_viewModel!.isOverView) buildHeader() 
+          else buildHeaderSecond(),
           buildMonthCalendar(),
           buildCalendar(),
           buildDivider(),

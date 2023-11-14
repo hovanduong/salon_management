@@ -7,6 +7,7 @@ class InvoiceOverViewModel {
   int? totalIncomeMoney;
   String? date;
   int? totalNotIncomeMoney;
+  int? total;
   List<InvoiceModel>? invoices;
 
   InvoiceOverViewModel({
@@ -14,6 +15,7 @@ class InvoiceOverViewModel {
     this.invoices,
     this.totalNotIncomeMoney,
     this.date,
+    this.total,
   });
 }
 
@@ -51,6 +53,7 @@ abstract class InvoiceOverViewModelFactory {
       ..date = json['date']
       ..totalIncomeMoney = json['totalIncomeMoney']
       ..totalNotIncomeMoney = json['totalNotIncomeMoney']
+      ..total = json['total']
       ..invoices = json['invoices'] != null
           ? InvoiceModelFactory.createList(jsonEncode(json['invoices']))
           : null;

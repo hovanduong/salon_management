@@ -80,14 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildCardMoney(){
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-      child: CardMoneyWidget(
-        iconShowTotalBalance: _viewModel!.isShowBalance,
-        onShowTotalBalance: () => _viewModel!.setShowBalance(),
-        money: r'$ 2,547.00',
-        moneyExpenses: r'$340.00',
-        moneyIncome: r'$1,840.00',
+    return InkWell(
+      onTap: () => _viewModel!.goToCalendar(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+        child: CardMoneyWidget(
+          iconShowTotalBalance: _viewModel!.isShowBalance,
+          onShowTotalBalance: () => _viewModel!.setShowBalance(),
+          money: _viewModel!.totalBalance,
+          moneyExpenses: _viewModel!.totalExpenses,
+          moneyIncome: _viewModel!.totalIncome,
+        ),
       ),
     );
   }
@@ -117,7 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildTitleCardTransaction(int index){
     return ContentTransactionWidget(
       date: _viewModel!.listCurrent[index].date,
-      money: _viewModel!.listCurrent[index].totalIncomeMoney,
+      money: _viewModel!.listCurrent[index].total,
+      isMoneyIncome: true,
       isTitle: true,
       nameService: _viewModel!.setDayOfWeek(index),
     );
@@ -130,6 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
       money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
       nameService: name,
       color: _viewModel!.colors[indexService%_viewModel!.colors.length],
+      isMoneyIncome: _viewModel!.listCurrent[index].invoices
+        ?[indexService].myBooking?.income ?? false,
     );
   }
 
@@ -214,6 +220,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildHomePage() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
+        child: FloatingActionButton(
+          heroTag: 'addBooking',
+          backgroundColor: AppColors.PRIMARY_GREEN,
+          onPressed: () => _viewModel!.goToAddInvoice(context),
+          child: const Icon(Icons.add),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

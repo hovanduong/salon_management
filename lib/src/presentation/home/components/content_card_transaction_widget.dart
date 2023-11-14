@@ -13,6 +13,7 @@ class ContentTransactionWidget extends StatelessWidget {
     this.date, 
     this.money, 
     this.color,
+    this.isMoneyIncome=false,
   });
 
   final bool isTitle;
@@ -20,6 +21,7 @@ class ContentTransactionWidget extends StatelessWidget {
   final String? date;
   final num? money;
   final Color? color;
+  final bool isMoneyIncome;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +60,13 @@ class ContentTransactionWidget extends StatelessWidget {
         ),
       ): null,
       trailing: Paragraph(
-        content: AppCurrencyFormat.formatMoney(money ?? ''),
+        content: isTitle? AppCurrencyFormat.formatMoney(money ?? '0') :
+          isMoneyIncome ? '+${AppCurrencyFormat.formatMoney(money ?? '0')}'
+          : '-${AppCurrencyFormat.formatMoney(money ?? '0')}',
         style: STYLE_LARGE.copyWith(
           fontWeight: FontWeight.w600,
-          color: AppColors.Green_Money,
+          color:(money??0)>=0 && isMoneyIncome? 
+            AppColors.Green_Money : AppColors.Red_Money,
         ),
       ),
     );

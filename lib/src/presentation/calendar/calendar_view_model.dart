@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions, avoid_positional_boolean_parameters
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
-import '../../resource/model/calendar_model.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/report_api.dart';
 import '../../utils/app_valid.dart';
@@ -23,6 +22,7 @@ class CalendarViewModel extends BaseViewModel{
   bool isLoading=true;
   bool isWeekend=false;
   bool isDayCurrent=false;
+  bool isOverView=false;
 
   String? monthOfYear;
 
@@ -33,7 +33,8 @@ class CalendarViewModel extends BaseViewModel{
   num spendingMoney=0;
   num total=0;
 
-  Future<void> init()async{
+  Future<void> init(bool? isScreen)async{
+    isOverView=isScreen ?? false;
     await getList();
     notifyListeners();
   }

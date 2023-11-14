@@ -293,5 +293,6 @@
     "saturday":"Saturday",
     "emptyTransaction":"Empty transaction",
     "notificationEmptyTransaction":"There are currently no transactions",
+    "report":"Report",
     "lastLine": ""
 }

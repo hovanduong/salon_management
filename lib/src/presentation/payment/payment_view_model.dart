@@ -113,6 +113,7 @@ class PaymentViewModel extends BaseViewModel {
 
   Future<void> init() async {
     await getCategory();
+    categoryId=listCategory[0].id;
     // await setDataMyBooking(myBookingModel);
     // await fetchService();
     // await fetchCustomer();

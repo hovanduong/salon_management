@@ -9,5 +9,6 @@ class CalendarLanguage {
   static final total = S.current.total;
   static final revenue = S.current.revenue;
   static final spendingMoney = S.current.spendingMoney;
+  static final report = S.current.report;
 
 }

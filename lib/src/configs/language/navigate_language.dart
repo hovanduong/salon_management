@@ -13,4 +13,6 @@ class NavigateLanguage {
 
   static final exitAppContent = S.current.exitAppContent;
 
+  static final report = S.current.report;
+
 }

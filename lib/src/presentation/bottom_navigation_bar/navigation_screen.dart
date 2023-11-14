@@ -5,9 +5,8 @@ import '../../configs/language/navigate_language.dart';
 import '../base/base.dart';
 
 import '../booking_history/booking_history.dart';
+import '../calendar/calendar.dart';
 import '../home/home.dart';
-import '../invoice/invoice_screen.dart';
-import '../overview/overview.dart';
 import '../profile/profile_screen.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
@@ -53,7 +52,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
             else
               Container(),
             if (_viewModel!.selectedIndex == 1)
-              const InvoiceScreen(
+              const CalendarScreen(
                 // key: PageStorageKey('invoicePage'),
               )
             else
@@ -103,7 +102,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 ? AppImages.icInvoice
                 : AppImages.icWalletLine,
           ),
-          label: NavigateLanguage.invoice,
+          label: NavigateLanguage.report,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
