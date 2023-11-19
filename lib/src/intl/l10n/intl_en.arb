@@ -294,5 +294,13 @@
     "emptyTransaction":"Empty transaction",
     "notificationEmptyTransaction":"There are currently no transactions",
     "report":"Report",
+    "addInvoice":"Add invoice",
+    "addBooking":"Add appointment",
+    "clickCardMoney":"Click on the card to see daily revenue",
+    "dailyRevenue":"Daily revenue",
+    "totalRevenue":"Total revenue",
+    "monthlyRevenue":"Monthly revenue",
+    "showLastMonth":"Show last month",
+    "showNextMonth":"Show next month",
     "lastLine": ""
 }

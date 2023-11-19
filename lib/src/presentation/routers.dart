@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../resource/model/user_model.dart';
 import 'app/splash.dart';
@@ -269,7 +270,8 @@ class Routers {
   }) {
     return PageRouteBuilder(
       settings: RouteSettings(name: name, arguments: arguments),
-      pageBuilder: (context, animation, secondaryAnimation) => page,
+      pageBuilder: (context, animation, secondaryAnimation) => ShowCaseWidget(
+        builder: Builder(builder: (context) => page,),),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         final begin = beginOffset ?? const Offset(0, 0);
         const end = Offset.zero;

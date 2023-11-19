@@ -1,49 +1,56 @@
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
+import '../../../configs/language/calendar_language.dart';
 
 class MonthCalendarWidget extends StatelessWidget {
   const MonthCalendarWidget({
     super.key, 
     this.month, 
     this.subMonth, 
-    this.addMonth,
+    this.addMonth, 
+    this.keyLastMonth, 
+    this.keyNextMonth,
   });
 
   final String? month;
   final Function()? subMonth;
   final Function()? addMonth;
+  final GlobalKey? keyLastMonth;
+  final GlobalKey? keyNextMonth;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:  EdgeInsets.symmetric(
+    return Container(
+      margin: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeMedium,
         horizontal: SizeToPadding.sizeSmall,
       ),
-      child: Container(
-        height: 100,
-        width: double.maxFinite,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(
-            Radius.circular(BorderRadiusSize.sizeMedium),
-          ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: SpaceBox.sizeMedium,
-              color: AppColors.BLACK_400,
-            ),
-          ],
+      height: 100,
+      width: double.maxFinite,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppColors.COLOR_WHITE,
+        borderRadius: BorderRadius.all(
+          Radius.circular(BorderRadiusSize.sizeMedium),
         ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
+        boxShadow: [
+          BoxShadow(
+            blurRadius: SpaceBox.sizeMedium,
+            color: AppColors.BLACK_300,
+          ),
+        ],
+      ),
+      child: Center(
+        child: Row(
+          children: [
+            Showcase(
+              key: keyLastMonth ?? GlobalKey(),
+              description: CalendarLanguage.showLastMonth,
+              child: IconButton(
                 onPressed: ()=> subMonth!(), 
                 icon: const Icon(
                   Icons.arrow_back_ios_new, 
@@ -51,8 +58,12 @@ class MonthCalendarWidget extends StatelessWidget {
                   size: 40,
                 ),
               ),
-              buildMonth(context),
-              IconButton(
+            ),
+            buildMonth(context),
+            Showcase(
+              key: keyNextMonth ?? GlobalKey(),
+              description: CalendarLanguage.showNextMonth,
+              child: IconButton(
                 onPressed: ()=> addMonth!(), 
                 alignment: Alignment.topLeft,
                 icon: const Icon(
@@ -61,8 +72,8 @@ class MonthCalendarWidget extends StatelessWidget {
                   size: 40,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -74,7 +85,6 @@ class MonthCalendarWidget extends StatelessWidget {
     final lastDay= DateTime(year, monthOfYear+1, 0).day;
     return Container(
       margin: EdgeInsets.only(
-        left: SizeToPadding.sizeVerySmall,
         top: SizeToPadding.sizeVerySmall,
         bottom: SizeToPadding.sizeVerySmall,
       ),

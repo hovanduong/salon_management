@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -21,6 +22,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   HomeViewModel? _viewModel;
+
+  // final GlobalKey add= GlobalKey();
+  
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     return ShowCaseWidget.of(context).startShowCase([add]);
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +94,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return InkWell(
       onTap: () => _viewModel!.goToCalendar(),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-        child: CardMoneyWidget(
-          iconShowTotalBalance: _viewModel!.isShowBalance,
-          onShowTotalBalance: () => _viewModel!.setShowBalance(),
-          money: _viewModel!.totalBalance,
-          moneyExpenses: _viewModel!.totalExpenses,
-          moneyIncome: _viewModel!.totalIncome,
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
+          vertical: SizeToPadding.sizeSmall,),
+        child: Showcase(
+          key: _viewModel!.cardMoney,
+          description: HomePageLanguage.totalRevenue,
+          
+          targetBorderRadius: BorderRadius.circular(
+            BorderRadiusSize.sizeMedium,),
+          child: CardMoneyWidget(
+            iconShowTotalBalance: _viewModel!.isShowBalance,
+            onShowTotalBalance: () => _viewModel!.setShowBalance(),
+            money: _viewModel!.totalBalance,
+            moneyExpenses: _viewModel!.totalExpenses,
+            moneyIncome: _viewModel!.totalIncome,
+          ),
         ),
       ),
     );
@@ -188,6 +207,13 @@ class _HomeScreenState extends State<HomeScreen> {
               : _viewModel!.listCurrent.length,
           itemBuilder: (context, index) {
             if (index < _viewModel!.listCurrent.length) {
+              if(index==0){
+                return Showcase(
+                  key: _viewModel!.cardRevenue,
+                  description: HomePageLanguage.dailyRevenue,
+                  child: buildCardTransaction(index),
+                );
+              }
               return buildCardTransaction(index);
             } else {
               return const CupertinoActivityIndicator();
@@ -222,11 +248,19 @@ class _HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
-        child: FloatingActionButton(
-          heroTag: 'addBooking',
-          backgroundColor: AppColors.PRIMARY_GREEN,
-          onPressed: () => _viewModel!.goToAddInvoice(context),
-          child: const Icon(Icons.add),
+        child: Showcase(
+          key: _viewModel!.add,
+          description: HomePageLanguage.addInvoice,
+          // disableDefaultTargetGestures: true,
+          // disableMovingAnimation: true,
+          targetBorderRadius: BorderRadius.all(Radius.circular(
+            BorderRadiusSize.sizeLarge,),),
+          child: FloatingActionButton(
+            heroTag: 'addBooking',
+            backgroundColor: AppColors.PRIMARY_GREEN,
+            onPressed: () => _viewModel!.goToAddInvoice(context),
+            child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
+          ),
         ),
       ),
       body: SingleChildScrollView(

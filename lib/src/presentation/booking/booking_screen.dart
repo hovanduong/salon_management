@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
@@ -14,6 +13,7 @@ import '../../configs/constants/app_space.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../base/base.dart';
 import 'booking.dart';
+import 'components/components.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -360,7 +360,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       child: Paragraph(
         content: BookingLanguage.chooseTime,
-        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600,),
       ),
     );
   }
@@ -433,56 +433,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildDateTime() {
-    final hours = _viewModel!.dateTime.hour.toString().padLeft(2, '0');
-    final minutes = _viewModel!.dateTime.minute.toString().padLeft(2, '0');
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Paragraph(
-              content: BookingLanguage.chooseTime,
-              fontWeight: FontWeight.w600,
-            ),
-            Paragraph(
-              content: BookingLanguage.chooseDay,
-              fontWeight: FontWeight.w600,
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: showSelectTime,
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
-                ),
-                child: Paragraph(content: '$hours:$minutes'),
-              ),
-            ),
-            SizedBox(
-              width: SpaceBox.sizeMedium,
-            ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  showSelectDate();
-                },
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
-                ),
-                child: Paragraph(
-                  content:
-                      DateFormat('dd/MM/yyyy').format(_viewModel!.dateTime),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+    return ButtonDateTimeWidget(
+      dateTime: _viewModel!.dateTime,
+      onShowSelectDate: showSelectDate,
+      onShowSelectTime: showSelectTime,
     );
   }
 

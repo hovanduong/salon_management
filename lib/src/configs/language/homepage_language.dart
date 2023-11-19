@@ -46,4 +46,8 @@ class HomePageLanguage {
   static final sunday = S.current.sunday;
   static final emptyTransaction = S.current.emptyTransaction;
   static final notificationEmptyTransaction = S.current.notificationEmptyTransaction;
+  static final dailyRevenue = S.current.dailyRevenue;
+  static final addInvoice = S.current.addInvoice;
+  static final clickCardMoney = S.current.clickCardMoney;
+  static final totalRevenue = S.current.totalRevenue;
 }

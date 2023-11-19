@@ -1,12 +1,12 @@
-// ignore_for_file: avoid_bool_literals_in_conditional_expressions, avoid_positional_boolean_parameters
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/report_api.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/time_zone.dart';
 import '../base/base.dart';
@@ -22,21 +22,47 @@ class CalendarViewModel extends BaseViewModel{
   bool isLoading=true;
   bool isWeekend=false;
   bool isDayCurrent=false;
-  bool isOverView=false;
+  bool isShowCase=true;
 
   String? monthOfYear;
 
   int month=DateTime.now().month;
   int year=DateTime.now().year;
+  int? isOverView;
 
   num revenue=0;
   num spendingMoney=0;
   num total=0;
 
-  Future<void> init(bool? isScreen)async{
-    isOverView=isScreen ?? false;
+  GlobalKey keyLastMonth=GlobalKey();
+  GlobalKey keyNextMonth=GlobalKey();
+  GlobalKey keyDailyRevenue=GlobalKey();
+  GlobalKey keyMonthlyRevenue=GlobalKey();
+
+  Future<void> init(int? isScreen)async{
+    isOverView=isScreen;
     await getList();
+    await AppPref.getShowCase('showCaseRevenue').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCaseRevenue', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        ShowCaseWidget.of(context).startShowCase(
+          [keyLastMonth,keyNextMonth, keyDailyRevenue, keyMonthlyRevenue],
+        );
+      });
+    }
   }
 
   Future<void> subMonth()async{

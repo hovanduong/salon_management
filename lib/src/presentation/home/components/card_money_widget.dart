@@ -25,7 +25,6 @@ class CardMoneyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
       width: double.maxFinite,
       height: 200,
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),

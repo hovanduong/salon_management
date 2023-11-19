@@ -1,4 +1,4 @@
-// ignore_for_file: join_return_with_assignment
+// ignore_for_file: join_return_with_assignment, avoid_positional_boolean_parameters
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +16,16 @@ final class AppPref {
   static Future<bool> setToken(String value) async {
     final pref = await SharedPreferences.getInstance();
     return pref.setString(Constants.accessToken, value);
+  }
+
+  static Future<bool> setShowCase(String name, bool value) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.setBool(name, value);
+  }
+
+  static Future<bool?> getShowCase(String name) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool(name);
   }
 
   static Future<bool> setDataUser(String nameSave, String value,) async {

@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/homepage_language.dart';
@@ -10,6 +11,7 @@ import '../../resource/model/model.dart';
 import '../../resource/service/invoice.dart';
 import '../../resource/service/report_api.dart';
 import '../../utils/app_currency.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
 import '../../utils/time_zone.dart';
@@ -40,6 +42,7 @@ class HomeViewModel extends BaseViewModel{
   bool isShowBalance=true;
   bool isShowTransaction=true;
   bool loadingMore = false;
+  bool? isShowCase;
 
   int page=1;
 
@@ -47,20 +50,43 @@ class HomeViewModel extends BaseViewModel{
   String? totalIncome;
   String? totalExpenses;
 
+  GlobalKey add= GlobalKey();
+  GlobalKey cardMoney= GlobalKey();
+  GlobalKey cardRevenue= GlobalKey();
+
   Future<void> init()async {
     page=1;
     await getInvoice(page);
     listCurrent=listInvoice;
     await getExpenseManagement(DateTime.now().toString());
     scrollController.addListener(scrollListener,);
+    await AppPref.getShowCase('showCaseHome').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCaseHome', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase==true){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [add, cardMoney, cardRevenue],);
+      });
+    }
   }
 
   Future<void> goToAddInvoice(BuildContext context) =>
       Navigator.pushNamed(context, Routers.payment);
 
   Future<void> goToCalendar() 
-    => Navigator.pushNamed(context, Routers.calendar, arguments: true);
+    => Navigator.pushNamed(context, Routers.calendar, arguments: 1);
 
   Future<void> loadMoreData() async {
     page += 1;

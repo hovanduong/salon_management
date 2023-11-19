@@ -107,6 +107,7 @@ class BookingViewModel extends BaseViewModel {
   Future<void> init(MyBookingModel? myBookingModel) async {
     await getCategory();
     await setDataMyBooking(myBookingModel);
+    categoryId=listCategory[0].id;
     // await fetchService();
     // await fetchCustomer();
     // await initMapCustomer();

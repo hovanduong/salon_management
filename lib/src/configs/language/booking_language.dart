@@ -48,5 +48,6 @@ class BookingLanguage {
   static final amountOfMoney = S.current.amountOfMoney;
   static final enterAmountOfMoney = S.current.enterAmountOfMoney;
   static final addCategory = S.current.addCategory;
+  static final addBooking = S.current.addBooking;
 
 }

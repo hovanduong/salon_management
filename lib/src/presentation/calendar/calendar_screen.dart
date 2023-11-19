@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -40,7 +41,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return BaseWidget(
       viewModel: CalendarViewModel(),
       onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        isScreen as bool?,),
+        isScreen as int?,),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -123,13 +124,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
       month: '${_viewModel!.month}/${_viewModel!.year}',
       addMonth:() => _viewModel!.addMonth(),
       subMonth: () => _viewModel!.subMonth(),
+      keyLastMonth: _viewModel!.keyLastMonth,
+      keyNextMonth: _viewModel!.keyNextMonth,
     );
   }
 
   Widget buildCalendar(){
-    return CalendarWidget(
-      listDay: _viewModel?.listDay,
-      isWeekend: _viewModel!.isWeekend,
+    return Showcase(
+      key: _viewModel!.keyDailyRevenue,
+      description: CalendarLanguage.dailyRevenue,
+      child: CalendarWidget(
+        listDay: _viewModel?.listDay,
+        isWeekend: _viewModel!.isWeekend,
+      ),
     );
   }
 
@@ -149,10 +156,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget buildMoney(){
     return _viewModel!.listDay.isNotEmpty? Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(_viewModel!.expenseManagement!.length, 
-          buildTotal,
+      child: Showcase(
+        key: _viewModel!.keyMonthlyRevenue,
+        description: CalendarLanguage.monthlyRevenue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(_viewModel!.expenseManagement!.length, 
+            buildTotal,
+          ),
         ),
       ),
     ): Container();
@@ -166,7 +177,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (_viewModel!.isOverView) buildHeader() 
+          if (_viewModel!.isOverView==1) buildHeader() 
           else buildHeaderSecond(),
           buildMonthCalendar(),
           buildCalendar(),

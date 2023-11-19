@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/configs.dart';
@@ -11,6 +12,7 @@ import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -41,6 +43,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   bool isLoading = true;
   bool isToday = true;
   bool isPullRefresh = false;
+  bool isShowCase=true;
 
   int pageUpComing = 1;
   int pageDone = 1;
@@ -48,6 +51,8 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageToday = 1;
   int pageDaysBefore = 1;
   int currentTab = 1;
+
+  GlobalKey addBooking = GlobalKey();
 
   Timer? timer;
 
@@ -58,7 +63,27 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> init({dynamic dataThis}) async {
     await fetchData();
     tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
+    await AppPref.getShowCase('showCaseAppointment').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCaseAppointment', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        ShowCaseWidget.of(context).startShowCase(
+          [addBooking],
+        );
+      });
+    }
   }
 
   Future<void> goToAddBooking({

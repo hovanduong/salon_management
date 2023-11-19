@@ -294,5 +294,13 @@
     "emptyTransaction":"Giao dịch trống",
     "notificationEmptyTransaction":"Hiện tại không có giao dịch nào",
     "report":"Báo cáo",
+    "addInvoice":"Thêm hóa đơn",
+    "addBooking":"Thêm lịch hẹn",
+    "clickCardMoney":"nhấn vào thẻ để xem doanh thu hàng ngày",
+    "dailyRevenue":"Doanh thu hằng ngày",
+    "monthlyRevenue":"Doanh thu tháng",
+    "totalRevenue":"Tổng doanh thu",
+    "showLastMonth":"xem tháng trước",
+    "showNextMonth":"xem tháng tiếp theo",
     "lastLine": ""
 }

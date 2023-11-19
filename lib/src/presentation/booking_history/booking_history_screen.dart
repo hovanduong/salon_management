@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -117,6 +118,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           ),
         ],
         isScrollable: true,
+        indicatorSize: TabBarIndicatorSize.tab,
+        padding: EdgeInsets.zero,
         labelPadding: EdgeInsets.symmetric(
           horizontal: SizeToPadding.sizeSmall,
         ),
@@ -331,11 +334,17 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       child: Scaffold(
         floatingActionButton: Padding(
           padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
-          child: FloatingActionButton(
-            heroTag: 'addBooking',
-            backgroundColor: AppColors.PRIMARY_GREEN,
-            onPressed: () => _viewModel!.goToAddBooking(context: context),
-            child: const Icon(Icons.add),
+          child: Showcase(
+            key: _viewModel!.addBooking,
+            description: BookingLanguage.addBooking,
+            targetBorderRadius: BorderRadius.circular(
+              BorderRadiusSize.sizeMedium,),
+            child: FloatingActionButton(
+              heroTag: 'addBooking',
+              backgroundColor: AppColors.PRIMARY_GREEN,
+              onPressed: () => _viewModel!.goToAddBooking(context: context),
+              child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
+            ),
           ),
         ),
         body: SingleChildScrollView(
