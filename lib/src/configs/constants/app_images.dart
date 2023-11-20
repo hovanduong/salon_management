@@ -132,4 +132,9 @@ class AppImages {
   static const String makeUp = 'assets/icons/makeUp.svg';
 
   static const String tattoo = 'assets/icons/tattoo.svg';
+
+  static const String eat = 'assets/icons/eat.svg';
+
+  static const String expenses = 'assets/icons/expenses.svg';
+
 }

@@ -36,10 +36,21 @@ class PaymentViewModel extends BaseViewModel {
   // List<MyServiceModel> myService = [];
   List<MyBookingModel> listMyBooking=[];
   List<CategoryModel> listCategory = [];
+  List<CategoryModel> listCategoryIncome = [];
+  List<CategoryModel> listCategoryExpense = [];
   List<String> listImageCategory=[
-    AppImages.icBodyMassage,
     AppImages.icNailCare,
+    AppImages.icBodyMassage,
+    AppImages.tattoo,
+    AppImages.makeUp,
+    AppImages.icSkinTreatment,
+    AppImages.makeHair,
     AppImages.eyelash,
+  ];
+  List<String> listImageExpenses=[
+    AppImages.expenses,
+    AppImages.eat,
+    AppImages.icMore,
     AppImages.makeHair,
     AppImages.icSkinTreatment,
     AppImages.makeUp,
@@ -127,9 +138,13 @@ class PaymentViewModel extends BaseViewModel {
       arguments: listMyBooking[0],);
 
   void setButtonSelect(String name){
-    if(name==PaymentLanguage.revenue){
+    if(name==PaymentLanguage.income){
+      categoryId=listCategoryIncome[0].id;
+      listCategory=listCategoryIncome;
       isButtonSpending=false;
     }else{
+      listCategory=listCategoryExpense;
+      categoryId=listCategoryExpense[0].id;
       isButtonSpending=true;
     }
     notifyListeners();
@@ -383,7 +398,8 @@ class PaymentViewModel extends BaseViewModel {
   // }
 
   void enableConfirmButton() {
-    if (messageErrorPrice==null && categoryId!=null) {
+    if (messageErrorPrice==null && 
+      moneyController.text.trim()!='' && categoryId!=null) {
       enableButton = true;
     } else {
       enableButton = false;
@@ -471,6 +487,22 @@ class PaymentViewModel extends BaseViewModel {
     return '$time $day';
   }
 
+  void setDataCategory(){
+    listCategoryExpense.clear();
+    listCategoryIncome.clear();
+    listCategory.forEach((element) {
+      if(element.income!){
+        listCategoryIncome.add(element);
+      }else{
+        listCategoryExpense.add(element);
+      }
+    });
+    listCategoryIncome=listCategoryIncome.reversed.toList();
+    listCategoryExpense=listCategoryExpense.reversed.toList();
+    listCategory=listCategoryIncome;
+    notifyListeners();
+  }
+
   Future<void> checkCustomer()async{
     if(phoneController.text.trim()=='' && nameController.text.trim()==''){
       await postBooking();
@@ -553,6 +585,7 @@ class PaymentViewModel extends BaseViewModel {
     } else {
       isLoading=false;
       listCategory=value as List<CategoryModel>;
+      setDataCategory();
     }
     notifyListeners();
   }

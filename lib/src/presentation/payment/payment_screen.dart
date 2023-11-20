@@ -89,7 +89,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             SvgPicture.asset(
-              _viewModel!.listImageCategory[index], 
+              _viewModel!.isButtonSpending? _viewModel!.listImageExpenses[index]
+                :_viewModel!.listImageCategory[index], 
               width: 50,
             ),
             SizedBox(height: SpaceBox.sizeSmall,),
@@ -282,6 +283,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
         FilteringTextInputFormatter.digitsOnly,
       ],
+      isRequired: true,
       keyboardType: TextInputType.number,
       labelText: PaymentLanguage.amountOfMoney,
       hintText: PaymentLanguage.enterAmountOfMoney,
@@ -324,9 +326,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Row(
       children: [
         buildButtonSelect(
-          PaymentLanguage.revenue, !_viewModel!.isButtonSpending,),
+          PaymentLanguage.income, !_viewModel!.isButtonSpending,),
         buildButtonSelect(
-          PaymentLanguage.spendingMoney, _viewModel!.isButtonSpending,),
+          PaymentLanguage.expenses, _viewModel!.isButtonSpending,),
       ],
     );
   }
