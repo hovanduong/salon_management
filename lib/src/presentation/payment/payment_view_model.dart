@@ -38,29 +38,11 @@ class PaymentViewModel extends BaseViewModel {
   List<CategoryModel> listCategory = [];
   List<CategoryModel> listCategoryIncome = [];
   List<CategoryModel> listCategoryExpense = [];
-  List<String> listImageCategory=[
-    AppImages.icNailCare,
-    AppImages.icBodyMassage,
-    AppImages.tattoo,
-    AppImages.makeUp,
-    AppImages.icSkinTreatment,
-    AppImages.makeHair,
-    AppImages.eyelash,
-  ];
-  List<String> listImageExpenses=[
-    AppImages.expenses,
-    AppImages.eat,
-    AppImages.icMore,
-    AppImages.makeHair,
-    AppImages.icSkinTreatment,
-    AppImages.makeUp,
-    AppImages.tattoo,
-  ];
 
   Timer? timer;
 
   int? myCustomerId;
-  int? index;
+  int? selectedCategory;
   int? categoryId;
 
   // num totalCost = 0;
@@ -97,6 +79,7 @@ class PaymentViewModel extends BaseViewModel {
   bool enableButton = false;
   bool isLoading=true;
   bool isButtonSpending=false;
+  bool isShowAll=false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -124,6 +107,7 @@ class PaymentViewModel extends BaseViewModel {
 
   Future<void> init() async {
     await getCategory();
+    selectedCategory=0;
     categoryId=listCategory[0].id;
     // await setDataMyBooking(myBookingModel);
     // await fetchService();
@@ -136,6 +120,12 @@ class PaymentViewModel extends BaseViewModel {
   Future<void> goToBill(BuildContext context) 
     => Navigator.pushNamed(context, Routers.bill, 
       arguments: listMyBooking[0],);
+  
+  Future<void> goToAddCategory(BuildContext context) async {
+    await Navigator.pushNamed(context, Routers.addCategory,);
+    await init();
+  } 
+
 
   void setButtonSelect(String name){
     if(name==PaymentLanguage.income){
@@ -147,11 +137,18 @@ class PaymentViewModel extends BaseViewModel {
       categoryId=listCategoryExpense[0].id;
       isButtonSpending=true;
     }
+    isShowAll=false;
+    selectedCategory=0;
     notifyListeners();
   }
 
   void setCategorySelected(int index){
-    categoryId=listCategory[index].id;
+    if(index==16 || index ==17){
+      isShowAll=!isShowAll;
+    }else{
+      selectedCategory=index;
+      categoryId=listCategory[index].id;
+    }
     enableConfirmButton();
     notifyListeners();
   }
@@ -188,9 +185,6 @@ class PaymentViewModel extends BaseViewModel {
   //     element.phoneNumber==myCustomerModel!.phoneNumber,).first.id;
   //   notifyListeners();
   // }
-
-  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model) 
-    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   // void setSelectedService() {
   //   if (dataMyBooking!.myServices!.isNotEmpty) {
@@ -497,8 +491,6 @@ class PaymentViewModel extends BaseViewModel {
         listCategoryExpense.add(element);
       }
     });
-    listCategoryIncome=listCategoryIncome.reversed.toList();
-    listCategoryExpense=listCategoryExpense.reversed.toList();
     listCategory=listCategoryIncome;
     notifyListeners();
   }

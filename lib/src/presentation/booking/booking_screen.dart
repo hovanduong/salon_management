@@ -11,6 +11,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../resource/model/my_booking_model.dart';
+import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
 import 'booking.dart';
 import 'components/components.dart';
@@ -90,12 +91,21 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildTitleCategory(){
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-      child: Paragraph(
-        content: BookingLanguage.addCategory,
-        style: STYLE_MEDIUM.copyWith(
-          fontWeight: FontWeight.w600
+    return GestureDetector(
+      onTap: ()=> _viewModel!.goToAddCategory(context),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Paragraph(
+              content: BookingLanguage.selectCategory,
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Icon(Icons.add_circle, color: AppColors.PRIMARY_GREEN,)
+          ],
         ),
       ),
     );
@@ -111,18 +121,33 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
         mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
       ), 
-      itemCount: _viewModel!.listCategory.length,
-      itemBuilder: (context, index) => buildItemCategory(index),
+      itemCount: _viewModel!.isShowAll? _viewModel!.listCategory.length+1
+        :_viewModel!.listCategory.length,
+      itemBuilder: (context, index) {
+        if(index==8 && !_viewModel!.isShowAll){
+          return buildItemCategory(16,name: BookingLanguage.seeMore);
+        }else if(index<8){
+          return buildItemCategory(index);
+        }else if(_viewModel!.isShowAll){
+          if(index==_viewModel!.listCategory.length){
+            return buildItemCategory(17,name: BookingLanguage.close);
+          }else{
+            return buildItemCategory(index);
+          }
+        }
+        return null;
+      },
     );
   }
 
-  Widget buildItemCategory(int index){
+  Widget buildItemCategory(int index, {String? name}){
     return InkWell(
       onTap: () =>_viewModel!.setCategorySelected(index),
       child: Container(
         padding: EdgeInsets.all(SizeToPadding.sizeMedium),
         decoration: BoxDecoration(
-          color: _viewModel!.categoryId==_viewModel!.listCategory[index].id
+          color: _viewModel!.categoryId==(
+            name!=null? 0: _viewModel!.listCategory[index].id)
           ? AppColors.LINEAR_GREEN.withOpacity(0.3)
           : AppColors.COLOR_WHITE,
           border: Border.all(color: AppColors.PRIMARY_GREEN),
@@ -130,12 +155,14 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         child: Column(
           children: [
             SvgPicture.asset(
-              _viewModel!.listImageCategory[index], 
+              AppIcCategory.getIcCategory(
+                name!=null? index:
+                int.parse(_viewModel!.listCategory[index].imageId ?? '0'),),
               width: 50,
             ),
             SizedBox(height: SpaceBox.sizeSmall,),
             Paragraph(
-              content: _viewModel!.listCategory[index].name,
+              content: name ?? _viewModel!.listCategory[index].name,
               fontWeight: FontWeight.w600,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -582,6 +609,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       labelText: BookingLanguage.amountOfMoney,
       hintText: BookingLanguage.enterAmountOfMoney,
       textEditingController: _viewModel!.moneyController,
+      isRequired: true,
       onChanged: (value) {
         _viewModel!
           ..validPrice(value.trim())

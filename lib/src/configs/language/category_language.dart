@@ -18,6 +18,10 @@ class CategoryLanguage {
   static final emptyCategory = S.current.emptyCategory;
   static final notificationEmptyCategory = S.current.notificationEmptyCategory;
   static final errorNetwork= S.current.errorNetwork;
+  static final selectCategory= S.current.selectCategory;
+  static final icon= S.current.icon;
+  static final income= S.current.income;
+  static final expenses= S.current.expenses;
 
   static final more= S.current.seeMore;
   static final nailCare= S.current.nailCare;

@@ -6,6 +6,7 @@ class PaymentLanguage {
   static final phoneNumber = S.current.phoneNumber;
   static final enterPhoneNumber = S.current.enterPhoneNumber;
   static final addCategory = S.current.addCategory;
+  static final selectCategory = S.current.selectCategory;
   static final delete= S.current.delete;
   static final edit= S.current.edit;
   static final waningDeleteCategory= S.current.waningDeleteCategory;
@@ -29,5 +30,6 @@ class PaymentLanguage {
   static final revenue= S.current.revenue;
   static final income= S.current.income;
   static final expenses= S.current.expenses;
-
+  static final seeMore= S.current.seeMore;
+  static final close= S.current.close;
 }

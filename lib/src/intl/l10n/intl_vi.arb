@@ -300,7 +300,9 @@
     "dailyRevenue":"Doanh thu hằng ngày",
     "monthlyRevenue":"Doanh thu tháng",
     "totalRevenue":"Tổng doanh thu",
-    "showLastMonth":"xem tháng trước",
-    "showNextMonth":"xem tháng tiếp theo",
+    "showLastMonth":"Xem tháng trước",
+    "showNextMonth":"Xem tháng tiếp theo",
+    "icon":"Biểu tượng",
+    "selectCategory":"Chọn mục",
     "lastLine": ""
 }

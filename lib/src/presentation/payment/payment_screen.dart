@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/payment_language.dart';
+import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
 
 import 'components/buildButtonDateTime.dart';
@@ -64,24 +66,33 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildTitleCategory(){
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-      child: Paragraph(
-        content: PaymentLanguage.addCategory,
-        style: STYLE_MEDIUM.copyWith(
-          fontWeight: FontWeight.w600
+    return GestureDetector(
+      onTap: ()=> _viewModel!.goToAddCategory(context),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Paragraph(
+              content: PaymentLanguage.selectCategory,
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Icon(Icons.add_circle, color: AppColors.PRIMARY_GREEN,)
+          ],
         ),
       ),
     );
   }
 
-  Widget buildItemCategory(int index){
+  Widget buildItemCategory(int index, {String? name}){
     return InkWell(
       onTap: () =>_viewModel!.setCategorySelected(index),
       child: Container(
         padding: EdgeInsets.all(SizeToPadding.sizeMedium),
         decoration: BoxDecoration(
-          color: _viewModel!.categoryId==_viewModel!.listCategory[index].id
+          color: _viewModel!.selectedCategory==index
           ? AppColors.LINEAR_GREEN.withOpacity(0.3)
           : AppColors.COLOR_WHITE,
           border: Border.all(color: AppColors.PRIMARY_GREEN),
@@ -89,13 +100,14 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             SvgPicture.asset(
-              _viewModel!.isButtonSpending? _viewModel!.listImageExpenses[index]
-                :_viewModel!.listImageCategory[index], 
+              AppIcCategory.getIcCategory(
+                name!=null? index:
+                int.parse(_viewModel!.listCategory[index].imageId ?? '0'),),
               width: 50,
             ),
             SizedBox(height: SpaceBox.sizeSmall,),
             Paragraph(
-              content: _viewModel!.listCategory[index].name,
+              content: name ?? _viewModel!.listCategory[index].name,
               fontWeight: FontWeight.w600,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -116,8 +128,22 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
         mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
       ), 
-      itemCount: _viewModel!.listCategory.length,
-      itemBuilder: (context, index) => buildItemCategory(index),
+      itemCount: _viewModel!.isShowAll? _viewModel!.listCategory.length+1
+        :_viewModel!.listCategory.length,
+      itemBuilder: (context, index) {
+        if(index==8 && !_viewModel!.isShowAll){
+          return buildItemCategory(16,name: PaymentLanguage.seeMore);
+        }else if(index<8){
+          return buildItemCategory(index);
+        }else if(_viewModel!.isShowAll){
+          if(index==_viewModel!.listCategory.length){
+            return buildItemCategory(17,name: PaymentLanguage.close);
+          }else{
+            return buildItemCategory(index);
+          }
+        }
+        return null;
+      },
     );
   }
 
@@ -233,6 +259,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildPaymentScreen() {
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Column(
         children: [
           buildAppbar(),

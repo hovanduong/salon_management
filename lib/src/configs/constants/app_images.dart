@@ -125,6 +125,8 @@ class AppImages {
 
   static const String icMore = 'assets/icons/more.svg';
 
+  static const String icClose = 'assets/icons/close.svg';
+
   static const String eyelash= 'assets/icons/eyelash.svg';
 
   static const String makeHair = 'assets/icons/makeHair.svg';
@@ -136,5 +138,9 @@ class AppImages {
   static const String eat = 'assets/icons/eat.svg';
 
   static const String expenses = 'assets/icons/expenses.svg';
+
+  static const String icSpa = 'assets/icons/ic_spa.svg';
+
+  static const String spaMask = 'assets/icons/spaMask.svg';
 
 }

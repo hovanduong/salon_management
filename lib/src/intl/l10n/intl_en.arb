@@ -302,5 +302,7 @@
     "monthlyRevenue":"Monthly revenue",
     "showLastMonth":"Show last month",
     "showNextMonth":"Show next month",
+    "icon":"Icon",
+    "selectCategory":"Select Category",
     "lastLine": ""
 }

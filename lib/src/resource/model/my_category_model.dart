@@ -12,6 +12,7 @@ class CategoryModel {
   String? createdAt;
   List<MyServiceModel>? myServices;
   bool? income;
+  String? imageId;
 
   CategoryModel({
     this.isIconCategory = true,
@@ -22,6 +23,7 @@ class CategoryModel {
     this.createdAt,
     this.myServices,
     this.income,
+    this.imageId,
   });
 }
 
@@ -65,6 +67,7 @@ abstract class CategoryModelFactory {
       ..name = json['name']
       ..userId = json['userId']
       ..income = json['income']
+      ..imageId= json['imageId']
       // ..myServices = json['myServices'] != null
       //     ? MyServiceFactory.createList(jsonEncode(json['myServices']))
       //     : null

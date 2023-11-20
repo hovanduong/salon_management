@@ -79,6 +79,7 @@ class BookingViewModel extends BaseViewModel {
   bool isListViewVisible = false;
   bool enableButton = false;
   bool isLoading=true;
+  bool isShowAll=false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -106,14 +107,20 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> init(MyBookingModel? myBookingModel) async {
     await getCategory();
-    await setDataMyBooking(myBookingModel);
     categoryId=listCategory[0].id;
+    await setDataMyBooking(myBookingModel);
+    // selectedCategory=0;
     // await fetchService();
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
     notifyListeners();
   }
+
+  Future<void> goToAddCategory(BuildContext context) async {
+    await Navigator.pushNamed(context, Routers.addCategory,);
+    await init(null);
+  } 
 
   Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
     if (myBookingModel != null) {
@@ -140,7 +147,12 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void setCategorySelected(int index){
-    categoryId=listCategory[index].id;
+    if(index==16 || index ==17){
+      isShowAll=!isShowAll;
+    }else{
+      // selectedCategory=index;
+      categoryId=listCategory[index].id;
+    }
     enableConfirmButton();
     notifyListeners();
   }

@@ -10,9 +10,13 @@ class CategoryParams {
   const CategoryParams({
     this.id,
     this.name,
+    this.income=true,
+    this.imageId,
   });
   final int? id;
   final String? name;
+  final bool income;
+  final int? imageId;
 }
 
 class CategoryApi {
@@ -22,7 +26,8 @@ class CategoryApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/category?pageSize=10&page=$page&search=${search ?? ''}',
+        // url: '/category?pageSize=10&page=$page&search=${search ?? ''}',
+        url: '/category',
       );
       switch (response?.statusCode) {
         case 200:
@@ -71,10 +76,16 @@ class CategoryApi {
     }
   }
 
-  Future<Result<bool, Exception>> postCategory(String? name) async {
+  Future<Result<bool, Exception>> postCategory(CategoryParams? params) async {
     try {
-      final response =
-          await HttpRemote.post(url: '/category', body: {'name': name});
+      final response = await HttpRemote.post(
+        url: '/category', 
+        body: {
+          'name': params!.name,
+          'income': params.income,
+          'imageId': params.imageId,
+        },
+      );
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
