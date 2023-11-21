@@ -12,6 +12,7 @@ import '../base/base.dart';
 
 class CategoryAddViewModel extends BaseViewModel {
   bool enableButton = false;
+  bool isButtonExpenses=false;
   
   TextEditingController categoryController = TextEditingController();
 
@@ -20,14 +21,33 @@ class CategoryAddViewModel extends BaseViewModel {
   Timer? timer;
 
   CategoryApi categoryApi = CategoryApi();
+
   CategoryModel? categoryModel;
 
+  int? selectedCategory;
+
   Future<void> init(CategoryModel? data) async {
+    selectedCategory=0;
     if (data != null) {
       categoryModel = data;
       categoryController.text = categoryModel!.name.toString();
       enableButton = true;
     }
+    notifyListeners();
+  }
+
+  void setSelectIconCategory(int index){
+    selectedCategory=index;
+    notifyListeners();
+  }
+
+  void setButtonSelect(String name){
+    if(name==CategoryLanguage.income){
+      isButtonExpenses=false;
+    }else{
+      isButtonExpenses=true;
+    }
+    notifyListeners();
   }
 
   void validCategory(String? value) {
@@ -69,9 +89,8 @@ class CategoryAddViewModel extends BaseViewModel {
   Future<void> setSourceButton() async {
     if (categoryModel != null) {
       await putCategory();
-      timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
     } else {
-      await postCategory(categoryController.text);
+      await postCategory();
       categoryController.text = '';
       onSubmit();
     }
@@ -103,6 +122,7 @@ class CategoryAddViewModel extends BaseViewModel {
         );
       },
     );
+    timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
   }
 
   void closeDialog(BuildContext context) {
@@ -112,9 +132,15 @@ class CategoryAddViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> postCategory(String name) async {
+  Future<void> postCategory() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await categoryApi.postCategory(name);
+    final result = await categoryApi.postCategory(
+      CategoryParams(
+        imageId: selectedCategory,
+        income: !isButtonExpenses,
+        name: categoryController.text.trim(),
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final isTrue) => isTrue,

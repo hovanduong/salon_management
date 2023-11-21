@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import '../../configs/app_exception/app_exception.dart';
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
 import '../model/model.dart';
@@ -89,7 +88,7 @@ class MyCustomerApi {
     }
   }
 
-  Future<Result<bool, AppException>> postMyCustomer(
+  Future<Result<MyCustomerModel, Exception>> postMyCustomer(
     MyCustomerParams params,
   ) async {
     try {
@@ -102,15 +101,18 @@ class MyCustomerApi {
       );
       switch (response?.statusCode) {
         case 201:
-          return const Success(true);
-        case 400:
           final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['code']);
-          return Failure(AppException(data));
+          final data = json.encode(jsonMap['data']);
+          final customer= MyCustomerModelFactory.create(data);
+          return Success(customer);
+        // case 400:
+        //   final jsonMap = json.decode(response!.body);
+        //   final data = json.encode(jsonMap['code']);
+        //   return Failure(AppException(data));
         default:
-          return Failure(AppException(response!.reasonPhrase!));
+          return Failure(Exception(response!.reasonPhrase!));
       }
-    } on AppException catch (e) {
+    } on Exception catch (e) {
       return Failure(e);
     }
   }

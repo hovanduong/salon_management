@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../resource/model/user_model.dart';
 import 'app/splash.dart';
 import 'booking/booking_screen.dart';
 import 'booking_details/booking_details.dart';
 import 'bottom_navigation_bar/navigation_screen.dart';
+import 'calendar/calendar.dart';
 import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'change_password/change_password.dart';
+import 'home/home.dart';
 import 'invoice/invoice_screen.dart';
 import 'my_customer/my_customer.dart';
 import 'my_customer_add/my_customer_add_screen.dart';
@@ -62,6 +65,8 @@ class Routers {
   static const String payment = '/payment';
   static const String bill = '/bill';
   static const String profileAccount = '/profileAccount';
+  static const String calendar = '/calendar';
+  static const String homeScreen = '/homeScreen';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -80,6 +85,22 @@ class Routers {
           const NavigateScreen(),
           beginOffset: right,
           name: navigation,
+          arguments: arguments,
+        );
+      
+      case homeScreen:
+        return animRoute(
+          const HomeScreen(),
+          beginOffset: right,
+          name: homeScreen,
+          arguments: arguments,
+        );
+
+      case calendar:
+        return animRoute(
+          const CalendarScreen(),
+          beginOffset: right,
+          name: calendar,
           arguments: arguments,
         );
 
@@ -249,7 +270,8 @@ class Routers {
   }) {
     return PageRouteBuilder(
       settings: RouteSettings(name: name, arguments: arguments),
-      pageBuilder: (context, animation, secondaryAnimation) => page,
+      pageBuilder: (context, animation, secondaryAnimation) => ShowCaseWidget(
+        builder: Builder(builder: (context) => page,),),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         final begin = beginOffset ?? const Offset(0, 0);
         const end = Offset.zero;

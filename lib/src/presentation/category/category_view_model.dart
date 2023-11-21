@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tiengviet/tiengviet.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/category_language.dart';

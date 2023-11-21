@@ -169,7 +169,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.price,
       content: AppCurrencyFormat.formatMoneyVND(
-        _viewModel!.myBookingModel?.total ?? 0,),
+        _viewModel!.myBookingModel?.money ?? 0,),
     );
   }
 
@@ -185,7 +185,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       isTotal: true,
       title: BillPaymentLanguage.total,
       content: AppCurrencyFormat.formatMoneyVND(
-        _viewModel!.myBookingModel?.total ?? 0,),
+        _viewModel!.myBookingModel?.money ?? 0,),
     );
   }
 
@@ -248,7 +248,10 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               color: AppColors.BLACK_400,
             ),
           ],
-          borderRadius: BorderRadius.circular(SpaceBox.sizeBig),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(SpaceBox.sizeBig),
+            topRight: Radius.circular(SpaceBox.sizeBig),
+          ),
         ),
         child: buildContentBill(),
       ),

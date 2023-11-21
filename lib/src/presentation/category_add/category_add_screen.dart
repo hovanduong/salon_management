@@ -1,10 +1,14 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/category_language.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../../resource/model/my_category_model.dart';
+import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
 import 'category_add.dart';
 
@@ -77,6 +81,96 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     );
   }
 
+  Widget buildTitleIconCategory(){
+    return Paragraph(
+      content: CategoryLanguage.icon,
+      style: STYLE_MEDIUM.copyWith(
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  Widget buildItemCategory(int index){
+    return InkWell(
+      onTap: () =>_viewModel!.setSelectIconCategory(index),
+      child: Container(
+        padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+        decoration: BoxDecoration(
+          color: _viewModel!.selectedCategory== index
+          ? AppColors.LINEAR_GREEN.withOpacity(0.3)
+          : AppColors.COLOR_WHITE,
+          border: Border.all(color: AppColors.PRIMARY_GREEN),
+        ),
+        child: SvgPicture.asset(
+          AppIcCategory.getIcCategory(index),
+          width: 50,
+        ),
+      ),
+    );
+  }
+
+  Widget buildListIconCategory(){
+    return GridView.builder(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+        mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+      ), 
+      itemCount: 16,
+      itemBuilder: (context, index) => buildItemCategory(index),
+    );
+  }
+
+  Widget buildIconCategory(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildTitleIconCategory(),
+        buildListIconCategory(),
+      ],
+    );
+  }
+
+  Widget buildButtonSelect(String name, bool isButton){
+    return isButton
+    ? Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: AppButton(
+          enableButton: true,
+          content: name,
+          onTap: ()=> _viewModel!.setButtonSelect(name),
+        ),
+      ),
+    )
+    : Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: AppOutlineButton(
+          content: name,
+          onTap: () => _viewModel!.setButtonSelect(name),
+        ),
+      ),
+    );
+  }
+
+  Widget buildChooseButton(){
+    return Padding(
+      padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
+      child: Row(
+        children: [
+          buildButtonSelect(
+            CategoryLanguage.income, !_viewModel!.isButtonExpenses,),
+          buildButtonSelect(
+            CategoryLanguage.expenses, _viewModel!.isButtonExpenses,),
+        ],
+      ),
+    );
+  }
+
   Widget buildButtonApp() {
     return AppButton(
       enableButton: _viewModel!.enableButton,
@@ -91,7 +185,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     return Positioned(
       top: 150,
       child: Container(
-        width: MediaQuery.of(context).size.width - SpaceBox.sizeBig * 2,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -110,6 +204,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildFieldCategory(),
+              buildIconCategory(),
+              buildChooseButton(),
               buildButtonApp(),
             ],
           ),
@@ -120,12 +216,13 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
   Widget buildAddCategoriesScreen() {
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Stack(
         alignment: Alignment.topCenter,
-        children: [
-          const SizedBox(
+        children: [ 
+          SizedBox(
             width: double.maxFinite,
-            height: double.maxFinite,
+            height: MediaQuery.sizeOf(context).height,
           ),
           background(),
           buildAppBar(),

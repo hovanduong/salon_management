@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/configs.dart';
@@ -11,6 +12,7 @@ import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -41,13 +43,16 @@ class BookingHistoryViewModel extends BaseViewModel {
   bool isLoading = true;
   bool isToday = true;
   bool isPullRefresh = false;
+  bool isShowCase=true;
 
   int pageUpComing = 1;
   int pageDone = 1;
   int pageCanceled = 1;
   int pageToday = 1;
   int pageDaysBefore = 1;
-  int currentTab = 0;
+  int currentTab = 1;
+
+  GlobalKey addBooking = GlobalKey();
 
   Timer? timer;
 
@@ -58,7 +63,27 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> init({dynamic dataThis}) async {
     await fetchData();
     tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
+    await AppPref.getShowCase('showCaseAppointment').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCaseAppointment', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        ShowCaseWidget.of(context).startShowCase(
+          [addBooking],
+        );
+      });
+    }
   }
 
   Future<void> goToAddBooking({
@@ -91,11 +116,11 @@ class BookingHistoryViewModel extends BaseViewModel {
     await getDataDone(pageDone);
     listCurrentDone = listMyBooking;
 
-    scrollDaysBefore.addListener(
-      () => scrollListener(scrollDaysBefore),
-    );
     scrollToday.addListener(
       () => scrollListener(scrollToday),
+    );
+    scrollDaysBefore.addListener(
+      () => scrollListener(scrollDaysBefore),
     );
     scrollUpComing.addListener(
       () => scrollListener(scrollUpComing),
@@ -111,11 +136,6 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
-    listCurrentUpcoming.clear();
-    listCurrentCanceled.clear();
-    listCurrentDone.clear();
-    listCurrentToday.clear();
-    listCurrentDaysBefore.clear();
     pageToday = 1;
     pageUpComing = 1;
     pageDone = 1;
@@ -208,8 +228,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       await getDataCanceled(pageCanceled);
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
     }
-    isLoadMore = false;
-
+    isLoadMore=false;
     notifyListeners();
   }
 
@@ -376,7 +395,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
-    isLoading= isPullRefresh? false: true;
+    isLoading= isPullRefresh || isLoadMore ? false: true;
     notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,

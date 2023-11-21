@@ -12,7 +12,6 @@ import '../../configs/language/invoice_language.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/check_time.dart';
-import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'invoice_view_model.dart';
@@ -102,12 +101,17 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
   }
 
-  Widget invoiceUser(int index) {
-    final money = _viewModel!.listCurrent[index].myBooking?.total;
-    final date = _viewModel!.listCurrent[index].createdAt;
-    final name = _viewModel!.listCurrent[index].myBooking?.myCustomer?.fullName;
-    final idBooking = _viewModel!.listCurrent[index].myBookingId;
-    final code = _viewModel!.listCurrent[index].code;
+  Widget invoiceUser(int index, int indexInvoice) {
+    final money = _viewModel!.listCurrent[index].invoices
+      ?[indexInvoice].myBooking?.money;
+    final date = _viewModel!.listCurrent[index].invoices
+      ?[indexInvoice].createdAt;
+    final name = _viewModel!.listCurrent[index]
+      .invoices?[indexInvoice].myBooking?.myCustomer?.fullName;
+    final idBooking = _viewModel!.listCurrent[index].invoices?[indexInvoice]
+      .myBookingId;
+    final code = _viewModel!.listCurrent[index].invoices?[indexInvoice]
+      .code;
     return InkWell(
       onTap: () => _viewModel!.goToBookingDetails(
         context,
@@ -115,14 +119,25 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       ),
       child: SlidableActionWidget(
         onTapButtonFirst: (context)
-          => _viewModel!.showWaningDiaglog(_viewModel!.listCurrent[index].id!),
+          => _viewModel!.showWaningDiaglog(
+            _viewModel!.listCurrent[index].invoices![indexInvoice].id!
+          ),
         child: Transaction(
           color: _viewModel!.colors[index % _viewModel!.colors.length],
           money: '+ ${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
           subtile: date != null ? AppCheckTime.checkTimeNotification(date) : '',
-          name: name ?? '',
+          name: name,
         ),
-      )
+      ),
+    );
+  }
+
+  Widget buildListInvoiceUser(int index){
+    return Column(
+      children: List.generate(
+        _viewModel!.listCurrent[index].invoices?.length ??0, 
+        (indexInvoice) => invoiceUser(index, indexInvoice)
+      ),
     );
   }
 
@@ -170,7 +185,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               : _viewModel!.listCurrent.length,
           itemBuilder: (context, index) {
             if (index < _viewModel!.listCurrent.length) {
-              return invoiceUser(index);
+              return buildListInvoiceUser(index,);
             } else {
               return const CupertinoActivityIndicator();
             }

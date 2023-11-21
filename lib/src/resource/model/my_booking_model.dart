@@ -6,23 +6,28 @@ import 'model.dart';
 
 class MyBookingModel {
   int? id;
+  int? categoryId;
+  int? myCustomerId;
   String? address;
   String? date;
   String? note;
   int? userId;
   String? status;
   int? invoiceId;
+  num? money;
   num? total;
   MyCustomerModel? myCustomer;
-  List<MyServiceModel>? myServices;
+  CategoryModel? category;
   String? createdAt;
   String? deletedAt;
   List<int>? listId;
   String? code;
+  bool? income;
+  bool? isBooking;
 
   MyBookingModel({
     this.id,
-    this.total,
+    this.money,
     this.userId,
     this.address,
     this.date,
@@ -30,10 +35,16 @@ class MyBookingModel {
     this.note,
     this.listId,
     this.invoiceId,
-    this.myServices,
+    this.category,
     this.deletedAt,
     this.createdAt,
     this.code,
+    this.income,
+    this.isBooking,
+    this.myCustomerId,
+    this.myCustomer,
+    this.total,
+    this.categoryId,
   });
 }
 
@@ -61,7 +72,7 @@ abstract class MyBookingModelFactory {
     MyBookingModel myBookingModel,
   ) {
     final data = <String, dynamic>{};
-    data['total'] = myBookingModel.total;
+    data['money'] = myBookingModel.money;
     data['userId'] = myBookingModel.userId;
     data['deletedAt'] = myBookingModel.deletedAt;
     data['createdAt'] = myBookingModel.createdAt;
@@ -74,19 +85,24 @@ abstract class MyBookingModelFactory {
   static MyBookingModel _fromJson(Map<String, dynamic> json) {
     final myBooking = MyBookingModel()
       ..id = json['id']
+      ..money = json['money']
       ..address = json['address']
       ..date = json['date']
-      ..note = json['note']
-      ..userId = json['userId']
       ..status = json['status']
-      ..invoiceId = json['invoiceId']
-      ..total = json['total']
+      ..note = json['note']
       ..code=json['code']
+      ..income=json['income']
+      ..userId = json['userId']
+      ..myCustomerId=json['myCustomerId']
+      ..isBooking=json['isBooking']
+      ..total=json['total']
+      ..invoiceId = json['invoiceId']
+      ..categoryId=json['categoryId']
       ..myCustomer = json['myCustomer'] != null
           ? MyCustomerModelFactory.create(jsonEncode(json['myCustomer']))
           : null
-      ..myServices = json['myServices'] != null
-          ? MyServiceFactory.createList(jsonEncode(json['myServices']))
+      ..category = json['category'] != null
+          ? CategoryModelFactory.create(jsonEncode(json['category']))
           : null
       ..deletedAt = json['deletedAt']
       ..createdAt = json['createdAt'];

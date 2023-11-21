@@ -34,5 +34,20 @@ class HomePageLanguage {
   static final appointmentCanceled = S.current.appointmentCanceled;
   static final newClient = S.current.newClient;
   static final stt = S.current.stt;
-
+  static final home = S.current.home;
+  static final allTransactions = S.current.allTransactions;
+  static final month = S.current.month;
+  static final monday = S.current.monday;
+  static final saturday = S.current.saturday;
+  static final friday = S.current.friday;
+  static final wednesday = S.current.wednesday;
+  static final thursday = S.current.thursday;
+  static final tuesday = S.current.tuesday;
+  static final sunday = S.current.sunday;
+  static final emptyTransaction = S.current.emptyTransaction;
+  static final notificationEmptyTransaction = S.current.notificationEmptyTransaction;
+  static final dailyRevenue = S.current.dailyRevenue;
+  static final addInvoice = S.current.addInvoice;
+  static final clickCardMoney = S.current.clickCardMoney;
+  static final totalRevenue = S.current.totalRevenue;
 }

@@ -136,7 +136,17 @@ class _OverViewScreenState extends State<OverViewScreen>
           padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
           child: Column(
             children: [
-              BuildDateWidget(date: _viewModel!.date),
+              InkWell(
+                onTap: () => _viewModel!.goToCalendar(),
+                child: BuildDateWidget(date: _viewModel!.date),
+              ),
+              CardMoneyWidget(
+                iconShowTotalBalance: _viewModel!.isShowBalance,
+                onShowTotalBalance: () => _viewModel!.setShowBalance(),
+                money: r'$ 2,547.00',
+                moneyExpenses: r'$340.00',
+                moneyIncome: r'$1,840.00',
+              ),
               FieldRevenueWidget(
                 totalRevenue: _viewModel!.totalRevenue,
                 growthRevenue: _viewModel!.growthRevenue,

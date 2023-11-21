@@ -23,9 +23,9 @@ class AppImages {
 
   static const String addImage = 'assets/images/add-image.png';
 
-  static const String arrowDownIcon = 'assets/images/arrow-down-icon.jpg';
+  static const String arrowDownIcon = 'assets/images/arrow_down.png';
 
-  static const String arrowUpIcon = 'assets/images/arrow-up_icon.png';
+  static const String arrowUpIcon = 'assets/images/arrow_up.png';
 
   static const String workService = 'assets/icons/work-icon.svg';
 
@@ -106,4 +106,41 @@ class AppImages {
   static const String icInvoice = 'assets/icons/invoice_ic.svg';
 
   static const String icEmpty = 'assets/icons/empty.svg';
+
+  static const String icAntiAging = 'assets/icons/anti-aging.svg';
+
+  static const String icBodyMassage = 'assets/icons/bodyMassage.svg';
+
+  static const String icFacelift = 'assets/icons/facelift.svg';
+
+  static const String icFootMassager = 'assets/icons/footMassager.svg';
+
+  static const String icLipSpray = 'assets/icons/lipSpray.svg';
+
+  static const String icNailArt = 'assets/icons/nailArt.svg';
+
+  static const String icNailCare = 'assets/icons/nailCare.svg';
+
+  static const String icSkinTreatment = 'assets/icons/skinTreatment.svg';
+
+  static const String icMore = 'assets/icons/more.svg';
+
+  static const String icClose = 'assets/icons/close.svg';
+
+  static const String eyelash= 'assets/icons/eyelash.svg';
+
+  static const String makeHair = 'assets/icons/makeHair.svg';
+
+  static const String makeUp = 'assets/icons/makeUp.svg';
+
+  static const String tattoo = 'assets/icons/tattoo.svg';
+
+  static const String eat = 'assets/icons/eat.svg';
+
+  static const String expenses = 'assets/icons/expenses.svg';
+
+  static const String icSpa = 'assets/icons/ic_spa.svg';
+
+  static const String spaMask = 'assets/icons/spaMask.svg';
+
 }

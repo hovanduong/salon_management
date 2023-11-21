@@ -4,59 +4,68 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:spa_app_management/src/utils/date_format_utils.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
-import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 
-import '../../resource/model/my_booking_model.dart';
-import '../../resource/service/auth.dart';
 import '../../resource/service/booking.dart';
+import '../../resource/service/category_api.dart';
 import '../../resource/service/my_customer_api.dart';
-import '../../resource/service/my_service_api.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
 
 class BookingViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
-  MyServiceApi myServiceApi = MyServiceApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
-  AuthApi authApi = AuthApi();
+  CategoryApi categoryApi= CategoryApi();
 
-  List<int>? myServiceId = [];
-  List<int> serviceId = [];
-
-  List<RadioModel> selectedService = [];
+  // List<int>? myServiceId = [];
+  // List<int> serviceId = [];
+  // List<RadioModel> selectedService = [];
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustomer = [];
+  List<CategoryModel> listCategory = [];
+  List<String> listImageCategory=[
+    AppImages.icBodyMassage,
+    AppImages.icNailCare,
+    AppImages.eyelash,
+    AppImages.makeHair,
+    AppImages.icSkinTreatment,
+    AppImages.makeUp,
+    AppImages.tattoo,
+  ];
 
   int? myCustomerId;
   int? index;
+  int? categoryId;
 
-  num totalCost = 0;
-  num totalPrice = 0;
-  num updatedTotalCost = 0;
+  // num totalCost = 0;
+  // num totalPrice = 0;
+  // num updatedTotalCost = 0;
 
   DateTime dateTime = DateTime.now();
   // DateTime dateTime = DateTime.now();
 
   MyBookingModel? dataMyBooking;
+  MyCustomerModel? myCustomerModel;
+
 
   Map<int, String> mapService = {};
   Map<int, String> mapPhone = {};
 
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
-  final totalController = TextEditingController();
-  final timeController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController discountController = TextEditingController();
   TextEditingController moneyController = TextEditingController();
+  // final totalController = TextEditingController();
+  // final timeController = TextEditingController();
+  // TextEditingController discountController = TextEditingController();
 
   DateRangePickerController dateController = DateRangePickerController();
 
@@ -69,7 +78,8 @@ class BookingViewModel extends BaseViewModel {
   bool onDiscount = true;
   bool isListViewVisible = false;
   bool enableButton = false;
-  bool isLoading=false;
+  bool isLoading=true;
+  bool isShowAll=false;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -82,6 +92,8 @@ class BookingViewModel extends BaseViewModel {
   String searchText = '';
   String? prices;
   String? services;
+  String? money;
+  String? messageErrorPrice;
 
   final currencyFormatter =
       NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
@@ -94,236 +106,288 @@ class BookingViewModel extends BaseViewModel {
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
 
   Future<void> init(MyBookingModel? myBookingModel) async {
+    await getCategory();
+    categoryId=listCategory[0].id;
     await setDataMyBooking(myBookingModel);
-    await fetchService();
-    await fetchCustomer();
-    await initMapCustomer();
-    await initMapService();
+    // selectedCategory=0;
+    // await fetchService();
+    // await fetchCustomer();
+    // await initMapCustomer();
+    // await initMapService();
     notifyListeners();
   }
+
+  Future<void> goToAddCategory(BuildContext context) async {
+    await Navigator.pushNamed(context, Routers.addCategory,);
+    await init(null);
+  } 
 
   Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
     if (myBookingModel != null) {
       dataMyBooking = myBookingModel;
-      phoneController.text = dataMyBooking!.myCustomer!.phoneNumber!;
-      nameController.text = dataMyBooking!.myCustomer!.fullName!;
-      addressController.text = dataMyBooking!.address!;
-      noteController.text =
-          dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
+      phoneController.text = dataMyBooking?.myCustomer?.phoneNumber??'';
+      nameController.text = dataMyBooking?.myCustomer?.fullName??'';
+      addressController.text = dataMyBooking?.address??'';
+      noteController.text = dataMyBooking?.note ??'';
+      moneyController.text=AppCurrencyFormat.formatMoney(dataMyBooking!.money);
+      categoryId= myBookingModel.category?.id;
+      myCustomerId=myBookingModel.myCustomer?.id;
       dateTime = DateTime.parse(
         AppDateUtils.formatDateLocal(
           dataMyBooking!.date!,
         ),
       );
-      setSelectedService();
-      await setServiceId();
-      await fetchService();
-      await calculateTotalPriceByName();
+      // setSelectedService();
+      // await setServiceId();
+      // await fetchService();
+      // await calculateTotalPriceByName();
       enableConfirmButton();
     }
     notifyListeners();
   }
 
-  void setSelectedService() {
-    if (dataMyBooking!.myServices!.isNotEmpty) {
-      dataMyBooking?.myServices!.forEach((service) {
-        selectedService.add(
-          RadioModel(
-            isSelected: true,
-            id: service.id,
-            name: '${service.name}/${currencyFormatter.format(service.money)}',
-          ),
-        );
-      });
+  void setCategorySelected(int index){
+    if(index==16 || index ==17){
+      isShowAll=!isShowAll;
+    }else{
+      // selectedCategory=index;
+      categoryId=listCategory[index].id;
     }
-  }
-
-  Future<void> fetchService() async {
-    final result = await myServiceApi.getService();
-
-    final value = switch (result) {
-      Success(value: final accessToken) => accessToken,
-      Failure(exception: final exception) => exception,
-    };
-
-    if (!AppValid.isNetWork(value)) {
-    } else if (value is Exception) {
-    } else {
-      myService = value as List<MyServiceModel>;
-    }
+    enableConfirmButton();
     notifyListeners();
   }
 
-  Future<void> fetchCustomer() async {
-    final result = await myCustomerApi.getMyCustomer(getAll: true);
+  // void setSelectedService() {
+  //   if (dataMyBooking!.myServices!.isNotEmpty) {
+  //     dataMyBooking?.myServices!.forEach((service) {
+  //       selectedService.add(
+  //         RadioModel(
+  //           isSelected: true,
+  //           id: service.id,
+  //           name: '${service.name}/${currencyFormatter.format(service.money)}',
+  //         ),
+  //       );
+  //     });
+  //   }
+  // }
 
-    final value = switch (result) {
-      Success(value: final accessToken) => accessToken,
-      Failure(exception: final exception) => exception,
-    };
+  // Future<void> fetchService() async {
+  //   final result = await myServiceApi.getService();
 
-    if (!AppValid.isNetWork(value)) {
-    } else if (value is Exception) {
-    } else {
-      myCustomer = value as List<MyCustomerModel>;
-    }
-    notifyListeners();
-  }
+  //   final value = switch (result) {
+  //     Success(value: final accessToken) => accessToken,
+  //     Failure(exception: final exception) => exception,
+  //   };
 
-  void setLoading(bool loading){
-    isLoading=loading;
-    notifyListeners();
-  }
+  //   if (!AppValid.isNetWork(value)) {
+  //   } else if (value is Exception) {
+  //   } else {
+  //     myService = value as List<MyServiceModel>;
+  //   }
+  //   notifyListeners();
+  // }
 
-  Future<void> changeValueService(List<RadioModel> value) async {
-    selectedService.clear();
-    selectedService = value;
-    notifyListeners();
-  }
+  // Future<void> fetchCustomer() async {
+  //   final result = await myCustomerApi.getMyCustomer(getAll: true);
 
-  Future<void> setServiceId() async {
-    serviceId.clear();
-    if (selectedService.isNotEmpty) {
-      selectedService.forEach((element) {
-        serviceId.add(element.id!);
-      });
-    }
-    notifyListeners();
-  }
+  //   final value = switch (result) {
+  //     Success(value: final accessToken) => accessToken,
+  //     Failure(exception: final exception) => exception,
+  //   };
 
-  Future<void> removeService(int index) async {
-    selectedService.removeAt(index);
-    notifyListeners();
-  }
+  //   if (!AppValid.isNetWork(value)) {
+  //   } else if (value is Exception) {
+  //   } else {
+  //     myCustomer = value as List<MyCustomerModel>;
+  //   }
+  //   notifyListeners();
+  // }
 
-  Future<void> initMapCustomer() async {
-    myCustomer.forEach((element) {
-      mapPhone.addAll(
-        {element.id!: '${element.phoneNumber}/${element.fullName}'},
-      );
-    });
-    isLoading=false;
-    notifyListeners();
-  }
+  // void setLoading(bool loading){
+  //   isLoading=loading;
+  //   notifyListeners();
+  // }
 
-  Future<void> initMapService() async {
-    myService.forEach((element) {
-      mapService.addAll(
-        {
-          element.id!:
-              ' ${element.name}/${currencyFormatter.format(element.money)} ',
-        },
-      );
-    });
-    notifyListeners();
-  }
+  // Future<void> changeValueService(List<RadioModel> value) async {
+  //   selectedService.clear();
+  //   selectedService = value;
+  //   notifyListeners();
+  // }
 
-  Future<void> setNameCustomer(MapEntry<dynamic, dynamic> value) async {
-    phoneController.text = value.value;
-    nameController.text = myCustomer
-        .where((element) => element.id == value.key)
-        .first
-        .fullName
-        .toString();
+  // Future<void> setServiceId() async {
+  //   serviceId.clear();
+  //   if (selectedService.isNotEmpty) {
+  //     selectedService.forEach((element) {
+  //       serviceId.add(element.id!);
+  //     });
+  //   }
+  //   notifyListeners();
+  // }
 
-    myCustomerId = value.key;
+  // Future<void> removeService(int index) async {
+  //   selectedService.removeAt(index);
+  //   notifyListeners();
+  // }
 
-    notifyListeners();
-  }
+  // Future<void> initMapCustomer() async {
+  //   myCustomer.forEach((element) {
+  //     mapPhone.addAll(
+  //       {element.id!: '${element.phoneNumber}/${element.fullName}'},
+  //     );
+  //   });
+  //   isLoading=false;
+  //   notifyListeners();
+  // }
 
-  Future<void> clearTotal() async {
-    updatedTotalCost = 0;
-    totalCost = 0;
-    totalController.clear();
-    notifyListeners();
-  }
+  // Future<void> initMapService() async {
+  //   myService.forEach((element) {
+  //     mapService.addAll(
+  //       {
+  //         element.id!:
+  //             ' ${element.name}/${currencyFormatter.format(element.money)} ',
+  //       },
+  //     );
+  //   });
+  //   notifyListeners();
+  // }
 
-  Future<void> calculateTotalPriceByName({bool isCalculate = false}) async {
-    await clearTotal();
-    myService.forEach((element) {
-      serviceId.forEach((elementId) {
-        if (element.id == elementId) {
-          updatedTotalCost += element.money!;
-        }
-      });
-      totalCost = updatedTotalCost;
-      final totalPriceT = currencyFormatter.format(totalCost);
-      totalController.text = totalPriceT;
-      moneyController.text = totalPriceT;
-    });
-    totalDiscount();
-    notifyListeners();
-  }
+  // Future<void> setNameCustomer(MapEntry<dynamic, dynamic> value) async {
+  //   phoneController.text = value.value;
+  //   nameController.text = myCustomer
+  //       .where((element) => element.id == value.key)
+  //       .first
+  //       .fullName
+  //       .toString();
 
-  void totalDiscount() {
-    final moneyText = discountController.text;
+  //   myCustomerId = value.key;
 
-    final moneyInt = moneyText != '' ? double.parse(moneyText) : 0;
+  //   notifyListeners();
+  // }
 
-    final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
+  // Future<void> clearTotal() async {
+  //   updatedTotalCost = 0;
+  //   totalCost = 0;
+  //   totalController.clear();
+  //   notifyListeners();
+  // }
 
-    final totalPriceT = currencyFormatter.format(totalCostDiscount);
+  // Future<void> calculateTotalPriceByName({bool isCalculate = false}) async {
+  //   await clearTotal();
+  //   myService.forEach((element) {
+  //     serviceId.forEach((elementId) {
+  //       if (element.id == elementId) {
+  //         updatedTotalCost += element.money!;
+  //       }
+  //     });
+  //     totalCost = updatedTotalCost;
+  //     final totalPriceT = currencyFormatter.format(totalCost);
+  //     totalController.text = totalPriceT;
+  //     moneyController.text = totalPriceT;
+  //   });
+  //   totalDiscount();
+  //   notifyListeners();
+  // }
 
-    totalController.text = totalPriceT;
+  // void totalDiscount() {
+  //   final moneyText = discountController.text;
 
-    notifyListeners();
-  }
+  //   final moneyInt = moneyText != '' ? double.parse(moneyText) : 0;
+
+  //   final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
+
+  //   final totalPriceT = currencyFormatter.format(totalCostDiscount);
+
+  //   totalController.text = totalPriceT;
+
+  //   notifyListeners();
+  // }
 
   Future<void> updateDateTime(DateTime time) async {
     dateTime = time;
     notifyListeners();
   }
 
-  void checkNoteInput() {
-    if (noteController.text.isEmpty) {
-      onNote = false;
-      noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
+  // void checkNoteInput() {
+  //   if (noteController.text.isEmpty) {
+  //     onNote = false;
+  //     noteErrorMsg = ServiceAddLanguage.emptyDescriptionError;
+  //   } else {
+  //     noteErrorMsg = '';
+  //     onNote = true;
+  //   }
+  //   notifyListeners();
+  // }
+
+  // void validAddress(String value) {
+  //   if (addressController.text.trim().isEmpty) {
+  //     addressMsg = BookingLanguage.emptyAddress;
+  //   } else {
+  //     addressMsg = '';
+  //   }
+  //   notifyListeners();
+  // }
+
+  // void checkDiscountInput(String value) {
+  //   final number = double.tryParse(value);
+
+  //   if (value.isEmpty) {
+  //     discountErrorMsg = '';
+  //   } else if (onlySpecialChars.hasMatch(value)) {
+  //     discountErrorMsg = BookingLanguage.onlySpecialChars;
+  //   } else if (number == null || number < 0 || number > 100) {
+  //     discountErrorMsg = BookingLanguage.numberBetween;
+  //   } else {
+  //     discountErrorMsg = '';
+  //   }
+  //   notifyListeners();
+  // }
+
+  Future<void> checkDataExist()async{
+    if(dataMyBooking!=null){
+      await putBooking();
+    }else{
+      await postCustomer(); 
+    }
+  }
+
+  // Future<void> checkCustomer()async{
+  //   if(phoneController.text.trim()=='' && nameController.text.trim()==''){
+  //     await checkDataExist();
+  //   }else{
+  //     await postCustomer();
+  //   }
+  //   notifyListeners();
+  // }
+
+  void validPrice(String? value) {
+    money = value;
+    if (value == null || value.isEmpty) {
+      messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
     } else {
-      noteErrorMsg = '';
-      onNote = true;
+      messageErrorPrice = null;
     }
     notifyListeners();
   }
 
-  void validAddress(String value) {
-    if (addressController.text.trim().isEmpty) {
-      addressMsg = BookingLanguage.emptyAddress;
-    } else {
-      addressMsg = '';
-    }
-    notifyListeners();
-  }
-
-  void checkDiscountInput(String value) {
-    final number = double.tryParse(value);
-
-    if (value.isEmpty) {
-      discountErrorMsg = '';
-    } else if (onlySpecialChars.hasMatch(value)) {
-      discountErrorMsg = BookingLanguage.onlySpecialChars;
-    } else if (number == null || number < 0 || number > 100) {
-      discountErrorMsg = BookingLanguage.numberBetween;
-    } else {
-      discountErrorMsg = '';
+  void formatMoney(String? value) {
+    if (value != null && value.isNotEmpty) {
+      final valueFormat =
+          AppCurrencyFormat.formatNumberEnter(value.replaceAll(',', ''));
+      moneyController.value = TextEditingValue(
+        text: valueFormat,
+        selection: TextSelection.collapsed(offset: valueFormat.length),
+      );
     }
     notifyListeners();
   }
 
   void enableConfirmButton() {
-    if (onPhone &&
-        onAddress &&
-        selectedService.isNotEmpty &&
-        phoneController.text.trim().isNotEmpty &&
-        addressController.text.trim().isNotEmpty) {
+    if (messageErrorPrice==null && 
+      moneyController.text.trim()!='' && categoryId!=null) {
       enableButton = true;
     } else {
       enableButton = false;
     }
-    notifyListeners();
-  }
-
-  void confirmButton() {
-    if (enableButton) {}
     notifyListeners();
   }
 
@@ -380,15 +444,61 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void clearData() {
-    serviceId.clear();
-    selectedService.clear();
-    totalController.clear();
+    // serviceId.clear();
+    // selectedService.clear();
+    // totalController.clear();
+    // discountController.text = '';
+    categoryId=null;
+    dateTime = DateTime.now();
     phoneController.text = '';
-    discountController.text = '';
     moneyController.text = '';
     nameController.text = '';
     addressController.clear();
     noteController.clear();
+    notifyListeners();
+  }
+
+  Future<void> postCustomer() async {
+    final result = await myCustomerApi.postMyCustomer(
+      MyCustomerParams(
+        phoneNumber: phoneController.text.trim(),
+        fullName: nameController.text.trim(),
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+    } else {
+      myCustomerModel=value as MyCustomerModel;
+      myCustomerId=myCustomerModel?.id;
+      await postBooking();
+    }
+    notifyListeners();
+  }
+
+  Future<void> getCategory() async {
+    final result = await categoryApi.getListCategory(1, '');
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading=false;
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      isLoading=true;
+    } else {
+      isLoading=false;
+      listCategory=value as List<CategoryModel>;
+    }
     notifyListeners();
   }
 
@@ -397,11 +507,13 @@ class BookingViewModel extends BaseViewModel {
     final result = await bookingApi.postBooking(
       MyBookingPramsApi(
         myCustomerId: myCustomerId,
-        myServices: serviceId,
-        address: addressController.text.trim(),
+        idCategory: categoryId,
+        money: int.parse(moneyController.text.replaceAll(',', '')),
         date: dateTime.toString().trim(),
+        address: addressController.text.trim(),
         isBooking: true,
-        note: noteController.text == '' ? 'Trống' : noteController.text,
+        isIncome: false,
+        note: noteController.text.trim(),
       ),
     );
 
@@ -428,14 +540,15 @@ class BookingViewModel extends BaseViewModel {
     LoadingDialog.showLoadingDialog(context);
     final result = await bookingApi.putBooking(
       MyBookingPramsApi(
-        id: dataMyBooking!.id,
-        myServices: serviceId,
+        id: dataMyBooking?.id,
         address: addressController.text.trim(),
-        date: dateTime.toString().trim(),
-        discount: double.parse(
-          discountController.text.isEmpty ? '0' : discountController.text,
-        ),
-        note: noteController.text == '' ? 'Trống' : noteController.text,
+        date: AppDateUtils.formatDateTT(dateTime.toString().trim()),
+        phoneNumber: phoneController.text.trim(),
+        name: nameController.text.trim(),
+        myCustomerId: myCustomerId,
+        idCategory: categoryId,
+        note: noteController.text.trim(),
+        money: int.parse(moneyController.text.replaceAll(',', '')),
       ),
     );
 
@@ -459,6 +572,7 @@ class BookingViewModel extends BaseViewModel {
 
   @override
   void dispose() {
+    moneyController.dispose();
     phoneController.dispose();
     nameController.dispose();
     addressController.dispose();

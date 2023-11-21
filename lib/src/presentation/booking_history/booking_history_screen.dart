@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -42,7 +43,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
             //   systemNavigationBarIconBrightness: Brightness.dark,
             // ),
             // child: buildHistoryScreen(),
-            buildHistoryScreen());
+            buildHistoryScreen(),);
   }
 
   Widget buildHistoryScreen() {
@@ -117,6 +118,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           ),
         ],
         isScrollable: true,
+        indicatorSize: TabBarIndicatorSize.tab,
+        padding: EdgeInsets.zero,
         labelPadding: EdgeInsets.symmetric(
           horizontal: SizeToPadding.sizeSmall,
         ),
@@ -144,7 +147,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           phone: phone,
           onTapCall: () => _viewModel!.sendPhone(phone, 'tel'),
           onTapText: () => _viewModel!.sendPhone(phone, 'sms'),
-          onTapCopy: () => _viewModel!.copyPhone(phone)
+          onTapCopy: () => _viewModel!.copyPhone(phone),
         );
       },
     );
@@ -171,7 +174,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           .dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-          context: context, myBookingModel: myBookingModel),
+          context: context, myBookingModel: myBookingModel,),
       onPay: (id) => _viewModel!.goToBookingDetails(
         context,
         MyBookingParams(id: id, isPayment: true),
@@ -200,7 +203,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
           .dialogStatus(value: value, context: context, id: id),
       onTapDeleteBooking: (id) => _viewModel!.showWaningDiaglog(id),
       onTapEditBooking: (myBookingModel) => _viewModel!.goToAddBooking(
-          context: context, myBookingModel: myBookingModel),
+          context: context, myBookingModel: myBookingModel,),
       onPay: (id) => _viewModel!.goToBookingDetails(
         context,
         MyBookingParams(id: id, isPayment: true),
@@ -331,11 +334,17 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       child: Scaffold(
         floatingActionButton: Padding(
           padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
-          child: FloatingActionButton(
-            heroTag: 'addBooking',
-            backgroundColor: AppColors.PRIMARY_GREEN,
-            onPressed: () => _viewModel!.goToAddBooking(context: context),
-            child: const Icon(Icons.add),
+          child: Showcase(
+            key: _viewModel!.addBooking,
+            description: BookingLanguage.addBooking,
+            targetBorderRadius: BorderRadius.circular(
+              BorderRadiusSize.sizeMedium,),
+            child: FloatingActionButton(
+              heroTag: 'addBooking',
+              backgroundColor: AppColors.PRIMARY_GREEN,
+              onPressed: () => _viewModel!.goToAddBooking(context: context),
+              child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
+            ),
           ),
         ),
         body: SingleChildScrollView(

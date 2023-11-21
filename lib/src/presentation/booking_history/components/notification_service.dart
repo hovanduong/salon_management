@@ -221,12 +221,15 @@ class NotificationService extends StatelessWidget {
     return GestureDetector(
       onTap: onTapCard,
       child: Card(
+        color: AppColors.COLOR_WHITE,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeMedium)),
         ),
         margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeVerySmall),
         elevation: 7,
-        shadowColor: AppColors.BLACK_100,
+        shadowColor: AppColors.COLOR_WHITE,
+        borderOnForeground: true,
+        semanticContainer: true,
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeMedium),
           child: Column(

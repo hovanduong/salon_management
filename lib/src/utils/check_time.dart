@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../intl/generated/l10n.dart';
 import 'date_format_utils.dart';
 
