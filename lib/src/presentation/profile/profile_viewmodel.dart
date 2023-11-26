@@ -42,7 +42,7 @@ class ProfileViewModel extends BaseViewModel {
       Navigator.pushNamed(context, Routers.payment);
 
   Future<void> logOut() async {
-    await AppPref.logout();
+    await AppPref.deleteToken();
     await HttpRemote.init();
     await goToSignIn(context);
   }

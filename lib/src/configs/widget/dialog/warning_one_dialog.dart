@@ -27,7 +27,8 @@ class WarningOneDialog extends StatelessWidget {
   final Function()? onTap;
 
   dynamic dialogContent(BuildContext context) {
-    return DecoratedBox(
+    return Container(
+      width: 200,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
@@ -41,7 +42,8 @@ class WarningOneDialog extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
+        padding: EdgeInsets.symmetric(vertical: 40, 
+          horizontal:SizeToPadding.sizeMedium,),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -57,6 +59,7 @@ class WarningOneDialog extends StatelessWidget {
             ),
             Paragraph(
               content: title,
+              textAlign: TextAlign.center,
               style: STYLE_BIG.copyWith(fontWeight: FontWeight.w500),
             ),
             if (content != null)

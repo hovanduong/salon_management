@@ -95,6 +95,8 @@ class BookingViewModel extends BaseViewModel {
   String? money;
   String? messageErrorPrice;
 
+  Timer? timer;
+
   final currencyFormatter =
       NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
 
@@ -422,6 +424,21 @@ class BookingViewModel extends BaseViewModel {
     );
   }
 
+  dynamic showSuccessEdit(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.successUpdate,
+        );
+      },
+    );
+    timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
+  }
+
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,
@@ -565,13 +582,14 @@ class BookingViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      await showDialogSuccess(context, BookingLanguage.updateBookingSuccess);
+      await showSuccessEdit(context);
     }
     notifyListeners();
   }
 
   @override
   void dispose() {
+    timer?.cancel();
     moneyController.dispose();
     phoneController.dispose();
     nameController.dispose();

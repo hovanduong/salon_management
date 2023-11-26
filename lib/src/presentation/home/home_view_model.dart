@@ -7,8 +7,10 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/homepage_language.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/invoice.dart';
+import '../../resource/service/my_booking.dart';
 import '../../resource/service/report_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_pref.dart';
@@ -22,6 +24,7 @@ class HomeViewModel extends BaseViewModel{
 
   InvoiceApi invoiceApi = InvoiceApi();
   ReportApi reportApi= ReportApi();
+  MyBookingApi myBookingApi= MyBookingApi();
 
   ScrollController scrollController=ScrollController();
 
@@ -55,6 +58,7 @@ class HomeViewModel extends BaseViewModel{
   GlobalKey cardRevenue= GlobalKey();
 
   Future<void> init()async {
+    isLoading=true;
     page=1;
     await getInvoice(page);
     listCurrent=listInvoice;
@@ -84,6 +88,17 @@ class HomeViewModel extends BaseViewModel{
 
   Future<void> goToAddInvoice(BuildContext context) =>
       Navigator.pushNamed(context, Routers.payment);
+  
+  Future<void> goToEditInvoice(MyBookingModel myBookingModel) async {
+    await Navigator.pushNamed(context, Routers.addBooking, 
+      arguments: myBookingModel,
+    );
+    await init();
+  }
+
+  Future<void> goToBookingDetails(
+          BuildContext context, MyBookingParams params,) =>
+      Navigator.pushNamed(context, Routers.bookingDetails, arguments: params);
 
   Future<void> goToCalendar() 
     => Navigator.pushNamed(context, Routers.calendar, arguments: 1);
@@ -151,6 +166,21 @@ class HomeViewModel extends BaseViewModel{
     );
   }
 
+  dynamic showSuccessDialog(_) async{
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
+    );
+    await init();
+  }
+
   void closeDialog(BuildContext context) {
     Timer(
       const Duration(seconds: 1),
@@ -171,11 +201,11 @@ class HomeViewModel extends BaseViewModel{
   void setMoney(){
     expenseManagement.forEach((element) {
       if(element.revenue==true){
-        totalBalance=AppCurrencyFormat.formatMoney(element.money);
+        totalBalance=AppCurrencyFormat.formatMoneyVND(element.money ?? 0);
       }else if(element.income==true){
-        totalIncome=AppCurrencyFormat.formatMoney(element.money);
+        totalIncome=AppCurrencyFormat.formatMoneyVND(element.money ?? 0);
       }else{
-        totalExpenses=AppCurrencyFormat.formatMoney(element.money);
+        totalExpenses=AppCurrencyFormat.formatMoneyVND(element.money ?? 0);
       }
     });
     notifyListeners();
@@ -225,6 +255,31 @@ class HomeViewModel extends BaseViewModel{
       setMoney();
     }
     isLoading=false;
+    notifyListeners();
+  }
+
+  Future<void> deleteBookingHistory(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await myBookingApi.deleteBookingHistory(
+      MyBookingParams(
+        id: id,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDialog(context);
+    }
     notifyListeners();
   }
 

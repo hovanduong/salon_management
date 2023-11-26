@@ -60,9 +60,9 @@ class ContentTransactionWidget extends StatelessWidget {
         ),
       ): null,
       trailing: Paragraph(
-        content: isTitle? AppCurrencyFormat.formatMoney(money ?? '0') :
-          isMoneyIncome ? '+${AppCurrencyFormat.formatMoney(money ?? '0')}'
-          : '-${AppCurrencyFormat.formatMoney(money ?? '0')}',
+        content: isTitle? AppCurrencyFormat.formatMoneyVND(money ?? 0) :
+          isMoneyIncome ? '+${AppCurrencyFormat.formatMoneyVND(money ?? 0)}'
+          : '-${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
         style: STYLE_LARGE.copyWith(
           fontWeight: FontWeight.w600,
           color:(money??0)>=0 && isMoneyIncome? 

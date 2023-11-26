@@ -8,6 +8,7 @@ import 'package:showcaseview/showcaseview.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
+import '../../resource/service/my_booking.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'home.dart';
@@ -149,12 +150,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildContentTransaction(int index, int indexService){
     final name= _viewModel!.listCurrent[index].invoices
       ?[indexService].myBooking?.category?.name;
-    return ContentTransactionWidget(
-      money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
-      nameService: name,
-      color: _viewModel!.colors[indexService%_viewModel!.colors.length],
-      isMoneyIncome: _viewModel!.listCurrent[index].invoices
-        ?[indexService].myBooking?.income ?? false,
+    return InkWell(
+      onTap: () => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(
+          id: _viewModel!.listCurrent[index].invoices?[indexService].myBookingId, 
+          code: _viewModel!.listCurrent[index].invoices?[indexService].code, 
+          isInvoice: true,),),
+      child: SlidableActionWidget(
+        isEdit: true,
+        onTapButtonDelete: (context) => _viewModel!.deleteBookingHistory(
+          _viewModel!.listCurrent[index].invoices![indexService].myBookingId!,
+        ),
+        onTapButtonUpdate: (context) => _viewModel!.goToEditInvoice(
+          _viewModel!.listCurrent[index].invoices![indexService].myBooking!,
+        ),
+        child: ContentTransactionWidget(
+          money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
+          nameService: name,
+          color: _viewModel!.colors[indexService%_viewModel!.colors.length],
+          isMoneyIncome: _viewModel!.listCurrent[index].invoices
+            ?[indexService].myBooking?.income ?? false,
+        ),
+      ),
     );
   }
 

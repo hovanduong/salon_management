@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/model.dart';
@@ -14,6 +15,8 @@ import '../base/base.dart';
 class CalendarViewModel extends BaseViewModel{
 
   ReportApi reportApi= ReportApi();
+
+  DateRangePickerController dateController = DateRangePickerController();
 
   List<ReportModel>? reportModel;
   List<ExpenseManagementModel>? expenseManagement;
@@ -29,6 +32,8 @@ class CalendarViewModel extends BaseViewModel{
   int month=DateTime.now().month;
   int year=DateTime.now().year;
   int? isOverView;
+
+  DateTime dateTime= DateTime.now();
 
   num revenue=0;
   num spendingMoney=0;
@@ -46,6 +51,14 @@ class CalendarViewModel extends BaseViewModel{
       (value) => isShowCase=value??true,);
     startShowCase();
     await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> updateDateTime(DateTime date) async {
+    dateTime= date;
+    month = date.month;
+    year =date.year;
+    await getList();
     notifyListeners();
   }
 

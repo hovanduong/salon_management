@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -119,13 +120,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  dynamic showSelectDate() {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => Padding(
+        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+        child: SfDateRangePicker(
+          controller: _viewModel!.dateController,
+          selectionMode: DateRangePickerSelectionMode.single,
+          initialSelectedDate: _viewModel!.dateTime,
+          showActionButtons: true,
+          showNavigationArrow: true,
+          onCancel: () {
+            _viewModel!.dateController.selectedDate = null;
+            Navigator.pop(context);
+          },
+          onSubmit: (value) {
+            _viewModel!.updateDateTime(value! as DateTime);
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
   Widget buildMonthCalendar(){
-    return MonthCalendarWidget(
-      month: '${_viewModel!.month}/${_viewModel!.year}',
-      addMonth:() => _viewModel!.addMonth(),
-      subMonth: () => _viewModel!.subMonth(),
-      keyLastMonth: _viewModel!.keyLastMonth,
-      keyNextMonth: _viewModel!.keyNextMonth,
+    return InkWell(
+      onTap: showSelectDate,
+      child: MonthCalendarWidget(
+        month: '${_viewModel!.month}/${_viewModel!.year}',
+        addMonth:() => _viewModel!.addMonth(),
+        subMonth: () => _viewModel!.subMonth(),
+        keyLastMonth: _viewModel!.keyLastMonth,
+        keyNextMonth: _viewModel!.keyNextMonth,
+      ),
     );
   }
 

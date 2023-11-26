@@ -26,7 +26,7 @@ class TotalMoneyWidget extends StatelessWidget {
         ),
         SizedBox(height: SpaceBox.sizeMedium,),
         Paragraph(
-          content: AppCurrencyFormat.formatMoney(money ?? ''),
+          content: AppCurrencyFormat.formatMoneyVND(money ?? 0),
           style: STYLE_LARGE.copyWith(
             fontWeight: FontWeight.w600,
             color: colorMoney
