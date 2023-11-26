@@ -37,6 +37,9 @@ class BookingDetailsViewModel extends BaseViewModel{
     => Navigator.pushNamed(context, Routers.bill, 
       arguments: listMyBooking[0],);
 
+  Future<void> goToHome() => Navigator.pushReplacementNamed(
+    context, Routers.home,);
+
   void closeDialog(BuildContext context){
     Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
     notifyListeners();
@@ -58,8 +61,7 @@ class BookingDetailsViewModel extends BaseViewModel{
         );
       },
     );
-    timer= Timer(const Duration(seconds: 1), () {
-      goToBill(context); });
+    timer= Timer(const Duration(seconds: 1), goToHome);
     notifyListeners();
   }
 

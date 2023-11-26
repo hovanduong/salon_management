@@ -109,6 +109,7 @@ class PaymentViewModel extends BaseViewModel {
     await getCategory();
     selectedCategory=0;
     categoryId=listCategory[0].id;
+    isButtonSpending=false;
     // await setDataMyBooking(myBookingModel);
     // await fetchService();
     // await fetchCustomer();
@@ -346,11 +347,15 @@ class PaymentViewModel extends BaseViewModel {
   }
 
   void validPrice(String? value) {
-    money = value;
     if (value == null || value.isEmpty) {
-      messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
+      messageErrorPrice = PaymentLanguage.emptyMoneyError;
     } else {
-      messageErrorPrice = null;
+      money = value.replaceAll(',', '');
+      if(money!.length>11){
+        messageErrorPrice= PaymentLanguage.errorMoney;
+      }else{
+        messageErrorPrice = null; 
+      }
     }
     notifyListeners();
   }
@@ -462,8 +467,7 @@ class PaymentViewModel extends BaseViewModel {
         );
       },
     );
-    timer= Timer(const Duration(seconds: 1), () {
-      goToBill(context); });
+    timer= Timer(const Duration(seconds: 1), goToHome);
   }
 
   void closeDialog(BuildContext context) {

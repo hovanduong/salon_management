@@ -13,7 +13,8 @@ class CardMoneyWidget extends StatelessWidget {
     this.money, 
     this.onShowTotalBalance, 
     this.moneyIncome, 
-    this.moneyExpenses,
+    this.moneyExpenses, 
+    this.context,
   });
 
   final bool iconShowTotalBalance;
@@ -21,6 +22,7 @@ class CardMoneyWidget extends StatelessWidget {
   final String? moneyIncome;
   final String? moneyExpenses;
   final Function()? onShowTotalBalance;
+  final BuildContext? context;
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +53,28 @@ class CardMoneyWidget extends StatelessWidget {
 
   Widget buildMoneyFluctuations(){
     return buildRowBetween(
-      contentLeft: Paragraph(
-        content: moneyIncome ?? '',
-        style: STYLE_LARGE_BIG.copyWith(
-          fontWeight: FontWeight.w600,
-          color: AppColors.COLOR_WHITE,
+      contentLeft: SizedBox(
+        width: MediaQuery.sizeOf(context!).width/2.6,
+        child: Paragraph(
+          content: moneyIncome ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: STYLE_LARGE_BIG.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
       ),
-      contentRight: Paragraph(
-        content: moneyExpenses ?? '',
-        style: STYLE_LARGE_BIG.copyWith(
-          fontWeight: FontWeight.w600,
-          color: AppColors.COLOR_WHITE,
+      contentRight: SizedBox(
+        width: MediaQuery.sizeOf(context!).width/2.6,
+        child: Paragraph(
+          content: moneyExpenses ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: STYLE_LARGE_BIG.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
       ),
     );
@@ -100,6 +112,8 @@ class CardMoneyWidget extends StatelessWidget {
   Widget buildMoneyTotalBalance(){
     return iconShowTotalBalance? Paragraph(
       content: money?? '',
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: STYLE_VERY_BIG.copyWith(
         fontWeight: FontWeight.w800,
         color: AppColors.COLOR_WHITE,

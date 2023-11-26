@@ -24,16 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   HomeViewModel? _viewModel;
 
-  // final GlobalKey add= GlobalKey();
-  
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-  //     return ShowCaseWidget.of(context).startShowCase([add]);
-  //   });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
@@ -100,10 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Showcase(
           key: _viewModel!.cardMoney,
           description: HomePageLanguage.totalRevenue,
-          
           targetBorderRadius: BorderRadius.circular(
             BorderRadiusSize.sizeMedium,),
           child: CardMoneyWidget(
+            context: context,
             iconShowTotalBalance: _viewModel!.isShowBalance,
             onShowTotalBalance: () => _viewModel!.setShowBalance(),
             money: _viewModel!.totalBalance,
@@ -268,8 +258,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Showcase(
           key: _viewModel!.add,
           description: HomePageLanguage.addInvoice,
-          // disableDefaultTargetGestures: true,
-          // disableMovingAnimation: true,
           targetBorderRadius: BorderRadius.all(Radius.circular(
             BorderRadiusSize.sizeLarge,),),
           child: FloatingActionButton(

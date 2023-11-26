@@ -170,15 +170,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
    Widget buildTotal(int index){
-    return TotalMoneyWidget(
-      content: (_viewModel!.expenseManagement?[index].revenue ?? false)
-        ? CalendarLanguage.total
-        : (_viewModel!.expenseManagement?[index].income?? false) ?
-          CalendarLanguage.revenue : CalendarLanguage.spendingMoney,
-      money: _viewModel!.expenseManagement?[index].money,
-      colorMoney: (_viewModel!.expenseManagement?[index].income ?? false
-        || (_viewModel!.expenseManagement?[index].revenue ?? false))
-        ? AppColors.Green_Money : AppColors.Red_Money,
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width/3.1,
+      child: TotalMoneyWidget(
+        content: (_viewModel!.expenseManagement?[index].revenue ?? false)
+          ? CalendarLanguage.total
+          : (_viewModel!.expenseManagement?[index].income?? false) ?
+            CalendarLanguage.revenue : CalendarLanguage.spendingMoney,
+        money: _viewModel!.expenseManagement?[index].money,
+        colorMoney: (_viewModel!.expenseManagement?[index].income ?? false
+          || (_viewModel!.expenseManagement?[index].revenue ?? false))
+          ? AppColors.Green_Money : AppColors.Red_Money,
+      ),
     );
   }
 

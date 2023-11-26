@@ -362,11 +362,15 @@ class BookingViewModel extends BaseViewModel {
   // }
 
   void validPrice(String? value) {
-    money = value;
     if (value == null || value.isEmpty) {
-      messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
+      messageErrorPrice = BookingLanguage.emptyMoneyError;
     } else {
-      messageErrorPrice = null;
+      money = value.replaceAll(',', '');
+      if(money!.length>11){
+        messageErrorPrice= BookingLanguage.errorMoney;
+      }else{
+        messageErrorPrice = null; 
+      }
     }
     notifyListeners();
   }

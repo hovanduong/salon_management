@@ -12,6 +12,7 @@ import '../../utils/app_valid.dart';
 import '../../utils/time_zone.dart';
 import '../base/base.dart';
 
+
 class CalendarViewModel extends BaseViewModel{
 
   ReportApi reportApi= ReportApi();
@@ -43,6 +44,8 @@ class CalendarViewModel extends BaseViewModel{
   GlobalKey keyNextMonth=GlobalKey();
   GlobalKey keyDailyRevenue=GlobalKey();
   GlobalKey keyMonthlyRevenue=GlobalKey();
+
+  Timer? timer;
 
   Future<void> init(int? isScreen)async{
     isOverView=isScreen;
@@ -79,24 +82,34 @@ class CalendarViewModel extends BaseViewModel{
   }
 
   Future<void> subMonth()async{
-    if(month>1){
-      month--;
-    }else{
-      month=12;
-      year--;
+    if (timer?.isActive ?? false) {
+      timer?.cancel();
     }
-    await getList();
+    timer = Timer(const Duration(milliseconds: 500), () async{
+      if(month>1){
+        month--;
+      }else{
+        month=12;
+        year--;
+      }
+      await getList();
+    });
     notifyListeners();
   }
 
   Future<void> addMonth()async{
-    if(month<12){
-      month++;
-    }else{
-      month=1;
-      year++;
+    if (timer?.isActive ?? false) {
+      timer?.cancel();
     }
-    await getList();
+    timer = Timer(const Duration(milliseconds: 500), () async{
+      if(month<12){
+        month++;
+      }else{
+        month=1;
+        year++;
+      }
+      await getList();
+    });
     notifyListeners();
   }
 
@@ -225,5 +238,11 @@ class CalendarViewModel extends BaseViewModel{
       expenseManagement=value as List<ExpenseManagementModel>;
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

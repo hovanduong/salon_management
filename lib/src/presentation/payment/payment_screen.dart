@@ -218,20 +218,23 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return showModalBottomSheet(
       context: context,
       isDismissible: false,
-      builder: (context) => SfDateRangePicker(
-        controller: _viewModel!.dateController,
-        selectionMode: DateRangePickerSelectionMode.single,
-        initialSelectedDate: _viewModel!.dateTime,
-        showActionButtons: true,
-        showNavigationArrow: true,
-        onCancel: () {
-          _viewModel!.dateController.selectedDate = null;
-          Navigator.pop(context);
-        },
-        onSubmit: (value) {
-          _viewModel!.updateDateTime(value! as DateTime);
-          Navigator.pop(context);
-        },
+      builder: (context) => Padding(
+        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+        child: SfDateRangePicker(
+          controller: _viewModel!.dateController,
+          selectionMode: DateRangePickerSelectionMode.single,
+          initialSelectedDate: _viewModel!.dateTime,
+          showActionButtons: true,
+          showNavigationArrow: true,
+          onCancel: () {
+            _viewModel!.dateController.selectedDate = null;
+            Navigator.pop(context);
+          },
+          onSubmit: (value) {
+            _viewModel!.updateDateTime(value! as DateTime);
+            Navigator.pop(context);
+          },
+        ),
       ),
     );
   }
@@ -315,6 +318,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       labelText: PaymentLanguage.amountOfMoney,
       hintText: PaymentLanguage.enterAmountOfMoney,
       textEditingController: _viewModel!.moneyController,
+      maxLenght: 14,
       onChanged: (value) {
         _viewModel!
           ..validPrice(value.trim())
