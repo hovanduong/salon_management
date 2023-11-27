@@ -25,26 +25,26 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  
   CalendarViewModel? _viewModel;
-  
+
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light,
     );
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-      statusBarColor: AppColors.PRIMARY_GREEN, 
+        statusBarColor: AppColors.PRIMARY_GREEN,
       ),
     );
 
     final isScreen = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
       viewModel: CalendarViewModel(),
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        isScreen as int?,),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          isScreen as int?,
+        ),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -102,7 +102,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-   Widget buildHeaderSecond() {
+  Widget buildHeaderSecond() {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
@@ -153,23 +153,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       child: Paragraph(
         content: BookingLanguage.chooseMonth,
-        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600,),
+        style: STYLE_MEDIUM.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
 
-  Widget buildTimeSelect() {
-    return SizedBox(
-      height: 180,
-      child: CupertinoDatePicker(
-        initialDateTime: _viewModel!.dateTime,
-        mode: CupertinoDatePickerMode.monthYear,
-        onDateTimeChanged: (value) {
-          _viewModel!.updateDateTime(value);
-        },
-      ),
-    );
-  }
+  // Widget buildTimeSelect() {
+  //   return SizedBox(
+  //     height: 180,
+  //     child: CupertinoDatePicker(
+  //       initialDateTime: _viewModel!.dateTime,
+  //       mode: CupertinoDatePickerMode.monthYear,
+  //       onDateTimeChanged: (value) {
+  //         _viewModel!.updateDateTime(value);
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget buildButtonSelectTime() {
     return Padding(
@@ -177,7 +179,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       child: AppButton(
         content: BookingLanguage.done,
         enableButton: true,
-        onTap: () async{
+        onTap: () async {
           await _viewModel!.getList();
           Navigator.pop(context);
         },
@@ -195,7 +197,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildTitleSelectTime(),
-            buildTimeSelect(),
+            // buildTimeSelect(),
             buildButtonSelectTime(),
           ],
         ),
@@ -203,12 +205,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget buildMonthCalendar(){
+  Widget buildMonthCalendar() {
     return InkWell(
       onTap: showSelectTime,
       child: MonthCalendarWidget(
         month: '${_viewModel!.month}/${_viewModel!.year}',
-        addMonth:() => _viewModel!.addMonth(),
+        addMonth: () => _viewModel!.addMonth(),
         subMonth: () => _viewModel!.subMonth(),
         keyLastMonth: _viewModel!.keyLastMonth,
         keyNextMonth: _viewModel!.keyNextMonth,
@@ -216,7 +218,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget buildCalendar(){
+  Widget buildCalendar() {
     return Showcase(
       key: _viewModel!.keyDailyRevenue,
       description: CalendarLanguage.dailyRevenue,
@@ -227,48 +229,58 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-   Widget buildTotal(int index){
+  Widget buildTotal(int index) {
     return SizedBox(
-      width: MediaQuery.sizeOf(context).width/3.1,
+      width: MediaQuery.sizeOf(context).width / 3.1,
       child: TotalMoneyWidget(
         content: (_viewModel!.expenseManagement?[index].revenue ?? false)
-          ? CalendarLanguage.total
-          : (_viewModel!.expenseManagement?[index].income?? false) ?
-            CalendarLanguage.revenue : CalendarLanguage.spendingMoney,
+            ? CalendarLanguage.total
+            : (_viewModel!.expenseManagement?[index].income ?? false)
+                ? CalendarLanguage.revenue
+                : CalendarLanguage.spendingMoney,
         money: _viewModel!.expenseManagement?[index].money,
-        colorMoney: (_viewModel!.expenseManagement?[index].income ?? false
-          || (_viewModel!.expenseManagement?[index].revenue ?? false))
-          ? AppColors.Green_Money : AppColors.Red_Money,
+        colorMoney: (_viewModel!.expenseManagement?[index].income ??
+                false ||
+                    (_viewModel!.expenseManagement?[index].revenue ?? false))
+            ? AppColors.Green_Money
+            : AppColors.Red_Money,
       ),
     );
   }
 
-  Widget buildMoney(){
-    return _viewModel!.listDay.isNotEmpty? Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
-      child: Showcase(
-        key: _viewModel!.keyMonthlyRevenue,
-        description: CalendarLanguage.monthlyRevenue,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(_viewModel!.expenseManagement!.length, 
-            buildTotal,
-          ),
-        ),
-      ),
-    ): Container();
+  Widget buildMoney() {
+    return _viewModel!.listDay.isNotEmpty
+        ? Padding(
+            padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+            child: Showcase(
+              key: _viewModel!.keyMonthlyRevenue,
+              description: CalendarLanguage.monthlyRevenue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                  _viewModel!.expenseManagement!.length,
+                  buildTotal,
+                ),
+              ),
+            ),
+          )
+        : Container();
   }
 
-  Widget buildDivider(){
-    return const Divider(color: AppColors.BLACK_300,);
+  Widget buildDivider() {
+    return const Divider(
+      color: AppColors.BLACK_300,
+    );
   }
 
-  Widget buildCalendarScreen(){
+  Widget buildCalendarScreen() {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (_viewModel!.isOverView==1) buildHeader() 
-          else buildHeaderSecond(),
+          if (_viewModel!.isOverView == 1)
+            buildHeader()
+          else
+            buildHeaderSecond(),
           buildMonthCalendar(),
           buildCalendar(),
           buildDivider(),
