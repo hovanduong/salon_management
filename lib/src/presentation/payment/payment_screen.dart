@@ -37,7 +37,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildLoadingScreen(){
+  Widget buildLoadingScreen() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -65,9 +65,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildTitleCategory(){
+  Widget buildTitleCategory() {
     return GestureDetector(
-      onTap: ()=> _viewModel!.goToAddCategory(context),
+      onTap: () => _viewModel!.goToAddCategory(context),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
         child: Row(
@@ -79,33 +79,40 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const Icon(Icons.add_circle, color: AppColors.PRIMARY_GREEN,)
+            const Icon(
+              Icons.add_circle,
+              color: AppColors.PRIMARY_GREEN,
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget buildItemCategory(int index, {String? name}){
+  Widget buildItemCategory(int index, {String? name}) {
     return InkWell(
-      onTap: () =>_viewModel!.setCategorySelected(index),
+      onTap: () => _viewModel!.setCategorySelected(index),
       child: Container(
         padding: EdgeInsets.all(SizeToPadding.sizeMedium),
         decoration: BoxDecoration(
-          color: _viewModel!.selectedCategory==index
-          ? AppColors.LINEAR_GREEN.withOpacity(0.3)
-          : AppColors.COLOR_WHITE,
+          color: _viewModel!.selectedCategory == index
+              ? AppColors.LINEAR_GREEN.withOpacity(0.3)
+              : AppColors.COLOR_WHITE,
           border: Border.all(color: AppColors.PRIMARY_GREEN),
         ),
         child: Column(
           children: [
             SvgPicture.asset(
               AppIcCategory.getIcCategory(
-                name!=null? index:
-                int.parse(_viewModel!.listCategory[index].imageId ?? '0'),),
+                name != null
+                    ? index
+                    : int.parse(_viewModel!.listCategory[index].imageId ?? '0'),
+              ),
               width: 50,
             ),
-            SizedBox(height: SpaceBox.sizeSmall,),
+            SizedBox(
+              height: SpaceBox.sizeSmall,
+            ),
             Paragraph(
               content: name ?? _viewModel!.listCategory[index].name,
               fontWeight: FontWeight.w600,
@@ -118,7 +125,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildListCategory(){
+  Widget buildListCategory() {
     return GridView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
@@ -127,18 +134,19 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         crossAxisCount: 3,
         crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
         mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
-      ), 
-      itemCount: _viewModel!.isShowAll? _viewModel!.listCategory.length+1
-        :_viewModel!.listCategory.length,
+      ),
+      itemCount: _viewModel!.isShowAll
+          ? _viewModel!.listCategory.length + 1
+          : _viewModel!.listCategory.length,
       itemBuilder: (context, index) {
-        if(index==8 && !_viewModel!.isShowAll){
-          return buildItemCategory(16,name: PaymentLanguage.seeMore);
-        }else if(index<8){
+        if (index == 8 && !_viewModel!.isShowAll) {
+          return buildItemCategory(16, name: PaymentLanguage.seeMore);
+        } else if (index < 8) {
           return buildItemCategory(index);
-        }else if(_viewModel!.isShowAll){
-          if(index==_viewModel!.listCategory.length){
-            return buildItemCategory(17,name: PaymentLanguage.close);
-          }else{
+        } else if (_viewModel!.isShowAll) {
+          if (index == _viewModel!.listCategory.length) {
+            return buildItemCategory(17, name: PaymentLanguage.close);
+          } else {
             return buildItemCategory(index);
           }
         }
@@ -147,7 +155,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildCategory(){
+  Widget buildCategory() {
     return Padding(
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       child: Column(
@@ -298,7 +306,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   //   );
   // }
 
-  Widget buildFieldPhone(){
+  Widget buildFieldPhone() {
     return AppFormField(
       textEditingController: _viewModel!.phoneController,
       labelText: PaymentLanguage.phoneNumber,
@@ -307,7 +315,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildFieldMoney(){
+  Widget buildFieldMoney() {
     return AppFormField(
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -330,36 +338,40 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildButtonSelect(String name, bool isButton){
+  Widget buildButtonSelect(String name, bool isButton) {
     return isButton
-    ? Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: AppButton(
-          enableButton: true,
-          content: name,
-          onTap: ()=> _viewModel!.setButtonSelect(name),
-        ),
-      ),
-    )
-    : Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: AppOutlineButton(
-          content: name,
-          onTap: () => _viewModel!.setButtonSelect(name),
-        ),
-      ),
-    );
+        ? Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: AppButton(
+                enableButton: true,
+                content: name,
+                onTap: () => _viewModel!.setButtonSelect(name),
+              ),
+            ),
+          )
+        : Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: AppOutlineButton(
+                content: name,
+                onTap: () => _viewModel!.setButtonSelect(name),
+              ),
+            ),
+          );
   }
 
-  Widget buildChooseButton(){
+  Widget buildChooseButton() {
     return Row(
       children: [
         buildButtonSelect(
-          PaymentLanguage.income, !_viewModel!.isButtonSpending,),
+          PaymentLanguage.income,
+          !_viewModel!.isButtonSpending,
+        ),
         buildButtonSelect(
-          PaymentLanguage.expenses, _viewModel!.isButtonSpending,),
+          PaymentLanguage.expenses,
+          _viewModel!.isButtonSpending,
+        ),
       ],
     );
   }
@@ -521,8 +533,12 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildAppbar() {
     return Container(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 40 : 60, bottom: 10,
-        left: SizeToPadding.sizeMedium, right: SizeToPadding.sizeMedium,),
+      padding: EdgeInsets.only(
+        top: Platform.isAndroid ? 40 : 60,
+        bottom: 10,
+        left: SizeToPadding.sizeMedium,
+        right: SizeToPadding.sizeMedium,
+      ),
       color: AppColors.PRIMARY_GREEN,
       child: Center(
         child: CustomerAppBar(
