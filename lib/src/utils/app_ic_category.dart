@@ -18,19 +18,19 @@ class AppIcCategory {
       case 7:
         return AppImages.icLipSpray;
       case 8:
-        return AppImages.expenses;
-      case 9:
         return AppImages.eat;
+      case 9:
+        return AppImages.icFacelift;
       case 10:
-        return AppImages.icFootMassager;
+        return AppImages.icNailArt;
       case 11:
         return AppImages.icAntiAging;
       case 12:
-        return AppImages.icFacelift;
+        return AppImages.expenses;
       case 13:
         return AppImages.tattoo;
       case 14:
-        return AppImages.icNailArt;
+        return AppImages.icFootMassager;
       case 15:
         return AppImages.spaMask;
       case 16:

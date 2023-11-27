@@ -160,18 +160,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  // Widget buildTimeSelect() {
-  //   return SizedBox(
-  //     height: 180,
-  //     child: CupertinoDatePicker(
-  //       initialDateTime: _viewModel!.dateTime,
-  //       mode: CupertinoDatePickerMode.monthYear,
-  //       onDateTimeChanged: (value) {
-  //         _viewModel!.updateDateTime(value);
-  //       },
-  //     ),
-  //   );
-  // }
+  Widget buildTimeSelect() {
+    return SizedBox(
+      height: 180,
+      child: CupertinoDatePicker(
+        initialDateTime: _viewModel!.dateTime,
+        mode: CupertinoDatePickerMode.monthYear,
+        onDateTimeChanged: (value) {
+          _viewModel!.updateDateTime(value);
+        },
+      ),
+    );
+  }
 
   Widget buildButtonSelectTime() {
     return Padding(
@@ -197,7 +197,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildTitleSelectTime(),
-            // buildTimeSelect(),
+            buildTimeSelect(),
             buildButtonSelectTime(),
           ],
         ),
