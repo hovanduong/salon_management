@@ -305,5 +305,6 @@
     "icon":"Icon",
     "selectCategory":"Select Category",
     "errorMoney":"The amount entered cannot exceed 11 numbers",
+    "chooseMonth":"Choose month",
     "lastLine": ""
 }

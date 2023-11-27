@@ -61,7 +61,6 @@ class CalendarViewModel extends BaseViewModel{
     dateTime= date;
     month = date.month;
     year =date.year;
-    await getList();
     notifyListeners();
   }
 
@@ -93,6 +92,7 @@ class CalendarViewModel extends BaseViewModel{
         year--;
       }
       await getList();
+      dateTime= DateTime(year, month, 1);
     });
     notifyListeners();
   }
@@ -109,6 +109,7 @@ class CalendarViewModel extends BaseViewModel{
         year++;
       }
       await getList();
+      dateTime= DateTime(year, month, 1);
     });
     notifyListeners();
   }

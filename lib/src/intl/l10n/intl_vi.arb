@@ -305,5 +305,6 @@
     "icon":"Biểu tượng",
     "selectCategory":"Chọn mục",
     "errorMoney":"Số tiền nhập không được vượt quá 11 số",
+    "chooseMonth":"Chọn tháng",
     "lastLine": ""
 }

@@ -53,7 +53,8 @@ class CardMoneyWidget extends StatelessWidget {
 
   Widget buildMoneyFluctuations(){
     return buildRowBetween(
-      contentLeft: SizedBox(
+      contentLeft:Container(
+        alignment: Alignment.centerLeft,
         width: MediaQuery.sizeOf(context!).width/2.6,
         child: Paragraph(
           content: moneyIncome ?? '',
@@ -65,7 +66,8 @@ class CardMoneyWidget extends StatelessWidget {
           ),
         ),
       ),
-      contentRight: SizedBox(
+      contentRight: Container(
+        alignment: Alignment.centerRight,
         width: MediaQuery.sizeOf(context!).width/2.6,
         child: Paragraph(
           content: moneyExpenses ?? '',

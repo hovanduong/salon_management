@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -129,6 +131,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: SfDateRangePicker(
           controller: _viewModel!.dateController,
           selectionMode: DateRangePickerSelectionMode.single,
+          selectionColor: AppColors.PRIMARY_GREEN,
           initialSelectedDate: _viewModel!.dateTime,
           showActionButtons: true,
           showNavigationArrow: true,
@@ -145,9 +148,64 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  Widget buildTitleSelectTime() {
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: Paragraph(
+        content: BookingLanguage.chooseMonth,
+        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600,),
+      ),
+    );
+  }
+
+  Widget buildTimeSelect() {
+    return SizedBox(
+      height: 180,
+      child: CupertinoDatePicker(
+        initialDateTime: _viewModel!.dateTime,
+        mode: CupertinoDatePickerMode.monthYear,
+        onDateTimeChanged: (value) {
+          _viewModel!.updateDateTime(value);
+        },
+      ),
+    );
+  }
+
+  Widget buildButtonSelectTime() {
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: AppButton(
+        content: BookingLanguage.done,
+        enableButton: true,
+        onTap: () async{
+          await _viewModel!.getList();
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  dynamic showSelectTime() {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height / 2.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTitleSelectTime(),
+            buildTimeSelect(),
+            buildButtonSelectTime(),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildMonthCalendar(){
     return InkWell(
-      onTap: showSelectDate,
+      onTap: showSelectTime,
       child: MonthCalendarWidget(
         month: '${_viewModel!.month}/${_viewModel!.year}',
         addMonth:() => _viewModel!.addMonth(),

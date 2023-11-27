@@ -421,7 +421,7 @@ class PaymentViewModel extends BaseViewModel {
       context: context,
       builder: (_) {
         return WarningDialog(
-          content: BookingLanguage.bookingSuccessful,
+          content: BookingLanguage.paymentSuccess,
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
           leftButtonName: SignUpLanguage.cancel,
@@ -467,7 +467,16 @@ class PaymentViewModel extends BaseViewModel {
         );
       },
     );
-    timer= Timer(const Duration(seconds: 1), goToHome);
+  }
+
+  void clearData(){
+    selectedCategory=0;
+    categoryId=listCategory[0].id;
+    isButtonSpending=false;
+    moneyController.text='';
+    updateDateTime(DateTime.now());
+    listCategory=listCategoryIncome;
+    notifyListeners();
   }
 
   void closeDialog(BuildContext context) {
@@ -627,7 +636,8 @@ class PaymentViewModel extends BaseViewModel {
       showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      showSuccessDialog(context);
+      clearData();
+      showDialogSuccess(context);
     }
     notifyListeners();
   }

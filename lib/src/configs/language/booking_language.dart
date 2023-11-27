@@ -54,5 +54,6 @@ class BookingLanguage {
   static final selectCategory= S.current.selectCategory;
   static final errorMoney= S.current.errorMoney;
   static final emptyMoneyError= S.current.emptyMoneyError;
-
+  static final paymentSuccess= S.current.paymentSuccess;
+  static final chooseMonth= S.current.chooseMonth;
 }
