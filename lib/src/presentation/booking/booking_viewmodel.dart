@@ -533,7 +533,7 @@ class BookingViewModel extends BaseViewModel {
         date: dateTime.toString().trim(),
         address: addressController.text.trim(),
         isBooking: true,
-        isIncome: false,
+        isIncome: true,
         note: noteController.text.trim(),
       ),
     );

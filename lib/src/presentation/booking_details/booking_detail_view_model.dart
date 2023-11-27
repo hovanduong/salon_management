@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/booking_details_language.dart';
-import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/invoice.dart';
@@ -122,7 +121,9 @@ class BookingDetailsViewModel extends BaseViewModel{
 
   Future<void> postInvoice(int id) async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await invoiceApi.postInvoice(InvoiceParams(id: id));
+    final result = await invoiceApi.postInvoice(
+      InvoiceParams(id: id, date: listMyBooking[0].date),
+    );
 
     final value = switch (result) {
       Success(value: final isBool) => isBool,
