@@ -107,7 +107,7 @@
     "validVerificationCode": "",
     "totalBalance": "Tổng số dư",
     "income": "Thu nhập",
-    "expenses": "Chi phí",
+    "expenses": "Chi tiêu",
     "transactionHistory": "Lịch sử giao dịch",
     "seeAll": "Xem hết",
     "sendAgain": "Gửi lại",
@@ -306,5 +306,8 @@
     "selectCategory":"Chọn mục",
     "errorMoney":"Số tiền nhập không được vượt quá 11 số",
     "chooseMonth":"Chọn tháng",
+    "requiredMoney":"Nhập số tiền (Bắt buộc)",
+    "infoCustomerShowCase":"Thông tin khách hàng (có thể nhập hoặc để trống)",
+    "incomeExpenses":"Thu nhập, chi tiêu",
     "lastLine": ""
 }

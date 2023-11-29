@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -91,52 +92,60 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildTitleCategory(){
-    return GestureDetector(
-      onTap: ()=> _viewModel!.goToAddCategory(context),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Paragraph(
-              content: BookingLanguage.selectCategory,
-              style: STYLE_MEDIUM.copyWith(
-                fontWeight: FontWeight.w600,
+    return Showcase(
+      key: _viewModel!.keyAddCategory,
+      description: BookingLanguage.addCategory,
+      child: GestureDetector(
+        onTap: ()=> _viewModel!.goToAddCategory(context),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Paragraph(
+                content: BookingLanguage.selectCategory,
+                style: STYLE_MEDIUM.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const Icon(Icons.add_circle, color: AppColors.PRIMARY_GREEN,)
-          ],
+              const Icon(Icons.add_circle, color: AppColors.PRIMARY_GREEN,)
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget buildListCategory(){
-    return GridView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
-        mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
-      ), 
-      itemCount: _viewModel!.isShowAll? _viewModel!.listCategory.length+1
-        :_viewModel!.listCategory.length,
-      itemBuilder: (context, index) {
-        if(index==8 && !_viewModel!.isShowAll){
-          return buildItemCategory(16,name: BookingLanguage.seeMore);
-        }else if(index<8){
-          return buildItemCategory(index);
-        }else if(_viewModel!.isShowAll){
-          if(index==_viewModel!.listCategory.length){
-            return buildItemCategory(17,name: BookingLanguage.close);
-          }else{
+    return Showcase(
+      description: BookingLanguage.selectCategory,
+      key: _viewModel!.keyCategory,
+      child: GridView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+          mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+        ), 
+        itemCount: _viewModel!.isShowAll? _viewModel!.listCategory.length+1
+          :_viewModel!.listCategory.length,
+        itemBuilder: (context, index) {
+          if(index==8 && !_viewModel!.isShowAll){
+            return buildItemCategory(16,name: BookingLanguage.seeMore);
+          }else if(index<8){
             return buildItemCategory(index);
+          }else if(_viewModel!.isShowAll){
+            if(index==_viewModel!.listCategory.length){
+              return buildItemCategory(17,name: BookingLanguage.close);
+            }else{
+              return buildItemCategory(index);
+            }
           }
-        }
-        return null;
-      },
+          return null;
+        },
+      ),
     );
   }
 
@@ -224,18 +233,34 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   //   );
   // }
 
+  Widget buildInfoCustomer(){
+    return Showcase(
+      key: _viewModel!.keyInfoCustomer,
+      description: BookingLanguage.infoCustomerShowCase,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeMedium,
+        ),
+        child: Column(
+          children: [
+            buildFieldPhone(),
+            buildName(),
+            buildAddress(),
+            buildNote(),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildInfo() {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeMedium,
+          vertical: SizeToPadding.sizeMedium,
       ),
       child: Column(
         children: [
-          buildFieldPhone(),
-          buildName(),
-          buildAddress(),
-          buildNote(),
+          buildInfoCustomer(),
           buildFieldMoney(),
         ],
       ),
@@ -401,7 +426,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         minimumDate: DateTime.now(),
         use24hFormat: true,
         onDateTimeChanged: (value) {
-          _viewModel!.updateDateTime(value);
+          _viewModel!.updateTime(value);
         },
       ),
     );
@@ -442,6 +467,8 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       isDismissible: false,
       builder: (context) => SfDateRangePicker(
         minDate: DateTime.now(),
+        selectionColor: AppColors.PRIMARY_GREEN,
+        todayHighlightColor: AppColors.PRIMARY_GREEN,
         controller: _viewModel!.dateController,
         selectionMode: DateRangePickerSelectionMode.single,
         initialSelectedDate: _viewModel!.dateTime,
@@ -462,6 +489,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildDateTime() {
     return ButtonDateTimeWidget(
       dateTime: _viewModel!.dateTime,
+      time: _viewModel!.time,
       onShowSelectDate: showSelectDate,
       onShowSelectTime: showSelectTime,
     );
@@ -600,25 +628,33 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildFieldMoney(){
-    return AppFormField(
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      keyboardType: TextInputType.number,
-      labelText: BookingLanguage.amountOfMoney,
-      hintText: BookingLanguage.enterAmountOfMoney,
-      textEditingController: _viewModel!.moneyController,
-      isRequired: true,
-      maxLenght: 14,
-      onChanged: (value) {
-        _viewModel!
-          ..validPrice(value.trim())
-          ..formatMoney(value.trim())
-          ..enableConfirmButton();
-      },
-      validator: _viewModel!.messageErrorPrice,
-      isSpace: true,
+    return Showcase( 
+      key: _viewModel!.keyMoney,
+      description: BookingLanguage.requiredMoney,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeMedium,
+        ),
+        child: AppFormField(
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(11),
+          ],
+          keyboardType: TextInputType.number,
+          labelText: BookingLanguage.amountOfMoney,
+          hintText: BookingLanguage.enterAmountOfMoney,
+          textEditingController: _viewModel!.moneyController,
+          isRequired: true,
+          onChanged: (value) {
+            _viewModel!
+              ..validPrice(value.trim())
+              ..formatMoney(value.trim())
+              ..enableConfirmButton();
+          },
+          validator: _viewModel!.messageErrorPrice,
+        ),
+      ),
     );
   }
 
