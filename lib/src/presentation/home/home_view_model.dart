@@ -48,6 +48,7 @@ class HomeViewModel extends BaseViewModel{
   bool? isShowCase;
 
   int page=1;
+  int isDate=0;
 
   String? totalBalance;
   String? totalIncome;
@@ -56,13 +57,20 @@ class HomeViewModel extends BaseViewModel{
   GlobalKey add= GlobalKey();
   GlobalKey cardMoney= GlobalKey();
   GlobalKey cardRevenue= GlobalKey();
+  GlobalKey keySelectMonth= GlobalKey();
 
-  Future<void> init()async {
+  DateTime date= DateTime.now();
+
+  Future<void> init({DateTime? dateTime, int? isDay})async {
+    if(dateTime!=null && isDay!=null){
+      date= dateTime;
+      isDate=isDay;
+    }
     isLoading=true;
     page=1;
     await getInvoice(page);
     listCurrent=listInvoice;
-    await getExpenseManagement(DateTime.now().toString());
+    await getExpenseManagement(date.toString());
     scrollController.addListener(scrollListener,);
     await AppPref.getShowCase('showCaseHome').then(
       (value) => isShowCase=value??true,);
@@ -81,7 +89,7 @@ class HomeViewModel extends BaseViewModel{
     if(isShowCase==true){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         return ShowCaseWidget.of(context).startShowCase(
-          [add, cardMoney, cardRevenue],);
+          [add, cardMoney,keySelectMonth, cardRevenue],);
       });
     }
   }
@@ -181,6 +189,11 @@ class HomeViewModel extends BaseViewModel{
     await init();
   }
 
+  Future<void> updateDateTime(DateTime dateTime) async {
+    date= dateTime;
+    notifyListeners();
+  }
+
   void closeDialog(BuildContext context) {
     Timer(
       const Duration(seconds: 1),
@@ -215,6 +228,11 @@ class HomeViewModel extends BaseViewModel{
     final result = await invoiceApi.getInvoice(
       InvoiceParams(
         page: page,
+        date: date.toString(),
+        isDate: isDate,
+        timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
+          DateTime.now().timeZoneName,
+        ),
       ),
     );
 
@@ -238,6 +256,7 @@ class HomeViewModel extends BaseViewModel{
       timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
           DateTime.now().timeZoneName,
         ),
+      isDate: isDate,
       date: date,
     ),);
 

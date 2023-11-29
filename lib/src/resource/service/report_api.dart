@@ -11,11 +11,14 @@ class ReportParams {
     this.id,
     this.timeZone, 
     this.date, 
+    this.isDate,
+    this.dateTime,
   });
   final int? id;
   final String? timeZone;
   final String? date;
-
+  final int? isDate;
+  final DateTime? dateTime;
 }
 
 class ReportApi {
@@ -42,7 +45,7 @@ class ReportApi {
     ReportParams params,) async {
     try {
       final response = await HttpRemote.get(
-        url: '/report/expense-management?date=${params.date}&timeZone=${params.timeZone}',
+        url: '/report/expense-management?date=${params.date}&timeZone=${params.timeZone}&isDate=${params.isDate}',
       );
       switch (response?.statusCode) {
         case 200:

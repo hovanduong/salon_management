@@ -11,6 +11,7 @@ import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/time_zone.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 
 class CalendarViewModel extends BaseViewModel{
@@ -32,6 +33,7 @@ class CalendarViewModel extends BaseViewModel{
 
   int month=DateTime.now().month;
   int year=DateTime.now().year;
+  int? day;
   int? isOverView;
 
   DateTime dateTime= DateTime.now();
@@ -47,8 +49,8 @@ class CalendarViewModel extends BaseViewModel{
 
   Timer? timer;
 
-  Future<void> init(int? isScreen)async{
-    isOverView=isScreen;
+  Future<void> init(DateTime? date)async{
+    dateTime=date ?? DateTime.now();
     await getList();
     await AppPref.getShowCase('showCaseRevenue').then(
       (value) => isShowCase=value??true,);
@@ -56,6 +58,11 @@ class CalendarViewModel extends BaseViewModel{
     await hideShowcase();
     notifyListeners();
   }
+
+  Future<void> goToHome(BuildContext context, int day) =>
+      Navigator.pushNamed(context, Routers.homeScreen, 
+      arguments: ReportParams(dateTime: DateTime(year, month, day), 
+        isDate: 1,),);
 
   Future<void> updateDateTime(DateTime date) async {
     dateTime= date;
@@ -221,6 +228,7 @@ class CalendarViewModel extends BaseViewModel{
       timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
           DateTime.now().timeZoneName,
         ),
+      isDate: 0,
       date: date,
     ),);
 

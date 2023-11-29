@@ -38,13 +38,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
     );
 
-    final isScreen = ModalRoute.of(context)!.settings.arguments;
+    final date = ModalRoute.of(context)!.settings.arguments;
     return BaseWidget(
       viewModel: CalendarViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!
-        ..init(
-          isScreen as int?,
-        ),
+        ..init(date as DateTime?,),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -225,6 +223,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
       child: CalendarWidget(
         listDay: _viewModel?.listDay,
         isWeekend: _viewModel!.isWeekend,
+        onShowRevenueDay: (day)
+          => _viewModel!.goToHome(context, int.parse(day ?? '0')),
       ),
     );
   }
