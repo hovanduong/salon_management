@@ -34,4 +34,7 @@ class PaymentLanguage {
   static final close= S.current.close;
   static final emptyMoneyError= S.current.emptyMoneyError;
   static final errorMoney= S.current.errorMoney;
+  static final requiredMoney= S.current.requiredMoney;
+  static final infoCustomerShowCase= S.current.infoCustomerShowCase;
+  static final incomeExpenses= S.current.incomeExpenses;
 }

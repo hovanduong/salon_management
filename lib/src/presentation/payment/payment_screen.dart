@@ -2,12 +2,12 @@
 
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -66,24 +66,28 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildTitleCategory() {
-    return GestureDetector(
-      onTap: () => _viewModel!.goToAddCategory(context),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Paragraph(
-              content: PaymentLanguage.selectCategory,
-              style: STYLE_MEDIUM.copyWith(
-                fontWeight: FontWeight.w600,
+    return Showcase(
+      description: PaymentLanguage.addCategory,
+      key: _viewModel!.keyAddCategory,
+      child: GestureDetector(
+        onTap: () => _viewModel!.goToAddCategory(context),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Paragraph(
+                content: PaymentLanguage.selectCategory,
+                style: STYLE_MEDIUM.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const Icon(
-              Icons.add_circle,
-              color: AppColors.PRIMARY_GREEN,
-            )
-          ],
+              const Icon(
+                Icons.add_circle,
+                color: AppColors.PRIMARY_GREEN,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -126,32 +130,36 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildListCategory() {
-    return GridView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
-        mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
-      ),
-      itemCount: _viewModel!.isShowAll
-          ? _viewModel!.listCategory.length + 1
-          : _viewModel!.listCategory.length,
-      itemBuilder: (context, index) {
-        if (index == 8 && !_viewModel!.isShowAll) {
-          return buildItemCategory(16, name: PaymentLanguage.seeMore);
-        } else if (index < 8) {
-          return buildItemCategory(index);
-        } else if (_viewModel!.isShowAll) {
-          if (index == _viewModel!.listCategory.length) {
-            return buildItemCategory(17, name: PaymentLanguage.close);
-          } else {
+    return Showcase(
+      description: PaymentLanguage.selectCategory,
+      key: _viewModel!.keyCategory,
+      child: GridView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+          mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
+        ),
+        itemCount: _viewModel!.isShowAll
+            ? _viewModel!.listCategory.length + 1
+            : _viewModel!.listCategory.length,
+        itemBuilder: (context, index) {
+          if (index == 8 && !_viewModel!.isShowAll) {
+            return buildItemCategory(16, name: PaymentLanguage.seeMore);
+          } else if (index < 8) {
             return buildItemCategory(index);
+          } else if (_viewModel!.isShowAll) {
+            if (index == _viewModel!.listCategory.length) {
+              return buildItemCategory(17, name: PaymentLanguage.close);
+            } else {
+              return buildItemCategory(index);
+            }
           }
-        }
-        return null;
-      },
+          return null;
+        },
+      ),
     );
   }
 
@@ -182,12 +190,12 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return SizedBox(
       height: 180,
       child: CupertinoDatePicker(
-        initialDateTime: _viewModel!.dateTime,
+        initialDateTime: _viewModel!.time,
         mode: CupertinoDatePickerMode.time,
         // minimumDate: DateTime.now(),
         use24hFormat: true,
         onDateTimeChanged: (value) {
-          _viewModel!.updateDateTime(value);
+          _viewModel!.updateTime(value);
         },
       ),
     );
@@ -230,6 +238,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
         child: SfDateRangePicker(
           controller: _viewModel!.dateController,
+          selectionColor: AppColors.PRIMARY_GREEN,
+          todayHighlightColor: AppColors.PRIMARY_GREEN,
           selectionMode: DateRangePickerSelectionMode.single,
           initialSelectedDate: _viewModel!.dateTime,
           showActionButtons: true,
@@ -252,6 +262,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       child: ButtonDateTimeWidget(
         dateTime: _viewModel!.dateTime,
+        time: _viewModel!.time,
         onShowSelectDate: showSelectDate,
         onShowSelectTime: showSelectTime,
       ),
@@ -315,26 +326,34 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildFieldMoney() {
-    return AppFormField(
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      isRequired: true,
-      keyboardType: TextInputType.number,
-      labelText: PaymentLanguage.amountOfMoney,
-      hintText: PaymentLanguage.enterAmountOfMoney,
-      textEditingController: _viewModel!.moneyController,
-      maxLenght: 14,
-      onChanged: (value) {
-        _viewModel!
-          ..validPrice(value.trim())
-          ..formatMoney(value.trim())
-          ..enableConfirmButton();
-      },
-      validator: _viewModel!.messageErrorPrice,
-      isSpace: true,
+  Widget buildFieldMoney(){
+    return Showcase( 
+      key: _viewModel!.keyMoney,
+      description: PaymentLanguage.requiredMoney,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeMedium,
+        ),
+        child: AppFormField(
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(11),
+          ],
+          keyboardType: TextInputType.number,
+          labelText: PaymentLanguage.amountOfMoney,
+          hintText: PaymentLanguage.enterAmountOfMoney,
+          textEditingController: _viewModel!.moneyController,
+          isRequired: true,
+          onChanged: (value) {
+            _viewModel!
+              ..validPrice(value.trim())
+              ..formatMoney(value.trim())
+              ..enableConfirmButton();
+          },
+          validator: _viewModel!.messageErrorPrice,
+        ),
+      ),
     );
   }
 
@@ -362,17 +381,41 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildChooseButton() {
-    return Row(
-      children: [
-        buildButtonSelect(
-          PaymentLanguage.income,
-          !_viewModel!.isButtonSpending,
+    return Showcase(
+      description: PaymentLanguage.incomeExpenses,
+      key: _viewModel!.key, 
+      child: Row(
+        children: [
+          buildButtonSelect(
+            PaymentLanguage.income,
+            !_viewModel!.isButtonSpending,
+          ),
+          buildButtonSelect(
+            PaymentLanguage.expenses,
+            _viewModel!.isButtonSpending,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInfoCustomer(){
+    return Showcase(
+      key: _viewModel!.keyInfoCustomer,
+      description: PaymentLanguage.infoCustomerShowCase,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeMedium,
         ),
-        buildButtonSelect(
-          PaymentLanguage.expenses,
-          _viewModel!.isButtonSpending,
+        child: Column(
+          children: [
+            buildFieldPhone(),
+            buildName(),
+            buildAddress(),
+            buildNote(),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -380,15 +423,11 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeMedium,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          buildFieldPhone(),
-          buildName(),
-          buildAddress(),
-          buildNote(),
+          buildInfoCustomer(),
           buildFieldMoney(),
           buildChooseButton(),
         ],

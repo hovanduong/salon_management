@@ -119,6 +119,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         ],
         isScrollable: true,
         indicatorSize: TabBarIndicatorSize.tab,
+        indicatorPadding: EdgeInsets.zero,
         padding: EdgeInsets.zero,
         labelPadding: EdgeInsets.symmetric(
           horizontal: SizeToPadding.sizeSmall,
