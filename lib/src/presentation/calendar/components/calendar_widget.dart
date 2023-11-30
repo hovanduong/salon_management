@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../configs/constants/app_space.dart';
 import '../../../configs/constants/constants.dart';
@@ -14,10 +15,12 @@ class CalendarWidget extends StatelessWidget {
     super.key, 
     this.listDay,
     this.isWeekend=false,
+    this.onShowRevenueDay,
   });
 
   final List<ReportModel>? listDay;
   final bool isWeekend;
+  final Function(String? date)? onShowRevenueDay;
 
   @override
   Widget build(BuildContext context) {
@@ -64,45 +67,52 @@ class CalendarWidget extends StatelessWidget {
   {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
-      child: Container(
-        height: isTitle? 45 : 80,
-        padding: EdgeInsets.symmetric(
-          vertical: SizeToPadding.sizeVerySmall,
-          horizontal: isTitle?0: SizeToPadding.sizeVeryVerySmall,
-        ),
-        decoration: BoxDecoration(
-          color: isTitle? AppColors.PRIMARY_GREEN 
-            : isCurrentDay? AppColors.COLOR_OLIVE.withOpacity(0.2) 
-            :AppColors.COLOR_WHITE,
-        ),
-        child: Column(
-          crossAxisAlignment: isTitle? CrossAxisAlignment.center 
-          : CrossAxisAlignment.start,
-          children: [
-            Paragraph(
-              content: content ?? '',
-              style: STYLE_MEDIUM.copyWith(
-                fontWeight: FontWeight.w600,
-                color: isTitle ? AppColors.COLOR_WHITE : AppColors.BLACK_500,),
-            ),
-            const Expanded(child: SizedBox()),
-            if (revenueDay==[] || revenueDay==null) Container()
-            else Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: List.generate(revenueDay.length, 
-                (index) => Paragraph(
-                  content: AppCurrencyFormat.formatMoney(
-                    revenueDay[index].money ?? 0,
+      child: InkWell(
+        onTap: () {
+          if(isTitle==false){
+            onShowRevenueDay!(content);
+          }
+        },
+        child: Container(
+          height: isTitle? 45 : 80,
+          padding: EdgeInsets.symmetric(
+            vertical: SizeToPadding.sizeVerySmall,
+            horizontal: isTitle?0: SizeToPadding.sizeVeryVerySmall,
+          ),
+          decoration: BoxDecoration(
+            color: isTitle? AppColors.PRIMARY_GREEN 
+              : isCurrentDay? AppColors.COLOR_OLIVE.withOpacity(0.2) 
+              :AppColors.COLOR_WHITE,
+          ),
+          child: Column(
+            crossAxisAlignment: isTitle? CrossAxisAlignment.center 
+            : CrossAxisAlignment.start,
+            children: [
+              Paragraph(
+                content: content ?? '',
+                style: STYLE_MEDIUM.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: isTitle ? AppColors.COLOR_WHITE : AppColors.BLACK_500,),
+              ),
+              const Expanded(child: SizedBox()),
+              if (revenueDay==[] || revenueDay==null) Container()
+              else Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: List.generate(revenueDay.length, 
+                  (index) => Paragraph(
+                    content: AppCurrencyFormat.formatMoney(
+                      revenueDay[index].money ?? 0,
+                    ),
+                    color: (revenueDay[index].income ?? false)
+                      ? AppColors.Green_Money
+                      : AppColors.Red_Money,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  color: (revenueDay[index].income ?? false)
-                    ? AppColors.Green_Money
-                    : AppColors.Red_Money,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

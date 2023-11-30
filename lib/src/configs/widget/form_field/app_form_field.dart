@@ -97,6 +97,7 @@ class _AppFormFieldState extends State<AppFormField> {
               maxLines: widget.maxLines ?? 1,
               maxLength: widget.maxLenght,
               keyboardType: widget.keyboardType,
+              cursorColor: AppColors.PRIMARY_GREEN,
               controller: widget.textEditingController,
               onChanged: widget.onChanged,
               onTap: widget.onTap,

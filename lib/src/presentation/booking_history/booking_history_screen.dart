@@ -119,6 +119,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         ],
         isScrollable: true,
         indicatorSize: TabBarIndicatorSize.tab,
+        indicatorPadding: EdgeInsets.zero,
         padding: EdgeInsets.zero,
         labelPadding: EdgeInsets.symmetric(
           horizontal: SizeToPadding.sizeSmall,
@@ -306,7 +307,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
+        child: Container(
+          color: AppColors.COLOR_GREY.withOpacity(0.05),
           width: double.maxFinite,
           height: MediaQuery.of(context).size.height - 200,
           child: Padding(

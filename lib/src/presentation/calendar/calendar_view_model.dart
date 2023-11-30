@@ -2,18 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/model.dart';
+import '../../resource/service/income_api.dart';
 import '../../resource/service/report_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/time_zone.dart';
 import '../base/base.dart';
+import '../routers.dart';
+
 
 class CalendarViewModel extends BaseViewModel{
 
   ReportApi reportApi= ReportApi();
+
+  DateRangePickerController dateController = DateRangePickerController();
 
   List<ReportModel>? reportModel;
   List<ExpenseManagementModel>? expenseManagement;
@@ -28,7 +34,10 @@ class CalendarViewModel extends BaseViewModel{
 
   int month=DateTime.now().month;
   int year=DateTime.now().year;
+  int? day;
   int? isOverView;
+
+  DateTime dateTime= DateTime.now();
 
   num revenue=0;
   num spendingMoney=0;
@@ -39,13 +48,26 @@ class CalendarViewModel extends BaseViewModel{
   GlobalKey keyDailyRevenue=GlobalKey();
   GlobalKey keyMonthlyRevenue=GlobalKey();
 
-  Future<void> init(int? isScreen)async{
-    isOverView=isScreen;
+  Timer? timer;
+
+  Future<void> init()async{
     await getList();
     await AppPref.getShowCase('showCaseRevenue').then(
       (value) => isShowCase=value??true,);
     startShowCase();
     await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> goToHome(BuildContext context, int day) =>
+      Navigator.pushNamed(context, Routers.homeScreen, 
+      arguments: IncomeParams(date: DateTime(year, month, day), 
+        isDate: 1,),);
+
+  Future<void> updateDateTime(DateTime date) async {
+    dateTime= date;
+    month = date.month;
+    year =date.year;
     notifyListeners();
   }
 
@@ -66,24 +88,36 @@ class CalendarViewModel extends BaseViewModel{
   }
 
   Future<void> subMonth()async{
-    if(month>1){
-      month--;
-    }else{
-      month=12;
-      year--;
+    if (timer?.isActive ?? false) {
+      timer?.cancel();
     }
-    await getList();
+    timer = Timer(const Duration(milliseconds: 500), () async{
+      if(month>1){
+        month--;
+      }else{
+        month=12;
+        year--;
+      }
+      await getList();
+      dateTime= DateTime(year, month, 1);
+    });
     notifyListeners();
   }
 
   Future<void> addMonth()async{
-    if(month<12){
-      month++;
-    }else{
-      month=1;
-      year++;
+    if (timer?.isActive ?? false) {
+      timer?.cancel();
     }
-    await getList();
+    timer = Timer(const Duration(milliseconds: 500), () async{
+      if(month<12){
+        month++;
+      }else{
+        month=1;
+        year++;
+      }
+      await getList();
+      dateTime= DateTime(year, month, 1);
+    });
     notifyListeners();
   }
 
@@ -194,6 +228,7 @@ class CalendarViewModel extends BaseViewModel{
       timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
           DateTime.now().timeZoneName,
         ),
+      isDate: 0,
       date: date,
     ),);
 
@@ -212,5 +247,11 @@ class CalendarViewModel extends BaseViewModel{
       expenseManagement=value as List<ExpenseManagementModel>;
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

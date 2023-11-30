@@ -10,20 +10,22 @@ class ButtonDateTimeWidget extends StatelessWidget {
   const ButtonDateTimeWidget({
     super.key, 
     this.dateTime, 
+    this.time, 
     this.onShowSelectTime, 
     this.onShowSelectDate,
   });
 
   final DateTime? dateTime;
+  final DateTime? time;
   final Function()? onShowSelectTime;
   final Function()? onShowSelectDate;
 
   @override
   Widget build(BuildContext context) {
     final hours = 
-      dateTime!=null? dateTime!.hour.toString().padLeft(2, '0') : null;
+      time!=null? time!.hour.toString().padLeft(2, '0') : null;
     final minutes =
-      dateTime!=null? dateTime!.minute.toString().padLeft(2, '0'): null;
+      time!=null? time!.minute.toString().padLeft(2, '0'): null;
     return Column(
       children: [
         Row(
@@ -48,7 +50,7 @@ class ButtonDateTimeWidget extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(AppColors.FIELD_GREEN),
                 ),
-                child: Paragraph(content: dateTime!=null
+                child: Paragraph(content: time!=null
                   ? '$hours:$minutes': '',
                   style: STYLE_MEDIUM.copyWith(
                     color: AppColors.COLOR_WHITE,

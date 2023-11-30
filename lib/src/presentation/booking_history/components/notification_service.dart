@@ -220,26 +220,27 @@ class NotificationService extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTapCard,
-      child: Card(
-        color: AppColors.COLOR_WHITE,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeMedium)),
-        ),
+      child: Container(
         margin: EdgeInsets.symmetric(vertical: SpaceBox.sizeVerySmall),
-        elevation: 7,
-        shadowColor: AppColors.COLOR_WHITE,
-        borderOnForeground: true,
-        semanticContainer: true,
-        child: Padding(
-          padding: EdgeInsets.all(SpaceBox.sizeMedium),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildHeaderCard(),
-              buildLine(),
-              buildPrice(),
-              if (isButton) buildFooter() else Container(),
-            ],
+        child: Card(
+          elevation: 1,
+          color: AppColors.COLOR_WHITE,
+          shape: RoundedRectangleBorder(
+              side:  const BorderSide(color: AppColors.BLACK_200 ,width: 2),
+              borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeMedium)),
+          ),
+          shadowColor: AppColors.COLOR_GREY.withOpacity(0.02),
+          child: Padding(
+            padding: EdgeInsets.all(SpaceBox.sizeMedium),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildHeaderCard(),
+                buildLine(),
+                buildPrice(),
+                if (isButton) buildFooter() else Container(),
+              ],
+            ),
           ),
         ),
       ),

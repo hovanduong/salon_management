@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../../configs/configs.dart';
 import '../../intl/generated/l10n.dart';
 import '../routers.dart';
 
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       key: key,
       debugShowCheckedModeBanner: false,
       // navigatorObservers: [ConfigAnalytics.observer],
-      theme: ThemeData(fontFamily: Constants.fonts),
+      theme: ThemeData(fontFamily: Constants.fonts, 
+        primarySwatch: Colors.green,),
       builder: (context, widget) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: widget!,

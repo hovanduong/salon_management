@@ -5,13 +5,14 @@ import 'package:flutter/services.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/navigate_language.dart';
+import '../../resource/service/income_api.dart';
 import '../base/base.dart';
 
 class NavigateViewModel extends BaseViewModel {
   int selectedIndex = 0;
-  dynamic init(int? page) {
-    if(page != null){
-      selectedIndex=page;
+  dynamic init(IncomeParams? params) {
+    if(params != null){
+      selectedIndex=params.page ?? 0;
     }
   }
 

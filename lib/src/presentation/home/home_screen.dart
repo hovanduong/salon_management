@@ -8,6 +8,10 @@ import 'package:showcaseview/showcaseview.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
+import '../../resource/service/income_api.dart';
+import '../../resource/service/my_booking.dart';
+import '../../resource/service/report_api.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'home.dart';
@@ -23,21 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   HomeViewModel? _viewModel;
 
-  // final GlobalKey add= GlobalKey();
-  
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-  //     return ShowCaseWidget.of(context).startShowCase([add]);
-  //   });
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
+    final params= ModalRoute.of(context)?.settings.arguments as IncomeParams?;
     return BaseWidget(
       viewModel: HomeViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
+        params: params,),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -90,25 +87,109 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildCardMoney(){
-    return InkWell(
-      onTap: () => _viewModel!.goToCalendar(),
+  Widget buildHeaderSecond() {
+    final title= '${HomePageLanguage.revenue} ${HomePageLanguage.date} ${
+      AppDateUtils.formatDateTime(_viewModel!.date.toString())}';
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
-          vertical: SizeToPadding.sizeSmall,),
-        child: Showcase(
-          key: _viewModel!.cardMoney,
-          description: HomePageLanguage.totalRevenue,
-          
-          targetBorderRadius: BorderRadius.circular(
-            BorderRadiusSize.sizeMedium,),
-          child: CardMoneyWidget(
-            iconShowTotalBalance: _viewModel!.isShowBalance,
-            onShowTotalBalance: () => _viewModel!.setShowBalance(),
-            money: _viewModel!.totalBalance,
-            moneyExpenses: _viewModel!.totalExpenses,
-            moneyIncome: _viewModel!.totalIncome,
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 40 : 60,
+          bottom: 10,
+          left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
+        ),
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.COLOR_WHITE,
           ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          title: title,
+        ),
+      ),
+    );
+  }
+
+  Widget buildTitleSelectTime() {
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: Paragraph(
+        content: BookingLanguage.chooseMonth,
+        style: STYLE_MEDIUM.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Widget buildTimeSelect() {
+    return SizedBox(
+      height: 180,
+      child: CupertinoDatePicker(
+        initialDateTime: _viewModel!.date,
+        mode: CupertinoDatePickerMode.monthYear,
+        onDateTimeChanged: (value) {
+          _viewModel!.updateDateTime(value);
+        },
+      ),
+    );
+  }
+
+  Widget buildButtonSelectTime() {
+    return Padding(
+      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      child: AppButton(
+        content: BookingLanguage.done,
+        enableButton: true,
+        onTap: () async {
+          await _viewModel!.init();
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  dynamic showSelectTime() {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height / 2.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTitleSelectTime(),
+            buildTimeSelect(),
+            buildButtonSelectTime(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildCardMoney(){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeSmall,),
+      child: Showcase(
+        key: _viewModel!.cardMoney,
+        description: HomePageLanguage.totalRevenue,
+        targetBorderRadius: BorderRadius.circular(
+          BorderRadiusSize.sizeMedium,),
+        child: CardMoneyWidget(
+          context: context,
+          isDate: _viewModel!.isDate,
+          globalKey: _viewModel!.keySelectMonth,
+          onShowMonth: showSelectTime,
+          iconShowTotalBalance: _viewModel!.isShowBalance,
+          onShowTotalBalance: () => _viewModel!.setShowBalance(),
+          money: _viewModel!.totalBalance,
+          moneyExpenses: _viewModel!.totalExpenses,
+          moneyIncome: _viewModel!.totalIncome,
         ),
       ),
     );
@@ -149,12 +230,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildContentTransaction(int index, int indexService){
     final name= _viewModel!.listCurrent[index].invoices
       ?[indexService].myBooking?.category?.name;
-    return ContentTransactionWidget(
-      money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
-      nameService: name,
-      color: _viewModel!.colors[indexService%_viewModel!.colors.length],
-      isMoneyIncome: _viewModel!.listCurrent[index].invoices
-        ?[indexService].myBooking?.income ?? false,
+    return InkWell(
+      onTap: () => _viewModel!.goToBookingDetails(
+        context, MyBookingParams(
+          id: _viewModel!.listCurrent[index].invoices?[indexService].myBookingId, 
+          code: _viewModel!.listCurrent[index].invoices?[indexService].code, 
+          isInvoice: true,),),
+      child: SlidableActionWidget(
+        isEdit: true,
+        onTapButtonDelete: (context) => _viewModel!.deleteBookingHistory(
+          _viewModel!.listCurrent[index].invoices![indexService].myBookingId!,
+        ),
+        onTapButtonUpdate: (context) => _viewModel!.goToEditInvoice(
+          _viewModel!.listCurrent[index].invoices![indexService].myBooking!,
+        ),
+        child: ContentTransactionWidget(
+          money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
+          nameService: name,
+          color: _viewModel!.colors[indexService%_viewModel!.colors.length],
+          isMoneyIncome: _viewModel!.listCurrent[index].invoices
+            ?[indexService].myBooking?.income ?? false,
+        ),
+      ),
     );
   }
 
@@ -246,13 +343,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildHomePage() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: Padding(
+      floatingActionButton:_viewModel!.isDate==0? Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
         child: Showcase(
           key: _viewModel!.add,
           description: HomePageLanguage.addInvoice,
-          // disableDefaultTargetGestures: true,
-          // disableMovingAnimation: true,
           targetBorderRadius: BorderRadius.all(Radius.circular(
             BorderRadiusSize.sizeLarge,),),
           child: FloatingActionButton(
@@ -262,11 +357,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
           ),
         ),
-      ),
+      ): null,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildHeader(),
+            if (_viewModel!.isDate==0) buildHeader()
+            else buildHeaderSecond(),
             buildBody(),
           ],
         ),

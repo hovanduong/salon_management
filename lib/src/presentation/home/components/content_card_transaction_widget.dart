@@ -47,10 +47,15 @@ class ContentTransactionWidget extends StatelessWidget {
           ),
         ),
       ),
-      title: Paragraph(
-        content: nameService??'',
-        style: STYLE_LARGE.copyWith(
-          fontWeight: FontWeight.w600,
+      title: SizedBox(
+        width: MediaQuery.sizeOf(context).width/2.6,
+        child: Paragraph(
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          content: nameService??'',
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       subtitle: isTitle? Paragraph(
@@ -59,14 +64,19 @@ class ContentTransactionWidget extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ): null,
-      trailing: Paragraph(
-        content: isTitle? AppCurrencyFormat.formatMoney(money ?? '0') :
-          isMoneyIncome ? '+${AppCurrencyFormat.formatMoney(money ?? '0')}'
-          : '-${AppCurrencyFormat.formatMoney(money ?? '0')}',
-        style: STYLE_LARGE.copyWith(
-          fontWeight: FontWeight.w600,
-          color:(money??0)>=0 && isMoneyIncome? 
-            AppColors.Green_Money : AppColors.Red_Money,
+      trailing: SizedBox(
+        width: MediaQuery.sizeOf(context).width/3.1,
+        child: Paragraph(
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          content: isTitle? AppCurrencyFormat.formatMoneyVND(money ?? 0) :
+            isMoneyIncome ? '+${AppCurrencyFormat.formatMoneyVND(money ?? 0)}'
+            : '-${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w600,
+            color:(money??0)>=0 && isMoneyIncome? 
+              AppColors.Green_Money : AppColors.Red_Money,
+          ),
         ),
       ),
     );

@@ -100,7 +100,7 @@ class SignUpViewModel extends BaseViewModel {
   }
 
   void validFullName(String? value) {
-    if (value!.trim().isEmpty || value.trim()=='') {
+    if (value!.trim().isEmpty) {
       messageFullName = SignUpLanguage.validEnterFullName;
     } else {
       messageFullName = null;
@@ -119,7 +119,7 @@ class SignUpViewModel extends BaseViewModel {
   }
 
   void onSignUp() {
-    if (messagePhone == null && messageEmail==null
+    if (messagePhone == null && phoneController.text!='' && messageFullName!=''
       && messageFullName==null && isPassword && isConfirmPass) {
       enableNext = true;
     } else {
@@ -243,7 +243,7 @@ class SignUpViewModel extends BaseViewModel {
   Future<void> signUp() async {
     LoadingDialog.showLoadingDialog(context);
     final result = await authApi.signUp(AuthParams(
-      email: emailController.text.trim(),
+      email: 'email@gmail.com',
       fullName: fullNameController.text.trim(),
       gender: 'Nữ',
       password: passController.text.trim(),

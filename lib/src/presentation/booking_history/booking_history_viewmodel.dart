@@ -89,12 +89,14 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> goToAddBooking({
     required BuildContext context,
     MyBookingModel? myBookingModel,
-  }) =>
-      Navigator.pushNamed(
-        context,
-        Routers.addBooking,
-        arguments: myBookingModel,
-      );
+  }) async {
+    await Navigator.pushNamed(
+      context,
+      Routers.addBooking,
+      arguments: myBookingModel,
+    );
+    await fetchData();
+  }
 
   Future<void> goToBookingDetails(
           BuildContext context, MyBookingParams model,) =>

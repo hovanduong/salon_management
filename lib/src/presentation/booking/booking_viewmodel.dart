@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
@@ -11,10 +12,12 @@ import '../../resource/model/model.dart';
 
 import '../../resource/service/booking.dart';
 import '../../resource/service/category_api.dart';
+import '../../resource/service/income_api.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
+import '../../utils/utils.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
@@ -49,6 +52,8 @@ class BookingViewModel extends BaseViewModel {
   // num updatedTotalCost = 0;
 
   DateTime dateTime = DateTime.now();
+  DateTime time = DateTime.now();
+
   // DateTime dateTime = DateTime.now();
 
   MyBookingModel? dataMyBooking;
@@ -80,6 +85,7 @@ class BookingViewModel extends BaseViewModel {
   bool enableButton = false;
   bool isLoading=true;
   bool isShowAll=false;
+  bool isShowCase=true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -94,6 +100,14 @@ class BookingViewModel extends BaseViewModel {
   String? services;
   String? money;
   String? messageErrorPrice;
+
+  Timer? timer;
+
+  GlobalKey keyInfoCustomer= GlobalKey();
+  GlobalKey keyMoney= GlobalKey();
+  GlobalKey keyAddCategory= GlobalKey();
+  GlobalKey keyCategory= GlobalKey();
+  GlobalKey keyDateTime= GlobalKey();
 
   final currencyFormatter =
       NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
@@ -114,7 +128,27 @@ class BookingViewModel extends BaseViewModel {
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
+    await AppPref.getShowCase('showCaseBooking').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCaseBooking', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        ShowCaseWidget.of(context).startShowCase(
+          [keyInfoCustomer,keyMoney, keyAddCategory, keyCategory, keyDateTime],
+        );
+      });
+    }
   }
 
   Future<void> goToAddCategory(BuildContext context) async {
@@ -137,6 +171,7 @@ class BookingViewModel extends BaseViewModel {
           dataMyBooking!.date!,
         ),
       );
+      time=dateTime;
       // setSelectedService();
       // await setServiceId();
       // await fetchService();
@@ -307,6 +342,11 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> updateTime(DateTime times) async {
+    time = times;
+    notifyListeners();
+  }
+
   // void checkNoteInput() {
   //   if (noteController.text.isEmpty) {
   //     onNote = false;
@@ -360,11 +400,10 @@ class BookingViewModel extends BaseViewModel {
   // }
 
   void validPrice(String? value) {
-    money = value;
     if (value == null || value.isEmpty) {
-      messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
+      messageErrorPrice = BookingLanguage.emptyMoneyError;
     } else {
-      messageErrorPrice = null;
+      messageErrorPrice = null; 
     }
     notifyListeners();
   }
@@ -397,7 +436,7 @@ class BookingViewModel extends BaseViewModel {
   Future<void> goToBooking() => Navigator.pushReplacementNamed(
         context,
         Routers.home,
-        arguments: 2,
+        arguments: const IncomeParams(page: 2),
       );
 
   dynamic showDialogSuccess(_, String title) {
@@ -407,7 +446,7 @@ class BookingViewModel extends BaseViewModel {
         return WarningDialog(
           image: AppImages.icCheck,
           title: title,
-          leftButtonName: SignUpLanguage.cancel,
+          leftButtonName: SignUpLanguage.close,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
           rightButtonName: BookingLanguage.booking,
@@ -420,6 +459,21 @@ class BookingViewModel extends BaseViewModel {
         );
       },
     );
+  }
+
+  dynamic showSuccessEdit(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.successUpdate,
+        );
+      },
+    );
+    timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
   }
 
   dynamic showErrorDialog(_) {
@@ -450,6 +504,7 @@ class BookingViewModel extends BaseViewModel {
     // discountController.text = '';
     categoryId=null;
     dateTime = DateTime.now();
+    time= DateTime.now();
     phoneController.text = '';
     moneyController.text = '';
     nameController.text = '';
@@ -509,10 +564,10 @@ class BookingViewModel extends BaseViewModel {
         myCustomerId: myCustomerId,
         idCategory: categoryId,
         money: int.parse(moneyController.text.replaceAll(',', '')),
-        date: dateTime.toString().trim(),
+        date: '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
         address: addressController.text.trim(),
         isBooking: true,
-        isIncome: false,
+        isIncome: true,
         note: noteController.text.trim(),
       ),
     );
@@ -542,7 +597,9 @@ class BookingViewModel extends BaseViewModel {
       MyBookingPramsApi(
         id: dataMyBooking?.id,
         address: addressController.text.trim(),
-        date: AppDateUtils.formatDateTT(dateTime.toString().trim()),
+        date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
+        ),
         phoneNumber: phoneController.text.trim(),
         name: nameController.text.trim(),
         myCustomerId: myCustomerId,
@@ -565,13 +622,14 @@ class BookingViewModel extends BaseViewModel {
       await showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      await showDialogSuccess(context, BookingLanguage.updateBookingSuccess);
+      await showSuccessEdit(context);
     }
     notifyListeners();
   }
 
   @override
   void dispose() {
+    timer?.cancel();
     moneyController.dispose();
     phoneController.dispose();
     nameController.dispose();
