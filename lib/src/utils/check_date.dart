@@ -37,6 +37,14 @@ class AppCheckDate {
     }
   }
 
+  static DateTime parseDateTime(String time) {
+    try {
+      return DateFormat('yyyy-MM-dd HH:mm:ss.SSS').parse(time);
+    } catch (e) {
+      return DateFormat('yyyy-MM-dd').parse(DateTime.now().toString());
+    }
+  }
+
   static String formatDate(DateTime time) {
     try {
       return DateFormat('dd/MM/yyyy').format(time);

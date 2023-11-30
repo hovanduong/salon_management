@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/payment_language.dart';
@@ -17,6 +18,8 @@ import '../../resource/service/my_booking.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/date_format_utils.dart';
+import '../../utils/utils.dart';
 import '../base/base.dart';
 
 import '../routers.dart';
@@ -50,6 +53,7 @@ class PaymentViewModel extends BaseViewModel {
   // num updatedTotalCost = 0;
 
   DateTime dateTime = DateTime.now();
+  DateTime time = DateTime.now();
 
   MyBookingModel? dataMyBooking;
   MyCustomerModel? myCustomerModel;
@@ -80,6 +84,7 @@ class PaymentViewModel extends BaseViewModel {
   bool isLoading=true;
   bool isButtonSpending=false;
   bool isShowAll=false;
+  bool isShowCase=true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -105,16 +110,44 @@ class PaymentViewModel extends BaseViewModel {
   final moneyCharsCheck = RegExp(r'^\d+$');
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
 
+  GlobalKey keyInfoCustomer= GlobalKey();
+  GlobalKey keyMoney= GlobalKey();
+  GlobalKey key= GlobalKey();
+  GlobalKey keyAddCategory= GlobalKey();
+  GlobalKey keyCategory= GlobalKey();
+  GlobalKey keyDateTime= GlobalKey();
+
   Future<void> init() async {
     await getCategory();
     selectedCategory=0;
     categoryId=listCategory[0].id;
+    isButtonSpending=false;
     // await setDataMyBooking(myBookingModel);
     // await fetchService();
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
-    // notifyListeners();
+    await AppPref.getShowCase('showCasePayment').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCasePayment', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        ShowCaseWidget.of(context).startShowCase(
+          [keyInfoCustomer,keyMoney,key, keyAddCategory, keyCategory, keyDateTime],
+        );
+      });
+    }
   }
 
   Future<void> goToBill(BuildContext context) 
@@ -334,6 +367,11 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> updateTime(DateTime times) async {
+    time = times;
+    notifyListeners();
+  }
+
   void checkNoteInput() {
     if (noteController.text.isEmpty) {
       onNote = false;
@@ -346,11 +384,10 @@ class PaymentViewModel extends BaseViewModel {
   }
 
   void validPrice(String? value) {
-    money = value;
     if (value == null || value.isEmpty) {
-      messageErrorPrice = ServiceAddLanguage.emptyMoneyError;
+      messageErrorPrice = PaymentLanguage.emptyMoneyError;
     } else {
-      messageErrorPrice = null;
+      messageErrorPrice = null; 
     }
     notifyListeners();
   }
@@ -416,10 +453,10 @@ class PaymentViewModel extends BaseViewModel {
       context: context,
       builder: (_) {
         return WarningDialog(
-          content: BookingLanguage.bookingSuccessful,
+          content: BookingLanguage.paymentSuccess,
           image: AppImages.icCheck,
           title: SignUpLanguage.success,
-          leftButtonName: SignUpLanguage.cancel,
+          leftButtonName: SignUpLanguage.close,
           color: AppColors.BLACK_500,
           colorNameLeft: AppColors.BLACK_500,
           rightButtonName: BookingLanguage.home,
@@ -462,8 +499,16 @@ class PaymentViewModel extends BaseViewModel {
         );
       },
     );
-    timer= Timer(const Duration(seconds: 1), () {
-      goToBill(context); });
+  }
+
+  void clearData(){
+    selectedCategory=0;
+    categoryId=listCategory[0].id;
+    isButtonSpending=false;
+    moneyController.text='';
+    updateDateTime(DateTime.now());
+    listCategory=listCategoryIncome;
+    notifyListeners();
   }
 
   void closeDialog(BuildContext context) {
@@ -535,7 +580,7 @@ class PaymentViewModel extends BaseViewModel {
       myCustomerId: myCustomerId,
       idCategory: categoryId,
       money: int.parse(moneyController.text.replaceAll(',', '')),
-      date: dateTime.toString(),
+      date: '${dateTime.toString().split(' ')[0]} ${AppDateUtils.formatTimeToHHMM(time)}',
       address: addressController.text=='' ? ''
         :addressController.text.trim(),
       isBooking: false,
@@ -623,7 +668,8 @@ class PaymentViewModel extends BaseViewModel {
       showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      showSuccessDialog(context);
+      clearData();
+      showDialogSuccess(context);
     }
     notifyListeners();
   }

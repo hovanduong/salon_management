@@ -50,4 +50,7 @@ class HomePageLanguage {
   static final addInvoice = S.current.addInvoice;
   static final clickCardMoney = S.current.clickCardMoney;
   static final totalRevenue = S.current.totalRevenue;
+  static final date = S.current.date;
+  static final chooseMonth = S.current.chooseMonth;
+
 }

@@ -9,6 +9,7 @@ import '../../resource/model/model.dart';
 import '../../resource/service/invoice.dart';
 import '../../resource/service/my_booking.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/time_zone.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -171,6 +172,11 @@ class InvoiceViewModel extends BaseViewModel {
     final result = await invoiceApi.getInvoice(
       InvoiceParams(
         page: page,
+        date: DateTime.now().toString(),
+        isDate: 0,
+        timeZone: MapLocalTimeZone.mapLocalTimeZoneToSpecificTimeZone(
+          DateTime.now().timeZoneName,
+        ),
       ),
     );
 

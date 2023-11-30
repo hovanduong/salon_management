@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
+import '../../../configs/language/homepage_language.dart';
 
 class CardMoneyWidget extends StatelessWidget {
   const CardMoneyWidget({
@@ -13,7 +15,11 @@ class CardMoneyWidget extends StatelessWidget {
     this.money, 
     this.onShowTotalBalance, 
     this.moneyIncome, 
-    this.moneyExpenses,
+    this.moneyExpenses, 
+    this.context, 
+    this.onShowMonth, 
+    this.globalKey,
+    this.isDate,
   });
 
   final bool iconShowTotalBalance;
@@ -21,6 +27,10 @@ class CardMoneyWidget extends StatelessWidget {
   final String? moneyIncome;
   final String? moneyExpenses;
   final Function()? onShowTotalBalance;
+  final Function()? onShowMonth;
+  final BuildContext? context;
+  final GlobalKey? globalKey;
+  final int ? isDate;
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +61,30 @@ class CardMoneyWidget extends StatelessWidget {
 
   Widget buildMoneyFluctuations(){
     return buildRowBetween(
-      contentLeft: Paragraph(
-        content: moneyIncome ?? '',
-        style: STYLE_LARGE_BIG.copyWith(
-          fontWeight: FontWeight.w600,
-          color: AppColors.COLOR_WHITE,
+      contentLeft:Container(
+        alignment: Alignment.centerLeft,
+        width: MediaQuery.sizeOf(context!).width/2.6,
+        child: Paragraph(
+          content: moneyIncome ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: STYLE_LARGE_BIG.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
       ),
-      contentRight: Paragraph(
-        content: moneyExpenses ?? '',
-        style: STYLE_LARGE_BIG.copyWith(
-          fontWeight: FontWeight.w600,
-          color: AppColors.COLOR_WHITE,
+      contentRight: Container(
+        alignment: Alignment.centerRight,
+        width: MediaQuery.sizeOf(context!).width/2.6,
+        child: Paragraph(
+          content: moneyExpenses ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: STYLE_LARGE_BIG.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
       ),
     );
@@ -100,6 +122,8 @@ class CardMoneyWidget extends StatelessWidget {
   Widget buildMoneyTotalBalance(){
     return iconShowTotalBalance? Paragraph(
       content: money?? '',
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: STYLE_VERY_BIG.copyWith(
         fontWeight: FontWeight.w800,
         color: AppColors.COLOR_WHITE,
@@ -138,8 +162,15 @@ class CardMoneyWidget extends StatelessWidget {
           ],
         ),
       ),
-      contentRight: SvgPicture.asset(AppImages.icMore,
-        width: 25, height: 25, color: AppColors.COLOR_WHITE,),
+      contentRight:isDate==0? Showcase(
+        description: HomePageLanguage.chooseMonth,
+        key: globalKey?? GlobalKey(),
+        child: InkWell(
+          onTap: ()=> onShowMonth!(),
+          child: SvgPicture.asset(AppImages.icMore,
+            width: 25, height: 25, color: AppColors.COLOR_WHITE,),
+        ),
+      ): null,
     );
   }
 }

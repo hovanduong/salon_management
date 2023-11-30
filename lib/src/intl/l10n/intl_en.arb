@@ -304,5 +304,10 @@
     "showNextMonth":"Show next month",
     "icon":"Icon",
     "selectCategory":"Select Category",
+    "errorMoney":"The amount entered cannot exceed 11 numbers",
+    "chooseMonth":"Choose month",
+    "requiredMoney":"Enter amount (Required)",
+    "infoCustomerShowCase":"Customer information (can be entered or left blank)",
+    "incomeExpenses":"Income, expenses",
     "lastLine": ""
 }

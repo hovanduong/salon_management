@@ -13,12 +13,16 @@ class InvoiceParams {
     this.status,
     this.isButtonBookingDetails = false,
     this.date,
+    this.timeZone,
+    this.isDate,
   });
   final int? id;
   final int? page;
   final String? status;
   final bool isButtonBookingDetails;
   final String? date;
+  final String? timeZone;
+  final int? isDate;
 }
 
 class InvoiceApi {
@@ -49,7 +53,7 @@ class InvoiceApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/invoice?pageSize=10&page=${params.page}&paymentStatus=Paid',
+        url: '/invoice?pageSize=10&page=${params.page}&paymentStatus=Paid&timeZone=${params.timeZone}&date=${params.date}&isDate=${params.isDate}',
       );
       switch (response?.statusCode) {
         case 200:
