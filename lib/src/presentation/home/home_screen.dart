@@ -182,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BorderRadiusSize.sizeMedium,),
         child: CardMoneyWidget(
           context: context,
+          isDate: _viewModel!.isDate,
           globalKey: _viewModel!.keySelectMonth,
           onShowMonth: showSelectTime,
           iconShowTotalBalance: _viewModel!.isShowBalance,

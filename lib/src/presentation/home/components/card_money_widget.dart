@@ -19,6 +19,7 @@ class CardMoneyWidget extends StatelessWidget {
     this.context, 
     this.onShowMonth, 
     this.globalKey,
+    this.isDate,
   });
 
   final bool iconShowTotalBalance;
@@ -29,6 +30,7 @@ class CardMoneyWidget extends StatelessWidget {
   final Function()? onShowMonth;
   final BuildContext? context;
   final GlobalKey? globalKey;
+  final int ? isDate;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +162,7 @@ class CardMoneyWidget extends StatelessWidget {
           ],
         ),
       ),
-      contentRight: Showcase(
+      contentRight:isDate==0? Showcase(
         description: HomePageLanguage.chooseMonth,
         key: globalKey?? GlobalKey(),
         child: InkWell(
@@ -168,7 +170,7 @@ class CardMoneyWidget extends StatelessWidget {
           child: SvgPicture.asset(AppImages.icMore,
             width: 25, height: 25, color: AppColors.COLOR_WHITE,),
         ),
-      ),
+      ): null,
     );
   }
 }
