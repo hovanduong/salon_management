@@ -38,7 +38,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
     );
     final params= ModalRoute.of(context)?.settings.arguments;
-    print(params);
     return BaseWidget(
       viewModel: CalendarViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!
