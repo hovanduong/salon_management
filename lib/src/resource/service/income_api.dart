@@ -8,11 +8,13 @@ import '../model/model.dart';
 
 class IncomeParams {
   const IncomeParams(
-      {this.id, this.page, this.startDate, this.timeZone, this.endDate, this.date});
+      {this.id, this.page, this.startDate, this.timeZone, 
+      this.endDate, this.date, this.isDate,});
   final int? id;
   final int? page;
   final DateTime? date;
   final String? startDate;
+  final int? isDate;
   final String? timeZone;
   final String? endDate;
 }

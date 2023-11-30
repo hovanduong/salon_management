@@ -1,7 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/navigate_language.dart';
+import '../../resource/service/income_api.dart';
 import '../base/base.dart';
 
 import '../booking_history/booking_history.dart';
@@ -28,7 +31,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
       viewModel: NavigateViewModel(),
       onViewModelReady: (viewModel) {
         _viewModel = viewModel;
-        _viewModel!.init(page as int?);
+        _viewModel!.init(page as IncomeParams?);
       },
       builder: (context, viewModel, child) => buildNavigateScreen(),
     );

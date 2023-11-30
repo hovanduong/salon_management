@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/model.dart';
+import '../../resource/service/income_api.dart';
 import '../../resource/service/report_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
@@ -49,8 +50,7 @@ class CalendarViewModel extends BaseViewModel{
 
   Timer? timer;
 
-  Future<void> init(DateTime? date)async{
-    dateTime=date ?? DateTime.now();
+  Future<void> init()async{
     await getList();
     await AppPref.getShowCase('showCaseRevenue').then(
       (value) => isShowCase=value??true,);
@@ -61,7 +61,7 @@ class CalendarViewModel extends BaseViewModel{
 
   Future<void> goToHome(BuildContext context, int day) =>
       Navigator.pushNamed(context, Routers.homeScreen, 
-      arguments: ReportParams(dateTime: DateTime(year, month, day), 
+      arguments: IncomeParams(date: DateTime(year, month, day), 
         isDate: 1,),);
 
   Future<void> updateDateTime(DateTime date) async {

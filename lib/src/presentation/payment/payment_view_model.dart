@@ -505,6 +505,10 @@ class PaymentViewModel extends BaseViewModel {
     selectedCategory=0;
     categoryId=listCategory[0].id;
     isButtonSpending=false;
+    phoneController.text='';
+    nameController.text='';
+    addressController.text='';
+    noteController.text='';
     moneyController.text='';
     updateDateTime(DateTime.now());
     listCategory=listCategoryIncome;

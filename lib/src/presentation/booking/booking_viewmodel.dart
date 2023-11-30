@@ -12,6 +12,7 @@ import '../../resource/model/model.dart';
 
 import '../../resource/service/booking.dart';
 import '../../resource/service/category_api.dart';
+import '../../resource/service/income_api.dart';
 import '../../resource/service/my_customer_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
@@ -435,7 +436,7 @@ class BookingViewModel extends BaseViewModel {
   Future<void> goToBooking() => Navigator.pushReplacementNamed(
         context,
         Routers.home,
-        arguments: 2,
+        arguments: const IncomeParams(page: 2),
       );
 
   dynamic showDialogSuccess(_, String title) {
