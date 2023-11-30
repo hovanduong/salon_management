@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../resource/model/model.dart';
+import '../../resource/service/income_api.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -25,7 +26,7 @@ class BillPaymentViewModel extends BaseViewModel{
   Future<void> goToInvoice() => Navigator.pushReplacementNamed(
       context,
       Routers.home,
-      arguments: 1,
+      arguments: const IncomeParams(page: 1),
     );
   
   Future<void> goToHome() => Navigator.pushReplacementNamed(

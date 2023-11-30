@@ -9,6 +9,7 @@ import '../../configs/configs.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
+import '../../resource/service/income_api.dart';
 import '../../resource/service/invoice.dart';
 import '../../resource/service/my_booking.dart';
 import '../../resource/service/report_api.dart';
@@ -61,10 +62,10 @@ class HomeViewModel extends BaseViewModel{
 
   DateTime date= DateTime.now();
 
-  Future<void> init({DateTime? dateTime, int? isDay})async {
-    if(dateTime!=null && isDay!=null){
-      date= dateTime;
-      isDate=isDay;
+  Future<void> init({IncomeParams? params})async {
+    if(params!=null){
+      date= params.date ?? DateTime.now();
+      isDate=params.isDate ?? 0;
     }
     isLoading=true;
     page=1;

@@ -37,12 +37,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         statusBarColor: AppColors.PRIMARY_GREEN,
       ),
     );
-
-    final date = ModalRoute.of(context)!.settings.arguments;
+    final params= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
       viewModel: CalendarViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!
-        ..init(date as DateTime?,),
+        ..init(),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }

@@ -30,11 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final params= ModalRoute.of(context)?.settings.arguments as ReportParams?;
+    final params= ModalRoute.of(context)?.settings.arguments as IncomeParams?;
     return BaseWidget(
       viewModel: HomeViewModel(), 
       onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        dateTime: params?.dateTime, isDay: params?.isDate,),
+        params: params,),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }

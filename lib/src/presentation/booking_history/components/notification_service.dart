@@ -229,7 +229,7 @@ class NotificationService extends StatelessWidget {
               side:  const BorderSide(color: AppColors.BLACK_200 ,width: 2),
               borderRadius: BorderRadius.all(Radius.circular(SpaceBox.sizeMedium)),
           ),
-          shadowColor: AppColors.COLOR_GREY.withOpacity(0.8),
+          shadowColor: AppColors.COLOR_GREY.withOpacity(0.02),
           child: Padding(
             padding: EdgeInsets.all(SpaceBox.sizeMedium),
             child: Column(
