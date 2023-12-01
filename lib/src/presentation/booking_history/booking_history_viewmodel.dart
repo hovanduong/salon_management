@@ -397,7 +397,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
-    isLoading= isPullRefresh || isLoadMore ? false: true;
+    isLoading= (isPullRefresh || isLoadMore ? false: true);
     notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,
@@ -416,7 +416,6 @@ class BookingHistoryViewModel extends BaseViewModel {
       listMyBooking = value as List<MyBookingModel>;
       isLoading = false;
     }
-    isLoading = false;
     notifyListeners();
   }
 

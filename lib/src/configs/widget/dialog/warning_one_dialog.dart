@@ -70,6 +70,7 @@ class WarningOneDialog extends StatelessWidget {
                 ),
                 child: Paragraph(
                   content: content ?? '',
+                  textAlign: TextAlign.center,
                 ),
               ),
             if (buttonName != null) const SizedBox(height: 10),
