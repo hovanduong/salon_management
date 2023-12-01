@@ -247,7 +247,6 @@ class HomeViewModel extends BaseViewModel{
     } else if (value is Exception) {
       isLoading = true;
     } else {
-      isLoading=false;
       listInvoice = value as List<InvoiceOverViewModel>;
     }
     notifyListeners();
@@ -268,14 +267,14 @@ class HomeViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
-      await showDialogNetwork(context);
+      isLoading = true;
     } else if (value is Exception) {
-      await showErrorDialog(context);
+      isLoading = true;
     } else {
+      isLoading=false;
       expenseManagement=value as List<ExpenseManagementModel>;
       setMoney();
     }
-    isLoading=false;
     notifyListeners();
   }
 
