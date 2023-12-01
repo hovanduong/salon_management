@@ -26,7 +26,7 @@ class CalendarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var day=0;
     return SingleChildScrollView(
-      child: (listDay!.isNotEmpty)? Table(
+      child: (listDay!.isNotEmpty && (listDay?.length ?? 0) >=28)? Table(
         border: const TableBorder(
           horizontalInside: BorderSide(color: AppColors.BLACK_200),
           verticalInside: BorderSide(color: AppColors.BLACK_200),

@@ -214,12 +214,11 @@ class CalendarViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       await showDialogNetwork(context);
     } else if (value is Exception) {
-      isLoading=false;
       await showErrorDialog(context);
     } else {
-      isLoading=false;
       reportModel=value as List<ReportModel>;
     }
+    isLoading=false;
     notifyListeners();
   }
 
@@ -238,12 +237,10 @@ class CalendarViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
-      await showDialogNetwork(context);
+      isLoading=true;
     } else if (value is Exception) {
-      isLoading=false;
       await showErrorDialog(context);
     } else {
-      isLoading=false;
       expenseManagement=value as List<ExpenseManagementModel>;
     }
     notifyListeners();

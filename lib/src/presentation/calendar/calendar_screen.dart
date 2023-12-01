@@ -37,7 +37,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         statusBarColor: AppColors.PRIMARY_GREEN,
       ),
     );
-    final params= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
       viewModel: CalendarViewModel(),
       onViewModelReady: (viewModel) => _viewModel = viewModel!
@@ -257,7 +256,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
-                  _viewModel!.expenseManagement!.length,
+                  _viewModel!.expenseManagement?.length ?? 0,
                   buildTotal,
                 ),
               ),
