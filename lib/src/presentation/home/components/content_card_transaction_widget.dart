@@ -35,7 +35,7 @@ class ContentTransactionWidget extends StatelessWidget {
 
     return ListTile(
       leading: CircleAvatar(
-        radius: 25,
+        radius: isTitle ? 25 : 22,
         backgroundColor: color ?? AppColors.COLOR_WHITE,
         child: Paragraph(
           content: isTitle ? date?.split('-')[2] : nameService?.split('')[0],
@@ -65,12 +65,13 @@ class ContentTransactionWidget extends StatelessWidget {
           ? Paragraph(
               content:
                   date != null ? '${HomePageLanguage.month} $month, $year' : '',
-              style: STYLE_LARGEvafo.copyWith(
+              style: STYLE_LARGE.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             )
           : null,
-      trailing: SizedBox(
+      trailing: Container(
+        alignment: Alignment.centerRight,
         width: MediaQuery.sizeOf(context).width / 3.1,
         child: Paragraph(
           maxLines: 1,
@@ -82,6 +83,7 @@ class ContentTransactionWidget extends StatelessWidget {
                   : '-${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
           style: STYLE_LARGE.copyWith(
             fontWeight: FontWeight.w600,
+            fontSize: 15,
             color: (money ?? 0) >= 0 && isMoneyIncome
                 ? AppColors.Green_Money
                 : AppColors.Red_Money,
