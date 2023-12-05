@@ -10,7 +10,7 @@ class Paragraph extends StatelessWidget {
     this.fontWeight,
     this.color,
     this.overflow,
-    this.textAlign, 
+    this.textAlign,
     this.maxLines,
   });
   final String? content;
@@ -28,7 +28,6 @@ class Paragraph extends StatelessWidget {
       content ?? '',
       style:
           style ?? STYLE_SMALL.copyWith(fontWeight: fontWeight, color: color),
-
       overflow: overflow,
     );
   }
