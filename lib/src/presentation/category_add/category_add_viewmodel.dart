@@ -29,6 +29,8 @@ class CategoryAddViewModel extends BaseViewModel {
   Future<void> init(CategoryModel? data) async {
     selectedCategory=0;
     if (data != null) {
+      isButtonExpenses = !(data.income ?? false);
+      selectedCategory=int.parse(data.imageId ?? '0');
       categoryModel = data;
       categoryController.text = categoryModel!.name.toString();
       enableButton = true;
@@ -162,9 +164,13 @@ class CategoryAddViewModel extends BaseViewModel {
 
   Future<void> putCategory() async {
     LoadingDialog.showLoadingDialog(context);
-
     final result = await categoryApi.putCategory(
-      CategoryParams(id: categoryModel!.id, name: categoryController.text),
+      CategoryParams(
+        id: categoryModel!.id, 
+        imageId: selectedCategory,
+        income: !isButtonExpenses,
+        name: categoryController.text.trim(),
+      ),
     );
 
     final value = switch (result) {

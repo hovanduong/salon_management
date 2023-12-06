@@ -611,7 +611,7 @@ class PaymentViewModel extends BaseViewModel {
   }
 
   Future<void> getCategory() async {
-    final result = await categoryApi.getListCategory(1, '');
+    final result = await categoryApi.getListCategory(null);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,

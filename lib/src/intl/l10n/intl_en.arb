@@ -309,5 +309,6 @@
     "requiredMoney":"Enter amount (Required)",
     "infoCustomerShowCase":"Customer information (can be entered or left blank)",
     "incomeExpenses":"Income, expenses",
+    "dontHave":"Don’t have ",
     "lastLine": ""
 }

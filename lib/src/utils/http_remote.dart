@@ -12,9 +12,9 @@ String accessToken = '';
 Map<String, String> requestHeaders = {};
 
 class Constants {
-  // static String baseUrl = 'https://spa-api.dhysolutions.net/api';
+  static String baseUrl = 'https://spa-api.dhysolutions.net/api';
 
-  static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
+  // static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
 }
 
 class HttpRemote {

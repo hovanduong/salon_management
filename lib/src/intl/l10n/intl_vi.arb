@@ -309,5 +309,6 @@
     "requiredMoney":"Nhập số tiền (Bắt buộc)",
     "infoCustomerShowCase":"Thông tin khách hàng (có thể nhập hoặc để trống)",
     "incomeExpenses":"Thu nhập, chi tiêu",
+    "dontHave":"Không có",
     "lastLine": ""
 }

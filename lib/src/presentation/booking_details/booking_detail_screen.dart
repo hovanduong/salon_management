@@ -271,7 +271,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         ),
         ItemWidget(
           content: money,
-          title: titleService,
+          title: titleService!='null'?titleService 
+            : BookingDetailsLanguage.dontHave,
           fontWeightTitle: FontWeight.w500,
           isSpaceBetween: true,
           color: AppColors.Green_Money,

@@ -246,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: ContentTransactionWidget(
           money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
-          nameService: name,
+          nameService: name!='null'? name : HomePageLanguage.dontHave,
           color: _viewModel!.colors[indexService%_viewModel!.colors.length],
           isMoneyIncome: _viewModel!.listCurrent[index].invoices
             ?[indexService].myBooking?.income ?? false,
