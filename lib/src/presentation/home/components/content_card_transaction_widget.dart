@@ -35,7 +35,7 @@ class ContentTransactionWidget extends StatelessWidget {
 
     return ListTile(
       leading: CircleAvatar(
-        radius: isTitle ? 25 : 22,
+        radius: isTitle ? 20 : 18,
         backgroundColor: color ?? AppColors.COLOR_WHITE,
         child: Paragraph(
           content: isTitle ? date?.split('-')[2] : nameService?.split('')[0],
