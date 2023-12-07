@@ -143,4 +143,6 @@ class AppImages {
 
   static const String spaMask = 'assets/icons/spaMask.svg';
 
+  static const String accumulatedPoints = 'assets/icons/accumulatedPoints.svg';
+
 }

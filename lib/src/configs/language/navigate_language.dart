@@ -9,6 +9,8 @@ class NavigateLanguage {
 
   static final account = S.current.account;
 
+  static final debit = S.current.debit;
+
   static final exitApp = S.current.exitApp;
 
   static final exitAppContent = S.current.exitAppContent;

@@ -69,8 +69,7 @@ abstract class MyCustomerModelFactory {
       ..email = json['email']
       ..userId = json['userId']
       ..createdAt = json['createdAt']
-      ..deletedAt = json['deletedAt']
-      ..updateAt = json['updateAt'];
+      ..deletedAt = json['deletedAt'];
     return myCustomer;
   }
 }

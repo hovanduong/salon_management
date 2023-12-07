@@ -9,6 +9,7 @@ import '../base/base.dart';
 
 import '../booking_history/booking_history.dart';
 import '../calendar/calendar.dart';
+import '../debit/debit_screen.dart';
 import '../home/home.dart';
 import '../profile/profile_screen.dart';
 import 'components/icon_tabs.dart';
@@ -67,12 +68,18 @@ class _NavigateScreenState extends State<NavigateScreen> {
             else
               Container(),
             if (_viewModel!.selectedIndex == 3)
+              const DebitScreen(
+                // key: PageStorageKey('BookingPage'),
+              )
+            else
+              Container(),
+            if (_viewModel!.selectedIndex == 4)
               const ProfileScreen(
                 // key: PageStorageKey('ProfilePage'),
               )
             else
               Container(),
-            if (_viewModel!.selectedIndex == 4) const SizedBox() else Container(),
+            if (_viewModel!.selectedIndex == 5) const SizedBox() else Container(),
           ],
         ),
         bottomNavigationBar: appBarNavigator(),
@@ -118,6 +125,14 @@ class _NavigateScreenState extends State<NavigateScreen> {
         BottomNavigationBarItem(
           icon: IconTabWidget(
             name: _viewModel!.selectedIndex == 3
+                ? AppImages.icProfile
+                : AppImages.icProfileLine,
+          ),
+          label: NavigateLanguage.debit,
+        ),
+        BottomNavigationBarItem(
+          icon: IconTabWidget(
+            name: _viewModel!.selectedIndex == 4
                 ? AppImages.icProfile
                 : AppImages.icProfileLine,
           ),

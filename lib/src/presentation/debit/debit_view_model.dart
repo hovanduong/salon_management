@@ -1,0 +1,307 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import '../../configs/app_result/app_result.dart';
+import '../../configs/configs.dart';
+import '../../configs/language/debit_language.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/model.dart';
+import '../../resource/service/debit_api.dart';
+import '../../utils/app_valid.dart';
+import '../base/base.dart';
+import '../routers.dart';
+
+class DebitViewModel extends BaseViewModel{
+
+  bool isLoading=true;
+  bool loadingMore=false;
+
+  GlobalKey add= GlobalKey();
+
+  DebitApi debitApi= DebitApi();
+
+  int page=1;
+
+  Timer? timer;
+
+  TextEditingController nameController= TextEditingController();
+  TextEditingController searchController= TextEditingController();
+
+  List<MyCustomerModel> listCustomer=[];
+  List<MyCustomerModel> listCurrent=[];
+
+  ScrollController scrollController= ScrollController();
+
+  Future<void> init() async{
+    page=1;
+    await getDebit(page, '');
+    listCurrent=listCustomer;
+    scrollController.addListener(scrollListener);
+  }
+
+  Future<void> goToDebt({MyCustomerModel? myCustomerModel,}) =>
+    Navigator.pushNamed(context, 
+      Routers.debt, arguments: myCustomerModel,);
+
+  Future<void> pullRefresh() async {
+    listCurrent.clear();
+    nameController.clear();
+    isLoading = true;
+    await init();
+    notifyListeners();
+  }
+
+  Future<void> loadMoreData() async {
+    page += 1;
+    await getDebit(page,'');
+    listCurrent = [...listCurrent, ...listCustomer];
+    notifyListeners();
+  }
+
+  dynamic scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 0) {
+      loadingMore = true;
+      Future.delayed(const Duration(seconds: 2), () {
+        loadMoreData();
+        loadingMore = false;
+      });
+      notifyListeners();
+    }
+  }
+
+  Future<void> onSearchDebit(String value) async {
+    await getDebit(page,value.trim());
+    listCurrent=listCustomer;
+    notifyListeners();
+  }
+
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  dynamic showSuccessDiaglog(_) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
+    );
+    await pullRefresh();
+  }
+
+  void closeDialog(BuildContext context) {
+    timer = Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
+  void checkName(String? name){
+    if(name!=null){
+      nameController.text=name;
+    }
+    notifyListeners();
+  }
+
+  dynamic showDialogAddDebit(_, {int? idEdit, String? name}) {
+    checkName(name);
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          hintTextForm: DebitLanguage.nameCustomer,
+          content: DebitLanguage.notificationDebit,
+          title: idEdit!=null? DebitLanguage.editDebitCustomer
+            : DebitLanguage.addDebitCustomer,
+          leftButtonName: DebitLanguage.close,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: DebitLanguage.confirm,
+          controller: nameController,
+          isForm: true,
+          onTapLeft: () {
+            Navigator.pop(context,);
+          },
+          onTapRight: () async {
+            Navigator.pop(context,);
+            if(nameController.text.trim()!=''){
+              if(idEdit!=null){
+                await putDebit(idEdit);
+              }else{
+                await postDebit(nameController.text.trim());
+              }
+            }else{
+              showDialogEmptyName(_, idEdit: idEdit);
+            }
+          },
+        );
+      },
+    );
+  }
+
+  dynamic showDialogEmptyName(_, {int? idEdit}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+          content: DebitLanguage.contentEmptyNameDebit,
+          leftButtonName: DebitLanguage.close,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: DebitLanguage.back,
+          onTapLeft: () {
+            Navigator.pop(context,);
+          },
+          onTapRight: () async {
+            Navigator.pop(context,);
+            showDialogAddDebit(_, idEdit: idEdit);
+          },
+        );
+      },
+    );
+  }
+
+   dynamic showWaningDiaglog({String? title, Function()? onTapRight}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: title ?? '',
+          leftButtonName: SignUpLanguage.cancel,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          rightButtonName: DebitLanguage.confirm,
+          onTapRight: () async {
+            Navigator.pop(context);
+            await onTapRight!();
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> getDebit(int page, String search) async {
+    final result = await debitApi.getDebit(
+      DebitParams(
+        page: page,
+        search: search,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading = true;
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      listCustomer = value as List<MyCustomerModel>;
+      isLoading=false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> postDebit(String name) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await debitApi.postDebit(DebitParams(
+      fullName: name,
+    ),);
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putDebit(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await debitApi.putCategory(DebitParams(
+      fullName: nameController.text.trim(),
+      id: id,
+    ),);
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteDebit(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await debitApi.deleteCategory(id);
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+  
+  @override
+  void dispose() {
+    timer?.cancel();
+    nameController.dispose();
+    super.dispose();
+  }
+}

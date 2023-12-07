@@ -15,6 +15,8 @@ class ProfileAccountLanguage {
 
   static final changePass = S.current.changePass;
 
+  static final enterPhone = S.current.enterPhoneNumber;
+
   static final deleteAccount = S.current.deleteAccount;
   static final phoneNumber = S.current.phoneNumber;
   static final logout = S.current.logout;
