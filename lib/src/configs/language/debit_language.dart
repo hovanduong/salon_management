@@ -22,4 +22,5 @@ class DebitLanguage {
   static final search= S.current.search;
   static final searchDebitCustomer= S.current.searchDebitCustomer;
   static final addDebt= S.current.addDebt;
+  static final userManual= S.current.userManual;
 }

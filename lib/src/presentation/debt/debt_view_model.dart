@@ -3,6 +3,8 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/debt_language.dart';
+import '../../configs/widget/basic/infomation_app.dart';
+import '../../configs/widget/dialog/dialog_user_manual.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/owes_invoice_api.dart';
 import '../../utils/app_currency.dart';
@@ -127,18 +129,39 @@ class DebtViewModel extends BaseViewModel{
   dynamic showDialogNote(_,) {
     showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (context) {
-        return WarningOneDialog(
-          image: AppImages.icCheck,
-          title: SignUpLanguage.note,
-          content: DebtLanguage.contentEmptyNameDebit,
-          buttonName: DebtLanguage.close,
-          color: AppColors.BLACK_500,
-          colorNameLeft: AppColors.BLACK_500,
-          onTap: () {
-            Navigator.pop(context,);
-          },
+        return const DialogUserManual(
+          title: 'Tạo các khoản ghi nợ và trả nợ như thế nào?',
+          widget: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Paragraph(
+                  content: '- Nếu A nợ B thì A sẽ được thao tác trả nợ và ghi nợ',
+                  style: STYLE_MEDIUM
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Paragraph(
+                    content: '  + Ví dụ: A nợ B: 500.000 VNĐ',
+                    style: STYLE_MEDIUM
+                  ),
+                ),
+                Paragraph(
+                  content: '- Thì B sẽ không được phép thao tác nhập khoản nợ hay trả nợ bởi vì A đang còn nợ B.',
+                  style: STYLE_MEDIUM
+                ),
+                SizedBox(height: 5,),
+                Paragraph(
+                  content: '- Và ngược lại nếu B nợ A thì A cũng sẽ không thao tác được nhập khoản nợ hay trả nợ.',
+                  style: STYLE_MEDIUM
+                ),
+                SizedBox(height: 10,),
+                InformationApp(),
+              ],
+            ),
+          ),
         );
       },
     );

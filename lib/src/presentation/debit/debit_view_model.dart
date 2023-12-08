@@ -6,6 +6,8 @@ import 'package:showcaseview/showcaseview.dart';
 import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/debit_language.dart';
+import '../../configs/widget/basic/infomation_app.dart';
+import '../../configs/widget/dialog/dialog_user_manual.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/debit_api.dart';
@@ -22,6 +24,7 @@ class DebitViewModel extends BaseViewModel{
 
   GlobalKey keyAdd= GlobalKey();
   GlobalKey keySearch= GlobalKey();
+  GlobalKey keyNote= GlobalKey();
 
   DebitApi debitApi= DebitApi();
 
@@ -64,7 +67,7 @@ class DebitViewModel extends BaseViewModel{
     if (isShowCase == true) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         return ShowCaseWidget.of(context).startShowCase(
-          [keyAdd, keySearch,],
+          [keyAdd, keyNote, keySearch,],
         );
       });
     }
@@ -80,6 +83,39 @@ class DebitViewModel extends BaseViewModel{
     isLoading = true;
     await init();
     notifyListeners();
+  }
+
+  dynamic showDialogNote(_,) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const DialogUserManual(
+          title: 'Sổ nợ là gì?',
+          widget: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Paragraph(
+                  content: 'Là dùng để tạo các khoản ghi nợ hoặc trả nợ.',
+                  style: STYLE_MEDIUM
+                ),
+                Paragraph(
+                  content: 'Bạn nợ người khác, hoặc người khác nợ bạn.',
+                  style: STYLE_MEDIUM
+                ),
+                Paragraph(
+                  content: 'Bạn trả nợ cho người khác, hoặc người khác trả nợ cho bạn.',
+                  style: STYLE_MEDIUM
+                ),
+                SizedBox(height: 10,),
+                InformationApp(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> loadMoreData() async {

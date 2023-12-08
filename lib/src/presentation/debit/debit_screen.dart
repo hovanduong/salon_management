@@ -69,12 +69,25 @@ class _DebitScreenState extends State<DebitScreen> {
       child: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
         child: ListTile(
+          minLeadingWidth: 35,
+          leading: const SizedBox(),
           title: Center(
             child: Paragraph(
               content: DebitLanguage.debit,
               style: STYLE_LARGE.copyWith(
                 color: AppColors.COLOR_WHITE,
                 fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          trailing: Showcase(
+            key: _viewModel!.keyNote,
+            description: DebitLanguage.userManual,
+            child: InkWell(
+              onTap: ()=> _viewModel!.showDialogNote(context),
+              child: const Icon(Icons.not_listed_location_outlined, 
+                color: AppColors.COLOR_WHITE,
+                size: 30,
               ),
             ),
           ),
