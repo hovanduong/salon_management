@@ -10,11 +10,13 @@ class BuildContentCardOwes extends StatelessWidget {
     this.title, 
     this.money, 
     this.date,
+    this.colorMoney,
   });
 
   final String? title;
   final num? money;
   final String? date;
+  final Color? colorMoney;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class BuildContentCardOwes extends StatelessWidget {
                 content: AppCurrencyFormat.formatMoneyVND(money??0),
                 style: STYLE_MEDIUM.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.Green_Money,
+                  color: colorMoney,
                 ),
               ),
             ],

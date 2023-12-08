@@ -89,6 +89,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
 
   Widget buildChoosePersonButton(){
     return ChooseButtonWidget(
+      isHideButtonMe: _viewModel!.isHideMe,
       isButton: _viewModel!.isMe,
       nameButtonLeft: DebtAddLanguage.me,
       nameButtonRight: _viewModel!.myCustomerModel?.fullName,
@@ -214,10 +215,10 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
       child: AppButton(
-        enableButton: true,
+        enableButton: _viewModel!.enableButton,
         content: UpdateProfileLanguage.submit,
         onTap: () {
-          // _viewModel!.setSourceButton();
+          _viewModel!.postDebt();
         },
       ),
     );

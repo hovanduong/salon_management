@@ -15,6 +15,7 @@ class DebtLanguage {
   static final addDebitCustomer= S.current.addDebitCustomer;
   static final editDebitCustomer= S.current.editDebitCustomer;
   static final me= S.current.me;
+  static final my= S.current.my;
   static final notificationDebit= S.current.notificationDebit;
   static final notificationDebitEmpty= S.current.notificationDebitEmpty;
   static final back= S.current.back;
@@ -29,4 +30,6 @@ class DebtLanguage {
   static final finishedPaying= S.current.finishedPaying;
   static final stillOwes= S.current.stillOwes;
   static final amountOfMoney= S.current.amountOfMoney;
+  static final notificationOwes= S.current.notificationOwes;
+  static final notificationPaidOwes= S.current.notificationPaidOwes;
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/debt_language.dart';
 import '../../resource/model/model.dart';
-import '../../resource/model/owes_model.dart';
 import '../../resource/service/owes_invoice_api.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -50,14 +50,26 @@ class DebtViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  Future<void> goToDebtAdd()async {
+    final data = myCustomerModel;
+    data?.isMe= owesTotalModel?.isMe;
+    data?.isUser=owesTotalModel?.isUser;
+    data?.money= (owesTotalModel?.isMe??false)? (owesTotalModel?.oweMe??0)
+      : (owesTotalModel?.oweUser??0);
+    await Navigator.pushNamed(context, 
+      Routers.debtAdd, arguments: data,);
+  }
+
   void checkOwes(){
+    final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
+    final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     if(owesTotalModel?.isMe??false){
-      messageOwes='${DebtLanguage.amountOfMoney} ${DebtLanguage.me} ${
-        DebtLanguage.yourOwes}: ${owesTotalModel?.oweMe}';
+      messageOwes='${DebtLanguage.amountOfMoney} ${DebtLanguage.my} ${
+      DebtLanguage.yourOwes}: ${AppCurrencyFormat.formatMoneyVND(myMoney)}';
     }else{
       messageOwes='${DebtLanguage.amountOfMoney} ${
-        myCustomerModel?.fullName} ${DebtLanguage.yourOwes}: ${
-          owesTotalModel?.oweUser}';
+      myCustomerModel?.fullName} ${DebtLanguage.yourOwes}: ${
+        AppCurrencyFormat.formatMoneyVND(yourMoney)}';
     }
     notifyListeners();
   }
@@ -67,10 +79,6 @@ class DebtViewModel extends BaseViewModel{
     await fetchDataOwes();
     notifyListeners();
   }
-
-  Future<void> goToDebtAdd() =>
-    Navigator.pushNamed(context, 
-      Routers.debtAdd, arguments: myCustomerModel,);
 
   void showOwes(){
     isShowOwes=!isShowOwes;

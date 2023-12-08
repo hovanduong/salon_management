@@ -37,4 +37,5 @@ class PaymentLanguage {
   static final requiredMoney= S.current.requiredMoney;
   static final infoCustomerShowCase= S.current.infoCustomerShowCase;
   static final incomeExpenses= S.current.incomeExpenses;
+  static final validMoneyPay= S.current.validMoneyPay;
 }

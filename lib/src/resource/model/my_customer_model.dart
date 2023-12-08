@@ -12,6 +12,9 @@ class MyCustomerModel {
   String? deletedAt;
   String? updateAt;
   String? createdAt;
+  bool? isMe;
+  bool? isUser;
+  num? money;
   MyCustomerModel({
     this.id,
     this.phoneNumber,
@@ -22,6 +25,9 @@ class MyCustomerModel {
     this.createdAt,
     this.deletedAt,
     this.updateAt,
+    this.isMe,
+    this.isUser,
+    this.money,
   });
 }
 

@@ -10,7 +10,6 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../resource/service/income_api.dart';
 import '../../resource/service/my_booking.dart';
-import '../../resource/service/report_api.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
@@ -297,7 +296,6 @@ class _HomeScreenState extends State<HomeScreen> {
       height: MediaQuery.sizeOf(context).height/1.85,
       child: ListView.builder(
         padding: EdgeInsets.zero,
-          physics: const AlwaysScrollableScrollPhysics(),
           controller: _viewModel!.scrollController,
           itemCount: _viewModel!.loadingMore
               ? _viewModel!.listCurrent.length + 1
@@ -342,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildHomePage() {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       floatingActionButton:_viewModel!.isDate==0? Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
         child: Showcase(

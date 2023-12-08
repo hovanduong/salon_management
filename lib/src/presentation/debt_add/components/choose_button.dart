@@ -6,6 +6,7 @@ import '../../../configs/constants/app_space.dart';
 class ChooseButtonWidget extends StatelessWidget {
   const ChooseButtonWidget({super.key, 
     this.isButton=false, 
+    this.isHideButtonMe,
     this.nameButtonLeft, 
     this.nameButtonRight, 
     this.onTapLeft,
@@ -14,6 +15,7 @@ class ChooseButtonWidget extends StatelessWidget {
   });
 
   final bool isButton;
+  final bool? isHideButtonMe;
   final String? nameButtonLeft;
   final String? nameButtonRight;
   final String? titleSelection;
@@ -31,10 +33,12 @@ class ChooseButtonWidget extends StatelessWidget {
           child: Row(
             children: [
               buildButtonSelect(
+                isHideButton: isHideButtonMe,
                 nameButtonLeft, 
                 isButton: isButton,
               ),
               buildButtonSelect(
+                isHideButton: isHideButtonMe!=null? !isHideButtonMe! :null,
                 nameButtonRight, 
                 isButton: !isButton,
               ),
@@ -57,18 +61,24 @@ class ChooseButtonWidget extends StatelessWidget {
     );
   }
 
-  Widget buildButtonSelect(String? name, {bool isButton=false}) {
-    return isButton
-    ? Expanded(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: AppButton(
-            enableButton: true,
-            content: name??'',
-            onTap: ()=> onTapLeft!(name),
-          ),
+  Widget buildAppButton(String? name, {bool? isHideButton}){
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: AppButton(
+          enableButton: isHideButton??true,
+          content: name??'',
+          onTap: ()=> onTapLeft!(name),
         ),
-      )
+      ),
+    );
+  }
+
+  Widget buildButtonSelect(String? name, 
+    {bool isButton=false, bool? isHideButton,}) {
+    return (isHideButton!=null && isHideButton)
+    ? buildAppButton(name, isHideButton: !isHideButton) 
+    :isButton? buildAppButton(name)
     : Expanded(
         child: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),

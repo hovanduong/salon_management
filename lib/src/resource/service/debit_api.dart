@@ -89,7 +89,6 @@ class DebitApi {
           'fullName': params!.fullName,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);

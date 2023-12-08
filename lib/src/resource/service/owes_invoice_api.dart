@@ -9,20 +9,24 @@ import '../model/model.dart';
 class OwesInvoiceParams {
   const OwesInvoiceParams({
     this.id,
-    this.fullName,
-    this.phoneNumber,
-    this.email,
+    this.money,
+    this.date,
+    this.isUser,
+    this.isMe,
     this.page,
-    this.gender,
+    this.isDebit,
     this.search,
+    this.note,
   });
   final int? id;
-  final String? fullName;
-  final String? phoneNumber;
+  final num? money;
+  final String? date;
+  final bool? isUser;
   final int? page;
-  final String? email;
-  final String? gender;
+  final bool? isMe;
+  final bool? isDebit;
   final String? search;
+  final String? note;
 }
 
 class OwesInvoiceApi {
@@ -88,7 +92,7 @@ class OwesInvoiceApi {
       final response = await HttpRemote.put(
         url: '/owes-customer/${params!.id}',
         body: {
-          'fullName': params.fullName,
+          // 'fullName': params.fullName,
         },
       );
       switch (response?.statusCode) {
@@ -102,15 +106,20 @@ class OwesInvoiceApi {
     }
   }
 
-  Future<Result<bool, Exception>> postDebit(OwesInvoiceParams? params) async {
+  Future<Result<bool, Exception>> postOwes(OwesInvoiceParams? params) async {
     try {
       final response = await HttpRemote.post(
-        url: '/owes-customer', 
+        url: '/owes-invoice', 
         body: {
-          'fullName': params!.fullName,
+          'myCustomerOwesId': params!.id,
+          'money': params.money,
+          'date': params.date,
+          'isUser': params.isUser,
+          'isMe': params.isMe,
+          'isDebit': params.isDebit,
+          'note': params.note,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);

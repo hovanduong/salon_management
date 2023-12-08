@@ -168,7 +168,7 @@ class _DebtScreenState extends State<DebtScreen>
         children: [
           Paragraph(
             content: title??'',
-            style: STYLE_LARGE.copyWith(
+            style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -203,7 +203,9 @@ class _DebtScreenState extends State<DebtScreen>
   }
 
   Widget buildContentTransaction(int index,){
-    return   BuildContentCardOwes(
+    return BuildContentCardOwes(
+      colorMoney: _viewModel!.listCurrent[index].isDebit??false? 
+        AppColors.Red_Money: AppColors.Green_Money,
       date: _viewModel!.listCurrent[index].date,
       money: _viewModel!.listCurrent[index].money,
       title: _viewModel!.listCurrent[index].code,
@@ -219,7 +221,7 @@ class _DebtScreenState extends State<DebtScreen>
       ),
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeVeryVerySmall,
-        horizontal: SizeToPadding.sizeSmall
+        horizontal: SizeToPadding.sizeSmall,
       ),
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
@@ -238,7 +240,6 @@ class _DebtScreenState extends State<DebtScreen>
 
   Widget buildIconEmpty(){
     return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
       child: Padding(
         padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 4),
         child: EmptyDataWidget(
@@ -255,7 +256,7 @@ class _DebtScreenState extends State<DebtScreen>
         children: [
           buildTotalOwes(
             moneyPaid: moneyPaid,
-            moneyRemaining: moneyRemaining
+            moneyRemaining: moneyRemaining,
           ),
           if (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading) 
           buildIconEmpty() 
@@ -329,7 +330,10 @@ class _DebtScreenState extends State<DebtScreen>
           child: FloatingActionButton(
             heroTag: 'addBooking',
             backgroundColor: AppColors.PRIMARY_GREEN,
-            onPressed: () =>_viewModel!.goToDebtAdd(),
+            onPressed: () async{
+              await _viewModel!.goToDebtAdd();
+              await _viewModel!.fetchDataOwes();
+            },
             child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
           ),
         ),

@@ -321,12 +321,17 @@
     "addDebt":"Add debt",
     "currentDebt":"Current debt",
     "myOwes":"My Owes",
-    "yourDebt":"Owes",
+    "yourOwes":"Owes",
     "totalRemainingOwes":"Total remaining owes",
     "totalOwesPaid":"Total owes paid",
     "stillOwes":"still in debt",
     "finishedPaying":"Finished paying",
+    "me":"Me",
+    "my":"My",
     "choosePeople":"Choose people",
     "chooseForm":"Choose form",
+    "notificationOwes":"Currently no one is in debt so this operation cannot be used",
+    "notificationPaidOwes":"Still haven't paid off the debt. Therefore this operation cannot be used",
+    "validMoneyPay":"The amount paid cannot exceed the amount owed",
     "lastLine": ""
 }
