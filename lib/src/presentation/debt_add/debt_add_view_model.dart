@@ -24,6 +24,7 @@ class DebtAddViewModel extends BaseViewModel{
   bool isOwes=false;
   bool isMeOwes=false;
   bool enableButton=false;
+  bool isLoading=true;
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
@@ -32,6 +33,7 @@ class DebtAddViewModel extends BaseViewModel{
 
   DateRangePickerController dateController= DateRangePickerController();
 
+  OwesTotalModel? owesTotalModel;
   MyCustomerModel? myCustomerModel;
 
   String? messageMoney;
@@ -43,6 +45,12 @@ class DebtAddViewModel extends BaseViewModel{
 
   Future<void> init(MyCustomerModel? data) async{
     myCustomerModel=data;
+    await fetchData();
+    notifyListeners();
+  }
+
+  Future<void> fetchData() async{
+    await getOwesTotal();
     checkData();
     notifyListeners();
   }
@@ -59,10 +67,6 @@ class DebtAddViewModel extends BaseViewModel{
       isPay=false;
       isOwes=true;
     }
-    notifyListeners();
-  }
-
-  Future<void> pullRefresh()async{
     notifyListeners();
   }
 
@@ -235,8 +239,8 @@ class DebtAddViewModel extends BaseViewModel{
     final result = await owesInvoiceApi.postOwes(OwesInvoiceParams(
       money: int.parse(moneyController.text.replaceAll(',', '')),
       note: noteController.text.trim(),
-      date: '${AppDateUtils.formatTimeToHHMM(time)} ${
-        dateTime.toString().split(' ')[0]}',
+      date: '${dateTime.toString().split(' ')[0]} ${
+        AppDateUtils.formatTimeToHHMM(time)}',
       isUser: !isMe ? !isMe: null,
       isMe: isMe ? isMe: null,
       id: myCustomerModel?.id,
@@ -258,6 +262,29 @@ class DebtAddViewModel extends BaseViewModel{
       LoadingDialog.hideLoadingDialog(context);
       clearData();
       showDialogSuccess(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getOwesTotal() async {
+    final result = await owesInvoiceApi.getTotalOwesInvoice(
+      OwesInvoiceParams(
+        id: myCustomerModel?.id,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading = true;
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      owesTotalModel = value as OwesTotalModel;
+      isLoading=false;
     }
     notifyListeners();
   }

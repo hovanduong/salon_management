@@ -20,4 +20,6 @@ class DebitLanguage {
   static final back= S.current.back;
   static final contentEmptyNameDebit= S.current.contentEmptyNameDebit;
   static final search= S.current.search;
+  static final searchDebitCustomer= S.current.searchDebitCustomer;
+  static final addDebt= S.current.addDebt;
 }

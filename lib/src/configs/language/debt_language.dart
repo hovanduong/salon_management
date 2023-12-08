@@ -32,4 +32,9 @@ class DebtLanguage {
   static final amountOfMoney= S.current.amountOfMoney;
   static final notificationOwes= S.current.notificationOwes;
   static final notificationPaidOwes= S.current.notificationPaidOwes;
+  static final addDebt= S.current.addDebt;
+  static final userManual= S.current.userManual;
+  static final amountOwed= S.current.amountOwed;
+  static final amountOwedPaid= S.current.amountOwedPaid;
+  static final historyOwes= S.current.historyOwes;
 }

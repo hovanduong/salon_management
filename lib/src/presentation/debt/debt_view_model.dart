@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/debt_language.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/owes_invoice_api.dart';
 import '../../utils/app_currency.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -13,16 +15,21 @@ class DebtViewModel extends BaseViewModel{
 
   bool isLoading=true;
   bool isShowOwes=true;
+  bool isShowCase=false;
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
-  GlobalKey add= GlobalKey();
+  GlobalKey keyAddDebt= GlobalKey();
+  GlobalKey keyNote= GlobalKey();
+  GlobalKey keyOwes= GlobalKey();
+  GlobalKey keyHistory= GlobalKey();
 
   MyCustomerModel? myCustomerModel;
   OwesTotalModel? owesTotalModel;
 
+  List<OwesModel> listOwesMe=[];
+  List<OwesModel> listOwesUser=[];
   List<OwesModel> listOwes=[];
-  List<OwesModel> listCurrent=[];
 
   TabController? tabController;
 
@@ -34,19 +41,49 @@ class DebtViewModel extends BaseViewModel{
     tabController=TabController(length: 2, vsync: dataThis);
     myCustomerModel=params;
     await fetchDataOwes();
-    // await AppPref.getShowCase('showCaseAppointment').then(
-    //   (value) => isShowCase=value??true,);
-    // startShowCase();
-    // await hideShowcase();
+    await AppPref.getShowCase('showCaseDebt').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async {
+    await AppPref.setShowCase('showCaseDebt', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  void startShowCase() {
+    if (isShowCase == true) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [keyAddDebt, keyNote, keyOwes, keyHistory],
+        );
+      });
+    }
   }
 
   Future<void> fetchDataOwes()async{
     page=1;
-    await getOwesInvoice(page);
-    listCurrent=listOwes;
+    await getOwesInvoice(page, 1);
+    listOwesMe=listOwes;
     await getOwesTotal();
     checkOwes();
+    notifyListeners();
+  }
+
+  Future<void> changeTab(int tab)async{
+    // print(tab);
+    listOwes.clear();
+    isLoading=true;
+    if(tab==0){
+      await getOwesInvoice(page, 1);
+      listOwesMe=listOwes;
+    }else{
+      await getOwesInvoice(page, 0);
+      listOwesUser=listOwes;
+    }
     notifyListeners();
   }
 
@@ -66,10 +103,12 @@ class DebtViewModel extends BaseViewModel{
     if(owesTotalModel?.isMe??false){
       messageOwes='${DebtLanguage.amountOfMoney} ${DebtLanguage.my} ${
       DebtLanguage.yourOwes}: ${AppCurrencyFormat.formatMoneyVND(myMoney)}';
-    }else{
+    }else if(owesTotalModel?.isUser??false){
       messageOwes='${DebtLanguage.amountOfMoney} ${
       myCustomerModel?.fullName} ${DebtLanguage.yourOwes}: ${
         AppCurrencyFormat.formatMoneyVND(yourMoney)}';
+    }else{
+      messageOwes='0';
     }
     notifyListeners();
   }
@@ -105,11 +144,12 @@ class DebtViewModel extends BaseViewModel{
     );
   }
 
-  Future<void> getOwesInvoice(int page,) async {
+  Future<void> getOwesInvoice(int page, int isGet) async {
     final result = await owesInvoiceApi.getOwesInvoice(
       OwesInvoiceParams(
         page: page,
-        id: myCustomerModel?.id
+        id: myCustomerModel?.id,
+        isGetMe: isGet,
       ),
     );
 
@@ -124,6 +164,7 @@ class DebtViewModel extends BaseViewModel{
       isLoading = true;
     } else {
       listOwes = value as List<OwesModel>;
+      isLoading=false;
     }
     notifyListeners();
   }

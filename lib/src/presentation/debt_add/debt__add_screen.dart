@@ -42,6 +42,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
   }
 
   Widget buildAppBar() {
+    print(_viewModel!.isMe);
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeSmall,

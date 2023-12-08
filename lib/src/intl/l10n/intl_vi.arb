@@ -333,5 +333,10 @@
     "notificationOwes":"Hiện tại không có ai mắc nợ nên thao tác này không thể sử dụng được",
     "notificationPaidOwes":"Vẫn chưa trả hết nợ. Vì vậy thao tác này không thể được sử dụng",
     "validMoneyPay":"Số tiền trả không thể vượt quá số tiền nợ",
+    "searchDebitCustomer":"Tìm kiếm công nợ khách hàng",
+    "userManual":"Hướng dẫn sử dụng",
+    "amountOwed":"Số tiền nợ",
+    "amountOwedPaid":"Số tiền nợ và số tiền đã trả",
+    "historyOwes":"Lịch sử nợ và trả nợ",
     "lastLine": ""
 }

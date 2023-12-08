@@ -88,11 +88,15 @@ class _DebtScreenState extends State<DebtScreen>
             Navigator.pop(context);
           },
           title: DebtLanguage.debt,
-          widget: InkWell(
-            onTap: ()=> _viewModel!.showDialogNote(context),
-            child: const Icon(Icons.not_listed_location_outlined, 
-              color: AppColors.COLOR_WHITE,
-              size: 30,
+          widget: Showcase(
+            key: _viewModel!.keyNote,
+            description: DebtLanguage.userManual,
+            child: InkWell(
+              onTap: ()=> _viewModel!.showDialogNote(context),
+              child: const Icon(Icons.not_listed_location_outlined, 
+                color: AppColors.COLOR_WHITE,
+                size: 30,
+              ),
             ),
           ),
         ),
@@ -101,30 +105,34 @@ class _DebtScreenState extends State<DebtScreen>
   }
 
   Widget buildCardDebt(){
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
-        horizontal: SizeToPadding.sizeVerySmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.PRIMARY_GREEN,
-        borderRadius: BorderRadius.circular(BorderRadiusSize.sizeMedium),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
-        child: ListTile(
-          leading: SvgPicture.asset(AppImages.accumulatedPoints),
-          title: Paragraph(
-            content: DebtLanguage.currentDebt,
-            style: STYLE_MEDIUM.copyWith(
-              fontWeight: FontWeight.w600,
-              color: AppColors.COLOR_WHITE,
+    return Showcase(
+      key: _viewModel!.keyOwes,
+      description: DebtLanguage.amountOwed,
+      child: Container(
+        margin: EdgeInsets.symmetric(
+          vertical: SizeToPadding.sizeMedium,
+          horizontal: SizeToPadding.sizeVerySmall,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.PRIMARY_GREEN,
+          borderRadius: BorderRadius.circular(BorderRadiusSize.sizeMedium),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+          child: ListTile(
+            leading: SvgPicture.asset(AppImages.accumulatedPoints),
+            title: Paragraph(
+              content: DebtLanguage.currentDebt,
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.COLOR_WHITE,
+              ),
             ),
-          ),
-          subtitle: Paragraph(
-            content: _viewModel!.messageOwes,  
-            style: STYLE_SMALL_BOLD.copyWith(
-              color: AppColors.COLOR_WHITE,
+            subtitle: Paragraph(
+              content: _viewModel!.messageOwes,  
+              style: STYLE_SMALL_BOLD.copyWith(
+                color: AppColors.COLOR_WHITE,
+              ),
             ),
           ),
         ),
@@ -135,10 +143,10 @@ class _DebtScreenState extends State<DebtScreen>
   Widget buildTabBar(){
     return TabBar(
       controller: _viewModel!.tabController,
+      onTap: (index)=> _viewModel!.changeTab(index),
       tabs: [
-        Tab(text: DebtLanguage.myOwes,),
-        Tab(text: '${_viewModel!.myCustomerModel?.fullName} ${
-          DebtLanguage.yourOwes}',),
+        Tab(text: DebtLanguage.me,),
+        Tab(text: _viewModel!.myCustomerModel?.fullName,),
       ],
       indicatorSize: TabBarIndicatorSize.tab,
       indicatorPadding: EdgeInsets.zero,
@@ -202,17 +210,17 @@ class _DebtScreenState extends State<DebtScreen>
     );
   }
 
-  Widget buildContentTransaction(int index,){
+  Widget buildContentTransaction(int index, List<OwesModel> listCurrent,){
     return BuildContentCardOwes(
-      colorMoney: _viewModel!.listCurrent[index].isDebit??false? 
+      colorMoney: listCurrent[index].isDebit??false? 
         AppColors.Red_Money: AppColors.Green_Money,
-      date: _viewModel!.listCurrent[index].date,
-      money: _viewModel!.listCurrent[index].money,
-      title: _viewModel!.listCurrent[index].code,
+      date: listCurrent[index].date,
+      money: listCurrent[index].money,
+      title: listCurrent[index].code,
     );
   }
 
-  Widget buildCardOwes(int index){
+  Widget buildCardOwes(int index, List<OwesModel> listCurrent,){
     return Container(
       margin: EdgeInsets.only(
         top: SizeToPadding.sizeSmall,
@@ -234,7 +242,7 @@ class _DebtScreenState extends State<DebtScreen>
           ),
         ],
       ),
-      child: buildContentTransaction(index),
+      child: buildContentTransaction(index, listCurrent),
     );
   }
 
@@ -250,57 +258,65 @@ class _DebtScreenState extends State<DebtScreen>
     );
   }
 
-  Widget buildTabMyOwes({bool isOwes=false, num? moneyRemaining, num? moneyPaid}){
-    return isOwes? SingleChildScrollView(
-      child: Column(
-        children: [
-          buildTotalOwes(
-            moneyPaid: moneyPaid,
-            moneyRemaining: moneyRemaining,
-          ),
-          if (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading) 
-          buildIconEmpty() 
-          else RefreshIndicator(
-            color: AppColors.PRIMARY_GREEN,
-            onRefresh: () async {
-              await _viewModel!.pullRefresh();
-            },
-            child: Column(
-              children: List.generate(
-                _viewModel!.listCurrent.length , buildCardOwes,),
-            ),
-          ),
-        ],
-      ),
-    ): buildIconEmpty();
-  }
-
-  Widget buildTabBarView(){
+  Widget buildTabMyOwes( List<OwesModel> listCurrent,
+    {bool isOwes=false, num? moneyRemaining, num? moneyPaid,}){
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          color: AppColors.COLOR_GREY.withOpacity(0.05),
-          width: double.maxFinite,
-          height: MediaQuery.of(context).size.height - 280,
-          child: TabBarView(
-            controller: _viewModel!.tabController,
-            children: [
-              buildTabMyOwes(
-                isOwes: _viewModel!.owesTotalModel?.isMe??false,
-                moneyPaid: _viewModel!.owesTotalModel?.paidMe??0,
-                moneyRemaining: _viewModel!.owesTotalModel?.oweMe??0,
-              ),
-              buildTabMyOwes(
-                isOwes: _viewModel!.owesTotalModel?.isUser??false,
-                moneyPaid: _viewModel!.owesTotalModel?.paidUser??0,
-                moneyRemaining: _viewModel!.owesTotalModel?.oweUser??0,
-              ),
-            ],
+        child: Column(
+          children: [
+            buildTotalOwes(
+              moneyPaid: moneyPaid,
+              moneyRemaining: moneyRemaining,
+            ),
+            if (listCurrent.isEmpty && !_viewModel!.isLoading) 
+            buildIconEmpty() 
+            else Column(
+              children: List.generate(
+                listCurrent.length , 
+                (index)=> buildCardOwes(index, listCurrent),),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTabBarView(){
+    return Showcase(
+      key: _viewModel!.keyHistory,
+      description: DebtLanguage.historyOwes,
+      child: RefreshIndicator(
+        color: AppColors.PRIMARY_GREEN,
+        onRefresh: () async {
+          await _viewModel!.pullRefresh();
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            color: AppColors.COLOR_GREY.withOpacity(0.05),
+            width: double.maxFinite,
+            height: MediaQuery.of(context).size.height - 280,
+            child: TabBarView(
+              controller: _viewModel!.tabController,
+              children: [
+                buildTabMyOwes(
+                  _viewModel!.listOwesMe,
+                  isOwes: _viewModel!.owesTotalModel?.isMe??false,
+                  moneyPaid: _viewModel!.owesTotalModel?.paidMe??0,
+                  moneyRemaining: _viewModel!.owesTotalModel?.oweMe??0,
+                ),
+                buildTabMyOwes(
+                  _viewModel!.listOwesUser,
+                  isOwes: _viewModel!.owesTotalModel?.isUser??false,
+                  moneyPaid: _viewModel!.owesTotalModel?.paidUser??0,
+                  moneyRemaining: _viewModel!.owesTotalModel?.oweUser??0,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -323,8 +339,8 @@ class _DebtScreenState extends State<DebtScreen>
       floatingActionButton:Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
         child: Showcase(
-          key: _viewModel!.add,
-          description: HomePageLanguage.addInvoice,
+          key: _viewModel!.keyAddDebt,
+          description: DebtLanguage.addDebt,
           targetBorderRadius: BorderRadius.all(Radius.circular(
             BorderRadiusSize.sizeLarge,),),
           child: FloatingActionButton(

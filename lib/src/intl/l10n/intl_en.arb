@@ -333,5 +333,10 @@
     "notificationOwes":"Currently no one is in debt so this operation cannot be used",
     "notificationPaidOwes":"Still haven't paid off the debt. Therefore this operation cannot be used",
     "validMoneyPay":"The amount paid cannot exceed the amount owed",
+    "searchDebitCustomer":"Search for customer debt",
+    "userManual":"User manual",
+    "amountOwed":"Amount owed",
+    "amountOwedPaid":"Amount owed and amount paid",
+    "historyOwes":"Debt and repayment history",
     "lastLine": ""
 }

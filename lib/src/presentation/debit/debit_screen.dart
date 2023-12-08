@@ -84,18 +84,22 @@ class _DebitScreenState extends State<DebitScreen> {
   }
 
    Widget buildSearch() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
-      child: AppFormField(
-        iconButton: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.search),
-          color: AppColors.BLACK_300,
+    return Showcase(
+      description: DebitLanguage.searchDebitCustomer,
+      key: _viewModel!.keySearch,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
+        child: AppFormField(
+          iconButton: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.search),
+            color: AppColors.BLACK_300,
+          ),
+          hintText: DebitLanguage.search,
+          onChanged: (value) async {
+            await _viewModel!.onSearchDebit(value.trim());
+          },
         ),
-        hintText: DebitLanguage.search,
-        onChanged: (value) async {
-          await _viewModel!.onSearchDebit(value.trim());
-        },
       ),
     );
   }
@@ -180,8 +184,8 @@ class _DebitScreenState extends State<DebitScreen> {
       floatingActionButton:Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
         child: Showcase(
-          key: _viewModel!.add,
-          description: HomePageLanguage.addInvoice,
+          key: _viewModel!.keyAdd,
+          description: DebitLanguage.addDebitCustomer,
           targetBorderRadius: BorderRadius.all(Radius.circular(
             BorderRadiusSize.sizeLarge,),),
           child: FloatingActionButton(

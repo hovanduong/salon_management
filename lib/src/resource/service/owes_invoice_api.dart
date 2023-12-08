@@ -17,6 +17,7 @@ class OwesInvoiceParams {
     this.isDebit,
     this.search,
     this.note,
+    this.isGetMe,
   });
   final int? id;
   final num? money;
@@ -27,6 +28,7 @@ class OwesInvoiceParams {
   final bool? isDebit;
   final String? search;
   final String? note;
+  final int? isGetMe;
 }
 
 class OwesInvoiceApi {
@@ -35,7 +37,7 @@ class OwesInvoiceApi {
     try {
       final response = await HttpRemote.get(
         url: '/owes-invoice?pageSize=10&page=${params.page}&myCustomerOwesId=${
-          params.id}',
+          params.id}&isUser=${params.isGetMe}',
       );
       switch (response?.statusCode) {
         case 200:

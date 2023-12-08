@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
@@ -8,6 +9,7 @@ import '../../configs/language/debit_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/debit_api.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -16,8 +18,10 @@ class DebitViewModel extends BaseViewModel{
 
   bool isLoading=true;
   bool loadingMore=false;
+  bool isShowCase=false;
 
-  GlobalKey add= GlobalKey();
+  GlobalKey keyAdd= GlobalKey();
+  GlobalKey keySearch= GlobalKey();
 
   DebitApi debitApi= DebitApi();
 
@@ -34,10 +38,36 @@ class DebitViewModel extends BaseViewModel{
   ScrollController scrollController= ScrollController();
 
   Future<void> init() async{
+    await fetchData();
+    await AppPref.getShowCase('showCaseDebit').then(
+      (value) => isShowCase = value ?? true,
+    );
+    startShowCase();
+    await hideShowcase();
+  }
+
+  Future<void> fetchData()async{
     page=1;
     await getDebit(page, '');
     listCurrent=listCustomer;
     scrollController.addListener(scrollListener);
+    notifyListeners();
+  }
+
+  Future<void> hideShowcase() async {
+    await AppPref.setShowCase('showCaseDebit', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  void startShowCase() {
+    if (isShowCase == true) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [keyAdd, keySearch,],
+        );
+      });
+    }
   }
 
   Future<void> goToDebt({MyCustomerModel? myCustomerModel,}) =>
