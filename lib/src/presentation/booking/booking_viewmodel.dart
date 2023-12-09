@@ -82,7 +82,7 @@ class BookingViewModel extends BaseViewModel {
   bool onNote = true;
   bool onDiscount = true;
   bool isListViewVisible = false;
-  bool enableButton = false;
+  bool enableButton = true;
   bool isLoading=true;
   bool isShowAll=false;
   bool isShowCase=true;
@@ -421,8 +421,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   void enableConfirmButton() {
-    if (messageErrorPrice==null && 
-      moneyController.text.trim()!='' && categoryId!=null) {
+    if (categoryId!=null) {
       enableButton = true;
     } else {
       enableButton = false;
@@ -538,7 +537,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> getCategory() async {
-    final result = await categoryApi.getListCategory(1, '');
+    final result = await categoryApi.getListCategory(null);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -563,7 +562,8 @@ class BookingViewModel extends BaseViewModel {
       MyBookingPramsApi(
         myCustomerId: myCustomerId,
         idCategory: categoryId,
-        money: int.parse(moneyController.text.replaceAll(',', '')),
+        money: moneyController.text!=''?
+         int.parse(moneyController.text.replaceAll(',', '')): null,
         date: '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
         address: addressController.text.trim(),
         isBooking: true,
@@ -605,7 +605,8 @@ class BookingViewModel extends BaseViewModel {
         myCustomerId: myCustomerId,
         idCategory: categoryId,
         note: noteController.text.trim(),
-        money: int.parse(moneyController.text.replaceAll(',', '')),
+        money: moneyController.text!=''?
+         int.parse(moneyController.text.replaceAll(',', '')): null,
       ),
     );
 

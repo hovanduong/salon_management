@@ -95,38 +95,38 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ));
   }
 
-  Widget buildCardService(int index, int serviceIndex) {
-    final idService =
-        _viewModel!.listCategory[index].myServices?[serviceIndex].id;
-    final idCategory = _viewModel!.listCategory[index].id;
-    final money =
-        _viewModel!.listCategory[index].myServices?[serviceIndex].money;
-    final name = _viewModel!.listCategory[index].myServices?[serviceIndex].name;
-    return CardServiceWidget(
-      money: money,
-      name: name,
-      onTap: (context) => _viewModel!.showWaningDiaglog(
-        onTapRight: () {
-          _viewModel!.deleteService(idCategory!, idService!);
-        },
-        title: CategoryLanguage.waningDeleteService,
-      ),
-    );
-  }
+  // Widget buildCardService(int index, int serviceIndex) {
+  //   final idService =
+  //       _viewModel!.listCategory[index].myServices?[serviceIndex].id;
+  //   final idCategory = _viewModel!.listCategory[index].id;
+  //   final money =
+  //       _viewModel!.listCategory[index].myServices?[serviceIndex].money;
+  //   final name = _viewModel!.listCategory[index].myServices?[serviceIndex].name;
+  //   return CardServiceWidget(
+  //     money: money,
+  //     name: name,
+  //     onTap: (context) => _viewModel!.showWaningDiaglog(
+  //       onTapRight: () {
+  //         _viewModel!.deleteService(idCategory!, idService!);
+  //       },
+  //       title: CategoryLanguage.waningDeleteService,
+  //     ),
+  //   );
+  // }
 
-  Widget buildListService(int index) {
-    return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
-      child: ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: const BouncingScrollPhysics(),
-        itemCount: _viewModel!.listCategory[index].myServices?.length,
-        itemBuilder: (context, serviceIndex) =>
-            buildCardService(index, serviceIndex),
-      ),
-    );
-  }
+  // Widget buildListService(int index) {
+  //   return Padding(
+  //     padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
+  //     child: ListView.builder(
+  //       shrinkWrap: true,
+  //       padding: EdgeInsets.zero,
+  //       physics: const BouncingScrollPhysics(),
+  //       itemCount: _viewModel!.listCategory[index].myServices?.length,
+  //       itemBuilder: (context, serviceIndex) =>
+  //           buildCardService(index, serviceIndex),
+  //     ),
+  //   );
+  // }
 
   Widget buildIconCategory(int index) {
     if (_viewModel!.listCategory.isNotEmpty) {
@@ -164,48 +164,31 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildTitleCategory(int index) {
     final id = _viewModel?.listCategory[index].id;
     final name = _viewModel?.listCategory[index].name;
-    return Padding(
-      padding: EdgeInsets.only(bottom: SizeToPadding.sizeVeryVerySmall),
-      child: InkWell(
-        onTap: () {
-          if (_viewModel!.listCategory[index].myServices!.isNotEmpty) {
-            _viewModel!.setIcon(index);
-          }
+    return CardServiceWidget(
+      name: name,
+      onTapDelete: (context) => _viewModel!.showWaningDiaglog(
+        onTapRight: () {
+          _viewModel!.putCategory(id!);
         },
-        child: SlidableActionWidget(
-          isCheckCategory: true,
-          onTapButtonFirst: (context) => _viewModel!.showWaningDiaglog(
-            onTapRight: () {
-              _viewModel!.deleteCategory(id!);
-            },
-            title: CategoryLanguage.waningDeleteCategory,
-          ),
-          onTapButtonSecond: (context) => _viewModel!.goToAddCategory(
-            context: context,
-            categoryModel: CategoryModel(id: id, name: name),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildNameCategory(index),
-              buildIconCategory(index),
-            ],
-          ),
-        ),
+        title: CategoryLanguage.waningDeleteCategory,
+      ),
+      onTapUpdate: (context) => _viewModel!.goToAddCategory(
+        context: context,
+        categoryModel: _viewModel!.listCategory[index],
       ),
     );
   }
 
-  Widget buildContentCategoryWidget(int index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildTitleCategory(index),
-        if (_viewModel!.listCategory[index].isIconCategory == false)
-          buildListService(index),
-      ],
-    );
-  }
+  // Widget buildContentCategoryWidget(int index) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       buildTitleCategory(index),
+  //       // if (_viewModel!.listCategory[index].isIconCategory == false)
+  //         // buildListService(index),
+  //     ],
+  //   );
+  // }
 
   Widget buildSearch() {
     return Padding(
@@ -226,11 +209,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildCategory() {
     return Container(
-      margin: EdgeInsets.only(
+      padding: EdgeInsets.only(
         left: SizeToPadding.sizeSmall,
         right: SizeToPadding.sizeVerySmall,
       ),
-      height: MediaQuery.of(context).size.height - 200,
+      height: MediaQuery.of(context).size.height-50,
       child: ListView.builder(
         padding: EdgeInsets.zero,
         physics: const AlwaysScrollableScrollPhysics(),
@@ -240,7 +223,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             : _viewModel!.listCategory.length,
         itemBuilder: (context, index) {
           if (index < _viewModel!.listCategory.length) {
-            return buildContentCategoryWidget(index);
+            return buildTitleCategory(index);
           } else {
             return const CupertinoActivityIndicator();
           }
@@ -275,7 +258,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            buildSearch(),
+            // buildSearch(),
             showListCategory(),
           ],
         ),
@@ -318,17 +301,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (!_viewModel!.isIconFloatingButton)
-            buildItemFloating()
-          else
-            Container(),
+          // if (!_viewModel!.isIconFloatingButton)
+          //   buildItemFloating()
+          // else
+          //   Container(),
           FloatingButtonWidget(
             heroTag: 'btn',
-            iconData:
-                _viewModel!.isIconFloatingButton ? Icons.menu : Icons.close,
+            iconData: Icons.add,
             onPressed: () {
-              _viewModel!.setIconFloating();
+              _viewModel!.goToAddCategory(context: context);
             },
+            
           ),
         ],
       ),

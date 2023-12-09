@@ -10,6 +10,9 @@ import 'calendar/calendar.dart';
 import 'category/category_screen.dart';
 import 'category_add/category_add.dart';
 import 'change_password/change_password.dart';
+import 'debit/debit_screen.dart';
+import 'debt/debt.dart';
+import 'debt_add/debt__add_screen.dart';
 import 'home/home.dart';
 import 'invoice/invoice_screen.dart';
 import 'my_customer/my_customer.dart';
@@ -62,6 +65,9 @@ class Routers {
   static const String myCustomerEdit = '/myCustomerEdit';
   static const String addBooking = '/addBooking';
   static const String invoice = '/invoice';
+  static const String debit = '/debit';
+  static const String debt = '/debt';
+  static const String debtAdd = '/debtAdd';
   static const String payment = '/payment';
   static const String bill = '/bill';
   static const String profileAccount = '/profileAccount';
@@ -128,6 +134,30 @@ class Routers {
           arguments: arguments,
         );
 
+      case debtAdd:
+        return animRoute(
+          const DebtAddScreen(),
+          beginOffset: right,
+          name: debtAdd,
+          arguments: arguments,
+        );
+      
+      case debt:
+        return animRoute(
+          const DebtScreen(),
+          beginOffset: right,
+          name: debt,
+          arguments: arguments,
+        );
+      
+      case debit:
+        return animRoute(
+          const DebitScreen(),
+          beginOffset: right,
+          name: debit,
+          arguments: arguments,
+        );
+      
       case invoice:
         return animRoute(
           const InvoiceScreen(),

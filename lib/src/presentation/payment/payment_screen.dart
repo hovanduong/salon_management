@@ -359,25 +359,25 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildButtonSelect(String name, bool isButton) {
     return isButton
-        ? Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: AppButton(
-                enableButton: true,
-                content: name,
-                onTap: () => _viewModel!.setButtonSelect(name),
-              ),
-            ),
-          )
-        : Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: AppOutlineButton(
-                content: name,
-                onTap: () => _viewModel!.setButtonSelect(name),
-              ),
-            ),
-          );
+    ? Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: AppButton(
+            enableButton: true,
+            content: name,
+            onTap: () => _viewModel!.setButtonSelect(name),
+          ),
+        ),
+      )
+    : Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: AppOutlineButton(
+            content: name,
+            onTap: () => _viewModel!.setButtonSelect(name),
+          ),
+        ),
+      );
   }
 
   Widget buildChooseButton() {

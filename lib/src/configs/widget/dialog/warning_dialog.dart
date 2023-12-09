@@ -18,6 +18,8 @@ class WarningDialog extends StatelessWidget {
     this.onTapRight,
     this.isForm = false,
     this.controller,
+    this.hintTextForm,
+    this.keyboardType,
   }) : super(key: key);
   final String? content;
   final String? title;
@@ -30,6 +32,8 @@ class WarningDialog extends StatelessWidget {
   final Function()? onTapRight;
   final bool isForm;
   final TextEditingController? controller;
+  final String? hintTextForm;
+  final TextInputType? keyboardType;
 
   dynamic dialogContent(BuildContext context) {
     return DecoratedBox(
@@ -88,9 +92,9 @@ class WarningDialog extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: AppFormField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: keyboardType,
                   textEditingController: controller,
-                  hintText: 'Nhập số điện thoại',
+                  hintText: hintTextForm??'',
                 ),
               ),
             SizedBox(height: content != null ? 10 : 30),

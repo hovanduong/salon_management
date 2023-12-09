@@ -225,11 +225,11 @@ class HomeViewModel extends BaseViewModel {
   void setMoney() {
     expenseManagement.forEach((element) {
       if (element.revenue == true) {
-        totalBalance = AppCurrencyFormat.formatMoneyVND(element.money ?? 0);
+        totalBalance = AppCurrencyFormat.formatMoneyD(element.money ?? 0);
       } else if (element.income == true) {
-        totalIncome = AppCurrencyFormat.formatMoneyVND(element.money ?? 0);
+        totalIncome = AppCurrencyFormat.formatMoneyD(element.money ?? 0);
       } else {
-        totalExpenses = AppCurrencyFormat.formatMoneyVND(element.money ?? 0);
+        totalExpenses = AppCurrencyFormat.formatMoneyD(element.money ?? 0);
       }
     });
     notifyListeners();

@@ -645,7 +645,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           labelText: BookingLanguage.amountOfMoney,
           hintText: BookingLanguage.enterAmountOfMoney,
           textEditingController: _viewModel!.moneyController,
-          isRequired: true,
           onChanged: (value) {
             _viewModel!
               ..validPrice(value.trim())

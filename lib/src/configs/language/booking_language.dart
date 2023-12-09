@@ -8,6 +8,7 @@ class BookingLanguage {
   static final bookingSuccessful = S.current.bookingSuccessful;
   static final onlySpecialChars = S.current.onlySpecialChars;
   static final home = S.current.home;
+  static final debt = S.current.debt;
   static final enterNote = S.current.enterNote;
   static final note = S.current.note;
   static final total = S.current.total;
@@ -55,6 +56,7 @@ class BookingLanguage {
   static final errorMoney= S.current.errorMoney;
   static final emptyMoneyError= S.current.emptyMoneyError;
   static final paymentSuccess= S.current.paymentSuccess;
+  static final addSuccess= S.current.addSuccess;
   static final chooseMonth= S.current.chooseMonth;
   static final requiredMoney= S.current.requiredMoney;
   static final infoCustomerShowCase= S.current.infoCustomerShowCase;

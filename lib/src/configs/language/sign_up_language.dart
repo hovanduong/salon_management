@@ -23,5 +23,6 @@ class SignUpLanguage {
   static final exitAppContent = S.current.exitAppContent;
   static final haveAccount = S.current.haveAccount;
   static final validEnterFullName = S.current.validEnterFullName;
+  static final note = S.current.note;
 
 }

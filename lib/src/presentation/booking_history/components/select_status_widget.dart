@@ -9,11 +9,13 @@ class SelectStatusWidget extends StatefulWidget {
     this.status,
     this.onChanged, 
     this.color,
+    this.money,
   });
 
   final String? status;
   final Function(String value)? onChanged;
   final Color? color;
+  final num? money;
 
   @override
   State<SelectStatusWidget> createState() => _SelectStatusWidgetState();
@@ -26,13 +28,20 @@ List<String> listStatus = [
 
 class _SelectStatusWidgetState extends State<SelectStatusWidget> {
   String dropValue = listStatus.first;
+  
 
   @override
   Widget build(BuildContext context) {
+    listStatus.remove(HistoryLanguage.done);
     for (var i = 0; i < listStatus.length; i++) {
       if (listStatus[i].contains(widget.status!)) {
         dropValue = listStatus[i];
       }
+    }
+    if(widget.money==null){
+      listStatus.add(HistoryLanguage.done);
+    }else{
+      listStatus.remove(HistoryLanguage.done);
     }
     return Container(
       height: SpaceBox.sizeLarge * 2,

@@ -239,6 +239,8 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
       context: context,
       builder: (context) {
         return WarningDialog(
+          keyboardType: TextInputType.phone,
+          hintTextForm: ProfileAccountLanguage.enterPhone,
           content: ProfileAccountLanguage.notifiCheckPhone,
           title: ProfileAccountLanguage.confirmDeleteAccount,
           leftButtonName: ProfileAccountLanguage.cancel,

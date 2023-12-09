@@ -45,7 +45,7 @@ class FloatingButtonWidget extends StatelessWidget {
             onPressed: (){
               onPressed!();
             },
-            child: Icon(iconData),
+            child: Icon(iconData, color: AppColors.COLOR_WHITE,),
           ),
         ],
       ),

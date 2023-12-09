@@ -16,6 +16,11 @@ class AppCurrencyFormat {
     return money;
   }
 
+  static String formatMoneyD(num value) {
+    final money = '${formatMoneyDot(value)} đ';
+    return money;
+  }
+
   static String formatMoney(dynamic money) {
     return NumberFormat('###,###,###', 'en_us').format(money);
   }

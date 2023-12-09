@@ -9,6 +9,8 @@ export 'my_booking_model.dart';
 export 'my_category_model.dart';
 export 'my_customer_model.dart';
 export 'my_service_model.dart';
+export 'owes_model.dart';
+export 'owes_total_model.dart';
 export 'quantity_income_model.dart';
 export 'radio_model.dart';
 export 'report_model.dart';

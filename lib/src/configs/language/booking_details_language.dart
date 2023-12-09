@@ -11,5 +11,6 @@ class BookingDetailsLanguage {
   static final waningPayment = S.current.waningPayment;
   static final cancel = S.current.cancel;
   static final paymentConfirmation = S.current.paymentConfirmation;
+  static final dontHave = S.current.dontHave;
   
 }

@@ -213,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // buildLineWidget(),
             buildAccountInfoWidget(),
             // buildPersonalProfileWidget(),
-            // buildCategoryWidget(),
+            buildCategoryWidget(),
             // buildLoginAndSecurity(),
             // buildDataAndPrivacyWidget(),
             buildLogoutWidget(),

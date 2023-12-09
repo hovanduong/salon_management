@@ -52,5 +52,6 @@ class HomePageLanguage {
   static final totalRevenue = S.current.totalRevenue;
   static final date = S.current.date;
   static final chooseMonth = S.current.chooseMonth;
+  static final dontHave = S.current.dontHave;
 
 }

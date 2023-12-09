@@ -12,22 +12,26 @@ class CategoryParams {
     this.name,
     this.income=true,
     this.imageId,
+    this.isUser,
+    this.page,
   });
   final int? id;
+  final int? isUser;
   final String? name;
   final bool income;
   final int? imageId;
+  final int? page;
 }
 
 class CategoryApi {
   Future<Result<List<CategoryModel>, Exception>> getListCategory(
-    int page,
-    String? search,
+    CategoryParams? params,
   ) async {
     try {
       final response = await HttpRemote.get(
-        // url: '/category?pageSize=10&page=$page&search=${search ?? ''}',
-        url: '/category',
+        url: params!=null?
+         '/category?pageSize=20&page=${params.page}&isUser=${params.isUser}'
+         : '/category',
       );
       switch (response?.statusCode) {
         case 200:
@@ -63,7 +67,11 @@ class CategoryApi {
     try {
       final response = await HttpRemote.put(
         url: '/category/${params!.id}',
-        body: {'name': params.name},
+        body: {
+          'name': params.name,
+          'income': params.income,
+          'imageId': params.imageId,
+        },
       );
       switch (response?.statusCode) {
         case 200:

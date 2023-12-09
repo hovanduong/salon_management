@@ -94,14 +94,16 @@ class ScreenTap extends StatelessWidget {
                             ),
                           )
                         : '',
-                    total: AppCurrencyFormat.formatMoneyVND(
+                    total:listCurrent?[index].money!=null?
+                     AppCurrencyFormat.formatMoneyD(
                       listCurrent?[index].money ?? 0,
-                    ),
+                    ): null,
                     nameUser: listCurrent![index].myCustomer?.fullName,
                     phoneNumber: phone,
                     onTapPhone: () => onTapPhone!(phone!),
                     widget: widget ??
                         SelectStatusWidget(
+                          money: listCurrent?[index].money,
                           status: status ?? HistoryLanguage.confirmed,
                           onChanged: (value) {
                             if(isCanceled && value.contains(HistoryLanguage.confirmed)){
@@ -109,6 +111,9 @@ class ScreenTap extends StatelessWidget {
                             }
                             if(!isCanceled && value.contains(HistoryLanguage.cancel)){
                               onChangedStatus!('Canceled', id!);
+                            } 
+                            if(!isCanceled && value.contains(HistoryLanguage.done)){
+                              onChangedStatus!('Done', id!);
                             } 
                           },
                           color: colorStatus,

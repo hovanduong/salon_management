@@ -52,8 +52,8 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> onSearchCategory(String value) async {
     // final searchCategory = TiengViet.parse(value.toLowerCase());
-    final searchCategory= value;
-    await getListSearch(searchCategory);
+    // final searchCategory= value;
+    // await getListSearch(searchCategory);
     notifyListeners();
     notifyListeners();
   }
@@ -87,12 +87,14 @@ class CategoryViewModel extends BaseViewModel {
   Future<void> goToAddCategory({
     required BuildContext context,
     CategoryModel? categoryModel,
-  }) =>
-      Navigator.pushNamed(
-        context,
-        Routers.addCategory,
-        arguments: categoryModel,
-      );
+  }) async {
+    await Navigator.pushNamed(
+      context,
+      Routers.addCategory,
+      arguments: categoryModel,
+    );
+    await init();
+  }
 
   void setIcon(int index) {
     listCategory[index].isIconCategory = !listCategory[index].isIconCategory;
@@ -182,7 +184,10 @@ class CategoryViewModel extends BaseViewModel {
     int page,
     bool? isNewList,
   ) async {
-    final result = await categoryApi.getListCategory(page, '');
+    final result = await categoryApi.getListCategory(CategoryParams(
+      page: page,
+      isUser: 1,
+    ),);
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -201,57 +206,55 @@ class CategoryViewModel extends BaseViewModel {
         listCategory = value as List<CategoryModel>;
       }
     }
-    isLoading = false;
     notifyListeners();
   }
 
-  Future<void> getListSearch(String? search) async {
-    final result = await categoryApi.getListCategory(
-      page,
-      search,
-    );
+  // Future<void> getListSearch(String? search) async {
+  //   final result = await categoryApi.getListCategory(
+  //     page,'',
+  //   );
 
-    final value = switch (result) {
-      Success(value: final listMyCustomer) => listMyCustomer,
-      Failure(exception: final exception) => exception,
-    };
+  //   final value = switch (result) {
+  //     Success(value: final listMyCustomer) => listMyCustomer,
+  //     Failure(exception: final exception) => exception,
+  //   };
 
-    if (!AppValid.isNetWork(value)) {
-      isLoading = true;
-    } else if (value is Exception) {
-      isLoading = true;
-    } else {
-      isLoading = false;
-      listCategory = value as List<CategoryModel>;
-    }
-    isLoading = false;
-    notifyListeners();
-  }
+  //   if (!AppValid.isNetWork(value)) {
+  //     isLoading = true;
+  //   } else if (value is Exception) {
+  //     isLoading = true;
+  //   } else {
+  //     isLoading = false;
+  //     listCategory = value as List<CategoryModel>;
+  //   }
+  //   isLoading = false;
+  //   notifyListeners();
+  // }
 
-  Future<void> deleteCategory(int id) async {
-    LoadingDialog.showLoadingDialog(context);
-    final result = await categoryApi.deleteCategory(id);
-    final value = switch (result) {
-      Success(value: final isTrue) => isTrue,
-      Failure(exception: final exception) => exception,
-    };
-    if (!AppValid.isNetWork(value)) {
-      LoadingDialog.hideLoadingDialog(context);
-      showDialogNetwork(context);
-    } else if (value is Exception) {
-      LoadingDialog.hideLoadingDialog(context);
-      showErrorDialog(context);
-    } else {
-      LoadingDialog.hideLoadingDialog(context);
-      showSuccessDiaglog(context);
-    }
-    notifyListeners();
-  }
+  // Future<void> deleteCategory(int id) async {
+  //   LoadingDialog.showLoadingDialog(context);
+  //   final result = await categoryApi.deleteCategory(id);
+  //   final value = switch (result) {
+  //     Success(value: final isTrue) => isTrue,
+  //     Failure(exception: final exception) => exception,
+  //   };
+  //   if (!AppValid.isNetWork(value)) {
+  //     LoadingDialog.hideLoadingDialog(context);
+  //     showDialogNetwork(context);
+  //   } else if (value is Exception) {
+  //     LoadingDialog.hideLoadingDialog(context);
+  //     showErrorDialog(context);
+  //   } else {
+  //     LoadingDialog.hideLoadingDialog(context);
+  //     showSuccessDiaglog(context);
+  //   }
+  //   notifyListeners();
+  // }
 
-  Future<void> putCategory(String name, int id) async {
+  Future<void> putCategory(int id) async {
     LoadingDialog.showLoadingDialog(context);
     final result = await categoryApi.putCategory(
-      CategoryParams(name: name, id: id),
+      CategoryParams(name: 'null', id: id),
     );
 
     final value = switch (result) {
@@ -269,28 +272,6 @@ class CategoryViewModel extends BaseViewModel {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
       await pullRefresh();
-    }
-    notifyListeners();
-  }
-
-  Future<void> deleteService(int idCategory, int idService) async {
-    LoadingDialog.showLoadingDialog(context);
-    final result = await myServiceApi.deleteService(idCategory, idService);
-
-    final value = switch (result) {
-      Success(value: final isTrue) => isTrue,
-      Failure(exception: final exception) => exception,
-    };
-
-    if (!AppValid.isNetWork(value)) {
-      LoadingDialog.hideLoadingDialog(context);
-      showDialogNetwork(context);
-    } else if (value is Exception) {
-      LoadingDialog.hideLoadingDialog(context);
-      showErrorDialog(context);
-    } else {
-      LoadingDialog.hideLoadingDialog(context);
-      showSuccessDiaglog(context);
     }
     notifyListeners();
   }

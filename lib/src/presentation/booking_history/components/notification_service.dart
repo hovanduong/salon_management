@@ -105,18 +105,23 @@ class NotificationService extends StatelessWidget {
   }
 
   Widget buildPrice() {
-    return Row(
+    return total!=null? Column(
       children: [
-        Paragraph(
-          content: '${HistoryLanguage.total}: ',
-          style: STYLE_MEDIUM_BOLD,
-        ),
-        Paragraph(
-          content: total ?? '',
-          style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_PINK),
+        buildLine(),
+        Row(
+          children: [
+            Paragraph(
+              content: '${HistoryLanguage.total}: ',
+              style: STYLE_MEDIUM_BOLD,
+            ),
+            Paragraph(
+              content: total ?? '',
+              style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_PINK),
+            ),
+          ],
         ),
       ],
-    );
+    ):Container();
   }
 
   Widget buildLine() {
@@ -198,13 +203,13 @@ class NotificationService extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
-              child: AppButton(
+              child:total!=null? AppButton(
                 onTap: () {
                   onPay!();
                 },
                 content: HistoryLanguage.pay,
                 enableButton: true,
-              ),
+              ): Container(),
             ),
             SizedBox(
               width: SpaceBox.sizeBig,
@@ -236,7 +241,6 @@ class NotificationService extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildHeaderCard(),
-                buildLine(),
                 buildPrice(),
                 if (isButton) buildFooter() else Container(),
               ],
