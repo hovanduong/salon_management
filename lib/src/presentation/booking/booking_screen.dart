@@ -69,25 +69,32 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildBookingScreen() {
-    return SingleChildScrollView(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          buildAppbar(),
-          Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              buildInfo(),
-              buildLineWidget(),
-              // buildServiceInfo(),
-              // buildLineWidget(),
-              buildCategoryAndTime(),
-              buildConfirmButton(),
+              buildAppbar(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildInfo(),
+                  buildLineWidget(),
+                  // buildServiceInfo(),
+                  // buildLineWidget(),
+                  buildCategoryAndTime(),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: buildConfirmButton(),
     );
   }
 
@@ -660,7 +667,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildConfirmButton() {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium * 2,
         horizontal: SizeToPadding.sizeSmall,
       ),
       child: AppButton(

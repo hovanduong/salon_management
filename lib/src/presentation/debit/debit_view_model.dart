@@ -319,7 +319,7 @@ class DebitViewModel extends BaseViewModel{
 
   Future<void> putDebit(int id) async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await debitApi.putCategory(DebitParams(
+    final result = await debitApi.putDebit(DebitParams(
       fullName: nameController.text.trim(),
       id: id,
     ),);
@@ -344,7 +344,7 @@ class DebitViewModel extends BaseViewModel{
 
   Future<void> deleteDebit(int id) async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await debitApi.deleteCategory(id);
+    final result = await debitApi.deleteDebit(id);
 
     final value = switch (result) {
       Success(value: final customer) => customer,

@@ -145,4 +145,8 @@ class AppImages {
 
   static const String accumulatedPoints = 'assets/icons/accumulatedPoints.svg';
 
+  static const String icBellApp = 'assets/icons/bell_app.svg';
+
+  static const String icStar = 'assets/icons/stars-filled.svg';
+
 }

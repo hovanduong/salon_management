@@ -46,7 +46,26 @@ class DebitApi {
     }
   }
 
-  Future<Result<bool, Exception>> deleteCategory(int id) async {
+  Future<Result<bool, Exception>> postDebit(DebitParams? params) async {
+    try {
+      final response = await HttpRemote.post(
+        url: '/owes-customer', 
+        body: {
+          'fullName': params!.fullName,
+        },
+      );
+      switch (response?.statusCode) {
+        case 201:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> deleteDebit(int id) async {
     try {
       final response = await HttpRemote.delete(
         url: '/owes-customer/$id',
@@ -62,7 +81,7 @@ class DebitApi {
     }
   }
 
-  Future<Result<bool, Exception>> putCategory(DebitParams? params) async {
+  Future<Result<bool, Exception>> putDebit(DebitParams? params) async {
     try {
       final response = await HttpRemote.put(
         url: '/owes-customer/${params!.id}',
@@ -72,25 +91,6 @@ class DebitApi {
       );
       switch (response?.statusCode) {
         case 200:
-          return const Success(true);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
-
-  Future<Result<bool, Exception>> postDebit(DebitParams? params) async {
-    try {
-      final response = await HttpRemote.post(
-        url: '/owes-customer', 
-        body: {
-          'fullName': params!.fullName,
-        },
-      );
-      switch (response?.statusCode) {
-        case 201:
           return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));

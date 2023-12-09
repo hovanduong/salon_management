@@ -17,6 +17,7 @@ class MyBookingParams {
     this.isDaysBefore = false,
     this.isUpcoming = false,
     this.isInvoice = false,
+    this.isRemind=false,
     this.date,
   });
   final int? id;
@@ -29,6 +30,7 @@ class MyBookingParams {
   final DateTime? date;
   final String? code;
   final bool isInvoice;
+  final bool isRemind;
 }
 
 class MyBookingApi {
@@ -104,6 +106,24 @@ class MyBookingApi {
     try {
       final response = await HttpRemote.delete(
         url: '/my-booking/${params.id}',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+   Future<Result<bool, Exception>> putRemindBooking(
+    MyBookingParams params,
+  ) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/my-booking/${params.id}/${params.isRemind}',
       );
       switch (response?.statusCode) {
         case 200:

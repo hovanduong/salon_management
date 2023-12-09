@@ -24,6 +24,7 @@ class MyBookingModel {
   String? code;
   bool? income;
   bool? isBooking;
+  bool? isReminder;
 
   MyBookingModel({
     this.id,
@@ -45,6 +46,7 @@ class MyBookingModel {
     this.myCustomer,
     this.total,
     this.categoryId,
+    this.isReminder,
   });
 }
 
@@ -98,6 +100,7 @@ abstract class MyBookingModelFactory {
       ..total=json['total']
       ..invoiceId = json['invoiceId']
       ..categoryId=json['categoryId']
+      ..isReminder=json['isReminder']
       ..myCustomer = json['myCustomer'] != null
           ? MyCustomerModelFactory.create(jsonEncode(json['myCustomer']))
           : null

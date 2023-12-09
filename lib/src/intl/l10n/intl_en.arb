@@ -339,5 +339,9 @@
     "amountOwedPaid":"Amount owed and amount paid",
     "historyOwes":"Debt and repayment history",
     "appointmentEnd":"This appointment has ended",
+    "appointmentUpcoming":"Upcoming appointment",
+    "emptyNotification":"There are currently no announcements",
+    "remind":"Remind",
+    "newFeature":"New feature launched",
     "lastLine": ""
 }

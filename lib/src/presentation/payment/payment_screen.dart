@@ -280,18 +280,24 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildPaymentScreen() {
-    return SingleChildScrollView(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: Column(
-        children: [
-          buildAppbar(),
-          buildInfo(),
-          buildLineWidget(),
-          // buildServiceInfo(),
-          buildCategoryAndTime(),
-          buildConfirmButton(),
-        ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 80),
+          child: Column(
+            children: [
+              buildAppbar(),
+              buildInfo(),
+              buildLineWidget(),
+              // buildServiceInfo(),
+              buildCategoryAndTime(),
+            ],
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: buildConfirmButton(),
     );
   }
 
@@ -635,7 +641,6 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   Widget buildConfirmButton() {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium * 2,
         horizontal: SizeToPadding.sizeSmall,
       ),
       child: AppButton(

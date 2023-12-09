@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +32,8 @@ class ScreenTap extends StatelessWidget {
     this.contentEmpty, 
     this.colorStatus, 
     this.status,
+    this.isRemind=false,
+    this.onRemind,
   });
 
   final Function()? onRefresh;
@@ -51,6 +55,8 @@ class ScreenTap extends StatelessWidget {
   final String? contentEmpty;
   final Color? colorStatus;
   final String? status;
+  final bool isRemind;
+  final Function(bool isRemind, MyBookingModel list)? onRemind;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +87,9 @@ class ScreenTap extends StatelessWidget {
                   final id = listCurrent![index].id;
                   return NotificationService(
                     context: context,
+                    // isRemind: listCurrent![index].isReminder??false,
+                    isRemind: isRemind,
+                    onRemind: (value)=> onRemind!(value, listCurrent![index]),
                     onPay: () => onPay!(id!),
                     onTapEditBooking: () =>
                         onTapEditBooking!(listCurrent![index]),

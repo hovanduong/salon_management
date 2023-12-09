@@ -21,9 +21,11 @@ class MyBookingPramsApi {
   bool isBooking;
   bool isIncome;
   int? idCategory;
+  bool? isReminder;
   MyBookingPramsApi({
     this.isBooking = false,
     this.isIncome=false,
+    this.isReminder,
     this.myCustomerId,
     this.myServices,
     this.address,

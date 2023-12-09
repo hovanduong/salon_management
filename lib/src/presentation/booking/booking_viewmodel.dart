@@ -569,6 +569,7 @@ class BookingViewModel extends BaseViewModel {
         isBooking: true,
         isIncome: true,
         note: noteController.text.trim(),
+        isReminder: false,
       ),
     );
 

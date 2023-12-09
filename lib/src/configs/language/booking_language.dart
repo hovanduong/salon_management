@@ -60,4 +60,5 @@ class BookingLanguage {
   static final chooseMonth= S.current.chooseMonth;
   static final requiredMoney= S.current.requiredMoney;
   static final infoCustomerShowCase= S.current.infoCustomerShowCase;
+  static final remind= S.current.remind;
 }

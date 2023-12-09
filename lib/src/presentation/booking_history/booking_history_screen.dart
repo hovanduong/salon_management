@@ -1,7 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -72,12 +74,39 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
+  Widget buildIcNotification(){
+    return InkWell(
+      onTap: ()=> _viewModel!.goToNotification(context),
+      child: Stack(
+        children:[
+          SizedBox(
+            width: 32,
+            height: 32,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: SvgPicture.asset(AppImages.icBellApp, 
+                color: AppColors.COLOR_WHITE, height: 25, width: 25,
+              ),
+            ),
+          ),
+           Positioned(
+            right: 0,
+            top: 0,
+            child: NumberNotification(id: _viewModel!.idNotification),)
+        ]
+      ),
+    );
+  }
+
   Widget buildHeader() {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40),
         child: ListTile(
+          titleAlignment: ListTileTitleAlignment.center,
+          minLeadingWidth: 35,
+          leading: const SizedBox(),
           title: Center(
             child: Paragraph(
               content: HistoryLanguage.appointmentSchedule,
@@ -87,6 +116,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
               ),
             ),
           ),
+          trailing: buildIcNotification(),
         ),
       ),
     );
@@ -156,6 +186,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabDaysBefore() {
     return ScreenTap(
+      // isRemind: _viewModel!.isRemind,
+      // onRemind: (value)=> _viewModel!.setRemind(value),
       contentEmpty: HistoryLanguage.notificationEmptyBefore,
       listCurrent: _viewModel!.listCurrentDaysBefore,
       isLoading: _viewModel!.isLoading,
@@ -185,6 +217,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabToday() {
     return ScreenTap(
+      isRemind: _viewModel!.isRemind,
+      onRemind: (value, list)=> _viewModel!.setRemind(value, list),
       contentEmpty: HistoryLanguage.notificationEmptyToday,
       listCurrent: _viewModel!.listCurrentToday,
       isLoading: _viewModel!.isLoading,
@@ -214,6 +248,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabUpcoming() {
     return ScreenTap(
+      // isRemind: _viewModel!.isRemind,
+      // onRemind: (value)=> _viewModel!.setRemind(value),
       contentEmpty: HistoryLanguage.notificationEmptyUpcoming,
       isLoading: _viewModel!.isLoading,
       listCurrent: _viewModel!.listCurrentUpcoming,

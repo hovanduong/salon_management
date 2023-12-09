@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions, avoid_positional_boolean_parameters
 
 import 'dart:async';
 
@@ -8,12 +8,13 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/configs.dart';
-import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
+import '../../resource/service/notification_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -25,6 +26,7 @@ class Contains {
 
 class BookingHistoryViewModel extends BaseViewModel {
   MyBookingApi myBookingApi = MyBookingApi();
+  NotificationApi notificationApi= NotificationApi();
 
   ScrollController scrollUpComing = ScrollController();
   ScrollController scrollDone = ScrollController();
@@ -44,6 +46,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   bool isToday = true;
   bool isPullRefresh = false;
   bool isShowCase=true;
+  bool isRemind=false;
 
   int pageUpComing = 1;
   int pageDone = 1;
@@ -60,13 +63,21 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   TabController? tabController;
 
+  String? idNotification;
+
   Future<void> init({dynamic dataThis}) async {
+    await setId();
     await fetchData();
     tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
     await AppPref.getShowCase('showCaseAppointment').then(
       (value) => isShowCase=value??true,);
     startShowCase();
     await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> setId()async{
+    idNotification= await AppPref.getDataUSer('id') ?? '0';
     notifyListeners();
   }
 
@@ -101,6 +112,9 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> goToBookingDetails(
           BuildContext context, MyBookingParams model,) =>
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
+  
+  Future<void> goToNotification(BuildContext context,) 
+    => Navigator.pushNamed(context, Routers.notification,);
 
   Future<void> fetchData() async {
     await getDataToday(pageToday);
@@ -134,6 +148,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       () => scrollListener(scrollDone),
     );
     isPullRefresh=false;
+    isLoading=false;
     notifyListeners();
   }
 
@@ -389,6 +404,28 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
+  Future<void> setRemind(bool value, MyBookingModel list)async{
+    isRemind=value;
+    if(value){
+      await postRemindNotification(NotificationParams(
+        idBooking: list.id,
+        date: AppDateUtils.splitHourDate(
+          AppDateUtils.formatDateLocal(list.date??''),
+        ),
+        nameCustomer: list.myCustomer?.fullName!=''? list.myCustomer?.fullName
+          :null,
+        address: list.address!=''? list.address : null,
+        isRemind: value,
+      ),);
+    }else{
+      await getCancelRemind(NotificationParams(
+        idBooking: list.id,
+        isRemind: value,
+      ),);
+    }
+    notifyListeners();
+  }
+
   // Future<List<MyBookingModel>> setListMyBooking({String? status,
   //   bool isToday=false, List<MyBookingModel>? value,})async{
   //     final list=<MyBookingModel>[];
@@ -422,7 +459,75 @@ class BookingHistoryViewModel extends BaseViewModel {
       isLoading = true;
     } else {
       listMyBooking = value as List<MyBookingModel>;
-      isLoading = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> postRemindNotification(NotificationParams params) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await notificationApi.postRemindNotification(params);
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      await putRemindBooking(params.idBooking??0, params.isRemind);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getCancelRemind(NotificationParams params) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await notificationApi.getCancelRemind(params.idBooking??0);
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      await putRemindBooking(params.idBooking??0, params.isRemind);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putRemindBooking(int id, bool isRemind) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await myBookingApi.putRemindBooking(
+      MyBookingParams(
+        id: id,
+        isRemind: isRemind,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      // showSuccessDiaglog(context);
+      await fetchData();
     }
     notifyListeners();
   }

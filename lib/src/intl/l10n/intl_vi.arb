@@ -339,5 +339,9 @@
     "amountOwedPaid":"Số tiền nợ và số tiền đã trả",
     "historyOwes":"Lịch sử nợ và trả nợ",
     "appointmentEnd":"Cuộc hẹn này đã kết thúc",
+    "appointmentUpcoming":"Lịch hẹn sắp tới",
+    "emptyNotification":"Hiện tại không có thông báo nào",
+    "remind":"Nhắc nhở",
+    "newFeature":"Tính năng mới ra mắt",
     "lastLine": ""
 }

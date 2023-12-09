@@ -16,10 +16,12 @@ class NotificationService extends StatelessWidget {
     this.phoneNumber,
     this.onTapPhone,
     this.isButton = false,
+    this.isRemind=false,
     this.onTapDeleteBooking,
     this.onTapEditBooking,
     this.onPay,
     this.context,
+    this.onRemind
   });
 
   final String? date;
@@ -34,6 +36,9 @@ class NotificationService extends StatelessWidget {
   final Function()? onTapEditBooking;
   final Function()? onPay;
   final BuildContext? context;
+  final bool isRemind;
+  final Function(bool isRemind)? onRemind;
+
 
   Widget buildTitle({
     IconData? icon,
@@ -76,6 +81,22 @@ class NotificationService extends StatelessWidget {
     );
   }
 
+  Widget buildRemind(){
+    return Row(
+      children: [
+        Paragraph(
+          content: '${BookingLanguage.remind}: ',
+          style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+        ),
+        Switch(
+          activeColor: AppColors.PRIMARY_GREEN,
+          value: isRemind, 
+          onChanged:(value)=> onRemind!(value),
+        ),
+      ],
+    );
+  }
+
   Widget buildHeaderCard() {
     return Column(
       children: [
@@ -100,6 +121,7 @@ class NotificationService extends StatelessWidget {
             color: AppColors.FIELD_GREEN,
           ),
         ),
+        if (isButton) buildRemind() else const SizedBox(),
       ],
     );
   }

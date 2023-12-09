@@ -590,6 +590,7 @@ class PaymentViewModel extends BaseViewModel {
       isBooking: false,
       isIncome: isButtonSpending? false: true,
       note: noteController.text == '' ? '' : noteController.text,
+      isReminder: null,
     ),);
 
     final value = switch (result) {
