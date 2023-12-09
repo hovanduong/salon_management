@@ -7,6 +7,7 @@ import 'device_token_firebase.dart';
 import 'firebase_messaging.dart';
 import 'local_notification.dart';
 import 'notification_data.dart';
+import 'register_topic.dart';
 
 export 'firebase_messaging.dart';
 export 'local_notification.dart';
@@ -16,6 +17,7 @@ void notificationInitialed() {
   FirebaseCloudMessaging.initFirebaseMessaging();
   LocalNotification.setup();
   DeviceToken.setToken();
+  RegisterTopic.registerTopic();
 }
 
 final BehaviorSubject<String?> selectNotificationSubject =
