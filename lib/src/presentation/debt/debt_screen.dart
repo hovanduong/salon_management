@@ -1,6 +1,7 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -146,7 +147,7 @@ class _DebtScreenState extends State<DebtScreen>
       onTap: (index)=> _viewModel!.changeTab(index),
       tabs: [
         Tab(text: DebtLanguage.me,),
-        Tab(text: _viewModel!.myCustomerModel?.fullName,),
+        Tab(text: _viewModel!.myCustomerModel?.fullName?.split(' ').last,),
       ],
       indicatorSize: TabBarIndicatorSize.tab,
       indicatorPadding: EdgeInsets.zero,
@@ -198,12 +199,12 @@ class _DebtScreenState extends State<DebtScreen>
       children: [
         buildOwes(
           title: DebtLanguage.totalRemainingOwes,
-          money: AppCurrencyFormat.formatMoneyVND(moneyRemaining??0),
+          money: AppCurrencyFormat.formatMoneyD(moneyRemaining??0),
           colorMoney: AppColors.Red_Money,
         ),
         buildOwes(
           title: DebtLanguage.totalOwesPaid,
-          money: AppCurrencyFormat.formatMoneyVND(moneyPaid??0),
+          money: AppCurrencyFormat.formatMoneyD(moneyPaid??0),
           colorMoney: AppColors.Green_Money,
         ),
       ],
@@ -258,29 +259,48 @@ class _DebtScreenState extends State<DebtScreen>
     );
   }
 
-  Widget buildTabMyOwes( List<OwesModel> listCurrent,
-    {bool isOwes=false, num? moneyRemaining, num? moneyPaid,}){
+  Widget buildHistoryPaidAndOwes(List<OwesModel> listCurrent, 
+    ScrollController scrollController){
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildTotalOwes(
-              moneyPaid: moneyPaid,
-              moneyRemaining: moneyRemaining,
-            ),
-            if (listCurrent.isEmpty && !_viewModel!.isLoading) 
-            buildIconEmpty() 
-            else Column(
-              children: List.generate(
-                listCurrent.length , 
-                (index)=> buildCardOwes(index, listCurrent),),
-            ),
-          ],
+      child: SizedBox(
+        height: MediaQuery.sizeOf(context).height/1.7,
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          controller: scrollController,
+          itemCount: _viewModel!.loadingMore
+              ? listCurrent.length + 1
+              : listCurrent.length,
+          itemBuilder: (context, index) {
+            if (index < listCurrent.length) {
+              return buildCardOwes(index, listCurrent);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
         ),
+      ),
+    );
+  }
+
+  Widget buildTabMyOwes( List<OwesModel> listCurrent, 
+    ScrollController scrollController,{bool isOwes=false, 
+      num? moneyRemaining, num? moneyPaid,}){
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          buildTotalOwes(
+            moneyPaid: moneyPaid,
+            moneyRemaining: moneyRemaining,
+          ),
+          if (listCurrent.isEmpty && !_viewModel!.isLoading) 
+          buildIconEmpty() 
+          else buildHistoryPaidAndOwes(listCurrent, scrollController),
+        ],
       ),
     );
   }
@@ -299,18 +319,20 @@ class _DebtScreenState extends State<DebtScreen>
           child: Container(
             color: AppColors.COLOR_GREY.withOpacity(0.05),
             width: double.maxFinite,
-            height: MediaQuery.of(context).size.height - 280,
+            height: MediaQuery.of(context).size.height - 270,
             child: TabBarView(
               controller: _viewModel!.tabController,
               children: [
                 buildTabMyOwes(
                   _viewModel!.listOwesMe,
+                  _viewModel!.scrollControllerMe,
                   isOwes: _viewModel!.owesTotalModel?.isMe??false,
                   moneyPaid: _viewModel!.owesTotalModel?.paidMe??0,
                   moneyRemaining: _viewModel!.owesTotalModel?.oweMe??0,
                 ),
                 buildTabMyOwes(
                   _viewModel!.listOwesUser,
+                  _viewModel!.scrollControllerUser,
                   isOwes: _viewModel!.owesTotalModel?.isUser??false,
                   moneyPaid: _viewModel!.owesTotalModel?.paidUser??0,
                   moneyRemaining: _viewModel!.owesTotalModel?.oweUser??0,

@@ -56,7 +56,7 @@ class ContentTransactionWidget extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           content: nameService ?? '',
-          style: STYLE_LARGE.copyWith(
+          style: STYLE_MEDIUM.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -64,23 +64,23 @@ class ContentTransactionWidget extends StatelessWidget {
       subtitle: isTitle
           ? Paragraph(
               content:
-                  date != null ? '${HomePageLanguage.month} $month, $year' : '',
-              style: STYLE_LARGE.copyWith(
-                fontWeight: FontWeight.w600,
+                  date != null ? '$month/$year' : '',
+              style: STYLE_MEDIUM.copyWith(
+                // fontWeight: FontWeight.w00,
               ),
             )
           : null,
       trailing: Container(
         alignment: Alignment.centerRight,
-        width: MediaQuery.sizeOf(context).width / 3.1,
+        width: MediaQuery.sizeOf(context).width / 2.6,
         child: Paragraph(
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           content: isTitle
-              ? AppCurrencyFormat.formatMoneyVND(money ?? 0)
+              ? AppCurrencyFormat.formatMoneyD(money ?? 0)
               : isMoneyIncome
-                  ? '+${AppCurrencyFormat.formatMoneyVND(money ?? 0)}'
-                  : '-${AppCurrencyFormat.formatMoneyVND(money ?? 0)}',
+                  ? '+${AppCurrencyFormat.formatMoneyD(money ?? 0)}'
+                  : '-${AppCurrencyFormat.formatMoneyD(money ?? 0)}',
           style: STYLE_LARGE.copyWith(
             fontWeight: FontWeight.w600,
             fontSize: 15,

@@ -52,6 +52,8 @@ class CardCustomerWidget extends StatelessWidget {
             //     color: AppColors.BLACK_400,
             //   ),
             // ),
+            trailing: const Icon(Icons.arrow_forward_ios_outlined, 
+              color: AppColors.BLACK_300,),
           ),
         ),
       ),

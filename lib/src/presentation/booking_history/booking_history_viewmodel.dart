@@ -264,6 +264,14 @@ class BookingHistoryViewModel extends BaseViewModel {
         status: value,
         id: id,
       );
+    }else if(value==Contains.done){
+      showDialogStatus(
+        context: context,
+        content: HistoryLanguage.appointmentEnd,
+        title: HistoryLanguage.done,
+        status: value,
+        id: id,
+      );
     }else{
       showDialogStatus(
         context: context,

@@ -338,5 +338,6 @@
     "amountOwed":"Số tiền nợ",
     "amountOwedPaid":"Số tiền nợ và số tiền đã trả",
     "historyOwes":"Lịch sử nợ và trả nợ",
+    "appointmentEnd":"Cuộc hẹn này đã kết thúc",
     "lastLine": ""
 }

@@ -338,5 +338,6 @@
     "amountOwed":"Amount owed",
     "amountOwedPaid":"Amount owed and amount paid",
     "historyOwes":"Debt and repayment history",
+    "appointmentEnd":"This appointment has ended",
     "lastLine": ""
 }

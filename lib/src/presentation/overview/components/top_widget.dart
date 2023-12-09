@@ -132,7 +132,7 @@ class TopWidget extends StatelessWidget {
                   buildTitleTop(
                     content: topService?[index].quantity.toString(),),
                   buildTitleTop(
-                      content: AppCurrencyFormat.formatMoneyVND(revenue),),
+                      content: AppCurrencyFormat.formatMoneyD(revenue),),
                 ],
               );
             }),

@@ -18,6 +18,7 @@ class DebtViewModel extends BaseViewModel{
   bool isLoading=true;
   bool isShowOwes=true;
   bool isShowCase=false;
+  bool loadingMore = false;
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
@@ -34,10 +35,14 @@ class DebtViewModel extends BaseViewModel{
   List<OwesModel> listOwes=[];
 
   TabController? tabController;
+  ScrollController scrollControllerMe = ScrollController();
+  ScrollController scrollControllerUser = ScrollController();
 
   String? messageOwes;
 
-  int page=1;
+  int pageMe=1;
+  int pageUser=1;
+  int tabCurrent=0;
 
   Future<void> init(MyCustomerModel? params, {dynamic dataThis}) async{
     tabController=TabController(length: 2, vsync: dataThis);
@@ -67,23 +72,57 @@ class DebtViewModel extends BaseViewModel{
   }
 
   Future<void> fetchDataOwes()async{
-    page=1;
-    await getOwesInvoice(page, 1);
-    listOwesMe=listOwes;
     await getOwesTotal();
+    pageMe=1;
+    pageUser=1;
+    await getOwesInvoice(pageMe, 1);
+    listOwesMe=listOwes;
+    await getOwesInvoice(pageUser, 0);
+    listOwesUser=listOwes;
+    scrollControllerMe.addListener(
+      () => scrollListener(scrollControllerMe),
+    );
+    scrollControllerUser.addListener(
+      () => scrollListener(scrollControllerUser),
+    );
     checkOwes();
+    notifyListeners();
+  }
+
+  Future<void> loadMoreData() async {
+    if(tabCurrent==0){
+      pageUser += 1;
+      await getOwesInvoice(pageUser, tabCurrent);
+      listOwesUser=[...listOwesUser, ...listOwes];
+    }else{
+      pageMe += 1;
+      await getOwesInvoice(pageMe, tabCurrent);
+      listOwesMe = [...listOwesMe, ...listOwes];
+    }
+    loadingMore=false;
+    notifyListeners();
+  }
+
+  dynamic scrollListener(ScrollController scrollController) async {
+    if (scrollController.position.pixels ==
+      scrollController.position.maxScrollExtent &&
+        scrollController.position.pixels > 0) {
+        loadingMore = true;
+      Future.delayed(const Duration(seconds: 2), loadMoreData);
+    }
     notifyListeners();
   }
 
   Future<void> changeTab(int tab)async{
     // print(tab);
-    listOwes.clear();
+    // listOwes.clear();
     isLoading=true;
+    tabCurrent=tab;
     if(tab==0){
-      await getOwesInvoice(page, 1);
+      await getOwesInvoice(1, 1);
       listOwesMe=listOwes;
     }else{
-      await getOwesInvoice(page, 0);
+      await getOwesInvoice(1, 0);
       listOwesUser=listOwes;
     }
     notifyListeners();
@@ -104,11 +143,11 @@ class DebtViewModel extends BaseViewModel{
     final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     if(owesTotalModel?.isMe??false){
       messageOwes='${DebtLanguage.amountOfMoney} ${DebtLanguage.my} ${
-      DebtLanguage.yourOwes}: ${AppCurrencyFormat.formatMoneyVND(myMoney)}';
+      DebtLanguage.yourOwes}: ${AppCurrencyFormat.formatMoneyD(myMoney)}';
     }else if(owesTotalModel?.isUser??false){
       messageOwes='${DebtLanguage.amountOfMoney} ${
-      myCustomerModel?.fullName} ${DebtLanguage.yourOwes}: ${
-        AppCurrencyFormat.formatMoneyVND(yourMoney)}';
+      myCustomerModel?.fullName?.split(' ').last} ${DebtLanguage.yourOwes}: ${
+        AppCurrencyFormat.formatMoneyD(yourMoney)}';
     }else{
       messageOwes='0';
     }

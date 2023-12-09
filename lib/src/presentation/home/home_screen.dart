@@ -1,3 +1,5 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -25,7 +27,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   HomeViewModel? _viewModel;
-
 
   @override
   Widget build(BuildContext context) {

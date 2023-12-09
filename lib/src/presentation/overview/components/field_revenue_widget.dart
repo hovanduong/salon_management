@@ -51,7 +51,7 @@ class FieldRevenueWidget extends StatelessWidget {
             Expanded(
               child: CardServiceWidget(
                 title: HomePageLanguage.revenue,
-                total: totalRevenue!=null? AppCurrencyFormat.formatMoneyVND(
+                total: totalRevenue!=null? AppCurrencyFormat.formatMoneyD(
                   totalRevenue ?? 0,
                 ):'',
                 money: growthRevenue!=null?

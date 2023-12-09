@@ -172,7 +172,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
       child: ItemWidget(
         title: BookingDetailsLanguage.total,
-        content: AppCurrencyFormat.formatMoneyVND(
+        content: AppCurrencyFormat.formatMoneyD(
           _viewModel!.listMyBooking[index].money ?? 0,
         ),
         color: AppColors.Green_Money,
@@ -285,7 +285,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildListCategory(int index){
     return _viewModel!.isShowListService
       ? buildService(
-          AppCurrencyFormat.formatMoneyVND(
+          AppCurrencyFormat.formatMoneyD(
             _viewModel!.listMyBooking[index].money ?? 0,),
           _viewModel!.listMyBooking[index].category?.name??'',
         )
@@ -303,7 +303,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   //             final service = _viewModel!
   //                 .listMyBooking[index].myServices![indexService].name;
   //             return buildService(
-  //               AppCurrencyFormat.formatMoneyVND(money!),
+  //               AppCurrencyFormat.formatMoneyD(money!),
   //               service!,
   //             );
   //           }),
@@ -319,7 +319,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   //       //       final service = _viewModel!
   //       //           .listMyBooking[index].myServices![indexService].name;
   //       //       return buildService(
-  //       //         AppCurrencyFormat.formatMoneyVND(money!),
+  //       //         AppCurrencyFormat.formatMoneyD(money!),
   //       //         service!,
   //       //       );
   //       //     },

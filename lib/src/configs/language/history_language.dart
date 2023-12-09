@@ -20,6 +20,7 @@ class HistoryLanguage {
   static final edit = S.current.edit;
   static final cancelAppointment = S.current.cancelAppointment;
   static final confirmAppointment = S.current.confirmAppointment;
+  static final appointmentEnd = S.current.appointmentEnd;
   static final confirm = S.current.confirm;
   static final paid = S.current.paid;
   static final emptyAppointment = S.current.emptyAppointment;

@@ -89,11 +89,12 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
   }
 
   Widget buildChoosePersonButton(){
+    final nameUser= _viewModel!.myCustomerModel?.fullName?.split(' ').last;
     return ChooseButtonWidget(
       isHideButtonMe: _viewModel!.isHideMe,
       isButton: _viewModel!.isMe,
       nameButtonLeft: DebtAddLanguage.me,
-      nameButtonRight: _viewModel!.myCustomerModel?.fullName,
+      nameButtonRight: nameUser,
       onTapLeft: (name)=> _viewModel!.setButtonPerson(name),
       onTapRight: (name)=> _viewModel!.setButtonPerson(name),
       titleSelection: DebtAddLanguage.choosePeople,

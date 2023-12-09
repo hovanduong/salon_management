@@ -168,7 +168,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
   Widget buildPrice() {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.price,
-      content: AppCurrencyFormat.formatMoneyVND(
+      content: AppCurrencyFormat.formatMoneyD(
         _viewModel!.myBookingModel?.money ?? 0,),
     );
   }
@@ -176,7 +176,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
   Widget buildFee() {
     return ItemTransactionWidget(
       title: BillPaymentLanguage.discount,
-      content: AppCurrencyFormat.formatMoneyVND(0),
+      content: AppCurrencyFormat.formatMoneyD(0),
     );
   }
 
@@ -184,7 +184,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     return ItemTransactionWidget(
       isTotal: true,
       title: BillPaymentLanguage.total,
-      content: AppCurrencyFormat.formatMoneyVND(
+      content: AppCurrencyFormat.formatMoneyD(
         _viewModel!.myBookingModel?.money ?? 0,),
     );
   }

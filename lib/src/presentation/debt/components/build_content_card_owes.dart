@@ -37,7 +37,7 @@ class BuildContentCardOwes extends StatelessWidget {
                 ),
               ),
               Paragraph(
-                content: AppCurrencyFormat.formatMoneyVND(money??0),
+                content: AppCurrencyFormat.formatMoneyD(money??0),
                 style: STYLE_MEDIUM.copyWith(
                   fontWeight: FontWeight.w600,
                   color: colorMoney,
