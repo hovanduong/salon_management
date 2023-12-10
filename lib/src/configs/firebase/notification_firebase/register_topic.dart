@@ -12,7 +12,6 @@ class RegisterTopic {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings =
         await messaging.requestPermission(provisional: true);
-
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
     } else {
@@ -33,7 +32,7 @@ class RegisterTopic {
 
       // Retry after a delay if the token is not received immediately
       if (apnsToken == null) {
-        await Future<void>.delayed(const Duration(seconds: 10));
+        await Future<void>.delayed(const Duration(seconds: 3));
         apnsToken = await FirebaseMessaging.instance.getAPNSToken();
       }
 
