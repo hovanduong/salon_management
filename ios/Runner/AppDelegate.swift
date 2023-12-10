@@ -19,7 +19,7 @@ import Flutter
       )
 
       application.registerForRemoteNotifications()
-      
+    
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
