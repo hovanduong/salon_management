@@ -18,6 +18,7 @@ Future<void> main() async {
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
   ConfigCrashlytics.init();
+  AppBarge.addBadge();
   notificationInitialed();
   await ConfigPerformance.init();
   await AppDeviceInfo.init();

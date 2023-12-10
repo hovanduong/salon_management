@@ -4,7 +4,9 @@ import '../../../configs/configs.dart';
 
 class MessageNotificationWidget extends StatelessWidget {
   const MessageNotificationWidget({
-    super.key, this.message, this.color,
+    super.key,
+    this.message,
+    this.color,
     this.codeBooking,
   });
 
@@ -14,29 +16,29 @@ class MessageNotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameUser= message?.split('/')[0];
-    final address= message?.split('/')[1];
-    final dateTime= message?.split('/')[2];
+    final nameUser = message?.split('/')[0];
+    final address = message?.split('/')[1];
+    final dateTime = message?.split('/')[2];
     // final indexMessage= messageNotification(index);
-    if(nameUser =='null' && address !='null' ){
-      return nameUserNull(address??'', dateTime??'');
-    }else if(nameUser=='null' && address =='null'){
-      return nameAddressNull(dateTime??'');
-    }else if(nameUser!='null' && address=='null'){
-      return addressNull(nameUser??'', dateTime??'');
-    }else{
-      return noNull(nameUser??'', address??'', dateTime??'');
+    if (nameUser == 'null' && address != 'null') {
+      return nameUserNull(address ?? '', dateTime ?? '');
+    } else if (nameUser == 'null' && address == 'null') {
+      return nameAddressNull(dateTime ?? '');
+    } else if (nameUser != 'null' && address == 'null') {
+      return addressNull(nameUser ?? '', dateTime ?? '');
+    } else {
+      return noNull(nameUser ?? '', address ?? '', dateTime ?? '');
     }
   }
 
-  Widget nameUserNull(String address, String dateTime){
+  Widget nameUserNull(String address, String dateTime) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
             style: STYLE_MEDIUM.copyWith(
-              color: color??AppColors.BLACK_500,
+              color: color ?? AppColors.BLACK_500,
             ),
             children: [
               const TextSpan(
@@ -61,14 +63,14 @@ class MessageNotificationWidget extends StatelessWidget {
     );
   }
 
-  Widget nameAddressNull(String dateTime){
+  Widget nameAddressNull(String dateTime) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
             style: STYLE_MEDIUM.copyWith(
-              color: color??AppColors.BLACK_500,
+              color: color ?? AppColors.BLACK_500,
             ),
             children: [
               const TextSpan(
@@ -86,14 +88,14 @@ class MessageNotificationWidget extends StatelessWidget {
     );
   }
 
-  Widget addressNull(String nameUser, String dateTime){
+  Widget addressNull(String nameUser, String dateTime) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
             style: STYLE_MEDIUM.copyWith(
-              color: color??AppColors.BLACK_500,
+              color: color ?? AppColors.BLACK_500,
             ),
             children: [
               const TextSpan(
@@ -110,7 +112,6 @@ class MessageNotificationWidget extends StatelessWidget {
                 text: dateTime,
                 style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
               ),
-              
             ],
           ),
         ),
@@ -119,14 +120,14 @@ class MessageNotificationWidget extends StatelessWidget {
     );
   }
 
-  Widget noNull(String nameUser, String address, String dateTime){
+  Widget noNull(String nameUser, String address, String dateTime) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
             style: STYLE_MEDIUM.copyWith(
-              color: color??AppColors.BLACK_500,
+              color: color ?? AppColors.BLACK_500,
             ),
             children: [
               const TextSpan(
@@ -158,22 +159,20 @@ class MessageNotificationWidget extends StatelessWidget {
     );
   }
 
-  Widget buildBookingCode(){
+  Widget buildBookingCode() {
     return RichText(
-      text: TextSpan(
-        style: STYLE_MEDIUM.copyWith(
-          color: color??AppColors.BLACK_500,
-        ),
-        children: [
+        text: TextSpan(
+            style: STYLE_MEDIUM.copyWith(
+              color: color ?? AppColors.BLACK_500,
+            ),
+            children: [
           const TextSpan(
             text: 'Mã lịch hẹn: ',
           ),
           TextSpan(
-            text: codeBooking!=null? '#$codeBooking': '',
+            text: codeBooking != null ? '#$codeBooking' : '',
             style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
           ),
-        ]
-      )
-    );
+        ]));
   }
 }

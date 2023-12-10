@@ -25,14 +25,13 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-
   NotificationViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: NotificationViewModel(), 
-      onViewModelReady: (viewModel)=> _viewModel=viewModel!..init(),
+      viewModel: NotificationViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -90,7 +89,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  Widget buildEmptyData(){
+  Widget buildEmptyData() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       child: Padding(
@@ -103,21 +102,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  Widget buildTitleNotification(int index){
+  Widget buildTitleNotification(int index) {
     return Padding(
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeVerySmall),
       child: Row(
         children: [
-          SvgPicture.asset(AppImages.icBellApp, 
-            color: _viewModel!.listCurrent[index].isRead??false? 
-              AppColors.BLACK_400: null,),
-          SizedBox(width: SizeToPadding.sizeVerySmall,),
+          SvgPicture.asset(
+            AppImages.icBellApp,
+            color: _viewModel!.listCurrent[index].isRead ?? false
+                ? AppColors.BLACK_400
+                : null,
+          ),
+          SizedBox(
+            width: SizeToPadding.sizeVerySmall,
+          ),
           Paragraph(
             content: NotificationLanguage.appointmentUpcoming,
             style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w600,
-              color: _viewModel!.listCurrent[index].isRead??false? 
-              AppColors.BLACK_400: AppColors.BLACK_500,
+              color: _viewModel!.listCurrent[index].isRead ?? false
+                  ? AppColors.BLACK_400
+                  : AppColors.BLACK_500,
             ),
           ),
         ],
@@ -125,35 +130,43 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  Widget buildMessageNotification(int index){
+  Widget buildMessageNotification(int index) {
     return MessageNotificationWidget(
       codeBooking: _viewModel!.listCurrent[index].bookingCode,
-      color: _viewModel!.listCurrent[index].isRead??false? 
-       AppColors.BLACK_400: AppColors.BLACK_500,
+      color: _viewModel!.listCurrent[index].isRead ?? false
+          ? AppColors.BLACK_400
+          : AppColors.BLACK_500,
       message: _viewModel!.listCurrent[index].message,
     );
   }
 
-  Widget buildFooterNotification(int index){
+  Widget buildFooterNotification(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Paragraph(content: AppCheckTime.checkTimeNotification(
-          _viewModel!.listCurrent[index].createdAt??'',
-        ), 
-          color: _viewModel!.listCurrent[index].isRead??false? 
-              AppColors.BLACK_400: AppColors.PRIMARY_GREEN,),
+        Paragraph(
+          content: AppCheckTime.checkTimeNotification(
+            _viewModel!.listCurrent[index].createdAt ?? '',
+          ),
+          color: _viewModel!.listCurrent[index].isRead ?? false
+              ? AppColors.BLACK_400
+              : AppColors.PRIMARY_GREEN,
+        ),
         Row(
           children: [
             Paragraph(
               content: NotificationLanguage.details,
               fontWeight: FontWeight.w400,
-              color: _viewModel!.listCurrent[index].isRead??false? 
-              AppColors.BLACK_400: AppColors.PRIMARY_GREEN,
+              color: _viewModel!.listCurrent[index].isRead ?? false
+                  ? AppColors.BLACK_400
+                  : AppColors.PRIMARY_GREEN,
             ),
-            Icon(Icons.arrow_forward_ios_outlined, 
-              color: _viewModel!.listCurrent[index].isRead??false? 
-              AppColors.BLACK_400: AppColors.PRIMARY_GREEN, size: 10,
+            Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: _viewModel!.listCurrent[index].isRead ?? false
+                  ? AppColors.BLACK_400
+                  : AppColors.PRIMARY_GREEN,
+              size: 10,
             )
           ],
         ),
@@ -161,7 +174,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  Widget buildNewNotification(int index){
+  Widget buildNewNotification(int index) {
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeVeryVerySmall,
@@ -178,65 +191,72 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         ],
       ),
-      child:  Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildTitleNotification(index),
-          const Divider( color: AppColors.BLACK_200,),
+          const Divider(
+            color: AppColors.BLACK_200,
+          ),
           buildMessageNotification(index),
-          SizedBox(height: SizeToPadding.sizeVerySmall,),
+          SizedBox(
+            height: SizeToPadding.sizeVerySmall,
+          ),
           buildFooterNotification(index),
         ],
-      ) ,
-    );
-  }
-
-  Widget buildCardNotification(int index){
-    final date= _viewModel!.listCurrent[index].createdAt;
-    return InkWell(
-      onTap: () async{
-        await _viewModel!.putReadNotification(
-          _viewModel!.listCurrent[index].id??0,
-        );
-        await _viewModel!.goToBookingDetails( context, MyBookingParams(
-          id: _viewModel!.listCurrent[index].metaData?.appointmentId,),
-        );
-        await _viewModel!.pullRefresh();
-      },
-      child: _viewModel!.listCurrent[index].type=='reminder'
-      ?  buildNewNotification(index)
-      : NotificationUpdate(date: date),
-    );
-  }
-
-  Widget buildBody(){
-    return RefreshIndicator(
-      color: AppColors.PRIMARY_GREEN,
-      onRefresh: () => _viewModel!.pullRefresh(),
-      child: (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
-      ? buildEmptyData()
-      : SizedBox(
-        height: MediaQuery.sizeOf(context).height-90,
-        child: ListView.builder(
-          // physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-            ? _viewModel!.listCurrent.length + 1
-            : _viewModel!.listCurrent.length,
-          itemBuilder: (context, index) {
-            if (index < _viewModel!.listCurrent.length) {
-              return buildCardNotification(index);
-            } else {
-              return const CupertinoActivityIndicator();
-            }
-          },
-        ),
       ),
     );
   }
 
-  Widget buildNotificationScreen(){
+  Widget buildCardNotification(int index) {
+    final date = _viewModel!.listCurrent[index].createdAt;
+    return InkWell(
+      onTap: () async {
+        await _viewModel!.putReadNotification(
+          _viewModel!.listCurrent[index].id ?? 0,
+        );
+        await _viewModel!.goToBookingDetails(
+          context,
+          MyBookingParams(
+            id: _viewModel!.listCurrent[index].metaData?.appointmentId,
+          ),
+        );
+        await _viewModel!.pullRefresh();
+      },
+      child: _viewModel!.listCurrent[index].type == 'reminder'
+          ? buildNewNotification(index)
+          : NotificationUpdate(date: date),
+    );
+  }
+
+  Widget buildBody() {
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () => _viewModel!.pullRefresh(),
+      child: (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
+          ? buildEmptyData()
+          : SizedBox(
+              height: MediaQuery.sizeOf(context).height - 90,
+              child: ListView.builder(
+                // physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    return buildCardNotification(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              ),
+            ),
+    );
+  }
+
+  Widget buildNotificationScreen() {
     return SingleChildScrollView(
       child: Column(
         children: [
