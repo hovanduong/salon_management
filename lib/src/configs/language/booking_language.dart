@@ -2,6 +2,7 @@ import '../../intl/generated/l10n.dart';
 
 class BookingLanguage {
    static final booking = S.current.booking;
+   static final notification = S.current.notification;
    static final createAppointment = S.current.createAppointment;
    static final bookingEdit = S.current.bookingEdit;
   static final numberBetween = S.current.numberBetween;
@@ -60,5 +61,8 @@ class BookingLanguage {
   static final chooseMonth= S.current.chooseMonth;
   static final requiredMoney= S.current.requiredMoney;
   static final infoCustomerShowCase= S.current.infoCustomerShowCase;
+  static final remindBooking= S.current.remindBooking;
   static final remind= S.current.remind;
+  static final EDBooking= S.current.EDBooking;
+  static final selectStatus= S.current.selectStatus;
 }

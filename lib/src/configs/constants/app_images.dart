@@ -149,4 +149,6 @@ class AppImages {
 
   static const String icStar = 'assets/icons/stars-filled.svg';
 
+  static const String icDebit = 'assets/icons/receipt-text.svg';
+
 }

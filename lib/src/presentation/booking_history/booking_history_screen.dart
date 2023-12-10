@@ -75,25 +75,29 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
   }
 
   Widget buildIcNotification(){
-    return InkWell(
-      onTap: ()=> _viewModel!.goToNotification(context),
-      child: Stack(
-        children:[
-          SizedBox(
-            width: 32,
-            height: 32,
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: SvgPicture.asset(AppImages.icBellApp, 
-                color: AppColors.COLOR_WHITE, height: 25, width: 25,
+    return Showcase(
+      description: BookingLanguage.notification,
+      key: _viewModel!.keyNotification,
+      child: InkWell(
+        onTap: ()=> _viewModel!.goToNotification(context),
+        child: Stack(
+          children:[
+            SizedBox(
+              width: 32,
+              height: 32,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: SvgPicture.asset(AppImages.icBellApp, 
+                  color: AppColors.COLOR_WHITE, height: 25, width: 25,
+                ),
               ),
             ),
-          ),
-           Positioned(
-            right: 0,
-            top: 0,
-            child: NumberNotification(id: _viewModel!.idNotification),)
-        ]
+             Positioned(
+              right: 0,
+              top: 0,
+              child: NumberNotification(id: _viewModel!.idNotification),)
+          ]
+        ),
       ),
     );
   }
@@ -216,6 +220,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabToday() {
     return ScreenTap(
+      keyRemind: _viewModel!.keyRemind1,
+      keyED: _viewModel!.keyED1,
+      keyStatus: _viewModel!.keyStatus1,
       onRemind: (value, list)=> _viewModel!.setRemind(value, list),
       contentEmpty: HistoryLanguage.notificationEmptyToday,
       listCurrent: _viewModel!.listCurrentToday,
@@ -246,6 +253,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabUpcoming() {
     return ScreenTap(
+      keyED: _viewModel!.keyED2,
+      keyStatus: _viewModel!.keyStatus2,
+      keyRemind: _viewModel!.keyRemind2,
       onRemind: (value, list)=> _viewModel!.setRemind(value, list),
       contentEmpty: HistoryLanguage.notificationEmptyUpcoming,
       isLoading: _viewModel!.isLoading,

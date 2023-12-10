@@ -97,7 +97,7 @@ class NotificationApi {
   ) async {
     try {
       final response = await HttpRemote.post(
-        url: '/reminder/test-notification',
+        url: '/reminder',
         body: {
           'appointmentId': params.idBooking,
           'reminderTime': params.date,

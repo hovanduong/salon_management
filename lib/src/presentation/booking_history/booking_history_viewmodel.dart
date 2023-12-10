@@ -45,7 +45,8 @@ class BookingHistoryViewModel extends BaseViewModel {
   bool isLoading = true;
   bool isToday = true;
   bool isPullRefresh = false;
-  bool isShowCase=true;
+  bool isShowCase=false;
+  bool isShowCaseRemind=false;
   bool isRemind=false;
 
   int pageUpComing = 1;
@@ -56,6 +57,13 @@ class BookingHistoryViewModel extends BaseViewModel {
   int currentTab = 1;
 
   GlobalKey addBooking = GlobalKey();
+  GlobalKey keyNotification = GlobalKey();
+  GlobalKey keyRemind1 = GlobalKey();
+  GlobalKey keyRemind2= GlobalKey();
+  GlobalKey keyStatus1= GlobalKey();
+  GlobalKey keyStatus2 = GlobalKey();
+  GlobalKey keyED1 = GlobalKey();
+  GlobalKey keyED2 = GlobalKey();
 
   Timer? timer;
 
@@ -67,12 +75,12 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> init({dynamic dataThis}) async {
     await setId();
+    await AppPref.getShowCase('showCaseAppointment').then(
+      (value) =>isShowCase=value??true,);
+    await startShowCase();
+    await hideShowcase();
     await fetchData();
     tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
-    await AppPref.getShowCase('showCaseAppointment').then(
-      (value) => isShowCase=value??true,);
-    startShowCase();
-    await hideShowcase();
     notifyListeners();
   }
 
@@ -84,17 +92,39 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> hideShowcase() async{
     await AppPref.setShowCase('showCaseAppointment', false);
     isShowCase=false;
+    if(listCurrentToday.isNotEmpty || 
+      (listCurrentUpcoming.isNotEmpty && currentTab==2)){
+      await AppPref.setShowCase('showCaseRemind', false);
+      isShowCaseRemind=false;
+    }
     notifyListeners();
   }
 
-  void startShowCase(){
+  Future<void> startShowCase()async{
+    print(isShowCase);
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [addBooking],
+          [addBooking, keyNotification, keyRemind1, keyStatus1, keyED1,],
         );
       });
     }
+    if(isShowCaseRemind){
+      if(listCurrentUpcoming.isNotEmpty && currentTab==2){
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ShowCaseWidget.of(context).startShowCase(
+            [keyRemind2, keyStatus2, keyED2],
+          );
+        });
+      }else{
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ShowCaseWidget.of(context).startShowCase(
+            [keyRemind1, keyStatus1, keyED1, addBooking, keyNotification ],
+          );
+        });
+      }
+    }
+    
   }
 
   Future<void> goToAddBooking({
@@ -149,6 +179,10 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
     isPullRefresh=false;
     isLoading=false;
+    await AppPref.getShowCase('showCaseRemind').then(
+      (value) => isShowCaseRemind=value??true,);
+    await startShowCase();
+    await hideShowcase();
     notifyListeners();
   }
 
@@ -250,7 +284,6 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> setStatus(int value) async {
-    // await pullRefresh();
     if (value == 0) {
       status = Contains.confirmed;
       currentTab = 0;
@@ -260,6 +293,11 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value == 2) {
       status = Contains.confirmed;
       currentTab = 2;
+      print(await AppPref.getShowCase('showCaseRemind')??true);
+      await AppPref.getShowCase('showCaseRemind').then(
+      (value) => isShowCaseRemind=value??true,);
+      await startShowCase();
+      await hideShowcase();
     } else if (value == 3) {
       status = Contains.done;
       currentTab = 3;

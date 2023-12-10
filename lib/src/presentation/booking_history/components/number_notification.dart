@@ -20,9 +20,9 @@ class NumberNotification extends StatelessWidget {
       stream: users.snapshots(),
       builder: (context, snapshot) {
          if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return const SizedBox();
         } else if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const Text('No data found for the user');
+          return const SizedBox();
         } else {
           final data = (snapshot.data!.data()??{}) as Map<String, dynamic>;
           return data['count']!=0? CircleAvatar(

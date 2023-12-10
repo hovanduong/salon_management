@@ -314,7 +314,7 @@
     "addDebitCustomer":"Add debit customers",
     "editDebitCustomer":"Edit debit customers",
     "notificationDebit":"Please enter name of debtor to confirm",
-    "notificationDebitEmpty":"Currently there are no customers in debt",
+    "notificationDebitEmpty":"There are currently no customers",
     "contentEmptyNameDebit":"You have not entered a customer name. Please return to enter the debit customer name",
     "back":"Back",
     "debt":"Debt",
@@ -333,7 +333,7 @@
     "notificationOwes":"Currently no one is in debt so this operation cannot be used",
     "notificationPaidOwes":"Still haven't paid off the debt. Therefore this operation cannot be used",
     "validMoneyPay":"The amount paid cannot exceed the amount owed",
-    "searchDebitCustomer":"Search for customer debt",
+    "searchDebitCustomer":"Search for customers by name",
     "userManual":"User manual",
     "amountOwed":"Amount owed",
     "amountOwedPaid":"Amount owed and amount paid",
@@ -343,5 +343,8 @@
     "emptyNotification":"There are currently no announcements",
     "remind":"Remind",
     "newFeature":"New feature launched",
+    "remindBooking":"The appointment schedule will be reminded 2 to 3 times before the appointment time: 1 hour, 30 minutes, 10 minutes.",
+    "EDBooking":"Edit or delete an appointment",
+    "selectStatus":"Select status",
     "lastLine": ""
 }

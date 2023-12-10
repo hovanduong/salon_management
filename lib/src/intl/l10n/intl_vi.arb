@@ -314,7 +314,7 @@
     "addDebitCustomer":"Thêm khách hàng ghi nợ",
     "editDebitCustomer":"Sửa khách hàng ghi nợ",
     "notificationDebit":"Vui lòng nhập tên người nợ để xác nhận",
-    "notificationDebitEmpty":"Hiện tại không có khách hàng nào nợ",
+    "notificationDebitEmpty":"Hiện tại chưa có khách hàng",
     "contentEmptyNameDebit":"Bạn chưa nhập tên khách hàng. Vui lòng quay lại nhập tên khách hàng ghi nợ",
     "back":"Quay lại",
     "debt":"Công nợ",
@@ -333,7 +333,7 @@
     "notificationOwes":"Hiện tại không có ai mắc nợ nên thao tác này không thể sử dụng được",
     "notificationPaidOwes":"Vẫn chưa trả hết nợ. Vì vậy thao tác này không thể được sử dụng",
     "validMoneyPay":"Số tiền trả không thể vượt quá số tiền nợ",
-    "searchDebitCustomer":"Tìm kiếm công nợ khách hàng",
+    "searchDebitCustomer":"Tìm kiếm khách hàng theo tên",
     "userManual":"Hướng dẫn sử dụng",
     "amountOwed":"Số tiền nợ",
     "amountOwedPaid":"Số tiền nợ và số tiền đã trả",
@@ -343,5 +343,8 @@
     "emptyNotification":"Hiện tại không có thông báo nào",
     "remind":"Nhắc nhở",
     "newFeature":"Tính năng mới ra mắt",
+    "remindBooking":"Lịch hẹn sẽ được nhắc nhở 2 đến 3 lần trước thời điểm đặt lịch: 1 giờ, 30 phút, 10 phút.",
+    "EDBooking":"Chỉnh sửa hoặc xóa cuộc hẹn",
+    "selectStatus":"Chọn trạng thái",
     "lastLine": ""
 }
