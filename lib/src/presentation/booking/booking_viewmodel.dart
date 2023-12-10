@@ -13,7 +13,9 @@ import '../../resource/model/model.dart';
 import '../../resource/service/booking.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/income_api.dart';
+import '../../resource/service/my_booking.dart';
 import '../../resource/service/my_customer_api.dart';
+import '../../resource/service/notification_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
@@ -26,6 +28,8 @@ class BookingViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
   CategoryApi categoryApi= CategoryApi();
+  MyBookingApi myBookingApi = MyBookingApi();
+  NotificationApi notificationApi= NotificationApi();
 
   // List<int>? myServiceId = [];
   // List<int> serviceId = [];
@@ -385,6 +389,8 @@ class BookingViewModel extends BaseViewModel {
   Future<void> checkDataExist()async{
     if(dataMyBooking!=null){
       await putBooking();
+      await getCancelRemind(
+        NotificationParams(id: dataMyBooking?.id, isRemind: false),);
     }else{
       await postCustomer(); 
     }
@@ -628,6 +634,56 @@ class BookingViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+
+  Future<void> getCancelRemind(NotificationParams params) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await notificationApi.getCancelRemind(params.idBooking??0);
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      
+      await putRemindBooking(params.idBooking??0, params.isRemind);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putRemindBooking(int id, bool isRemind) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await myBookingApi.putRemindBooking(
+      MyBookingParams(
+        id: id,
+        isRemind: isRemind,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      // // showSuccessDiaglog(context);
+      // await fetchData();
+    }
+    notifyListeners();
+  }
+
 
   @override
   void dispose() {

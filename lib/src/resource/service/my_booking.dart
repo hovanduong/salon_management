@@ -123,7 +123,7 @@ class MyBookingApi {
   ) async {
     try {
       final response = await HttpRemote.put(
-        url: '/my-booking/${params.id}/${params.isRemind}',
+        url: '/my-booking/update-reminder/${params.id}/${params.isRemind}',
       );
       switch (response?.statusCode) {
         case 200:

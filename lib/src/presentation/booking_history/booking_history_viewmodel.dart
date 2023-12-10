@@ -331,9 +331,12 @@ class BookingHistoryViewModel extends BaseViewModel {
             Navigator.pop(context);
           },
           rightButtonName: BookingLanguage.confirm,
-          onTapRight: () {
-            deleteBookingHistory(id);
+          onTapRight: () async{
             Navigator.pop(context);
+            await getCancelRemind(NotificationParams(
+              idBooking: id, isRemind: false,
+            ),);
+            await deleteBookingHistory(id);
           },
         );
       },
@@ -416,6 +419,7 @@ class BookingHistoryViewModel extends BaseViewModel {
           :null,
         address: list.address!=''? list.address : null,
         isRemind: value,
+        bookingCode: list.code,
       ),);
     }else{
       await getCancelRemind(NotificationParams(

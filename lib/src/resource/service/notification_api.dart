@@ -18,9 +18,11 @@ class NotificationParams {
     this.idBooking,
     this.nameCustomer,
     this.address,
+    this.bookingCode,
   });
   final int? id;
   final int? idBooking;
+  final String? bookingCode;
   final int? page;
   final String? status;
   final String? nameCustomer;
@@ -33,10 +35,11 @@ class NotificationParams {
 
 class NotificationApi {
 
-  Future<Result<List<NotificationModel>, Exception>> getNotification() async {
+  Future<Result<List<NotificationModel>, Exception>> getNotification(int page) 
+  async {
     try {
       final response = await HttpRemote.get(
-        url: '/notification',
+        url: '/notification?pageSize=10&page=$page',
       );
       switch (response?.statusCode) {
         case 200:
@@ -100,6 +103,7 @@ class NotificationApi {
           'reminderTime': params.date,
           'customerName': params.nameCustomer,
           'address': params.address,
+          'bookingCode': params.bookingCode,
           'isRead': false,
         },
       );

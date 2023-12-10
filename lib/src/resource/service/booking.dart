@@ -57,6 +57,7 @@ class BookingApi {
           'isBooking': prams.isBooking,
           'income': prams.isIncome,
           'categoryId': prams.idCategory,
+          'isReminder':prams.isReminder,
         },
       );
       switch (response?.statusCode) {
@@ -87,6 +88,7 @@ class BookingApi {
           'categoryId': prams.idCategory,
           'myCustomerId': prams.myCustomerId,
           'status': 'Confirmed',
+          'isReminder': false,
         },
       );
       switch (response?.statusCode) {

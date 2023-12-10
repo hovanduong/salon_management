@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
@@ -83,14 +84,19 @@ class NotificationService extends StatelessWidget {
 
   Widget buildRemind(){
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Paragraph(
           content: '${BookingLanguage.remind}: ',
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
         ),
-        Switch(
-          activeColor: AppColors.PRIMARY_GREEN,
-          value: isRemind, 
+        // Switch(
+        //   activeColor: AppColors.PRIMARY_GREEN,
+        //   value: isRemind, 
+        //   onChanged:(value)=> onRemind!(value),
+        // ),
+        CupertinoSwitch(
+          value: isRemind,
           onChanged:(value)=> onRemind!(value),
         ),
       ],

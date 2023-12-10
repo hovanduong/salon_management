@@ -5,10 +5,12 @@ import '../../../configs/configs.dart';
 class MessageNotificationWidget extends StatelessWidget {
   const MessageNotificationWidget({
     super.key, this.message, this.color,
+    this.codeBooking,
   });
 
   final String? message;
   final Color? color;
+  final String? codeBooking;
 
   @override
   Widget build(BuildContext context) {
@@ -28,77 +30,135 @@ class MessageNotificationWidget extends StatelessWidget {
   }
 
   Widget nameUserNull(String address, String dateTime){
-    return RichText(
-      text: TextSpan(
-        style: STYLE_MEDIUM.copyWith(
-          color: color??AppColors.BLACK_500,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: TextSpan(
+            style: STYLE_MEDIUM.copyWith(
+              color: color??AppColors.BLACK_500,
+            ),
+            children: [
+              const TextSpan(
+                text: 'Bạn có lịch hẹn tại ',
+              ),
+              TextSpan(
+                text: address,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const TextSpan(
+                text: ' vào lúc ',
+              ),
+              TextSpan(
+                text: dateTime,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
         ),
-        children: [
-          const TextSpan(
-            text: 'Bạn có lịch hẹn tại ',
-          ),
-          TextSpan(
-            text: address,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-          const TextSpan(
-            text: ' vào lúc ',
-          ),
-          TextSpan(
-            text: dateTime,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+        buildBookingCode(),
+      ],
     );
   }
 
   Widget nameAddressNull(String dateTime){
-    return RichText(
-      text: TextSpan(
-        style: STYLE_MEDIUM.copyWith(
-          color: color??AppColors.BLACK_500,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: TextSpan(
+            style: STYLE_MEDIUM.copyWith(
+              color: color??AppColors.BLACK_500,
+            ),
+            children: [
+              const TextSpan(
+                text: 'Bạn có lịch hẹn vào lúc ',
+              ),
+              TextSpan(
+                text: dateTime,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
         ),
-        children: [
-          const TextSpan(
-            text: 'Bạn có lịch hẹn vào lúc ',
-          ),
-          TextSpan(
-            text: dateTime,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+        buildBookingCode(),
+      ],
     );
   }
 
   Widget addressNull(String nameUser, String dateTime){
-    return RichText(
-      text: TextSpan(
-        style: STYLE_MEDIUM.copyWith(
-          color: color??AppColors.BLACK_500,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: TextSpan(
+            style: STYLE_MEDIUM.copyWith(
+              color: color??AppColors.BLACK_500,
+            ),
+            children: [
+              const TextSpan(
+                text: 'Bạn có lịch hẹn tại với ',
+              ),
+              TextSpan(
+                text: nameUser,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const TextSpan(
+                text: ' vào lúc ',
+              ),
+              TextSpan(
+                text: dateTime,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+              
+            ],
+          ),
         ),
-        children: [
-          const TextSpan(
-            text: 'Bạn có lịch hẹn tại với ',
-          ),
-          TextSpan(
-            text: nameUser,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-          const TextSpan(
-            text: ' vào lúc ',
-          ),
-          TextSpan(
-            text: dateTime,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+        buildBookingCode(),
+      ],
     );
   }
 
   Widget noNull(String nameUser, String address, String dateTime){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: TextSpan(
+            style: STYLE_MEDIUM.copyWith(
+              color: color??AppColors.BLACK_500,
+            ),
+            children: [
+              const TextSpan(
+                text: 'Bạn có lịch hẹn tại với ',
+              ),
+              TextSpan(
+                text: nameUser,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const TextSpan(
+                text: ' tại ',
+              ),
+              TextSpan(
+                text: address,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const TextSpan(
+                text: ' vào lúc ',
+              ),
+              TextSpan(
+                text: dateTime,
+                style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        buildBookingCode(),
+      ],
+    );
+  }
+
+  Widget buildBookingCode(){
     return RichText(
       text: TextSpan(
         style: STYLE_MEDIUM.copyWith(
@@ -106,28 +166,14 @@ class MessageNotificationWidget extends StatelessWidget {
         ),
         children: [
           const TextSpan(
-            text: 'Bạn có lịch hẹn tại với ',
+            text: 'Mã lịch hẹn: ',
           ),
           TextSpan(
-            text: nameUser,
+            text: codeBooking!=null? '#$codeBooking': '',
             style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
           ),
-          const TextSpan(
-            text: ' tại ',
-          ),
-          TextSpan(
-            text: address,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-          const TextSpan(
-            text: ' vào lúc ',
-          ),
-          TextSpan(
-            text: dateTime,
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+        ]
+      )
     );
   }
 }

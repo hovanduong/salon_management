@@ -32,7 +32,6 @@ class ScreenTap extends StatelessWidget {
     this.contentEmpty, 
     this.colorStatus, 
     this.status,
-    this.isRemind=false,
     this.onRemind,
   });
 
@@ -55,7 +54,6 @@ class ScreenTap extends StatelessWidget {
   final String? contentEmpty;
   final Color? colorStatus;
   final String? status;
-  final bool isRemind;
   final Function(bool isRemind, MyBookingModel list)? onRemind;
 
   @override
@@ -87,8 +85,7 @@ class ScreenTap extends StatelessWidget {
                   final id = listCurrent![index].id;
                   return NotificationService(
                     context: context,
-                    // isRemind: listCurrent![index].isReminder??false,
-                    isRemind: isRemind,
+                    isRemind: listCurrent![index].isReminder??false,
                     onRemind: (value)=> onRemind!(value, listCurrent![index]),
                     onPay: () => onPay!(id!),
                     onTapEditBooking: () =>

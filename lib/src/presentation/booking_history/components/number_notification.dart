@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,8 @@ class NumberNotification extends StatelessWidget {
             maxRadius: 8,
             backgroundColor: AppColors.Red_Money,
             child: Paragraph(
-              content: data['count'].toString(),
+              content: data['count']>99? '99+':
+               data['count'].toString(),
               color: AppColors.COLOR_WHITE,
             ),
           ): const SizedBox();

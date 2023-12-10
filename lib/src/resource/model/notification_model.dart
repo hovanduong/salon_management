@@ -14,6 +14,7 @@ class NotificationModel {
   String? status;
   bool? isRead;
   String? userId;
+  String? bookingCode;
   String? deletedAt;
   String? updatedAt;
   String? createdAt;
@@ -32,6 +33,7 @@ class NotificationModel {
     this.updatedAt,
     this.metaData,
     this.color,
+    this.bookingCode,
   });
 }
 
@@ -77,6 +79,7 @@ abstract class NotificationModelFactory {
       ..status = json['status']
       ..isRead = json['isRead']
       ..userId = json['userId']
+      ..bookingCode = json['bookingCode']
       ..metaData = json['metaData'] !=null ? 
          MetaDataModelFactory.create(jsonEncode(json['metaData'])) 
         : null

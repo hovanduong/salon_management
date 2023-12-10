@@ -19,6 +19,7 @@ class NotificationViewModel extends BaseViewModel{
   ScrollController scrollController= ScrollController();
 
   List<NotificationModel> listNotification=[];
+  List<NotificationModel> listCurrent=[];
 
   int page=1;
 
@@ -26,7 +27,8 @@ class NotificationViewModel extends BaseViewModel{
 
   Future<void> init()async{
     page=1;
-    await getNotification();
+    await getNotification(page);
+    listCurrent=listNotification;
     scrollController.addListener(
       scrollListener,
     );
@@ -43,8 +45,8 @@ class NotificationViewModel extends BaseViewModel{
 
   Future<void> loadMoreData() async {
     page += 1;
-    await getNotification();
-    // listCurrent = [...listCurrent, ...listInvoice];
+    await getNotification(page);
+    listCurrent = [...listCurrent, ...listNotification];
     loadingMore = false;
     notifyListeners();
   }
@@ -103,8 +105,8 @@ class NotificationViewModel extends BaseViewModel{
     );
   }
 
-  Future<void> getNotification() async {
-    final result = await notificationApi.getNotification();
+  Future<void> getNotification(int page) async {
+    final result = await notificationApi.getNotification(page);
 
     final value = switch (result) {
       Success(value: final customer) => customer,
