@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,6 +16,7 @@ import '../../resource/service/notification_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
+import '../../utils/permission.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -441,6 +443,16 @@ class BookingHistoryViewModel extends BaseViewModel {
         );
       },
     );
+  }
+
+  Future<void> checkAllowNotification(bool value, MyBookingModel list) async{
+    final isAllow= await AppPermNotification.checkPermission(
+      Permission.notification, context);
+    if(isAllow==true){
+      await setRemind(value, list);
+    }else{
+      await AppPermNotification.showDialogSettings(context);
+    }
   }
 
   Future<void> setRemind(bool value, MyBookingModel list)async{

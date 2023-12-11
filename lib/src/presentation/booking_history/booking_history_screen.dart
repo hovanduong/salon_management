@@ -223,7 +223,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
       keyRemind: _viewModel!.keyRemind1,
       keyED: _viewModel!.keyED1,
       keyStatus: _viewModel!.keyStatus1,
-      onRemind: (value, list)=> _viewModel!.setRemind(value, list),
+      onRemind: (value, list)=> _viewModel!.checkAllowNotification(value, list),
       contentEmpty: HistoryLanguage.notificationEmptyToday,
       listCurrent: _viewModel!.listCurrentToday,
       isLoading: _viewModel!.isLoading,

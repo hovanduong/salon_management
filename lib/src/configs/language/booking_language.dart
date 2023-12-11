@@ -65,4 +65,6 @@ class BookingLanguage {
   static final remind= S.current.remind;
   static final EDBooking= S.current.EDBooking;
   static final selectStatus= S.current.selectStatus;
+  static final settings= S.current.settings;
+  static final contentSetting= S.current.contentSetting;
 }

@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
@@ -82,22 +81,6 @@ class HomeViewModel extends BaseViewModel {
     await hideShowcase();
    
     notifyListeners();
-  }
-
-  Future<void> request_permission(BuildContext context,Permission permission)async{
-    const locationPermission=Permission.notification;
-    bool locationStatus=false;
-    bool ispermanetelydenied= await locationPermission.isPermanentlyDenied;
-    if(ispermanetelydenied) {
-      print("denied");
-      await  openAppSettings();
-    }else{
-      var location_statu = await locationPermission.request();
-      locationStatus=location_statu.isGranted;
-      print(locationStatus);
-      await  openAppSettings();
-    }
- 
   }
 
   Future<void> hideShowcase() async {
