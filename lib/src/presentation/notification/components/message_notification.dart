@@ -161,18 +161,19 @@ class MessageNotificationWidget extends StatelessWidget {
 
   Widget buildBookingCode() {
     return RichText(
-        text: TextSpan(
-            style: STYLE_MEDIUM.copyWith(
-              color: color ?? AppColors.BLACK_500,
-            ),
-            children: [
-          const TextSpan(
-            text: 'Mã lịch hẹn: ',
+      text: TextSpan(
+          style: STYLE_MEDIUM.copyWith(
+            color: color ?? AppColors.BLACK_500,
+            fontFamily: 'Inter',
           ),
-          TextSpan(
-            text: codeBooking != null ? '#$codeBooking' : '',
-            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
-          ),
-        ]));
+          children: [
+        const TextSpan(
+          text: 'Mã lịch hẹn: ',
+        ),
+        TextSpan(
+          text: codeBooking != null ? '#$codeBooking' : '',
+          style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+        ),
+      ],),);
   }
 }

@@ -72,7 +72,7 @@ class _DebitScreenState extends State<DebitScreen> {
           leading: const SizedBox(),
           title: Center(
             child: Paragraph(
-              content: DebitLanguage.debit,
+              content: DebitLanguage.debitBook,
               style: STYLE_LARGE.copyWith(
                 color: AppColors.COLOR_WHITE,
                 fontWeight: FontWeight.w600,

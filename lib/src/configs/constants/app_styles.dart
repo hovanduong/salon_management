@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-const String FONT_FAMILY_NUNITO = 'Quicksand';
+const String FONT_FAMILY_NUNITO = 'Inter';
 
 const FONT_SIZE_VERY_SMALL = 10.0;
 const FONT_SIZE_SMALL = 13.0;

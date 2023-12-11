@@ -101,7 +101,6 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> startShowCase()async{
-    print(isShowCase);
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
@@ -293,7 +292,6 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value == 2) {
       status = Contains.confirmed;
       currentTab = 2;
-      print(await AppPref.getShowCase('showCaseRemind')??true);
       await AppPref.getShowCase('showCaseRemind').then(
       (value) => isShowCaseRemind=value??true,);
       await startShowCase();

@@ -26,12 +26,15 @@ class NumberNotification extends StatelessWidget {
         } else {
           final data = (snapshot.data!.data()??{}) as Map<String, dynamic>;
           return data['count']!=0? CircleAvatar(
-            maxRadius: 8,
+            maxRadius: 9,
             backgroundColor: AppColors.Red_Money,
             child: Paragraph(
-              content: data['count']>99? '99+':
+              content: data['count']>99? '99':
                data['count'].toString(),
-              color: AppColors.COLOR_WHITE,
+              style: STYLE_VERY_SMALL.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontSize: 9
+              ),
             ),
           ): const SizedBox();
         }

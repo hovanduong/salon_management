@@ -31,22 +31,27 @@ class DebtViewModel extends BaseViewModel{
   OwesTotalModel? owesTotalModel;
 
   List<OwesModel> listOwesMe=[];
-  List<OwesModel> listOwesUser=[];
   List<OwesModel> listOwes=[];
+  List<String> listName = [
+    DebtLanguage.allTransactions,
+    DebtLanguage.myHistory,
+  ];
 
-  TabController? tabController;
+  // TabController? tabController;
   ScrollController scrollControllerMe = ScrollController();
-  ScrollController scrollControllerUser = ScrollController();
 
   String? messageOwes;
+  String? dropValue;
 
   int pageMe=1;
-  int pageUser=1;
   int tabCurrent=0;
+  num? moneyRemaining;
+  num? moneyPaid;
 
   Future<void> init(MyCustomerModel? params, {dynamic dataThis}) async{
-    tabController=TabController(length: 2, vsync: dataThis);
+    // tabController=TabController(length: 2, vsync: dataThis);
     myCustomerModel=params;
+    await setDataOwe();
     await fetchDataOwes();
     await AppPref.getShowCase('showCaseDebt').then(
       (value) => isShowCase=value??true,);
@@ -71,32 +76,61 @@ class DebtViewModel extends BaseViewModel{
     }
   }
 
+  Future<void> setDataOwe()async{
+    dropValue=listName.first;
+    final name= myCustomerModel!.fullName!.split(' ').last;
+    final nameLocal= await AppPref.getDataUSer('get${myCustomerModel?.id}$name');
+    if(myCustomerModel!=null){
+      listName.add('${DebtLanguage.uHistory} $name');
+      if(nameLocal==null ){
+        await AppPref.setDataUser('get${myCustomerModel?.id}$name', listName.first);
+      }else{
+        dropValue=nameLocal;
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> setData(String value)async{
+    final name= myCustomerModel!.fullName!.split(' ').last;
+    dropValue= value;
+    await AppPref.setDataUser('get${myCustomerModel?.id}$name', value);
+    await fetchDataOwes();
+    notifyListeners();
+  }
+
   Future<void> fetchDataOwes()async{
-    await getOwesTotal();
+    isLoading=true;
     pageMe=1;
-    pageUser=1;
-    await getOwesInvoice(pageMe, 1);
-    listOwesMe=listOwes;
-    await getOwesInvoice(pageUser, 0);
-    listOwesUser=listOwes;
+    await getOwesTotal();
+    if(dropValue==listName[0]){
+      await getOwesInvoice(pageMe, 2);
+      listOwesMe=listOwes;
+    }else if(dropValue==listName[1]){
+      await getOwesInvoice(pageMe, 1);
+      listOwesMe=listOwes;
+    }else{
+      await getOwesInvoice(pageMe, 0);
+      listOwesMe=listOwes;
+    }
     scrollControllerMe.addListener(
       () => scrollListener(scrollControllerMe),
     );
-    scrollControllerUser.addListener(
-      () => scrollListener(scrollControllerUser),
-    );
     checkOwes();
+    checkMoneyOwe();
     notifyListeners();
   }
 
   Future<void> loadMoreData() async {
-    if(tabCurrent==0){
-      pageUser += 1;
-      await getOwesInvoice(pageUser, tabCurrent);
-      listOwesUser=[...listOwesUser, ...listOwes];
+    pageMe += 1;
+    if(dropValue==listName[0]){
+      await getOwesInvoice(pageMe, 2);
+      listOwesMe = [...listOwesMe, ...listOwes];
+    }else if(dropValue==listName[1]){
+      await getOwesInvoice(pageMe, 1);
+      listOwesMe = [...listOwesMe, ...listOwes];
     }else{
-      pageMe += 1;
-      await getOwesInvoice(pageMe, tabCurrent);
+      await getOwesInvoice(pageMe, 0);
       listOwesMe = [...listOwesMe, ...listOwes];
     }
     loadingMore=false;
@@ -123,31 +157,59 @@ class DebtViewModel extends BaseViewModel{
       listOwesMe=listOwes;
     }else{
       await getOwesInvoice(1, 0);
-      listOwesUser=listOwes;
+      // listOwesUser=listOwes;
     }
     notifyListeners();
   }
 
+  Future<void> goToDebtDetail(OwesModel owesModel)
+    => Navigator.pushNamed(context, Routers.debtDetail, arguments: owesModel,);
+  
   Future<void> goToDebtAdd()async {
     final data = myCustomerModel;
+    final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
+    final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     data?.isMe= owesTotalModel?.isMe;
     data?.isUser=owesTotalModel?.isUser;
-    data?.money= (owesTotalModel?.isMe??false)? (owesTotalModel?.oweMe??0)
-      : (owesTotalModel?.oweUser??0);
+    data?.money= (owesTotalModel?.isMe??false)? myMoney
+      : yourMoney;
     await Navigator.pushNamed(context, 
       Routers.debtAdd, arguments: data,);
+  }
+
+  void checkMoneyOwe(){
+    if(dropValue==listName[0]){
+      if(owesTotalModel?.isMe??false){
+        moneyRemaining=owesTotalModel?.oweMe;
+        moneyPaid=owesTotalModel?.paidMe;
+      }else if(owesTotalModel?.isUser??false){
+        moneyRemaining=owesTotalModel?.oweUser;
+        moneyPaid=owesTotalModel?.paidUser;
+      }else{
+        moneyRemaining=0;
+        moneyPaid=0;
+      }
+    }else if(dropValue==listName[1]){
+      moneyRemaining=owesTotalModel?.oweMe;
+      moneyPaid=owesTotalModel?.paidMe;
+    }else{
+      moneyRemaining=owesTotalModel?.oweUser;
+      moneyPaid=owesTotalModel?.paidUser;
+    }
+    notifyListeners();
   }
 
   void checkOwes(){
     final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
     final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     if(owesTotalModel?.isMe??false){
-      messageOwes='${DebtLanguage.amountOfMoney} ${DebtLanguage.my} ${
-      DebtLanguage.yourOwes}: ${AppCurrencyFormat.formatMoneyD(myMoney)}';
+      messageOwes='${DebtLanguage.iOwe} ${
+        myCustomerModel?.fullName?.split(' ').last}: ${
+          AppCurrencyFormat.formatMoneyD(myMoney)}';
     }else if(owesTotalModel?.isUser??false){
-      messageOwes='${DebtLanguage.amountOfMoney} ${
-      myCustomerModel?.fullName?.split(' ').last} ${DebtLanguage.yourOwes}: ${
-        AppCurrencyFormat.formatMoneyD(yourMoney)}';
+      messageOwes='${myCustomerModel?.fullName?.split(' ').last} ${
+        DebtLanguage.yourOwes} ${DebtLanguage.me}: ${
+          AppCurrencyFormat.formatMoneyD(yourMoney)}';
     }else{
       messageOwes='0';
     }

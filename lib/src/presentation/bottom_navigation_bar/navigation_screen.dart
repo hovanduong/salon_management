@@ -130,7 +130,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 ? AppImages.icDebit
                 : AppImages.icDebit,
           ),
-          label: NavigateLanguage.debit,
+          label: NavigateLanguage.debitBook,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(

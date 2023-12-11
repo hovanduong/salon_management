@@ -240,37 +240,25 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   //   );
   // }
 
-  Widget buildInfoCustomer(){
-    return Showcase(
-      key: _viewModel!.keyInfoCustomer,
-      description: BookingLanguage.infoCustomerShowCase,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
+  Widget buildInfo() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          vertical: SizeToPadding.sizeMedium,
           horizontal: SizeToPadding.sizeMedium,
-        ),
+      ),
+      child: Showcase(
+        key: _viewModel!.keyInfoCustomer,
+        description: BookingLanguage.infoCustomerShowCase,
         child: Column(
           children: [
             buildFieldPhone(),
             buildName(),
             buildAddress(),
             buildNote(),
+            buildFieldMoney(),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildInfo() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          vertical: SizeToPadding.sizeMedium,
-      ),
-      child: Column(
-        children: [
-          buildInfoCustomer(),
-          buildFieldMoney(),
-        ],
-      ),
+      )
     );
   }
 
@@ -635,32 +623,23 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildFieldMoney(){
-    return Showcase( 
-      key: _viewModel!.keyMoney,
-      description: BookingLanguage.requiredMoney,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: SizeToPadding.sizeMedium,
-        ),
-        child: AppFormField(
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(11),
-          ],
-          keyboardType: TextInputType.number,
-          labelText: BookingLanguage.amountOfMoney,
-          hintText: BookingLanguage.enterAmountOfMoney,
-          textEditingController: _viewModel!.moneyController,
-          onChanged: (value) {
-            _viewModel!
-              ..validPrice(value.trim())
-              ..formatMoney(value.trim())
-              ..enableConfirmButton();
-          },
-          validator: _viewModel!.messageErrorPrice,
-        ),
-      ),
+    return AppFormField(
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(11),
+      ],
+      keyboardType: TextInputType.number,
+      labelText: BookingLanguage.amountOfMoney,
+      hintText: BookingLanguage.enterAmountOfMoney,
+      textEditingController: _viewModel!.moneyController,
+      onChanged: (value) {
+        _viewModel!
+          ..validPrice(value.trim())
+          ..formatMoney(value.trim())
+          ..enableConfirmButton();
+      },
+      validator: _viewModel!.messageErrorPrice,
     );
   }
 

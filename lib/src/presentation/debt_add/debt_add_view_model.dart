@@ -25,6 +25,7 @@ class DebtAddViewModel extends BaseViewModel{
   bool isMeOwes=false;
   bool enableButton=false;
   bool isLoading=true;
+  bool isRemindMoney=false;
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
@@ -33,10 +34,13 @@ class DebtAddViewModel extends BaseViewModel{
 
   DateRangePickerController dateController= DateRangePickerController();
 
-  OwesTotalModel? owesTotalModel;
+  // OwesTotalModel? owesTotalModel;
   MyCustomerModel? myCustomerModel;
 
   String? messageMoney;
+  String? messageOwes;
+
+  List<int> listMoney=[];
 
   DateTime dateTime = DateTime.now();
   DateTime time = DateTime.now();
@@ -50,8 +54,30 @@ class DebtAddViewModel extends BaseViewModel{
   }
 
   Future<void> fetchData() async{
-    await getOwesTotal();
+    // await getOwesTotal();
     checkData();
+    checkOwes();
+    notifyListeners();
+  }
+
+  void setMoneyInput(int index){
+    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+    validPrice(moneyController.text);
+    listMoney=[];
+    notifyListeners();
+  }
+
+  void setShowRemind(String value){
+    if(value.length>3 || value==''){
+      listMoney=[];
+    }else{
+      listMoney=[];
+      for (var i = 0; i < 3; i++) {
+        listMoney.add(int.parse('$value${
+          i==0? '000': i==1?'0000': i==2? '00000':'0'
+        }'),);
+      }
+    }
     notifyListeners();
   }
 
@@ -106,6 +132,21 @@ class DebtAddViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  void checkOwes(){
+    if(myCustomerModel?.isMe??false){
+      messageOwes='${DebtLanguage.iOwe} ${
+        myCustomerModel?.fullName?.split(' ').last}: ${
+          AppCurrencyFormat.formatMoneyD(myCustomerModel?.money??0)}';
+    }else if(myCustomerModel?.isUser??false){
+      messageOwes='${myCustomerModel?.fullName?.split(' ').last} ${
+        DebtLanguage.yourOwes} ${DebtLanguage.me}: ${
+          AppCurrencyFormat.formatMoneyD(myCustomerModel?.money??0)}';
+    }else{
+      messageOwes='0';
+    }
+    notifyListeners();
+  }
+
   void setButtonPerson(String? name){
     if(isOwes){
       if(name==DebtAddLanguage.me){
@@ -115,19 +156,20 @@ class DebtAddViewModel extends BaseViewModel{
       }
     }else if(!isMe && name==DebtAddLanguage.me){
       showDialogNotification(context, 
-        content: DebtLanguage.notificationPaidOwes,);
+        content: '${myCustomerModel?.fullName?.split(' ').last} ${
+          DebtLanguage.notificationPaidOwes}',);
     }else if(isMe && name==myCustomerModel?.fullName){
       showDialogNotification(context, 
-        content: DebtLanguage.notificationPaidOwes,);
+        content: '${DebtLanguage.you} ${DebtLanguage.notificationPaidOwes}',);
     }
     notifyListeners();
   }
  
   void setButtonForm(String? name){
-    if(isOwes && name==DebtAddLanguage.pay){
+    if(isOwes && name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
       showDialogNotification(context, content: DebtLanguage.notificationOwes);
     }else{
-      if(name==DebtAddLanguage.pay){
+      if(name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
         isPay=true;
       }else{
         isPay=false;
@@ -266,28 +308,28 @@ class DebtAddViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  Future<void> getOwesTotal() async {
-    final result = await owesInvoiceApi.getTotalOwesInvoice(
-      OwesInvoiceParams(
-        id: myCustomerModel?.id,
-      ),
-    );
+  // Future<void> getOwesTotal() async {
+  //   final result = await owesInvoiceApi.getTotalOwesInvoice(
+  //     OwesInvoiceParams(
+  //       id: myCustomerModel?.id,
+  //     ),
+  //   );
 
-    final value = switch (result) {
-      Success(value: final customer) => customer,
-      Failure(exception: final exception) => exception,
-    };
+  //   final value = switch (result) {
+  //     Success(value: final customer) => customer,
+  //     Failure(exception: final exception) => exception,
+  //   };
 
-    if (!AppValid.isNetWork(value)) {
-      isLoading = true;
-    } else if (value is Exception) {
-      isLoading = true;
-    } else {
-      owesTotalModel = value as OwesTotalModel;
-      isLoading=false;
-    }
-    notifyListeners();
-  }
+  //   if (!AppValid.isNetWork(value)) {
+  //     isLoading = true;
+  //   } else if (value is Exception) {
+  //     isLoading = true;
+  //   } else {
+  //     owesTotalModel = value as OwesTotalModel;
+  //     isLoading=false;
+  //   }
+  //   notifyListeners();
+  // }
 
   @override
   void dispose() {

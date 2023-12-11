@@ -11,6 +11,7 @@ import '../../configs/language/debt_add_language.dart';
 import '../../configs/language/payment_language.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../../resource/model/model.dart';
+import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'debt_add_view_model.dart';
@@ -82,10 +83,27 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
         _viewModel!
           ..validPrice(value.trim())
           ..formatMoney(value.trim())
-          ..onSubmit();
+          ..onSubmit()..setShowRemind(value.trim());
       },
       validator: _viewModel!.messageMoney,
     );
+  }
+
+  Widget buildRemindMoney(){
+    return _viewModel!.listMoney.isNotEmpty ? Wrap(
+      children: List.generate(_viewModel!.listMoney.length, (index) => InkWell(
+        onTap: ()=> _viewModel!.setMoneyInput(index),
+        child: Padding(
+          padding: EdgeInsets.only(right: SizeToPadding.sizeSmall),
+          child: Chip(
+            label: Paragraph(
+              content: AppCurrencyFormat.formatMoneyD(
+                _viewModel!.listMoney[index],),
+            )
+          ),
+        ),
+      ),) 
+    ):const SizedBox();
   }
 
   Widget buildChoosePersonButton(){
@@ -104,7 +122,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
   Widget buildChooseFormButton(){
     return ChooseButtonWidget(
       isButton: _viewModel!.isPay,
-      nameButtonLeft: DebtAddLanguage.pay,
+      nameButtonLeft: '${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}',
       nameButtonRight: DebtAddLanguage.debit,
       onTapLeft: (name)=> _viewModel!.setButtonForm(name),
       onTapRight: (name)=> _viewModel!.setButtonForm(name),
@@ -226,6 +244,14 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
     );
   }
 
+  Widget buildFieldMoneyOwes(){
+    return FieldNoteWidget(
+      hintText: '${_viewModel!.messageOwes}',
+      colorHintText: AppColors.Red_Money,
+      colorBorder: AppColors.Red_Money,
+    );
+  }
+
   Widget buildCardField() {
     return Positioned(
       top: 150,
@@ -248,7 +274,9 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              buildFieldMoneyOwes(),
               buildFieldMoney(),
+              buildRemindMoney(),
               buildChoosePersonButton(),
               buildChooseFormButton(),
               buildNote(),

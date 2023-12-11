@@ -137,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildCategoryWidget() {
     return SettingProfileListWidget(
       image: AppImages.icMessage,
-      title: ProfileLanguage.category,
+      title: ProfileLanguage.myCatalog,
       isOntap: true,
       onTap: () {
         _viewModel!.goToCategory(context);

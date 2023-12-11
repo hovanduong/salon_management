@@ -2,6 +2,8 @@ import '../../intl/generated/l10n.dart';
 
 class DebitLanguage {
   static final debit = S.current.debit;
+  static final debitBook = S.current.debitBook;
+  static final debtManagement = S.current.debtManagement;
   static final close= S.current.close;
   static final home= S.current.home;
   static final changePassFail= S.current.changePassFail;

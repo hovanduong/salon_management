@@ -2,6 +2,7 @@ import '../../intl/generated/l10n.dart';
 
 class CategoryLanguage {
   static final category = S.current.category;
+  static final myCatalog = S.current.myCatalog;
   static final serviceAdd = S.current.serviceAdd;
   static final addCategory = S.current.addCategory;
   static final delete= S.current.delete;

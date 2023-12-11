@@ -149,7 +149,7 @@ class BookingViewModel extends BaseViewModel {
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [keyInfoCustomer,keyMoney, keyAddCategory, keyCategory, keyDateTime],
+          [keyInfoCustomer, keyAddCategory, keyCategory, keyDateTime],
         );
       });
     }

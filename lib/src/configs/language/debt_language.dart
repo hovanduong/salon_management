@@ -13,7 +13,11 @@ class DebtLanguage {
   static final confirm= S.current.confirm;
   static final waningDeleteCustomer= S.current.waningDeleteCustomer;
   static final addDebitCustomer= S.current.addDebitCustomer;
+  static final myHistory= S.current.myHistory;
+  static final uHistory= S.current.uHistory;
+  static final amountPaid= S.current.amountPaid;
   static final editDebitCustomer= S.current.editDebitCustomer;
+  static final debtCode= S.current.debtCode;
   static final me= S.current.me;
   static final my= S.current.my;
   static final notificationDebit= S.current.notificationDebit;
@@ -37,4 +41,13 @@ class DebtLanguage {
   static final amountOwed= S.current.amountOwed;
   static final amountOwedPaid= S.current.amountOwedPaid;
   static final historyOwes= S.current.historyOwes;
+  static final iOwe= S.current.iOwe;
+  static final totalDebt= S.current.totalDebt;
+  static final debtManagement= S.current.debtManagement;
+  static final you= S.current.you;
+  static final debtDetails= S.current.debtDetails;
+  static final date= S.current.date;
+  static final note= S.current.note;
+  static final creator= S.current.creator;
+  static final allTransactions= S.current.allTransactions;
 }

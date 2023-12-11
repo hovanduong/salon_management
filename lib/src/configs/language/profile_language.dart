@@ -20,5 +20,6 @@ class ProfileLanguage {
   static final customer = S.current.customer;
   static final contentLogout = S.current.contentLogout;
   static final logout = S.current.logout;
+  static final myCatalog = S.current.myCatalog;
 
 }
