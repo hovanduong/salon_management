@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -352,7 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: FloatingActionButton(
             heroTag: 'addBooking',
             backgroundColor: AppColors.PRIMARY_GREEN,
-            onPressed: () => _viewModel!.goToAddInvoice(context),
+            onPressed: () => _viewModel!.request_permission(context,Permission.notification),
             child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
           ),
         ),

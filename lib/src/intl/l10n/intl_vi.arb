@@ -360,5 +360,7 @@
     "creator":"Người tạo",
     "myHistory":"Lịch sử của tôi",
     "uHistory":"Lịch sử của",
+    "myDebitEveryone":"Số tiền tôi nợ mọi người là",
+    "everyoneDebitMe":"Số tiền mọi người còn nợ tôi là",
     "lastLine": ""
 }

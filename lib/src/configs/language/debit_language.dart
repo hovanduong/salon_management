@@ -15,6 +15,8 @@ class DebitLanguage {
   static final confirm= S.current.confirm;
   static final waningDeleteCustomer= S.current.waningDeleteCustomer;
   static final addDebitCustomer= S.current.addDebitCustomer;
+  static final totalOwesPaid= S.current.totalOwesPaid;
+  static final totalDebt= S.current.totalDebt;
   static final editDebitCustomer= S.current.editDebitCustomer;
   static final nameCustomer= S.current.nameCustomer;
   static final notificationDebit= S.current.notificationDebit;
@@ -25,4 +27,6 @@ class DebitLanguage {
   static final searchDebitCustomer= S.current.searchDebitCustomer;
   static final addDebt= S.current.addDebt;
   static final userManual= S.current.userManual;
+  static final everyoneDebitMe= S.current.everyoneDebitMe;
+  static final myDebitEveryone= S.current.myDebitEveryone;
 }

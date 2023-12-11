@@ -181,10 +181,37 @@ class _DebitScreenState extends State<DebitScreen> {
     );
   }
 
+  Widget buildTotalMyDebit(){
+    return FieldRevenueWidget(
+      title: DebitLanguage.myDebitEveryone,
+      money:( _viewModel!.totalDebtModel?.totalDebtMe ??0)
+        - (_viewModel!.totalDebtModel?.totalPaidMe??0),
+      colorTitle: AppColors.Red_Money,
+      totalLeft: _viewModel!.totalDebtModel?.totalPaidMe??0,
+      totalRight: _viewModel!.totalDebtModel?.totalDebtMe??0,
+    );
+  }
+
+  Widget buildTotalEveryoneDebit(){
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
+      child: FieldRevenueWidget(
+        title: DebitLanguage.everyoneDebitMe,
+        money:( _viewModel!.totalDebtModel?.totalDebtUser ??0)
+          - (_viewModel!.totalDebtModel?.totalPaidUser??0),
+        colorTitle: AppColors.Red_Money,
+        totalLeft: _viewModel!.totalDebtModel?.totalPaidUser??0,
+        totalRight: _viewModel!.totalDebtModel?.totalDebtUser??0,
+      ),
+    );
+  }
+
   Widget buildBody(){
     return Column(
       children: [
         buildSearch(),
+        buildTotalMyDebit(),
+        buildTotalEveryoneDebit(),
         buildListDebit(),
       ],
     );

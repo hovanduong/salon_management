@@ -215,17 +215,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
         await _viewModel!.putReadNotification(
           _viewModel!.listCurrent[index].id ?? 0,
         );
-        await _viewModel!.goToBookingDetails(
-          context,
-          MyBookingParams(
-            id: _viewModel!.listCurrent[index].metaData?.appointmentId,
-          ),
-        );
+        if(_viewModel!.listCurrent[index].type == 'reminder'){
+          await _viewModel!.goToBookingDetails(
+            context,
+            MyBookingParams(
+              id: _viewModel!.listCurrent[index].metaData?.appointmentId,
+            ),
+          );
+        }
         await _viewModel!.pullRefresh();
       },
       child: _viewModel!.listCurrent[index].type == 'reminder'
           ? buildNewNotification(index)
-          : NotificationUpdate(date: date),
+          : NotificationUpdate(
+            date: date, 
+            color: _viewModel!.listCurrent[index].isRead??false
+              ? AppColors.BLACK_400:null,),
     );
   }
 

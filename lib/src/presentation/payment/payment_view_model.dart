@@ -34,6 +34,7 @@ class PaymentViewModel extends BaseViewModel {
 
   List<int>? myServiceId = [];
   List<int> serviceId = [];
+  List<int> listMoney = [];
 
   // List<RadioModel> selectedService = [];
   // List<MyServiceModel> myService = [];
@@ -438,6 +439,26 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+ void setMoneyInput(int index){
+    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+    validPrice(moneyController.text);
+    listMoney=[];
+    notifyListeners();
+  }
+
+  void setShowRemind(String value){
+    if(value.length>3 || value==''){
+      listMoney=[];
+    }else{
+      listMoney=[];
+      for (var i = 0; i < 3; i++) {
+        listMoney.add(int.parse('$value${
+          i==0? '000': i==1?'0000': i==2? '00000':'0'
+        }'),);
+      }
+    }
+    notifyListeners();
+  }
 
 
   Future<void> onServiceList(BuildContext context) =>

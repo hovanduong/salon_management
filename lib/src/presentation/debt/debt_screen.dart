@@ -216,7 +216,7 @@ class _DebtScreenState extends State<DebtScreen>
         AppColors.Red_Money: AppColors.Green_Money,
       date: listCurrent[index].date,
       money: listCurrent[index].money,
-      title: listCurrent[index].code,
+      title: DebtLanguage.amountOfMoney,
       nameCreator: listCurrent[index].isMe??false? DebtLanguage.me:
         _viewModel!.myCustomerModel?.fullName?.split(' ').last,
       note: listCurrent[index].note,

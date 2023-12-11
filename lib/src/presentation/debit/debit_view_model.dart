@@ -11,6 +11,7 @@ import '../../configs/widget/dialog/dialog_user_manual.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/debit_api.dart';
+import '../../resource/service/total_debt_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -27,6 +28,7 @@ class DebitViewModel extends BaseViewModel{
   GlobalKey keyNote= GlobalKey();
 
   DebitApi debitApi= DebitApi();
+  TotalDebitApi totalDebitApi = TotalDebitApi();
 
   int page=1;
 
@@ -37,6 +39,8 @@ class DebitViewModel extends BaseViewModel{
 
   List<MyCustomerModel> listCustomer=[];
   List<MyCustomerModel> listCurrent=[];
+
+  TotalDebtModel? totalDebtModel;
 
   ScrollController scrollController= ScrollController();
 
@@ -51,6 +55,7 @@ class DebitViewModel extends BaseViewModel{
 
   Future<void> fetchData()async{
     page=1;
+    await getTotalDebit();
     await getDebit(page, '');
     listCurrent=listCustomer;
     scrollController.addListener(scrollListener);
@@ -360,6 +365,24 @@ class DebitViewModel extends BaseViewModel{
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getTotalDebit() async {
+    final result = await totalDebitApi.getTotalDebit();
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading = true;
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      totalDebtModel = value as TotalDebtModel;
     }
     notifyListeners();
   }

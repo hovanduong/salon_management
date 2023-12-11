@@ -37,6 +37,7 @@ class BookingViewModel extends BaseViewModel {
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustomer = [];
   List<CategoryModel> listCategory = [];
+  List<int> listMoney = [];
   List<String> listImageCategory=[
     AppImages.icBodyMassage,
     AppImages.icNailCare,
@@ -153,6 +154,27 @@ class BookingViewModel extends BaseViewModel {
         );
       });
     }
+  }
+
+   void setMoneyInput(int index){
+    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+    validPrice(moneyController.text);
+    listMoney=[];
+    notifyListeners();
+  }
+
+  void setShowRemind(String value){
+    if(value.length>3 || value==''){
+      listMoney=[];
+    }else{
+      listMoney=[];
+      for (var i = 0; i < 3; i++) {
+        listMoney.add(int.parse('$value${
+          i==0? '000': i==1?'0000': i==2? '00000':'0'
+        }'),);
+      }
+    }
+    notifyListeners();
   }
 
   Future<void> goToAddCategory(BuildContext context) async {

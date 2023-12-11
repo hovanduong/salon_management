@@ -360,5 +360,7 @@
     "creator":"Creator",
     "myHistory":"My history",
     "uHistory":"History of",
+    "myDebitEveryone":"The amount of money I owe everyone is",
+    "everyoneDebitMe":"The amount of money everyone still owes me is",
     "lastLine": ""
 }

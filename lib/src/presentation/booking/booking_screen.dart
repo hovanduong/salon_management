@@ -12,6 +12,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../resource/model/my_booking_model.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
 import 'booking.dart';
@@ -256,6 +257,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
             buildAddress(),
             buildNote(),
             buildFieldMoney(),
+            buildRemindMoney(),
           ],
         ),
       )
@@ -637,10 +639,27 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         _viewModel!
           ..validPrice(value.trim())
           ..formatMoney(value.trim())
-          ..enableConfirmButton();
+          ..enableConfirmButton()..setShowRemind(value);
       },
       validator: _viewModel!.messageErrorPrice,
     );
+  }
+
+  Widget buildRemindMoney(){
+    return _viewModel!.listMoney.isNotEmpty ? Wrap(
+      children: List.generate(_viewModel!.listMoney.length, (index) => InkWell(
+        onTap: ()=> _viewModel!.setMoneyInput(index),
+        child: Padding(
+          padding: EdgeInsets.only(right: SizeToPadding.sizeSmall),
+          child: Chip(
+            label: Paragraph(
+              content: AppCurrencyFormat.formatMoneyD(
+                _viewModel!.listMoney[index],),
+            )
+          ),
+        ),
+      ),) 
+    ):const SizedBox();
   }
 
   Widget buildConfirmButton() {

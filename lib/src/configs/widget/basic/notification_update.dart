@@ -57,18 +57,6 @@ class NotificationUpdate extends StatelessWidget {
           date??'',
         ), 
           color: color?? AppColors.PRIMARY_GREEN,),
-        Row(
-          children: [
-            Paragraph(
-              content: NotificationLanguage.details,
-              fontWeight: FontWeight.w400,
-              color: color?? AppColors.PRIMARY_GREEN,
-            ),
-            Icon(Icons.arrow_forward_ios_outlined, 
-              color: color?? AppColors.PRIMARY_GREEN, size: 10,
-            )
-          ],
-        ),
       ],
     );
   }

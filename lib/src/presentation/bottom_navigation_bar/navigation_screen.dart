@@ -104,7 +104,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 ? AppImages.icHome
                 : AppImages.icHomeLine,
           ),
-          label: NavigateLanguage.overview,
+          label: NavigateLanguage.home,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(

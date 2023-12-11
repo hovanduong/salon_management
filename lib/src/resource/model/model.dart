@@ -21,4 +21,5 @@ export 'service_spa_model.dart';
 export 'statistics_model.dart';
 export 'statistics_service_model.dart';
 export 'top_service_model.dart';
+export 'total_debt_model.dart';
 export 'user_model.dart';
