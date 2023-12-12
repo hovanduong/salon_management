@@ -95,6 +95,29 @@ class NotificationViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  dynamic showDialogSeeAllNotification(BuildContext context)async{
+     await showDialog(
+      context: context,
+      builder: (_) {
+        return WarningDialog(
+          content: BookingLanguage.readAllNotification,
+          image: AppImages.icPlus,
+          title: SignUpLanguage.notification,
+          leftButtonName: SignUpLanguage.close,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: BookingLanguage.confirm,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () async{
+            await readAllNotification();
+          },
+        );
+      },
+     );
+  }
+
   dynamic showErrorDialog(_) {
     showDialog(
       context: context,

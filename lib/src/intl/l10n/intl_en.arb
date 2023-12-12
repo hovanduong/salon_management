@@ -366,5 +366,10 @@
     "contentSetting":"You need to turn on notifications to use. Go to settings now",
     "previousAppointment":"Previous appointment",
     "seeAllNotification":"See all announcements",
+    "showCaseMyDebt":"The total amount of money I owe everyone",
+    "showCaseMyPaid":"The total amount I paid to everyone",
+    "showCaseUPaid":"The total amount everyone paid me",
+    "showCaseUDebt":"The total amount of money everyone owes me",
+    "readAllNotification":"Do you want to read all the notification?",
     "lastLine": ""
 }

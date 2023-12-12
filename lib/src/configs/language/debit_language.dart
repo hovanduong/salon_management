@@ -29,4 +29,8 @@ class DebitLanguage {
   static final userManual= S.current.userManual;
   static final everyoneDebitMe= S.current.everyoneDebitMe;
   static final myDebitEveryone= S.current.myDebitEveryone;
+  static final showCaseMyDebt= S.current.showCaseMyDebt;
+  static final showCaseMyPaid= S.current.showCaseMyPaid;
+  static final showCaseUDebt= S.current.showCaseUDebt;
+  static final showCaseUPaid= S.current.showCaseUPaid;
 }

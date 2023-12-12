@@ -26,6 +26,10 @@ class DebitViewModel extends BaseViewModel{
   GlobalKey keyAdd= GlobalKey();
   GlobalKey keySearch= GlobalKey();
   GlobalKey keyNote= GlobalKey();
+  GlobalKey keyMyDebt= GlobalKey();
+  GlobalKey keyMyPaid= GlobalKey();
+  GlobalKey keyUDebt= GlobalKey();
+  GlobalKey keyUPaid= GlobalKey();
 
   DebitApi debitApi= DebitApi();
   TotalDebitApi totalDebitApi = TotalDebitApi();
@@ -72,7 +76,7 @@ class DebitViewModel extends BaseViewModel{
     if (isShowCase == true) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         return ShowCaseWidget.of(context).startShowCase(
-          [keyAdd, keyNote, keySearch,],
+          [keyAdd, keyNote,keyUPaid,keyUDebt, keyMyPaid, keyMyDebt,keySearch,],
         );
       });
     }

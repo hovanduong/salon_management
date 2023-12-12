@@ -67,4 +67,5 @@ class BookingLanguage {
   static final selectStatus= S.current.selectStatus;
   static final settings= S.current.settings;
   static final contentSetting= S.current.contentSetting;
+  static final readAllNotification= S.current.readAllNotification;
 }

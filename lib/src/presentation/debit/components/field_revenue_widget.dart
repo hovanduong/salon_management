@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -13,6 +14,10 @@ class FieldRevenueWidget extends StatelessWidget {
     this.title, 
     this.money, 
     this.colorTitle, 
+    this.keyPaid, 
+    this.keyOwe, 
+    this.descriptionPaid, 
+    this.descriptionOwe, 
   });
 
   final num? totalRight;
@@ -20,6 +25,10 @@ class FieldRevenueWidget extends StatelessWidget {
   final String? title;
   final num? money;
   final Color? colorTitle;
+  final GlobalKey? keyPaid;
+  final GlobalKey? keyOwe;
+  final String? descriptionPaid;
+  final String? descriptionOwe;
 
   @override
   Widget build(BuildContext context) {
@@ -54,21 +63,31 @@ class FieldRevenueWidget extends StatelessWidget {
         SizedBox(height: SizeToPadding.sizeVerySmall,),
         Row(
           children: [
-            Expanded(
-              child: CardServiceWidget(
-                title:  DebitLanguage.totalOwesPaid,
-                total: totalRight!=null? AppCurrencyFormat.formatMoneyD(
-                  totalRight ?? 0,
-                ):'',
-                colorMoney: AppColors.Green_Money,
+            Showcase(
+              key: keyPaid??GlobalKey(),
+              description: descriptionPaid,
+              child: SizedBox(
+                width: MediaQuery.sizeOf(context).width/2,
+                child: CardServiceWidget(
+                  title:  DebitLanguage.totalOwesPaid,
+                  total: totalRight!=null? AppCurrencyFormat.formatMoneyD(
+                    totalRight ?? 0,
+                  ):'',
+                  colorMoney: AppColors.Green_Money,
+                ),
               ),
             ),
-            Expanded(
-              child: CardServiceWidget(
-                title: DebitLanguage.totalDebt,
-                total: totalLeft!=null?
-                  AppCurrencyFormat.formatMoneyD(totalLeft ?? 0,) : '',
-                colorMoney: AppColors.Red_Money,
+            Showcase(
+              description: descriptionOwe,
+              key: keyOwe??GlobalKey(),
+              child: SizedBox(
+                width: MediaQuery.sizeOf(context).width/2,
+                child: CardServiceWidget(
+                  title: DebitLanguage.totalDebt,
+                  total: totalLeft!=null?
+                    AppCurrencyFormat.formatMoneyD(totalLeft ?? 0,) : '',
+                  colorMoney: AppColors.Red_Money,
+                ),
               ),
             ),
           ],

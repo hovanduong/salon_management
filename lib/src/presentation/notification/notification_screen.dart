@@ -89,7 +89,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             description: NotificationLanguage.seeAllNotification,
             key: _viewModel!.keyNotification,
             child: InkWell(
-              onTap: ()=> _viewModel!.readAllNotification(),
+              onTap: ()=> _viewModel!.showDialogSeeAllNotification(context),
               child: SvgPicture.asset(AppImages.icSeeAllNotification,
                 color: AppColors.COLOR_WHITE,
               ),
