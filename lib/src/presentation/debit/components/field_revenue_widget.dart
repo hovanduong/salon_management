@@ -3,7 +3,6 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
-import '../../../configs/language/debit_language.dart';
 import '../../../utils/app_currency.dart';
 import 'components.dart';
 
@@ -18,6 +17,8 @@ class FieldRevenueWidget extends StatelessWidget {
     this.keyOwe, 
     this.descriptionPaid, 
     this.descriptionOwe, 
+    this.totalPaid, 
+    this.totalOwe, 
   });
 
   final num? totalRight;
@@ -29,6 +30,8 @@ class FieldRevenueWidget extends StatelessWidget {
   final GlobalKey? keyOwe;
   final String? descriptionPaid;
   final String? descriptionOwe;
+  final String? totalPaid;
+  final String? totalOwe;
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +72,9 @@ class FieldRevenueWidget extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.sizeOf(context).width/2,
                 child: CardServiceWidget(
-                  title:  DebitLanguage.totalOwesPaid,
-                  total: totalRight!=null? AppCurrencyFormat.formatMoneyD(
-                    totalRight ?? 0,
+                  title: totalPaid??'',
+                  total: totalLeft!=null? AppCurrencyFormat.formatMoneyD(
+                    totalLeft ?? 0,
                   ):'',
                   colorMoney: AppColors.Green_Money,
                 ),
@@ -83,9 +86,9 @@ class FieldRevenueWidget extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.sizeOf(context).width/2,
                 child: CardServiceWidget(
-                  title: DebitLanguage.totalDebt,
-                  total: totalLeft!=null?
-                    AppCurrencyFormat.formatMoneyD(totalLeft ?? 0,) : '',
+                  title: totalOwe??'',
+                  total: totalRight!=null?
+                    AppCurrencyFormat.formatMoneyD(totalRight ?? 0,) : '',
                   colorMoney: AppColors.Red_Money,
                 ),
               ),

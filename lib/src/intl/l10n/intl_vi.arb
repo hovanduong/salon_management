@@ -371,5 +371,10 @@
     "showCaseUPaid":"Tổng số tiền mọi người đã trả cho tôi",
     "showCaseUDebt":"Tổng số tiền mọi người đã nợ tôi",
     "readAllNotification":"Bạn có muốn đọc tất cả thông báo không?",
+    "transactionOf":"Giao dịch của",
+    "totalIOwe":"Tổng tiền tôi đã nợ",
+    "totalIPaid":"Tổng tiền tôi đã trả",
+    "totalEveryoneOwe":"Tổng tiền mọi người đã nợ",
+    "totalEveryonePaid":"Tổng tiền mọi người đã trả",
     "lastLine": ""
 }

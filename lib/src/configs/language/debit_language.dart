@@ -33,4 +33,8 @@ class DebitLanguage {
   static final showCaseMyPaid= S.current.showCaseMyPaid;
   static final showCaseUDebt= S.current.showCaseUDebt;
   static final showCaseUPaid= S.current.showCaseUPaid;
+  static final totalIOwe= S.current.totalIOwe;
+  static final totalIPaid= S.current.totalIPaid;
+  static final totalEveryoneOwe= S.current.totalEveryoneOwe;
+  static final totalEveryonePaid= S.current.totalEveryonePaid;
 }

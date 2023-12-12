@@ -354,7 +354,7 @@
     "totalDebt":"Total debt",
     "debitBook":"Debit Book",
     "pay":"Pay",
-    "you":"Bạn",
+    "you":"You",
     "debtDetails":"Debt details",
     "debtCode":"Debt code",
     "creator":"Creator",
@@ -371,5 +371,10 @@
     "showCaseUPaid":"The total amount everyone paid me",
     "showCaseUDebt":"The total amount of money everyone owes me",
     "readAllNotification":"Do you want to read all the notification?",
+    "transactionOf":"Transaction of",
+    "totalIOwe":"Total amount I owe",
+    "totalIPaid":"Total amount I paid",
+    "totalEveryoneOwe":"The total amount everyone owed",
+    "totalEveryonePaid":"Total amount paid by everyone",
     "lastLine": ""
 }

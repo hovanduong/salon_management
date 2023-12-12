@@ -161,7 +161,7 @@ class _DebitScreenState extends State<DebitScreen> {
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeVerySmall,
         ),
-        height: MediaQuery.of(context).size.height-580,
+        height: MediaQuery.of(context).size.height-620,
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),
@@ -185,6 +185,8 @@ class _DebitScreenState extends State<DebitScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       child: FieldRevenueWidget(
+        totalOwe: DebitLanguage.totalIOwe,
+        totalPaid: DebitLanguage.totalIPaid,
         descriptionOwe: DebitLanguage.showCaseMyDebt,
         keyOwe: _viewModel!.keyMyDebt,
         descriptionPaid: DebitLanguage.showCaseMyPaid,
@@ -203,6 +205,8 @@ class _DebitScreenState extends State<DebitScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       child: FieldRevenueWidget(
+        totalOwe: DebitLanguage.totalEveryoneOwe,
+        totalPaid: DebitLanguage.totalEveryonePaid,
         descriptionOwe: DebitLanguage.showCaseUDebt,
         keyOwe: _viewModel!.keyUDebt,
         descriptionPaid: DebitLanguage.showCaseUPaid,

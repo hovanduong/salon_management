@@ -82,9 +82,11 @@ class DebitViewModel extends BaseViewModel{
     }
   }
 
-  Future<void> goToDebt({MyCustomerModel? myCustomerModel,}) =>
-    Navigator.pushNamed(context, 
+  Future<void> goToDebt({MyCustomerModel? myCustomerModel,})async{
+    await Navigator.pushNamed(context, 
       Routers.debt, arguments: myCustomerModel,);
+    await fetchData();
+  }
 
   Future<void> pullRefresh() async {
     listCurrent.clear();

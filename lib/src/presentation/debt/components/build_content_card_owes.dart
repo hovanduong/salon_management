@@ -77,7 +77,7 @@ class BuildContentCardOwes extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Paragraph(
-                content: DebtLanguage.creator,
+                content: DebtLanguage.transactionOf,
                 style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
               ),
               Paragraph(

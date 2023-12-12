@@ -50,4 +50,5 @@ class DebtLanguage {
   static final note= S.current.note;
   static final creator= S.current.creator;
   static final allTransactions= S.current.allTransactions;
+  static final transactionOf= S.current.transactionOf;
 }

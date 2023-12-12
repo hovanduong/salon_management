@@ -18,7 +18,7 @@ class CardServiceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 110,
       margin: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
       padding: EdgeInsets.all(SizeToPadding.sizeSmall),
       decoration: BoxDecoration(
@@ -32,8 +32,8 @@ class CardServiceWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Paragraph(content: title??'',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            // maxLines: 1,
+            // overflow: TextOverflow.ellipsis,
             style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w700,
             ),

@@ -84,9 +84,11 @@ class DebtAddViewModel extends BaseViewModel{
   void checkData(){
     if(myCustomerModel?.isMe??false){
       isMe=true;
+      isOwes=false;
       // isHideMe=false;
     }else if(myCustomerModel?.isUser??false){
       isMe=false;
+      isOwes=false;
       // isHideMe=true;
     }
     if(myCustomerModel?.isMe==false && myCustomerModel?.isUser==false){
@@ -158,7 +160,7 @@ class DebtAddViewModel extends BaseViewModel{
       showDialogNotification(context, 
         content: '${myCustomerModel?.fullName?.split(' ').last} ${
           DebtLanguage.notificationPaidOwes}',);
-    }else if(isMe && name==myCustomerModel?.fullName){
+    }else if(isMe && name==myCustomerModel?.fullName?.split(' ').last){
       showDialogNotification(context, 
         content: '${DebtLanguage.you} ${DebtLanguage.notificationPaidOwes}',);
     }
