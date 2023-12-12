@@ -170,8 +170,9 @@ class SignUpViewModel extends BaseViewModel {
           onTapLeft: () {
             Navigator.pop(context);
           },
-          onTapRight: () {
-            signUp();
+          onTapRight: () async{
+            Navigator.pop(context);
+            await signUp();
           },
         );
       },

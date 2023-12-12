@@ -366,5 +366,10 @@
     "contentSetting":"Bạn cần bật thông báo để sử dụng. Đi tới cài đặt ngay bây giờ",
     "previousAppointment":"Lịch hẹn trước đó",
     "seeAllNotification":"Xem tất cả thông báo",
+    "showCaseMyDebt":"Tổng số tiền tôi nợ mọi người",
+    "showCaseMyPaid":"Tổng số tiền tôi đã trả cho mọi người",
+    "showCaseUPaid":"Tổng số tiền mọi người đã trả cho tôi",
+    "showCaseUDebt":"Tổng số tiền mọi người đã nợ mọi tôi",
+    "readAllNotification":"Bạn có muốn đọc tất cả thông báo không?",
     "lastLine": ""
 }

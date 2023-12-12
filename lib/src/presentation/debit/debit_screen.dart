@@ -185,6 +185,10 @@ class _DebitScreenState extends State<DebitScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       child: FieldRevenueWidget(
+        descriptionOwe: DebitLanguage.showCaseMyDebt,
+        keyOwe: _viewModel!.keyMyDebt,
+        descriptionPaid: DebitLanguage.showCaseMyPaid,
+        keyPaid: _viewModel!.keyMyPaid,
         title: DebitLanguage.myDebitEveryone,
         money:( _viewModel!.totalDebtModel?.totalDebtMe ??0)
           - (_viewModel!.totalDebtModel?.totalPaidMe??0),
@@ -199,6 +203,10 @@ class _DebitScreenState extends State<DebitScreen> {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       child: FieldRevenueWidget(
+        descriptionOwe: DebitLanguage.showCaseUDebt,
+        keyOwe: _viewModel!.keyUDebt,
+        descriptionPaid: DebitLanguage.showCaseUPaid,
+        keyPaid: _viewModel!.keyUPaid,
         title: DebitLanguage.everyoneDebitMe,
         money:( _viewModel!.totalDebtModel?.totalDebtUser ??0)
           - (_viewModel!.totalDebtModel?.totalPaidUser??0),
@@ -212,8 +220,8 @@ class _DebitScreenState extends State<DebitScreen> {
   Widget buildBody(){
     return Column(
       children: [
-        buildTotalMyDebit(),
         buildTotalEveryoneDebit(),
+        buildTotalMyDebit(),
         buildSearch(),
         buildListDebit(),
       ],
