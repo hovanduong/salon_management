@@ -308,29 +308,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   content: HomePageLanguage.notificationEmptyTransaction,
                 ),
               )
-            : SizedBox(
-                height: MediaQuery.sizeOf(context).height / 1.85,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  controller: _viewModel!.scrollController,
-                  itemCount: _viewModel!.loadingMore
-                      ? _viewModel!.listCurrent.length + 1
-                      : _viewModel!.listCurrent.length,
-                  itemBuilder: (context, index) {
-                    if (index < _viewModel!.listCurrent.length) {
-                      if (index == 0) {
-                        return Showcase(
-                          key: _viewModel!.cardRevenue,
-                          description: HomePageLanguage.dailyRevenue,
-                          child: buildCardTransaction(index),
-                        );
-                      }
-                      return buildCardTransaction(index);
-                    } else {
-                      return const CupertinoActivityIndicator();
+            : ListView.builder(
+                padding: EdgeInsets.zero,
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    if (index == 0) {
+                      return Showcase(
+                        key: _viewModel!.cardRevenue,
+                        description: HomePageLanguage.dailyRevenue,
+                        child: buildCardTransaction(index),
+                      );
                     }
-                  },
-                ),
+                    return buildCardTransaction(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
               )
         : Container();
   }
@@ -342,18 +339,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SizedBox(
         width: double.maxFinite,
         height: MediaQuery.sizeOf(context).height - 150,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (_viewModel!.isDate == 0)
-                buildHeader()
-              else
-                buildHeaderSecond(),
-              buildCardMoney(),
-              buildTitleTransaction(),
-              buildTransaction(),
-            ],
-          ),
+        child: Column(
+          children: [
+            if (_viewModel!.isDate == 0) buildHeader() else buildHeaderSecond(),
+            buildCardMoney(),
+            buildTitleTransaction(),
+            Expanded(child: buildTransaction()),
+          ],
         ),
       ),
     );
