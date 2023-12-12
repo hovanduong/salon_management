@@ -222,6 +222,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: [
           buildCategory(),
           buildDateTime(),
+          if (Platform.isIOS) const SizedBox(height: 50),
         ],
       ),
     );
