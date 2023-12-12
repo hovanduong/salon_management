@@ -448,11 +448,13 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> checkAllowNotification(bool value, MyBookingModel list) async{
     final isAllow= await AppPermNotification.checkPermission(
       Permission.notification, context);
+      print(isAllow);
     if(isAllow==true){
       await setRemind(value, list);
     }else{
       await AppPermNotification.showDialogSettings(context);
     }
+    notifyListeners();
   }
 
   Future<void> setRemind(bool value, MyBookingModel list)async{

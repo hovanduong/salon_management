@@ -47,6 +47,7 @@ class BookingViewModel extends BaseViewModel {
     AppImages.makeUp,
     AppImages.tattoo,
   ];
+  List<FocusNode> listFocus= List.generate(5, (index) => FocusNode());
 
   int? myCustomerId;
   int? index;
@@ -91,6 +92,7 @@ class BookingViewModel extends BaseViewModel {
   bool isLoading=true;
   bool isShowAll=false;
   bool isShowCase=true;
+  bool isShowButton=true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -133,6 +135,7 @@ class BookingViewModel extends BaseViewModel {
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
+    await setShowButton();
     await AppPref.getShowCase('showCaseBooking').then(
       (value) => isShowCase=value??true,);
     startShowCase();
@@ -175,6 +178,15 @@ class BookingViewModel extends BaseViewModel {
       }
     }
     notifyListeners();
+  }
+
+  Future<void> setShowButton() async{
+    listFocus.forEach((node) {
+      node.addListener(() {
+        isShowButton = !listFocus.any((focus) => focus.hasFocus);
+        notifyListeners();
+      });
+    });
   }
 
   Future<void> goToAddCategory(BuildContext context) async {

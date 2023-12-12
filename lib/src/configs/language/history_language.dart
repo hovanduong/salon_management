@@ -2,6 +2,7 @@ import '../../intl/generated/l10n.dart';
 
 class HistoryLanguage {
   static final pay = S.current.pay;
+  static final payment = S.current.payment;
   static final total = S.current.total;
   static final today  = S.current.today;
   static final daysBefore  = S.current.daysBefore;

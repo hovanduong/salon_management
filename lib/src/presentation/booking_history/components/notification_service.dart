@@ -247,7 +247,7 @@ class NotificationService extends StatelessWidget {
                 onTap: () {
                   onPay!();
                 },
-                content: HistoryLanguage.pay,
+                content: HistoryLanguage.payment,
                 enableButton: true,
               ): Container(),
             ),

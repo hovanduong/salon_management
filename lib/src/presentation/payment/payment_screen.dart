@@ -326,6 +326,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildFieldPhone() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[0],
       textEditingController: _viewModel!.phoneController,
       labelText: PaymentLanguage.phoneNumber,
       hintText: PaymentLanguage.enterPhoneNumber,
@@ -364,6 +365,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
             FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(11),
           ],
+          focusNode: _viewModel!.listFocus[4],
           keyboardType: TextInputType.number,
           labelText: PaymentLanguage.amountOfMoney,
           hintText: PaymentLanguage.enterAmountOfMoney,
@@ -588,6 +590,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildName() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[1],
       labelText: PaymentLanguage.name,
       hintText: PaymentLanguage.enterName,
       textEditingController: _viewModel!.nameController,
@@ -611,7 +614,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
             color: AppColors.COLOR_WHITE,
           ),
           onTap: () => Navigator.pop(context),
-          title: PaymentLanguage.pay,
+          title: PaymentLanguage.payment,
         ),
       ),
     );
@@ -619,6 +622,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildAddress() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[2],
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
       textEditingController: _viewModel!.addressController,
@@ -647,6 +651,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildNote() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[3],
       textEditingController: _viewModel!.noteController,
       labelText: BookingLanguage.note,
       hintText: BookingLanguage.enterNote,
@@ -657,16 +662,19 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildConfirmButton() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeToPadding.sizeSmall,
-      ),
-      child: AppButton(
-        content: ServiceAddLanguage.confirm,
-        enableButton: _viewModel!.enableButton,
-        onTap: () {
-          _viewModel!.checkCustomer();
-        },
+    return Visibility(
+      visible: _viewModel!.isShowButton,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeSmall,
+        ),
+        child: AppButton(
+          content: ServiceAddLanguage.confirm,
+          enableButton: _viewModel!.enableButton,
+          onTap: () {
+            _viewModel!.checkCustomer();
+          },
+        ),
       ),
     );
   }

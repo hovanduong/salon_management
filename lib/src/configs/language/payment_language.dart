@@ -3,6 +3,7 @@ import '../../intl/generated/l10n.dart';
 class PaymentLanguage {
   static final addMyCustomer = S.current.addMyCustomer;
   static final pay = S.current.pay;
+  static final payment = S.current.payment;
   static final phoneNumber = S.current.phoneNumber;
   static final enterPhoneNumber = S.current.enterPhoneNumber;
   static final addCategory = S.current.addCategory;

@@ -25,7 +25,8 @@ class AppFormField extends StatefulWidget {
       this.iconButton,
       this.suffixText,
       this.inputFormatters,
-      this.isRequired = false});
+      this.isRequired = false, 
+      this.focusNode});
   final Function()? onTap;
   final String? hintText;
   final String? labelText;
@@ -43,6 +44,7 @@ class AppFormField extends StatefulWidget {
   final IconButton? iconButton;
   final List<TextInputFormatter>? inputFormatters;
   final bool isRequired;
+  final FocusNode? focusNode;
   @override
   State<AppFormField> createState() => _AppFormFieldState();
 }
@@ -91,6 +93,7 @@ class _AppFormFieldState extends State<AppFormField> {
                     border: Border.all(color: AppColors.BLACK_200),
                   ),
             child: TextFormField(
+              focusNode: widget.focusNode,
               inputFormatters: widget.inputFormatters,
               enabled: widget.enabled,
               style: const TextStyle(color: Colors.black87),

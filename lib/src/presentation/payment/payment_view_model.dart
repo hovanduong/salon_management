@@ -86,6 +86,7 @@ class PaymentViewModel extends BaseViewModel {
   bool isButtonSpending=false;
   bool isShowAll=false;
   bool isShowCase=true;
+  bool isShowButton=true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -111,6 +112,8 @@ class PaymentViewModel extends BaseViewModel {
   final moneyCharsCheck = RegExp(r'^\d+$');
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
 
+  List<FocusNode> listFocus= List.generate(5, (index) => FocusNode());
+
   GlobalKey keyInfoCustomer= GlobalKey();
   GlobalKey keyMoney= GlobalKey();
   GlobalKey key= GlobalKey();
@@ -128,6 +131,7 @@ class PaymentViewModel extends BaseViewModel {
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
+    await setShowButton();
     await AppPref.getShowCase('showCasePayment').then(
       (value) => isShowCase=value??true,);
     startShowCase();
@@ -362,6 +366,15 @@ class PaymentViewModel extends BaseViewModel {
 
   //   notifyListeners();
   // }
+
+  Future<void> setShowButton() async{
+    listFocus.forEach((node) {
+      node.addListener(() {
+        isShowButton = !listFocus.any((focus) => focus.hasFocus);
+        notifyListeners();
+      });
+    });
+  }
 
   Future<void> updateDateTime(DateTime time) async {
     dateTime = time;

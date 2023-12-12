@@ -257,6 +257,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
       top: 150,
       child: Container(
         width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height-130,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -271,18 +272,21 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildFieldMoneyOwes(),
-              buildFieldMoney(),
-              buildRemindMoney(),
-              buildChoosePersonButton(),
-              buildChooseFormButton(),
-              buildNote(),
-              buildDateTime(),
-              buildButtonApp(),
-            ],
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildFieldMoneyOwes(),
+                buildFieldMoney(),
+                buildRemindMoney(),
+                buildChoosePersonButton(),
+                buildChooseFormButton(),
+                buildNote(),
+                buildDateTime(),
+                buildButtonApp(),
+              ],
+            ),
           ),
         ),
       ),

@@ -161,7 +161,7 @@ class _DebitScreenState extends State<DebitScreen> {
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeVerySmall,
         ),
-        height: MediaQuery.of(context).size.height-50,
+        height: MediaQuery.of(context).size.height-580,
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),
@@ -182,13 +182,16 @@ class _DebitScreenState extends State<DebitScreen> {
   }
 
   Widget buildTotalMyDebit(){
-    return FieldRevenueWidget(
-      title: DebitLanguage.myDebitEveryone,
-      money:( _viewModel!.totalDebtModel?.totalDebtMe ??0)
-        - (_viewModel!.totalDebtModel?.totalPaidMe??0),
-      colorTitle: AppColors.Red_Money,
-      totalLeft: _viewModel!.totalDebtModel?.totalPaidMe??0,
-      totalRight: _viewModel!.totalDebtModel?.totalDebtMe??0,
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
+      child: FieldRevenueWidget(
+        title: DebitLanguage.myDebitEveryone,
+        money:( _viewModel!.totalDebtModel?.totalDebtMe ??0)
+          - (_viewModel!.totalDebtModel?.totalPaidMe??0),
+        colorTitle: AppColors.Red_Money,
+        totalLeft: _viewModel!.totalDebtModel?.totalPaidMe??0,
+        totalRight: _viewModel!.totalDebtModel?.totalDebtMe??0,
+      ),
     );
   }
 
@@ -209,9 +212,9 @@ class _DebitScreenState extends State<DebitScreen> {
   Widget buildBody(){
     return Column(
       children: [
-        buildSearch(),
         buildTotalMyDebit(),
         buildTotalEveryoneDebit(),
+        buildSearch(),
         buildListDebit(),
       ],
     );

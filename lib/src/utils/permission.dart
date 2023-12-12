@@ -22,7 +22,7 @@ class AppPermNotification {
       builder: (_) {
         return WarningDialog(
           content: BookingLanguage.contentSetting,
-          image: AppImages.icBellApp,
+          image: AppImages.icPlus,
           title: SignUpLanguage.notification,
           leftButtonName: SignUpLanguage.close,
           color: AppColors.BLACK_500,

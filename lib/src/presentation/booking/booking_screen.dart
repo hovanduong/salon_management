@@ -95,7 +95,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: buildConfirmButton(),
+      floatingActionButton: Visibility(
+        visible: _viewModel!.isShowButton,
+        child: buildConfirmButton()
+      ),
     );
   }
 
@@ -494,6 +497,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildName() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[1],
       hintText: BookingLanguage.nameCustomer,
       labelText: BookingLanguage.name,
       textEditingController:  _viewModel!.nameController,
@@ -567,6 +571,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildFieldPhone(){
     return AppFormField(
+      focusNode: _viewModel!.listFocus[0],
       textEditingController: _viewModel!.phoneController,
       labelText: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.enterPhone,
@@ -577,6 +582,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildAddress() {
     return AppFormField(
       // isRequired: true,
+      focusNode: _viewModel!.listFocus[2],
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
       textEditingController: _viewModel!.addressController,
@@ -614,6 +620,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         vertical: SizeToPadding.sizeVerySmall,
       ),
       child: AppFormField(
+        focusNode: _viewModel!.listFocus[3],
         textEditingController: _viewModel!.noteController,
         labelText: BookingLanguage.note,
         hintText: BookingLanguage.enterNote,
@@ -631,13 +638,13 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(11),
       ],
+      focusNode: _viewModel!.listFocus[4],
       keyboardType: TextInputType.number,
       labelText: BookingLanguage.amountOfMoney,
       hintText: BookingLanguage.enterAmountOfMoney,
       textEditingController: _viewModel!.moneyController,
       onChanged: (value) {
         _viewModel!
-          ..validPrice(value.trim())
           ..formatMoney(value.trim())
           ..enableConfirmButton()..setShowRemind(value);
       },
