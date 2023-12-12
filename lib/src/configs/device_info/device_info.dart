@@ -1,7 +1,8 @@
-
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+
+import '../../resource/service/device_info_api.dart';
 
 class DeviceInfo {
   String? id;
@@ -24,8 +25,20 @@ class AppDeviceInfo {
   static String? get deviceVersion => _deviceInfo?.version;
   static String? get os => _deviceInfo?.os;
 
+  static Future postApi() async {
+    await DeviceInfoApi().postDeviceInfo(
+      DeviceInfoParams(
+        deviceID: deviceID,
+        deviceName: deviceName,
+        deviceVersion: deviceVersion,
+        os: os,
+      ),
+    );
+  }
+
   static Future init() async {
     _deviceInfo = await getDeviceDetails();
+    await postApi();
     print('AppDeviceInfo: $deviceID - $deviceName - $deviceVersion - $os');
   }
 
