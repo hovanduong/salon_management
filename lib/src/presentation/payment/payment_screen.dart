@@ -276,6 +276,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
       children: [
         buildCategory(),
         buildDateTime(),
+        if (Platform.isIOS) const SizedBox(height: 80),
       ],
     );
   }
@@ -334,25 +335,29 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildRemindMoney(){
-    return _viewModel!.listMoney.isNotEmpty ? Wrap(
-      children: List.generate(_viewModel!.listMoney.length, (index) => InkWell(
-        onTap: ()=> _viewModel!.setMoneyInput(index),
-        child: Padding(
-          padding: EdgeInsets.only(right: SizeToPadding.sizeSmall),
-          child: Chip(
-            label: Paragraph(
-              content: AppCurrencyFormat.formatMoneyD(
-                _viewModel!.listMoney[index],),
-            )
-          ),
-        ),
-      ),) 
-    ):const SizedBox();
+  Widget buildRemindMoney() {
+    return _viewModel!.listMoney.isNotEmpty
+        ? Wrap(
+            children: List.generate(
+            _viewModel!.listMoney.length,
+            (index) => InkWell(
+              onTap: () => _viewModel!.setMoneyInput(index),
+              child: Padding(
+                padding: EdgeInsets.only(right: SizeToPadding.sizeSmall),
+                child: Chip(
+                    label: Paragraph(
+                  content: AppCurrencyFormat.formatMoneyD(
+                    _viewModel!.listMoney[index],
+                  ),
+                )),
+              ),
+            ),
+          ))
+        : const SizedBox();
   }
 
-  Widget buildFieldMoney(){
-    return Showcase( 
+  Widget buildFieldMoney() {
+    return Showcase(
       key: _viewModel!.keyMoney,
       description: PaymentLanguage.requiredMoney,
       child: Padding(
@@ -375,7 +380,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
             _viewModel!
               ..validPrice(value.trim())
               ..formatMoney(value.trim())
-              ..enableConfirmButton()..setShowRemind(value);
+              ..enableConfirmButton()
+              ..setShowRemind(value);
           },
           validator: _viewModel!.messageErrorPrice,
         ),
@@ -385,31 +391,31 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildButtonSelect(String name, bool isButton) {
     return isButton
-    ? Expanded(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: AppButton(
-            enableButton: true,
-            content: name,
-            onTap: () => _viewModel!.setButtonSelect(name),
-          ),
-        ),
-      )
-    : Expanded(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: AppOutlineButton(
-            content: name,
-            onTap: () => _viewModel!.setButtonSelect(name),
-          ),
-        ),
-      );
+        ? Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: AppButton(
+                enableButton: true,
+                content: name,
+                onTap: () => _viewModel!.setButtonSelect(name),
+              ),
+            ),
+          )
+        : Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: AppOutlineButton(
+                content: name,
+                onTap: () => _viewModel!.setButtonSelect(name),
+              ),
+            ),
+          );
   }
 
   Widget buildChooseButton() {
     return Showcase(
       description: PaymentLanguage.incomeExpenses,
-      key: _viewModel!.key, 
+      key: _viewModel!.key,
       child: Row(
         children: [
           buildButtonSelect(
@@ -425,7 +431,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget buildInfoCustomer(){
+  Widget buildInfoCustomer() {
     return Showcase(
       key: _viewModel!.keyInfoCustomer,
       description: PaymentLanguage.infoCustomerShowCase,
