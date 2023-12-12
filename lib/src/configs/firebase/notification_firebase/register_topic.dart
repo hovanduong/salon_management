@@ -13,22 +13,24 @@ class RegisterTopic {
   }
 
   static Future<bool?> checkRegisTopic() async {
+    // final resultMaxVersion = await VersionAppApi().getMaxVerSion();
+    // final valueMaxVersion = switch (resultMaxVersion) {
+    // Success(value: final currentVersion) => currentVersion,
+    // Failure(exception: final exception) => exception,
     final resultCheck = await VersionAppApi().checkAppVersion();
-    final resultMaxVersion = await VersionAppApi().getMaxVerSion();
+    const currentVersion = 10;
+
     final value = switch (resultCheck) {
       Success(value: final currentVersion) => currentVersion,
       Failure(exception: final exception) => exception,
     };
-    final valueMaxVersion = switch (resultMaxVersion) {
-      Success(value: final currentVersion) => currentVersion,
-      Failure(exception: final exception) => exception,
-    };
 
-    if (value is Exception || valueMaxVersion is Exception) {
+    if (value is Exception) {
       throw 'error';
     }
 
-    if (value is int && valueMaxVersion is int && value == valueMaxVersion) {
+    if (value is int && currentVersion == value) {
+      await VersionAppApi().postVersionApp(currentVersion);
       return true;
     }
     return false;

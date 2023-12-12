@@ -40,4 +40,25 @@ class VersionAppApi {
       return Failure(e);
     }
   }
+
+  Future<Result<bool, Exception>> postVersionApp(
+    int? version,
+  ) async {
+    try {
+      final response = await HttpRemote.post(
+        url: '/version-app',
+        body: {
+          'version': version ?? 0,
+        },
+      );
+      switch (response?.statusCode) {
+        case 201:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 }
