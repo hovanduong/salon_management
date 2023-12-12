@@ -141,6 +141,24 @@ class NotificationViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  Future<void> readAllNotification() async {
+    final result = await notificationApi.readAllNotification();
+
+    final value = switch (result) {
+      Success(value: final isRead) => isRead,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      showErrorDialog(context);
+    } else {
+      await pullRefresh();
+    }
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     timer?.cancel();

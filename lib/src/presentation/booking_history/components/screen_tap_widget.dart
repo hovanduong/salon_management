@@ -24,6 +24,7 @@ class ScreenTap extends StatelessWidget {
     this.isLoading = false,
     this.isPullRefresh = false,
     this.isCanceled=false,
+    this.isDayBefore=false,
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
@@ -47,6 +48,7 @@ class ScreenTap extends StatelessWidget {
   final bool isLoadMore;
   final bool isButton;
   final bool isLoading;
+  final bool isDayBefore;
   final bool isPullRefresh;
   final bool isCanceled;
   final Function(int id)? onTapCard;
@@ -138,6 +140,7 @@ class ScreenTap extends StatelessWidget {
                     ),
                   ): NotificationService(
                     context: context,
+                    isDayBefore: isDayBefore,
                     isRemind: listCurrent![index].isReminder??false,
                     onRemind: (value)=> onRemind!(value, listCurrent![index]),
                     onPay: () => onPay!(id!),

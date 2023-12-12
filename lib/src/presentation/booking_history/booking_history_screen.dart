@@ -136,7 +136,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         },
         tabs: [
           Tab(
-            text: HistoryLanguage.daysBefore,
+            text: HistoryLanguage.previousAppointment,
           ),
           Tab(
             text: HistoryLanguage.today,
@@ -190,7 +190,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabDaysBefore() {
     return ScreenTap(
-      onRemind: (value, list)=> _viewModel!.setRemind(value, list),
+      isDayBefore: true,
       contentEmpty: HistoryLanguage.notificationEmptyBefore,
       listCurrent: _viewModel!.listCurrentDaysBefore,
       isLoading: _viewModel!.isLoading,

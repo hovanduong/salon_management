@@ -84,6 +84,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Navigator.pop(context);
           },
           title: NotificationLanguage.notification,
+          widget: IconButton(
+            onPressed: ()=> _viewModel!.readAllNotification(), 
+            icon: const Icon(
+              Icons.check, color: AppColors.COLOR_WHITE,)),
         ),
       ),
     );

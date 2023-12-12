@@ -364,5 +364,6 @@
     "everyoneDebitMe":"The amount of money everyone still owes me is",
     "settings":"Settings",
     "contentSetting":"You need to turn on notifications to use. Go to settings now",
+    "previousAppointment":"Previous appointment",
     "lastLine": ""
 }

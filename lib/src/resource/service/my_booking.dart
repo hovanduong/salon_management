@@ -40,9 +40,9 @@ class MyBookingApi {
     try {
       final response = await HttpRemote.get(
         url: params.isDaysBefore
-            ? '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&unpaid=true&status=Confirmed'
+            ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&unpaid=true'
             : params.isToday
-                ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&date=${DateTime.now()}'
+                ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&isToDay=0'
                 : params.isUpcoming
                     ? '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&isUpComing=true&status=Confirmed'
                     : '/my-booking?pageSize=20&page=${params.page}&status=${params.status}',

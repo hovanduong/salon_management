@@ -194,6 +194,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     pageCanceled = 1;
     pageDaysBefore = 1;
     isPullRefresh=true;
+    isLoading=true;
     notifyListeners();
     await fetchData();
     isLoadMore = false;
@@ -259,6 +260,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> loadMoreData() async {
+    isLoading=true;
     if (currentTab == 0) {
       pageDaysBefore += 1;
       await getDataDaysBefore(pageDaysBefore);
@@ -281,6 +283,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
     }
     isLoadMore=false;
+    isLoading=false;
     notifyListeners();
   }
 
@@ -496,7 +499,6 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
-    isLoading= (isPullRefresh || isLoadMore ? false: true);
     notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,

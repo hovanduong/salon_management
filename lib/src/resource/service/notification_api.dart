@@ -118,6 +118,23 @@ class NotificationApi {
     }
   }
 
+  Future<Result<bool, Exception>> readAllNotification() async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/notification/update-all-read',
+        
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
   // Future<Result<bool, Exception>> deleteInvoice(int id,) async {
   //   try {
   //     final response = await HttpRemote.delete(

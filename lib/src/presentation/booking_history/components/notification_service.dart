@@ -19,6 +19,7 @@ class NotificationService extends StatelessWidget {
     this.onTapPhone,
     this.isButton = false,
     this.isRemind=false,
+    this.isDayBefore=false,
     this.onTapDeleteBooking,
     this.onTapEditBooking,
     this.onPay,
@@ -41,6 +42,7 @@ class NotificationService extends StatelessWidget {
   final Function()? onPay;
   final BuildContext? context;
   final bool isRemind;
+  final bool isDayBefore;
   final Function(bool isRemind)? onRemind;
   final GlobalKey? keyRemind;
   final GlobalKey? keyED;
@@ -87,7 +89,7 @@ class NotificationService extends StatelessWidget {
   }
 
   Widget buildRemind(){
-    return Showcase(
+    return !isDayBefore? Showcase(
       description: BookingLanguage.remindBooking,
       key: keyRemind?? GlobalKey(),
       child: Row(
@@ -108,7 +110,7 @@ class NotificationService extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ): Container();
   }
 
   Widget buildHeaderCard() {
@@ -135,7 +137,9 @@ class NotificationService extends StatelessWidget {
             color: AppColors.FIELD_GREEN,
           ),
         ),
-        if (isButton) buildRemind() else const SizedBox(),
+        if (isButton) 
+          buildRemind()  
+        else const SizedBox(),
       ],
     );
   }
