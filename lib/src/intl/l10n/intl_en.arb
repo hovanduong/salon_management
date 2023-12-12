@@ -365,5 +365,6 @@
     "settings":"Settings",
     "contentSetting":"You need to turn on notifications to use. Go to settings now",
     "previousAppointment":"Previous appointment",
+    "seeAllNotification":"See all announcements",
     "lastLine": ""
 }

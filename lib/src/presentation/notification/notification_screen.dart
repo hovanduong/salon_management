@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -84,10 +85,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Navigator.pop(context);
           },
           title: NotificationLanguage.notification,
-          widget: IconButton(
-            onPressed: ()=> _viewModel!.readAllNotification(), 
-            icon: const Icon(
-              Icons.check, color: AppColors.COLOR_WHITE,)),
+          widget: Showcase(
+            description: NotificationLanguage.seeAllNotification,
+            key: _viewModel!.keyNotification,
+            child: InkWell(
+              onTap: ()=> _viewModel!.readAllNotification(),
+              child: SvgPicture.asset(AppImages.icSeeAllNotification,
+                color: AppColors.COLOR_WHITE,
+              ),
+            ),
+          ),
         ),
       ),
     );

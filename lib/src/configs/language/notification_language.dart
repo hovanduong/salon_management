@@ -6,5 +6,5 @@ class NotificationLanguage {
   static final emptyNotification = S.current.emptyNotification;
   static final details = S.current.details;
   static final newFeature = S.current.newFeature;
-
+  static final seeAllNotification = S.current.seeAllNotification;
 }

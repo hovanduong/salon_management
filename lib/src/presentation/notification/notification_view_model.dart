@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/my_booking.dart';
 import '../../resource/service/notification_api.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -13,6 +15,7 @@ import '../routers.dart';
 class NotificationViewModel extends BaseViewModel{
   bool isLoading=true;
   bool loadingMore=false;
+  bool isShowCase=true;
 
   NotificationApi notificationApi = NotificationApi();
 
@@ -25,6 +28,8 @@ class NotificationViewModel extends BaseViewModel{
 
   Timer? timer;
 
+  GlobalKey keyNotification= GlobalKey();
+
   Future<void> init()async{
     page=1;
     await getNotification(page);
@@ -32,6 +37,27 @@ class NotificationViewModel extends BaseViewModel{
     scrollController.addListener(
       scrollListener,
     );
+    await AppPref.getShowCase('showCaseNotification').then(
+      (value) => isShowCase=value??true,);
+    startShowCase();
+    await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> hideShowcase() async{
+    await AppPref.setShowCase('showCaseNotification', false);
+    isShowCase=false;
+    notifyListeners();
+  }
+
+  void startShowCase(){
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        ShowCaseWidget.of(context).startShowCase(
+          [keyNotification,],
+        );
+      });
+    }
     notifyListeners();
   }
 

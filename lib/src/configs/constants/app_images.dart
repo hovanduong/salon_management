@@ -50,6 +50,8 @@ class AppImages {
 
   static const String icSetting = 'assets/icons/setting.svg';
 
+  static const String icSeeAllNotification = 'assets/icons/seeAllNotification.svg';
+
   static const String backgroundHomePage =
       'assets/images/backgroundHomePage.png';
 
