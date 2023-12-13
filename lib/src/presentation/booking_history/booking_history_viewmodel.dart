@@ -16,7 +16,7 @@ import '../../resource/service/notification_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
-import '../../utils/permission.dart';
+import '../../configs/firebase/notification_firebase/permission_notification.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
