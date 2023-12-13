@@ -374,9 +374,9 @@
     "readAllNotification":"Bạn có muốn đọc hết tất cả thông báo?",
     "transactionOf":"Giao dịch của",
     "totalIOwe":"Tổng tiền Tôi đã nợ mọi người",
-    "totalIPaid":"Tổng tiền Tôi đã trả mọi người",
+    "totalIPaid":"Tổng tiền Tôi đã trả cho mọi người",
     "totalEveryoneOwe":"Tổng tiền mọi người đã nợ Tôi",
-    "totalEveryonePaid":"Tổng tiền mọi người đã trả Tôi",
+    "totalEveryonePaid":"Tổng tiền mọi người đã cho trả Tôi",
     "whoDebt":"Xem để biết ai là người nợ",
     "lastLine": ""
 }
