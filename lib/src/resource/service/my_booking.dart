@@ -17,7 +17,7 @@ class MyBookingParams {
     this.isDaysBefore = false,
     this.isUpcoming = false,
     this.isInvoice = false,
-    this.isRemind=false,
+    this.isRemind = false,
     this.date,
   });
   final int? id;
@@ -40,9 +40,9 @@ class MyBookingApi {
     try {
       final response = await HttpRemote.get(
         url: params.isDaysBefore
-            ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&unpaid=true'
+            ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&isBefore=true'
             : params.isToday
-                ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&isToDay=0'
+                ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&isToDay=true'
                 : params.isUpcoming
                     ? '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&isUpComing=true&status=Confirmed'
                     : '/my-booking?pageSize=20&page=${params.page}&status=${params.status}',
@@ -118,7 +118,7 @@ class MyBookingApi {
     }
   }
 
-   Future<Result<bool, Exception>> putRemindBooking(
+  Future<Result<bool, Exception>> putRemindBooking(
     MyBookingParams params,
   ) async {
     try {
