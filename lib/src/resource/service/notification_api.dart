@@ -34,9 +34,9 @@ class NotificationParams {
 }
 
 class NotificationApi {
-
-  Future<Result<List<NotificationModel>, Exception>> getNotification(int page) 
-  async {
+  Future<Result<List<NotificationModel>, Exception>> getNotification(
+    int page,
+  ) async {
     try {
       final response = await HttpRemote.get(
         url: '/notification?pageSize=10&page=$page',
@@ -55,8 +55,7 @@ class NotificationApi {
     }
   }
 
-  Future<Result<bool, Exception>> getCancelRemind(int id) 
-  async {
+  Future<Result<bool, Exception>> getCancelRemind(int id) async {
     try {
       final response = await HttpRemote.get(
         url: '/reminder/cancel-reminder/$id',
@@ -72,13 +71,15 @@ class NotificationApi {
     }
   }
 
-  Future<Result<bool, Exception>> putReadNotification(int id,) async {
+  Future<Result<bool, Exception>> putReadNotification(
+    int id,
+  ) async {
     try {
       final response = await HttpRemote.put(
         url: '/reminder/isRead/$id',
         body: {
-          'isRead':true,
-          'type':'reminder',
+          'isRead': true,
+          'type': 'reminder',
         },
       );
       switch (response?.statusCode) {
@@ -122,7 +123,6 @@ class NotificationApi {
     try {
       final response = await HttpRemote.put(
         url: '/notification/update-all-read',
-        
       );
       switch (response?.statusCode) {
         case 200:

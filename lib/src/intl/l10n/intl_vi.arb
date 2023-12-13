@@ -371,12 +371,12 @@
     "showCaseMyPaid":"Tổng số tiền tôi đã trả cho mọi người",
     "showCaseUPaid":"Tổng số tiền mọi người đã trả cho tôi",
     "showCaseUDebt":"Tổng số tiền mọi người đã nợ tôi",
-    "readAllNotification":"Bạn có muốn đọc tất cả thông báo không?",
+    "readAllNotification":"Bạn có muốn đọc hết tất cả thông báo?",
     "transactionOf":"Giao dịch của",
-    "totalIOwe":"Tổng tiền tôi đã nợ",
-    "totalIPaid":"Tổng tiền tôi đã trả",
-    "totalEveryoneOwe":"Tổng tiền mọi người đã nợ",
-    "totalEveryonePaid":"Tổng tiền mọi người đã trả",
-    "whoDebt":"Xem để biết ai  là người nợ",
+    "totalIOwe":"Tổng tiền Tôi đã nợ mọi người",
+    "totalIPaid":"Tổng tiền Tôi đã trả mọi người",
+    "totalEveryoneOwe":"Tổng tiền mọi người đã nợ Tôi",
+    "totalEveryonePaid":"Tổng tiền mọi người đã trả Tôi",
+    "whoDebt":"Xem để biết ai là người nợ",
     "lastLine": ""
 }
