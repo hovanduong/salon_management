@@ -98,21 +98,21 @@ class OwesInvoiceApi {
     }
   }
 
-  // Future<Result<bool, Exception>> deleteCategory(int id) async {
-  //   try {
-  //     final response = await HttpRemote.delete(
-  //       url: '/owes-customer/$id',
-  //     );
-  //     switch (response?.statusCode) {
-  //       case 200:
-  //         return const Success(true);
-  //       default:
-  //         return Failure(Exception(response!.reasonPhrase));
-  //     }
-  //   } on Exception catch (e) {
-  //     return Failure(e);
-  //   }
-  // }
+  Future<Result<bool, Exception>> deleteInvoiceOwes(int id) async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/owes-invoice/$id',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 
   // Future<Result<bool, Exception>> putCategory(OwesInvoiceParams? params) async {
   //   try {

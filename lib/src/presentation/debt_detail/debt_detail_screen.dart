@@ -149,7 +149,7 @@ class _DebtDetailsScreenState extends State<DebtDetailsScreen> {
     return buildTitle(
       content: _viewModel!.owesModel?.isMe??false? DebtLanguage.me:
         _viewModel!.owesModel?.myCustomerOwes?.fullName?.split(' ').last,
-      title: DebtLanguage.creator,
+      title: DebtLanguage.transactionOf,
       isDivider: true,
     );
   }

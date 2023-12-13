@@ -13,6 +13,7 @@ class DebtAddLanguage {
   static final confirm= S.current.confirm;
   static final waningDeleteCustomer= S.current.waningDeleteCustomer;
   static final addDebitCustomer= S.current.addDebitCustomer;
+  static final editDebt= S.current.editDebt;
   static final editDebitCustomer= S.current.editDebitCustomer;
   static final nameCustomer= S.current.nameCustomer;
   static final notificationDebit= S.current.notificationDebit;
@@ -34,5 +35,6 @@ class DebtAddLanguage {
   static final choosePeople= S.current.choosePeople;
   static final chooseForm= S.current.chooseForm;
   static final pay= S.current.pay;
+  static final whoDebt= S.current.whoDebt;
 }
 

@@ -319,6 +319,7 @@
     "back":"Quay lại",
     "debt":"Công nợ",
     "addDebt":"Thêm công nợ",
+    "editDebt":"Sửa công nợ",
     "currentDebt":"Số tiền nợ hiện tại",
     "myOwes":"Công nợ của tôi",
     "yourOwes":"Nợ",
@@ -376,5 +377,6 @@
     "totalIPaid":"Tổng tiền tôi đã trả",
     "totalEveryoneOwe":"Tổng tiền mọi người đã nợ",
     "totalEveryonePaid":"Tổng tiền mọi người đã trả",
+    "whoDebt":"Xem để biết ai  là người nợ",
     "lastLine": ""
 }

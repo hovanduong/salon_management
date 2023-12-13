@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/firebase/notification_firebase/app_barge.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/my_booking.dart';
 import '../../resource/service/notification_api.dart';
@@ -111,6 +112,8 @@ class NotificationViewModel extends BaseViewModel{
             Navigator.pop(context);
           },
           onTapRight: () async{
+            await AppBarge.addBarge();
+            Navigator.pop(context);
             await readAllNotification();
           },
         );

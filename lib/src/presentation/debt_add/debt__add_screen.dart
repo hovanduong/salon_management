@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/configs.dart';
@@ -42,7 +43,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
     return const CustomBackGround();
   }
 
-  Widget buildAppBar() {
+  Widget buildHeader() {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeSmall,
@@ -57,7 +58,8 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
           ),
         ),
         title: Paragraph(
-        content: DebtAddLanguage.addDebt,
+        content: _viewModel!.myCustomerModel?.owesModel==null
+          ? DebtAddLanguage.addDebt : DebtAddLanguage.editDebt,
           style: STYLE_LARGE_BOLD.copyWith(
             color: AppColors.COLOR_WHITE,
           ),
@@ -236,18 +238,20 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
       child: AppButton(
         enableButton: _viewModel!.enableButton,
         content: UpdateProfileLanguage.submit,
-        onTap: () {
-          _viewModel!.postDebt();
-        },
+        onTap: () =>_viewModel!.onEditOrAdd(),
       ),
     );
   }
 
   Widget buildFieldMoneyOwes(){
-    return FieldNoteWidget(
-      hintText: '${_viewModel!.messageOwes}',
-      colorHintText: AppColors.Red_Money,
-      colorBorder: AppColors.Red_Money,
+    return Showcase(
+      key: _viewModel!.keyShowDebt,
+      description: DebtAddLanguage.whoDebt,
+      child: FieldNoteWidget(
+        hintText: _viewModel!.messageOwes??'',
+        colorHintText: AppColors.Red_Money,
+        colorBorder: AppColors.Red_Money,
+      ),
     );
   }
 
@@ -303,7 +307,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
             height: MediaQuery.sizeOf(context).height,
           ),
           background(),
-          buildAppBar(),
+          buildHeader(),
           buildCardField(),
         ],
       ),

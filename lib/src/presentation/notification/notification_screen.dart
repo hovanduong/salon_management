@@ -10,6 +10,7 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/firebase/notification_firebase/app_barge.dart';
 import '../../configs/language/notification_language.dart';
 import '../../configs/widget/basic/notification_update.dart';
 import '../../resource/service/my_booking.dart';
@@ -220,13 +221,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget buildCardNotification(int index) {
+    final id= _viewModel!.listCurrent[index].metaData?.appointmentId;
     final date = _viewModel!.listCurrent[index].createdAt;
     return InkWell(
       onTap: () async {
         await _viewModel!.putReadNotification(
           _viewModel!.listCurrent[index].id ?? 0,
         );
-        if(_viewModel!.listCurrent[index].type == 'reminder'){
+        await AppBarge.addBarge();
+        if(_viewModel!.listCurrent[index].type == 'reminder' && id!=null){
           await _viewModel!.goToBookingDetails(
             context,
             MyBookingParams(

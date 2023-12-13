@@ -319,6 +319,7 @@
     "back":"Back",
     "debt":"Debt",
     "addDebt":"Add debt",
+    "editDebt":"Edit debt",
     "currentDebt":"Current debt amount",
     "myOwes":"My Owes",
     "yourOwes":"Owe",
@@ -376,5 +377,6 @@
     "totalIPaid":"Total amount I paid",
     "totalEveryoneOwe":"The total amount everyone owed",
     "totalEveryonePaid":"Total amount paid by everyone",
+    "whoDebt":"See who owes the debt",
     "lastLine": ""
 }

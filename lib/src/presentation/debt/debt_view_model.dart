@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -5,6 +7,7 @@ import '../../configs/configs.dart';
 import '../../configs/language/debt_language.dart';
 import '../../configs/widget/basic/infomation_app.dart';
 import '../../configs/widget/dialog/dialog_user_manual.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/owes_invoice_api.dart';
 import '../../utils/app_currency.dart';
@@ -47,6 +50,8 @@ class DebtViewModel extends BaseViewModel{
   int tabCurrent=0;
   num? moneyRemaining;
   num? moneyPaid;
+
+  Timer? timer;
 
   Future<void> init(MyCustomerModel? params, {dynamic dataThis}) async{
     // tabController=TabController(length: 2, vsync: dataThis);
@@ -165,16 +170,17 @@ class DebtViewModel extends BaseViewModel{
   Future<void> goToDebtDetail(OwesModel owesModel)
     => Navigator.pushNamed(context, Routers.debtDetail, arguments: owesModel,);
   
-  Future<void> goToDebtAdd()async {
+  Future<void> goToDebtAdd({OwesModel? list})async {
     final data = myCustomerModel;
     final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
     final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     data?.isMe= owesTotalModel?.isMe;
     data?.isUser=owesTotalModel?.isUser;
-    data?.money= (owesTotalModel?.isMe??false)? myMoney
-      : yourMoney;
+    data?.money= (owesTotalModel?.isMe??false)? myMoney: yourMoney;
+    data?.owesModel= list;
     await Navigator.pushNamed(context, 
       Routers.debtAdd, arguments: data,);
+    await fetchDataOwes();
   }
 
   void checkMoneyOwe(){
@@ -268,6 +274,42 @@ class DebtViewModel extends BaseViewModel{
     );
   }
 
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  dynamic showSuccessDialog(_) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
+    );
+    await fetchDataOwes();
+  }
+
+  void closeDialog(BuildContext context) {
+    timer= Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
   Future<void> getOwesInvoice(int page, int isGet) async {
     final result = await owesInvoiceApi.getOwesInvoice(
       OwesInvoiceParams(
@@ -293,6 +335,28 @@ class DebtViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  Future<void> deleteInvoiceOwes(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await owesInvoiceApi.deleteInvoiceOwes(id);
+
+    final value = switch (result) {
+      Success(value: final isBool) => isBool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDialog(context);
+    }
+    notifyListeners();
+  }
+
   Future<void> getOwesTotal() async {
     final result = await owesInvoiceApi.getTotalOwesInvoice(
       OwesInvoiceParams(
@@ -314,5 +378,11 @@ class DebtViewModel extends BaseViewModel{
       isLoading=false;
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

@@ -32,6 +32,7 @@ class AppPermNotification {
             Navigator.pop(context);
           },
           onTapRight: () async{
+            Navigator.pop(context);
             await openAppSettings();
           },
         );

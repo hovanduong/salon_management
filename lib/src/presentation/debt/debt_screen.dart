@@ -224,30 +224,40 @@ class _DebtScreenState extends State<DebtScreen>
   }
 
   Widget buildCardOwes(int index, List<OwesModel> listCurrent,){
+    final id= listCurrent[index].id;
     return InkWell(
       onTap: ()=> _viewModel!.goToDebtDetail(listCurrent[index]),
-      child: Container(
-        margin: EdgeInsets.only(
+      child: Padding(
+        padding: EdgeInsets.only(
           top: SizeToPadding.sizeSmall,
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeSmall,
         ),
-        padding: EdgeInsets.symmetric(
-          vertical: SizeToPadding.sizeVeryVerySmall,
-          horizontal: SizeToPadding.sizeSmall,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(
-            Radius.circular(BorderRadiusSize.sizeSmall),),
-          boxShadow: [
-            BoxShadow(color: AppColors.BLACK_200,
-              blurRadius: BorderRadiusSize.sizeMedium,
-              blurStyle: BlurStyle.solid,
+        child: SlidableActionWidget(
+          isCheckCategory: true,
+          onTapButtonFirst: (context) =>_viewModel!.deleteInvoiceOwes(id??0),
+          onTapButtonSecond: (context) =>_viewModel!.goToDebtAdd(
+            list: listCurrent[index],
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: SizeToPadding.sizeVeryVerySmall,
+              horizontal: SizeToPadding.sizeSmall,
             ),
-          ],
+            decoration: BoxDecoration(
+              color: AppColors.COLOR_WHITE,
+              borderRadius: BorderRadius.all(
+                Radius.circular(BorderRadiusSize.sizeSmall),),
+              boxShadow: [
+                BoxShadow(color: AppColors.BLACK_200,
+                  blurRadius: BorderRadiusSize.sizeMedium,
+                  blurStyle: BlurStyle.solid,
+                ),
+              ],
+            ),
+            child: buildContentTransaction(index, listCurrent),
+          ),
         ),
-        child: buildContentTransaction(index, listCurrent),
       ),
     );
   }
