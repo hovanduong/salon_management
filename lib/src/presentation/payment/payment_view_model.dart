@@ -537,6 +537,7 @@ class PaymentViewModel extends BaseViewModel {
 
   void clearData(){
     selectedCategory=0;
+    listMoney=[];
     categoryId=listCategory[0].id;
     isButtonSpending=false;
     phoneController.text='';
@@ -618,7 +619,8 @@ class PaymentViewModel extends BaseViewModel {
       myCustomerId: myCustomerId,
       idCategory: categoryId,
       money: int.parse(moneyController.text.replaceAll(',', '')),
-      date: '${dateTime.toString().split(' ')[0]} ${AppDateUtils.formatTimeToHHMM(time)}',
+      date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',),
       address: addressController.text=='' ? ''
         :addressController.text.trim(),
       isBooking: false,

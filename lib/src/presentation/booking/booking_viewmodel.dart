@@ -541,6 +541,7 @@ class BookingViewModel extends BaseViewModel {
     // selectedService.clear();
     // totalController.clear();
     // discountController.text = '';
+    listMoney=[];
     categoryId=null;
     dateTime = DateTime.now();
     time= DateTime.now();
@@ -604,7 +605,8 @@ class BookingViewModel extends BaseViewModel {
         idCategory: categoryId,
         money: moneyController.text!=''?
          int.parse(moneyController.text.replaceAll(',', '')): null,
-        date: '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
+        date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',),
         address: addressController.text.trim(),
         isBooking: true,
         isIncome: true,

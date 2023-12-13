@@ -271,6 +271,7 @@ class DebtAddViewModel extends BaseViewModel{
 
   void clearData(){
     enableButton=false;
+    listMoney=[];
     noteController.text='';
     moneyController.text='';
     dateTime = DateTime.now();
