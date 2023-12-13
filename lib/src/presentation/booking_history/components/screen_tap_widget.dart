@@ -104,6 +104,7 @@ class ScreenTap extends StatelessWidget {
                     onTapDeleteBooking: () => onTapDeleteBooking!(id!),
                     onTapCard: () => onTapCard!(id!),
                     isButton: isButton,
+                    isDayBefore: isDayBefore,
                     date: date != null
                         ? AppDateUtils.splitHourDate(
                             AppDateUtils.formatDateLocal(

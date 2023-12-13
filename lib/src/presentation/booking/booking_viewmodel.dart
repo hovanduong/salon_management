@@ -542,7 +542,7 @@ class BookingViewModel extends BaseViewModel {
     // totalController.clear();
     // discountController.text = '';
     listMoney=[];
-    categoryId=null;
+    categoryId=listCategory[0].id;
     dateTime = DateTime.now();
     time= DateTime.now();
     phoneController.text = '';

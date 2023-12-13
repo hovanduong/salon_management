@@ -77,11 +77,11 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> init({dynamic dataThis}) async {
     await setId();
+    await fetchData();
     await AppPref.getShowCase('showCaseAppointment').then(
       (value) =>isShowCase=value??true,);
     await startShowCase();
     await hideShowcase();
-    await fetchData();
     tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
     notifyListeners();
   }
@@ -92,8 +92,10 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> hideShowcase() async{
-    await AppPref.setShowCase('showCaseAppointment', false);
-    isShowCase=false;
+    if(isShowCase){
+      await AppPref.setShowCase('showCaseAppointment', false);
+      isShowCase=false;
+    }
     if(listCurrentToday.isNotEmpty || 
       (listCurrentUpcoming.isNotEmpty && currentTab==2)){
       await AppPref.setShowCase('showCaseRemind', false);
@@ -106,7 +108,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [addBooking, keyNotification, keyRemind1, keyStatus1, keyED1,],
+          [addBooking, keyNotification,keyRemind1, keyStatus1, keyED1],
         );
       });
     }
@@ -120,7 +122,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       }else{
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           ShowCaseWidget.of(context).startShowCase(
-            [keyRemind1, keyStatus1, keyED1, addBooking, keyNotification ],
+            [keyRemind1, keyStatus1, keyED1,addBooking, keyNotification,],
           );
         });
       }
@@ -148,42 +150,49 @@ class BookingHistoryViewModel extends BaseViewModel {
     => Navigator.pushNamed(context, Routers.notification,);
 
   Future<void> fetchData() async {
-    await getDataToday(pageToday);
-    listCurrentToday = listMyBooking;
-
-    await getDataDaysBefore(pageDaysBefore);
-    listCurrentDaysBefore = listMyBooking;
-
-    await getDataUpcoming(pageUpComing);
-    listCurrentUpcoming = listMyBooking;
-
-    await getDataCanceled(pageCanceled);
-    listCurrentCanceled = listMyBooking;
-
-    await getDataDone(pageDone);
-    listCurrentDone = listMyBooking;
-
-    scrollToday.addListener(
-      () => scrollListener(scrollToday),
-    );
-    scrollDaysBefore.addListener(
-      () => scrollListener(scrollDaysBefore),
-    );
-    scrollUpComing.addListener(
-      () => scrollListener(scrollUpComing),
-    );
-    scrollCanceled.addListener(
-      () => scrollListener(scrollCanceled),
-    );
-    scrollDone.addListener(
-      () => scrollListener(scrollDone),
-    );
+    await getData();
     isPullRefresh=false;
     isLoading=false;
     await AppPref.getShowCase('showCaseRemind').then(
       (value) => isShowCaseRemind=value??true,);
     await startShowCase();
     await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> getData() async{
+    isLoading=true;
+    if(currentTab==1){
+      await getDataToday(pageToday);
+      listCurrentToday = listMyBooking;
+      scrollToday.addListener(
+        () => scrollListener(scrollToday),
+      );
+    }else if(currentTab==0){
+      await getDataDaysBefore(pageDaysBefore);
+      listCurrentDaysBefore = listMyBooking;
+      scrollDaysBefore.addListener(
+        () => scrollListener(scrollDaysBefore),
+      );
+    }else if(currentTab==2){
+      await getDataUpcoming(pageUpComing);
+      listCurrentUpcoming = listMyBooking;
+      scrollUpComing.addListener(
+        () => scrollListener(scrollUpComing),
+      );
+    }else if(currentTab==3){
+      await getDataDone(pageDone);
+      listCurrentDone = listMyBooking;
+      scrollDone.addListener(
+        () => scrollListener(scrollDone),
+      );
+    }else {
+      await getDataCanceled(pageCanceled);
+      listCurrentCanceled = listMyBooking;
+      scrollCanceled.addListener(
+        () => scrollListener(scrollCanceled),
+      );
+    }
     notifyListeners();
   }
 
@@ -308,6 +317,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       status = Contains.canceled;
       currentTab = 4;
     }
+    await getData();
     notifyListeners();
   }
 
@@ -515,6 +525,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       isLoading = true;
     } else {
       listMyBooking = value as List<MyBookingModel>;
+      isLoading=false;
     }
     notifyListeners();
   }
