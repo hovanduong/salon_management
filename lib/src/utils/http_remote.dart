@@ -16,7 +16,6 @@ class Constants {
 
   // static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
   //  static String baseUrl = 'https://be04-2405-4802-6551-a390-7831-83ba-6457-8d1e.ngrok.io/api';
-
 }
 
 class HttpRemote {
@@ -25,6 +24,7 @@ class HttpRemote {
   static final HttpRemote instance = HttpRemote._();
   static Future<void> init() async {
     accessToken = await AppPref.getToken() ?? '';
+    print(accessToken);
     // final fullName = await AppPref.getDataUSer('fullName') ?? '';
     // final id = await AppPref.getDataUSer('id') ?? '';
     // final email = await AppPref.getDataUSer('email') ?? '';
