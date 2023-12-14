@@ -270,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildCardTransaction(int index) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeVerySmall,
         horizontal: SizeToPadding.sizeSmall,
       ),
       decoration: BoxDecoration(
