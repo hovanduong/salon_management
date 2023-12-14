@@ -381,5 +381,7 @@
     "currentTransaction":"Giao dịch hiện tại",
     "historyCompletion":"Lịch sử hoàn thành giao dịch",
     "debtPaid":"Đã trả xong",
+    "customerCareHotline":"Tổng đài CSKH",
+    "group":"Nhóm",
     "lastLine": ""
 }

@@ -381,5 +381,7 @@
     "currentTransaction":"Current transaction",
     "historyCompletion":"Transaction completion history",
     "debtPaid":"Debt paid",
+    "customerCareHotline":"Customer care hotline",
+    "group":"Group",
     "lastLine": ""
 }

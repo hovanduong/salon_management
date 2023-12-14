@@ -40,7 +40,7 @@ class DebtViewModel extends BaseViewModel{
   List<String> listName = [
     // DebtLanguage.allTransactions,
     // DebtLanguage.myHistory,
-    DebtLanguage.transactionHistory,
+    DebtLanguage.currentTransaction,
     DebtLanguage.historyCompletion,
   ];
 
@@ -60,7 +60,8 @@ class DebtViewModel extends BaseViewModel{
   Future<void> init(MyCustomerModel? params, {dynamic dataThis}) async{
     // tabController=TabController(length: 2, vsync: dataThis);
     myCustomerModel=params;
-    await setDataOwe();
+    // await setDataOwe();
+    dropValue=listName.first;
     await fetchDataOwes();
     await AppPref.getShowCase('showCaseDebt').then(
       (value) => isShowCase=value??true,);
@@ -132,8 +133,8 @@ class DebtViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  void setShowListPaid(){
-    isShowListPaid=!isShowListPaid;
+  void setShowListPaid(int index){
+    listOwesPaid[index].isShowListInvoice=!listOwesPaid[index].isShowListInvoice;
     notifyListeners();
   }
 
@@ -191,6 +192,7 @@ class DebtViewModel extends BaseViewModel{
     data?.owesModel= list;
     await Navigator.pushNamed(context, 
       Routers.debtAdd, arguments: data,);
+    dropValue=listName.first;
     await fetchDataOwes();
   }
 
@@ -346,7 +348,7 @@ class DebtViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  Future<void> getOwesPaidInvoice(int page, int isGet) async {
+  Future<void> getOwesPaidInvoice(int page, int id) async {
     final result = await owesInvoiceApi.getOwesInvoicePaid(
       OwesInvoiceParams(
         page: page,
@@ -366,6 +368,7 @@ class DebtViewModel extends BaseViewModel{
     } else {
       listOwesPaid = value as List<OwesPaidModel>;
       isLoading=false;
+      // listOwesPaid.reversed;
     }
     notifyListeners();
   }

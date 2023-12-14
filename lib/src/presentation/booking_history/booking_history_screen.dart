@@ -136,24 +136,23 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         },
         tabs: [
           Tab(
-            text: '${HistoryLanguage.previousAppointment} (${
-              _viewModel!.listCurrentDaysBefore.length})',
+            text: _viewModel!.currentTab==0? '${HistoryLanguage.previousAppointment} (${
+              _viewModel!.listCurrentDaysBefore.length})' 
+              :HistoryLanguage.previousAppointment,
           ),
           Tab(
-            text: '${HistoryLanguage.today} (${
-              _viewModel!.listCurrentToday.length})',
+            text:_viewModel!.currentTab==1? '${HistoryLanguage.today} (${
+              _viewModel!.listCurrentToday.length})': HistoryLanguage.today,
           ),
           Tab(
-            text: '${HistoryLanguage.upcoming} (${
-              _viewModel!.listCurrentUpcoming.length})',
+            text:_viewModel!.currentTab==2? '${HistoryLanguage.upcoming} (${
+              _viewModel!.listCurrentUpcoming.length})': HistoryLanguage.upcoming,
           ),
           Tab(
-            text: '${HistoryLanguage.done} (${
-              _viewModel!.listCurrentDone.length})',
+            text: HistoryLanguage.done,
           ),
           Tab(
-            text: '${HistoryLanguage.canceled} (${
-              _viewModel!.listCurrentCanceled.length})',
+            text: HistoryLanguage.canceled,
           ),
         ],
         isScrollable: true,

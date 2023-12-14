@@ -58,7 +58,7 @@ class OwesInvoiceApi {
     try {
       final response = await HttpRemote.get(
         url: '/owes-invoice/group-paid?pageSize=10&page=${
-          params.page}&myCustomerOwesId=${params.id}',
+          params.page}&myCustomerOwesId=${params.id}&paymentStatus=paid',
       );
       switch (response?.statusCode) {
         case 200:

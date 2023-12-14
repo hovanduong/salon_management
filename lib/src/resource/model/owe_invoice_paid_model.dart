@@ -11,6 +11,7 @@ class OwesPaidModel {
   bool? isMe;
   bool? isUser;
   List<OwesModel>? invoices;
+  bool isShowListInvoice;
   OwesPaidModel({
     this.totalMoneyIsDebitTrue,
     this.totalMoneyIsDebitFalse,
@@ -18,6 +19,7 @@ class OwesPaidModel {
     this.isUser,
     this.debitId,
     this.invoices,
+    this.isShowListInvoice=false,
   });
 }
 

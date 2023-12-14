@@ -378,6 +378,7 @@ class _DebtScreenState extends State<DebtScreen>
 
   Widget buildCardInvoicePaid(int index){
     return Container(
+      margin: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       padding: EdgeInsets.symmetric(
         vertical: SizeToPadding.sizeSmall,
         horizontal: SizeToPadding.sizeSmall,
@@ -396,8 +397,8 @@ class _DebtScreenState extends State<DebtScreen>
       child: ContentInvoicePaid(
         index: index,
         owesPaidModel: _viewModel!.listOwesPaid[index],
-        isShowListInvoice: _viewModel!.isShowListPaid,
-        onShowInvoice: () => _viewModel!.setShowListPaid(),
+        isShowListInvoice: _viewModel!.listOwesPaid[index].isShowListInvoice,
+        onShowInvoice: () => _viewModel!.setShowListPaid(index),
         onGotoDetailInvoice: (owesModel) => _viewModel!.goToDebtDetail(owesModel),
       ),
     );
@@ -411,7 +412,6 @@ class _DebtScreenState extends State<DebtScreen>
       },
       child: Container(
         margin: EdgeInsets.symmetric(
-          vertical: SizeToPadding.sizeSmall,
           horizontal: SizeToPadding.sizeMedium,
         ),
         height: MediaQuery.sizeOf(context).height-265,

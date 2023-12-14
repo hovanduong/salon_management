@@ -29,36 +29,38 @@ class ContentInvoicePaid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listCurrent=owesPaidModel?.invoices?.reversed.toList();
     return Visibility(
       visible: owesPaidModel!=null?true: false,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
             onTap: () => onShowInvoice!(),
-            child: Column(
+            child: Column( 
               children: [
                 buildTitle(context),
-                buildTransactionOf(),
+                buildTransactionOf(listCurrent),
               ],
             ),
           ),
-          buildListInvoicePaid(),
+          buildListInvoicePaid(listCurrent),
         ],
       ),
     );
   }
 
-  Widget buildTransactionOf(){
-    final name= owesPaidModel?.invoices?[0].myCustomerOwes
+  Widget buildTransactionOf(List<OwesModel>? listCurrent){
+    final name= listCurrent?[0].myCustomerOwes
     ?.fullName?.split(' ').last;
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
+      padding:  EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeVeryVerySmall,
+        horizontal: SizeToPadding.sizeLarge,),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Paragraph(
-            content: DebtLanguage.transactionOf,
+            content: '${DebtLanguage.transactionOf}: ',
             style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
           ),
           Paragraph(
@@ -70,35 +72,35 @@ class ContentInvoicePaid extends StatelessWidget {
     );
   }
 
-  Widget buildListInvoicePaid(){
+  Widget buildListInvoicePaid(List<OwesModel>? listCurrent){
     return Visibility(
       visible: isShowListInvoice,
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         shrinkWrap: true,
-        itemCount: owesPaidModel?.invoices?.length,
-        itemBuilder: (context, index) => buildContentInvoicePaid(index),
+        itemCount: listCurrent?.length??0,
+        itemBuilder: (context, index) => buildContentInvoicePaid(index, listCurrent),
       ),
     );
   }
 
-  Widget buildContentInvoicePaid(int index){
+  Widget buildContentInvoicePaid(int index, List<OwesModel>? listCurrent){
     return InkWell(
       onTap: ()=> onGotoDetailInvoice!(owesPaidModel!.invoices![index]),
       child: Column(
         children: [
           const Divider( color: AppColors.BLACK_200,),
-          buildTitleInvoice(index),
+          buildTitleInvoice(index, listCurrent),
           SizedBox(height: SpaceBox.sizeSmall,),
-          buildDateInvoice(index),
+          buildDateInvoice(index, listCurrent),
         ],
       ),
     );
   }
 
-  Widget buildTitleInvoice(int index){
-    final code= owesPaidModel?.invoices?[index].code;
+  Widget buildTitleInvoice(int index, List<OwesModel>? listCurrent){
+    final code= listCurrent?[index].code;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -108,10 +110,10 @@ class ContentInvoicePaid extends StatelessWidget {
         ),
         Paragraph(
           content: AppCurrencyFormat.formatMoneyD(
-            owesPaidModel?.invoices?[index].money??0,),
+            listCurrent?[index].money??0,),
           style: STYLE_MEDIUM.copyWith(
             fontWeight: FontWeight.w500,
-            color: (owesPaidModel?.invoices?[index].isDebit??false)
+            color: (listCurrent?[index].isDebit??false)
             ? AppColors.Red_Money: AppColors.Green_Money,
           ),
         ),
@@ -119,8 +121,8 @@ class ContentInvoicePaid extends StatelessWidget {
     );
   }
 
-  Widget buildDateInvoice(int index){
-    final date= owesPaidModel?.invoices?[index].date;
+  Widget buildDateInvoice(int index, List<OwesModel>? listCurrent){
+    final date= listCurrent?[index].date;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
