@@ -300,36 +300,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildTransaction() {
     return _viewModel!.isShowTransaction
-        ? (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
-            ? Padding(
-                padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-                child: EmptyDataWidget(
-                  title: HomePageLanguage.emptyTransaction,
-                  content: HomePageLanguage.notificationEmptyTransaction,
-                ),
-              )
-            : ListView.builder(
-                padding: EdgeInsets.zero,
-                controller: _viewModel!.scrollController,
-                itemCount: _viewModel!.loadingMore
-                    ? _viewModel!.listCurrent.length + 1
-                    : _viewModel!.listCurrent.length,
-                itemBuilder: (context, index) {
-                  if (index < _viewModel!.listCurrent.length) {
-                    if (index == 0) {
-                      return Showcase(
-                        key: _viewModel!.cardRevenue,
-                        description: HomePageLanguage.dailyRevenue,
-                        child: buildCardTransaction(index),
-                      );
-                    }
-                    return buildCardTransaction(index);
-                  } else {
-                    return const CupertinoActivityIndicator();
-                  }
-                },
-              )
-        : Container();
+    ? (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
+        ? Padding(
+            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 3),
+            child: EmptyDataWidget(
+              title: HomePageLanguage.emptyTransaction,
+              content: HomePageLanguage.notificationEmptyTransaction,
+            ),
+          )
+        : ListView.builder(
+            padding: EdgeInsets.zero,
+            controller: _viewModel!.scrollController,
+            itemCount: _viewModel!.loadingMore
+                ? _viewModel!.listCurrent.length + 1
+                : _viewModel!.listCurrent.length,
+            itemBuilder: (context, index) {
+              if (index < _viewModel!.listCurrent.length) {
+                if (index == 0) {
+                  return Showcase(
+                    key: _viewModel!.cardRevenue,
+                    description: HomePageLanguage.dailyRevenue,
+                    child: buildCardTransaction(index),
+                  );
+                }
+                return buildCardTransaction(index);
+              } else {
+                return const CupertinoActivityIndicator();
+              }
+            },
+          )
+    : Container();
   }
 
   Widget buildBody() {
@@ -338,7 +338,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onRefresh: () => _viewModel!.pullRefresh(),
       child: SizedBox(
         width: double.maxFinite,
-        height: MediaQuery.sizeOf(context).height - 150,
+        height: MediaQuery.sizeOf(context).height - 75,
         child: Column(
           children: [
             if (_viewModel!.isDate == 0) buildHeader() else buildHeaderSecond(),
