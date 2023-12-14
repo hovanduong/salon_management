@@ -264,6 +264,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         children: [
           TextSpan(
             text: '${SignInLanguage.customerCareHotline}: ',
+            style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const TextSpan(
             text: '0944 01 04 99',
@@ -281,11 +284,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: STYLE_MEDIUM.copyWith(
             color: AppColors.COLOR_WHITE,
           ),
-          children: const [
+          children: [
             TextSpan(
               text: 'Web: ',
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            TextSpan(
+            const TextSpan(
               text: 'https://www.dhysolutions.net/vi',
             ),
           ],
@@ -303,6 +309,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         children: [
           TextSpan(
             text: '${SignInLanguage.group} Facebook: ',
+            style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const TextSpan(
             text: 'Hỗ trợ sử dụng ApCare ',
