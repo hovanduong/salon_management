@@ -11,6 +11,7 @@ export 'my_category_model.dart';
 export 'my_customer_model.dart';
 export 'my_service_model.dart';
 export 'notification_model.dart';
+export 'owe_invoice_paid_model.dart';
 export 'owes_model.dart';
 export 'owes_total_model.dart';
 export 'quantity_income_model.dart';

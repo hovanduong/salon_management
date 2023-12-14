@@ -32,8 +32,8 @@ class CardServiceWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Paragraph(content: title??'',
-            // maxLines: 1,
-            // overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w700,
             ),

@@ -37,13 +37,34 @@ class OwesInvoiceApi {
     try {
       final response = await HttpRemote.get(
         url: '/owes-invoice?pageSize=10&page=${params.page}&myCustomerOwesId=${
-          params.id}&isUser=${params.isGetMe}',
+          params.id}&isUser=${params.isGetMe}&paymentStatus=unPaid',
       );
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
           final owes = OwesModelFactory.createList(data);
+          return Success(owes);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<OwesPaidModel>, Exception>> getOwesInvoicePaid(
+    OwesInvoiceParams params,)async {
+    try {
+      final response = await HttpRemote.get(
+        url: '/owes-invoice/group-paid?pageSize=10&page=${
+          params.page}&myCustomerOwesId=${params.id}',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
+          final owes = OwesPaidModelFactory.createList(data);
           return Success(owes);
         default:
           return Failure(Exception(response!.reasonPhrase));

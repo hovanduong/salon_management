@@ -376,18 +376,76 @@ class _DebtScreenState extends State<DebtScreen>
     );
   }
 
+  Widget buildCardInvoicePaid(int index){
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeSmall,
+        horizontal: SizeToPadding.sizeSmall,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.COLOR_WHITE,
+        borderRadius: BorderRadius.all(
+          Radius.circular(BorderRadiusSize.sizeSmall),),
+        boxShadow: [
+          BoxShadow(color: AppColors.BLACK_200,
+            blurRadius: BorderRadiusSize.sizeMedium,
+            blurStyle: BlurStyle.solid,
+          ),
+        ],
+      ),
+      child: ContentInvoicePaid(
+        index: index,
+        owesPaidModel: _viewModel!.listOwesPaid[index],
+        isShowListInvoice: _viewModel!.isShowListPaid,
+        onShowInvoice: () => _viewModel!.setShowListPaid(),
+        onGotoDetailInvoice: (owesModel) => _viewModel!.goToDebtDetail(owesModel),
+      ),
+    );
+  }
+
+  Widget buildListTransactionPaid(){
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(
+          vertical: SizeToPadding.sizeSmall,
+          horizontal: SizeToPadding.sizeMedium,
+        ),
+        height: MediaQuery.sizeOf(context).height-265,
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          controller: _viewModel!.scrollControllerMe,
+          itemCount: _viewModel!.loadingMore
+              ? _viewModel!.listOwesPaid.length + 1
+              : _viewModel!.listOwesPaid.length,
+          itemBuilder: (context, index) {
+            if (index < _viewModel!.listOwesPaid.length) {
+              return buildCardInvoicePaid(index);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
   Widget buildBody(){
     return Column(
       children: [
         buildCardDebt(),
         buildSelectCreator(),
-        buildTabMyOwes(
+        if (_viewModel!.listOwesPaid.isEmpty) buildTabMyOwes(
           _viewModel!.listOwesMe,
           _viewModel!.scrollControllerMe,
           isOwes: _viewModel!.owesTotalModel?.isMe??false,
           moneyPaid: _viewModel!.moneyPaid??0,
           moneyRemaining: _viewModel!.moneyRemaining??0,
-        ),
+        ) else buildListTransactionPaid(),
         // buildTabBar(),
         // buildTabBarView(),
       ],

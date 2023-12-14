@@ -378,5 +378,8 @@
     "totalEveryoneOwe":"The total amount everyone owed",
     "totalEveryonePaid":"Total amount paid by everyone",
     "whoDebt":"See who owes the debt",
+    "currentTransaction":"Current transaction",
+    "historyCompletion":"Transaction completion history",
+    "debtPaid":"Debt paid",
     "lastLine": ""
 }

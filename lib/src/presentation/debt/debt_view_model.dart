@@ -22,6 +22,7 @@ class DebtViewModel extends BaseViewModel{
   bool isShowOwes=true;
   bool isShowCase=false;
   bool loadingMore = false;
+  bool isShowListPaid = true;
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
@@ -35,9 +36,12 @@ class DebtViewModel extends BaseViewModel{
 
   List<OwesModel> listOwesMe=[];
   List<OwesModel> listOwes=[];
+  List<OwesPaidModel> listOwesPaid=[];
   List<String> listName = [
-    DebtLanguage.allTransactions,
-    DebtLanguage.myHistory,
+    // DebtLanguage.allTransactions,
+    // DebtLanguage.myHistory,
+    DebtLanguage.transactionHistory,
+    DebtLanguage.historyCompletion,
   ];
 
   // TabController? tabController;
@@ -85,14 +89,14 @@ class DebtViewModel extends BaseViewModel{
     dropValue=listName.first;
     final name= myCustomerModel!.fullName!.split(' ').last;
     final nameLocal= await AppPref.getDataUSer('get${myCustomerModel?.id}$name');
-    if(myCustomerModel!=null){
-      listName.add('${DebtLanguage.uHistory} $name');
-      if(nameLocal==null ){
+    if(nameLocal==null ){
         await AppPref.setDataUser('get${myCustomerModel?.id}$name', listName.first);
-      }else{
-        dropValue=nameLocal;
-      }
+    }else{
+      dropValue=nameLocal;
     }
+    // if(myCustomerModel!=null){
+    //   listName.add('${DebtLanguage.uHistory} $name');
+    // }
     notifyListeners();
   }
 
@@ -109,20 +113,27 @@ class DebtViewModel extends BaseViewModel{
     pageMe=1;
     await getOwesTotal();
     if(dropValue==listName[0]){
+      listOwesPaid=[];
       await getOwesInvoice(pageMe, 2);
       listOwesMe=listOwes;
     }else if(dropValue==listName[1]){
-      await getOwesInvoice(pageMe, 1);
-      listOwesMe=listOwes;
-    }else{
-      await getOwesInvoice(pageMe, 0);
-      listOwesMe=listOwes;
+      await getOwesPaidInvoice(pageMe, myCustomerModel?.id??0);
+    //   await getOwesInvoice(pageMe, 1);
+    //   listOwesMe=listOwes;
+    // }else{
+    //   await getOwesInvoice(pageMe, 0);
+    //   listOwesMe=listOwes;
     }
     scrollControllerMe.addListener(
       () => scrollListener(scrollControllerMe),
     );
     checkOwes();
     checkMoneyOwe();
+    notifyListeners();
+  }
+
+  void setShowListPaid(){
+    isShowListPaid=!isShowListPaid;
     notifyListeners();
   }
 
@@ -330,6 +341,30 @@ class DebtViewModel extends BaseViewModel{
       isLoading = true;
     } else {
       listOwes = value as List<OwesModel>;
+      isLoading=false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> getOwesPaidInvoice(int page, int isGet) async {
+    final result = await owesInvoiceApi.getOwesInvoicePaid(
+      OwesInvoiceParams(
+        page: page,
+        id: myCustomerModel?.id,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading = true;
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      listOwesPaid = value as List<OwesPaidModel>;
       isLoading=false;
     }
     notifyListeners();

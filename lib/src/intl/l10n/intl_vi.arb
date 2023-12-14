@@ -378,5 +378,8 @@
     "totalEveryoneOwe":"Tổng tiền mọi người đã nợ Tôi",
     "totalEveryonePaid":"Tổng tiền mọi người đã cho trả Tôi",
     "whoDebt":"Xem để biết ai là người nợ",
+    "currentTransaction":"Giao dịch hiện tại",
+    "historyCompletion":"Lịch sử hoàn thành giao dịch",
+    "debtPaid":"Đã trả xong",
     "lastLine": ""
 }

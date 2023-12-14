@@ -10,9 +10,14 @@ class OwesModel {
   String? status;
   String? paymentStatus;
   num? money;
+  num? totalDebtMe;
+  num? totalPaidMe;
+  num? totalDebtUser;
+  num? totalPaidUser;
   bool? isMe;
   bool? isUser;
   bool? isDebit;
+  int? debitId;
   String? note;
   num? myCustomerOwesId;
   int? userId;
@@ -27,9 +32,14 @@ class OwesModel {
     this.status,
     this.paymentStatus,
     this.money,
+    this.totalDebtMe,
+    this.totalDebtUser,
+    this.totalPaidMe,
+    this.totalPaidUser,
     this.isMe,
     this.isUser,
     this.isDebit,
+    this.debitId,
     this.note,
     this.myCustomerOwesId,
     this.userId,
@@ -83,9 +93,14 @@ abstract class OwesModelFactory {
       ..status = json['status']
       ..paymentStatus = json['paymentStatus']
       ..money = json['money']
+      ..totalDebtMe = json['totalDebtMe']
+      ..totalPaidMe = json['totalPaidMe']
+      ..totalDebtUser = json['totalDebtUser']
+      ..totalPaidUser = json['totalPaidUser']
       ..isMe = json['isMe']
       ..isUser = json['isUser']
       ..isDebit = json['isDebit']
+      ..debitId = json['debitId']
       ..note = json['note']
       ..myCustomerOwesId = json['myCustomerOwesId']
       ..userId = json['userId']

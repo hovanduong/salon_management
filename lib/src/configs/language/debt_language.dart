@@ -51,4 +51,7 @@ class DebtLanguage {
   static final creator= S.current.creator;
   static final allTransactions= S.current.allTransactions;
   static final transactionOf= S.current.transactionOf;
+  static final historyCompletion= S.current.historyCompletion;
+  static final transactionHistory= S.current.transactionHistory;
+  static final debtPaid = S.current.debtPaid;
 }

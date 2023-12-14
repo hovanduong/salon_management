@@ -15,8 +15,13 @@ class Constants {
   // static String baseUrl = 'https://spa-api.dhysolutions.net/api';
 
   // static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
+<<<<<<< Updated upstream
   static String baseUrl =
       'https://8e4a-2405-4802-60d7-45e0-c61-dc7e-ccb1-87c8.ngrok.io/api';
+=======
+  static String baseUrl = 'https://spa-api.dhysolutions.net/api';
+  //  static String baseUrl = 'https://be04-2405-4802-6551-a390-7831-83ba-6457-8d1e.ngrok.io/api';
+>>>>>>> Stashed changes
 }
 
 class HttpRemote {
