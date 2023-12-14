@@ -209,6 +209,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         subMonth: () => _viewModel!.subMonth(),
         keyLastMonth: _viewModel!.keyLastMonth,
         keyNextMonth: _viewModel!.keyNextMonth,
+        keySelectMonthYear: _viewModel!.keySelectMonthYear,
       ),
     );
   }

@@ -345,7 +345,7 @@
     "emptyNotification":"There are currently no announcements",
     "remind":"Remind",
     "newFeature":"New feature launched",
-    "remindBooking":"The appointment schedule will be reminded 2 to 3 times before the appointment time: 1 hour, 30 minutes, 10 minutes.",
+    "remindBooking":"The appointment schedule will be reminded 3 times before the appointment time: 1 hour, 30 minutes, 15 minutes.",
     "EDBooking":"Edit or delete an appointment",
     "selectStatus":"Select status",
     "debtManagement":"Debt management",
@@ -383,5 +383,8 @@
     "debtPaid":"Debt paid",
     "customerCareHotline":"Customer care hotline",
     "group":"Group",
+    "selectTransaction":"Select current transaction or completed transaction history",
+    "notificationNoPaid":"Currently, no one has paid off the debt",
+    "selectMonthYear":"Select month and year",
     "lastLine": ""
 }

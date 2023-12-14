@@ -262,13 +262,13 @@ class _DebtScreenState extends State<DebtScreen>
     );
   }
 
-  Widget buildIconEmpty(){
+  Widget buildIconEmpty(String content){
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 4),
         child: EmptyDataWidget(
           title: DebitLanguage.debit,
-          content: DebitLanguage.notificationDebitEmpty,
+          content: content,
         ),
       ),
     );
@@ -319,7 +319,7 @@ class _DebtScreenState extends State<DebtScreen>
                 moneyRemaining: moneyRemaining,
               ),
               if (listCurrent.isEmpty && !_viewModel!.isLoading) 
-              buildIconEmpty() 
+              buildIconEmpty(DebitLanguage.notificationEmptyTransaction) 
               else buildHistoryPaidAndOwes(listCurrent, scrollController),
             ],
           ),
@@ -369,10 +369,14 @@ class _DebtScreenState extends State<DebtScreen>
   // }
 
   Widget buildSelectCreator(){
-    return SelectCreatorWidget( 
-      listName: _viewModel!.listName,
-      dropValue: _viewModel!.dropValue,
-      onChanged: (value)=> _viewModel!.setData(value),
+    return Showcase(
+      key: _viewModel!.keySelectTransaction,
+      description: DebtLanguage.selectTransaction,
+      child: SelectCreatorWidget( 
+        listName: _viewModel!.listName,
+        dropValue: _viewModel!.dropValue,
+        onChanged: (value)=> _viewModel!.setData(value),
+      ),
     );
   }
 
@@ -410,7 +414,8 @@ class _DebtScreenState extends State<DebtScreen>
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: Container(
+      child: (_viewModel!.listOwesPaid.isEmpty && !_viewModel!.isLoading) ?
+        buildIconEmpty(DebitLanguage.notificationNoPaid): Container(
         margin: EdgeInsets.symmetric(
           horizontal: SizeToPadding.sizeMedium,
         ),
@@ -439,7 +444,7 @@ class _DebtScreenState extends State<DebtScreen>
       children: [
         buildCardDebt(),
         buildSelectCreator(),
-        if (_viewModel!.listOwesPaid.isEmpty) buildTabMyOwes(
+        if (_viewModel!.dropValue==_viewModel!.listName[0]) buildTabMyOwes(
           _viewModel!.listOwesMe,
           _viewModel!.scrollControllerMe,
           isOwes: _viewModel!.owesTotalModel?.isMe??false,

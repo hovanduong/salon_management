@@ -345,7 +345,7 @@
     "emptyNotification":"Hiện tại không có thông báo nào",
     "remind":"Nhắc nhở",
     "newFeature":"Tính năng mới ra mắt",
-    "remindBooking":"Lịch hẹn sẽ được nhắc nhở 2 đến 3 lần trước thời điểm đặt lịch: 1 giờ, 30 phút, 10 phút.",
+    "remindBooking":"Lịch hẹn sẽ được nhắc nhở 3 lần trước thời điểm đặt lịch: 1 giờ, 30 phút, 15 phút.",
     "EDBooking":"Chỉnh sửa hoặc xóa cuộc hẹn",
     "selectStatus":"Chọn trạng thái",
     "debtManagement":"Quản lý công nợ",
@@ -383,5 +383,8 @@
     "debtPaid":"Đã trả xong",
     "customerCareHotline":"Tổng đài CSKH",
     "group":"Nhóm",
+    "selectTransaction":"Chọn giao dịch hiện tại hoặc lịch sử hoàn thành giao dịch",
+    "notificationNoPaid":"Hiện tại chưa có ai trả hết nợ",
+    "selectMonthYear":"Chọn tháng năm",
     "lastLine": ""
 }

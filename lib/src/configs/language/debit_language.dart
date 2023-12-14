@@ -21,6 +21,7 @@ class DebitLanguage {
   static final nameCustomer= S.current.nameCustomer;
   static final notificationDebit= S.current.notificationDebit;
   static final notificationDebitEmpty= S.current.notificationDebitEmpty;
+  static final notificationEmptyTransaction= S.current.notificationEmptyTransaction;
   static final back= S.current.back;
   static final contentEmptyNameDebit= S.current.contentEmptyNameDebit;
   static final search= S.current.search;
@@ -37,4 +38,5 @@ class DebitLanguage {
   static final totalIPaid= S.current.totalIPaid;
   static final totalEveryoneOwe= S.current.totalEveryoneOwe;
   static final totalEveryonePaid= S.current.totalEveryonePaid;
+  static final notificationNoPaid= S.current.notificationNoPaid;
 }
