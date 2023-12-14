@@ -14,5 +14,6 @@ class CalendarLanguage {
   static final showLastMonth = S.current.showLastMonth;
   static final dailyRevenue = S.current.dailyRevenue;
   static final monthlyRevenue = S.current.monthlyRevenue;
+  static final selectMonthYear = S.current.selectMonthYear;
 
 }

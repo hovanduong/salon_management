@@ -30,6 +30,7 @@ class DebtViewModel extends BaseViewModel{
   GlobalKey keyNote= GlobalKey();
   GlobalKey keyOwes= GlobalKey();
   GlobalKey keyHistory= GlobalKey();
+  GlobalKey keySelectTransaction= GlobalKey();
 
   MyCustomerModel? myCustomerModel;
   OwesTotalModel? owesTotalModel;
@@ -80,7 +81,7 @@ class DebtViewModel extends BaseViewModel{
     if (isShowCase == true) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         return ShowCaseWidget.of(context).startShowCase(
-          [keyAddDebt, keyNote, keyOwes, keyHistory],
+          [keyAddDebt, keyNote, keyOwes,keySelectTransaction, keyHistory],
         );
       });
     }

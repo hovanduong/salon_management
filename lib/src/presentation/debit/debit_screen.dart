@@ -161,7 +161,7 @@ class _DebitScreenState extends State<DebitScreen> {
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeVerySmall,
         ),
-        height: MediaQuery.of(context).size.height-620,
+        height: MediaQuery.of(context).size.height-600,
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),

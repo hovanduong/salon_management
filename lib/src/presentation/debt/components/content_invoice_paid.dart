@@ -64,7 +64,8 @@ class ContentInvoicePaid extends StatelessWidget {
             style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500),
           ),
           Paragraph(
-            content: name ?? '',
+            content: owesPaidModel?.isMe??false? DebtLanguage.me:
+              name ?? '',
             style: STYLE_SMALL.copyWith(fontWeight: FontWeight.w500,),
           ),
         ],
