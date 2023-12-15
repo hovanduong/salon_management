@@ -102,6 +102,7 @@ class _DebitScreenState extends State<DebitScreen> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
         child: AppFormField(
+          textEditingController: _viewModel!.searchController,
           iconButton: IconButton(
             onPressed: () {},
             icon: const Icon(Icons.search),

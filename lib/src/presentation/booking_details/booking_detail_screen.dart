@@ -355,36 +355,79 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   Widget buildButtonPay() {
     if (_viewModel!.dataMyBooking != null) {
       return _viewModel!.dataMyBooking!.isPayment
-          ? Positioned(
-              bottom: 30,
-              left: 0,
-              right: 0,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: SizeToPadding.sizeSmall,
-                  left: SizeToPadding.sizeMedium,
-                  right: SizeToPadding.sizeMedium,
-                ),
-                child: AppButton(
-                  enableButton: true,
-                  content: BookingDetailsLanguage.paymentConfirmation,
-                  onTap: () {
-                    _viewModel!
-                        .showWaningDiaglog(_viewModel!.dataMyBooking!.id!);
-                  },
-                ),
+        ? Positioned(
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: SizeToPadding.sizeSmall,
+                left: SizeToPadding.sizeMedium,
+                right: SizeToPadding.sizeMedium,
               ),
-            )
-          : Container();
+              child: AppButton(
+                enableButton: true,
+                content: BookingDetailsLanguage.paymentConfirmation,
+                onTap: () {
+                  _viewModel!
+                      .showWaningDiaglog(_viewModel!.dataMyBooking!.id!);
+                },
+              ),
+            ),
+          )
+        : Container();
     } else {
       return Container();
     }
   }
 
+  Widget buildHeaderEmpty(){
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 40 : 60,
+          bottom: 10,
+          left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
+        ),
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.COLOR_WHITE,
+          ),
+          title: BookingDetailsLanguage.booking,
+          onTap: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  }
+
+   Widget buildIconEmpty(){
+    return _viewModel!.listMyBooking.isEmpty && !_viewModel!.isLoading 
+    ? SingleChildScrollView(
+      child: Column(
+        children: [
+          buildHeaderEmpty(),
+          Padding(
+            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
+            child: EmptyDataWidget(
+              title: BookingDetailsLanguage.booking,
+              content: BookingDetailsLanguage.contentBookingDetailEmpty,
+            ),
+          ),
+        ],
+      ),
+    ):const SizedBox();
+  }
+
   Widget buildItemScreen() {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
+        child: (_viewModel!.listMyBooking.isNotEmpty 
+          && (_viewModel!.dataMyBooking?.id!=null 
+          || _viewModel!.dataMyBooking?.id!='') )? Column(
           children: List.generate(_viewModel!.listMyBooking.length, (index) {
             return Column(
               children: [
@@ -397,7 +440,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
               ],
             );
           }).toList(),
-        ),
+        ): buildIconEmpty(),
       ),
     );
   }

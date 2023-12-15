@@ -192,7 +192,7 @@ class DebtAddViewModel extends BaseViewModel{
         DebtLanguage.yourOwes} ${DebtLanguage.me}: ${
           AppCurrencyFormat.formatMoneyD(yourMoney)}';
     }else{
-      messageOwes='0';
+      messageOwes='${DebtLanguage.currentDebt}: 0';
     }
     notifyListeners();
   }
@@ -225,6 +225,7 @@ class DebtAddViewModel extends BaseViewModel{
         isPay=false;
       }
       validPrice(moneyController.text.trim());
+      onSubmit();
     }
     notifyListeners();
   }

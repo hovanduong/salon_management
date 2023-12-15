@@ -221,24 +221,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget buildCardNotification(int index) {
-    final id= _viewModel!.listCurrent[index].metaData?.appointmentId;
     final date = _viewModel!.listCurrent[index].createdAt;
     return InkWell(
-      onTap: () async {
-        await _viewModel!.putReadNotification(
-          _viewModel!.listCurrent[index].id ?? 0,
-        );
-        await AppBarge.addBarge();
-        if(_viewModel!.listCurrent[index].type == 'reminder' && id!=null){
-          await _viewModel!.goToBookingDetails(
-            context,
-            MyBookingParams(
-              id: _viewModel!.listCurrent[index].metaData?.appointmentId,
-            ),
-          );
-        }
-        await _viewModel!.pullRefresh();
-      },
+      onTap: () => _viewModel!.readAndShowDetailBooking(index),
       child: _viewModel!.listCurrent[index].type == 'reminder'
           ? buildNewNotification(index)
           : NotificationUpdate(
@@ -253,25 +238,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () => _viewModel!.pullRefresh(),
       child: (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
-          ? buildEmptyData()
-          : SizedBox(
-              height: MediaQuery.sizeOf(context).height - 90,
-              child: ListView.builder(
-                // physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                controller: _viewModel!.scrollController,
-                itemCount: _viewModel!.loadingMore
-                    ? _viewModel!.listCurrent.length + 1
-                    : _viewModel!.listCurrent.length,
-                itemBuilder: (context, index) {
-                  if (index < _viewModel!.listCurrent.length) {
-                    return buildCardNotification(index);
-                  } else {
-                    return const CupertinoActivityIndicator();
-                  }
-                },
-              ),
+        ? buildEmptyData()
+        : SizedBox(
+            height: MediaQuery.sizeOf(context).height - 100,
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              controller: _viewModel!.scrollController,
+              itemCount: _viewModel!.loadingMore
+                  ? _viewModel!.listCurrent.length + 1
+                  : _viewModel!.listCurrent.length,
+              itemBuilder: (context, index) {
+                if (index < _viewModel!.listCurrent.length) {
+                  return buildCardNotification(index);
+                } else {
+                  return const CupertinoActivityIndicator();
+                }
+              },
             ),
+          ),
     );
   }
 

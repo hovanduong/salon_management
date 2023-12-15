@@ -22,7 +22,9 @@ class CardCustomerWidget extends StatelessWidget {
     return  Padding(
       padding: EdgeInsets.only(
         top: SpaceBox.sizeSmall,
+        bottom: SizeToPadding.sizeVerySmall,
         right: SpaceBox.sizeSmall,
+        left: SpaceBox.sizeVerySmall,
       ),
       child: SlidableActionWidget(
         isCheckCategory: true,

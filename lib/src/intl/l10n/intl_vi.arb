@@ -386,5 +386,6 @@
     "selectTransaction":"Chọn giao dịch hiện tại hoặc lịch sử hoàn thành giao dịch",
     "notificationNoPaid":"Hiện tại chưa có ai trả hết nợ",
     "selectMonthYear":"Chọn tháng năm",
+    "contentBookingDetailEmpty":"Lịch hẹn này đã bị xóa hoặc không tồn tại",
     "lastLine": ""
 }

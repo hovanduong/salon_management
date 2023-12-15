@@ -386,5 +386,6 @@
     "selectTransaction":"Select current transaction or completed transaction history",
     "notificationNoPaid":"Currently, no one has paid off the debt",
     "selectMonthYear":"Select month and year",
+    "contentBookingDetailEmpty":"This appointment has been deleted or does not exist",
     "lastLine": ""
 }

@@ -41,6 +41,7 @@ class NotificationApi {
       final response = await HttpRemote.get(
         url: '/notification?pageSize=10&page=$page',
       );
+      print(response?.statusCode);
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);

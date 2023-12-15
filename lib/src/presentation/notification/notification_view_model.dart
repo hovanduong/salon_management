@@ -62,7 +62,7 @@ class NotificationViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model,) 
+  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model,)
     => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   Future<void> pullRefresh() async {
@@ -157,6 +157,26 @@ class NotificationViewModel extends BaseViewModel{
     );
   }
 
+  Future<void> readAndShowDetailBooking(int index)async{
+    final id= listCurrent[index].metaData?.appointmentId;
+    if(listCurrent[index].isRead==false && id!=null){
+      await putReadNotification(
+        listCurrent[index].id ?? 0,
+      );
+    }
+    await AppBarge.addBarge();
+    if(listCurrent[index].type == 'reminder' && id!=null ){
+      await goToBookingDetails(
+        context,
+        MyBookingParams(
+          id: id,
+        ),
+      );
+      // await pullRefresh();
+    }
+    notifyListeners();
+  }
+
   Future<void> getNotification(int page) async {
     final result = await notificationApi.getNotification(page);
 
@@ -187,7 +207,7 @@ class NotificationViewModel extends BaseViewModel{
     if (!AppValid.isNetWork(value)) {
       showDialogNetwork(context);
     } else if (value is Exception) {
-      showErrorDialog(context);
+      // showErrorDialog(context);
     } else {
     }
     notifyListeners();

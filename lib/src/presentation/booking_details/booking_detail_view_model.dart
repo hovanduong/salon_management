@@ -110,7 +110,7 @@ class BookingDetailsViewModel extends BaseViewModel{
    if (!AppValid.isNetWork(value)) {
       isLoading = true;
     } else if (value is Exception) {
-      isLoading = true;
+      isLoading=false;
     } else {
       isLoading = false;
       listMyBooking = value as List<MyBookingModel>;
@@ -158,6 +158,7 @@ class BookingDetailsViewModel extends BaseViewModel{
     };
 
     if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
       showDialogNetwork(context);
     } else if (value is Exception) {
       LoadingDialog.hideLoadingDialog(context);

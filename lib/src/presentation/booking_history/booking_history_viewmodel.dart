@@ -197,11 +197,17 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
-    pageToday = 1;
-    pageUpComing = 1;
-    pageDone = 1;
-    pageCanceled = 1;
-    pageDaysBefore = 1;
+    if(currentTab==1){
+      pageDaysBefore = 1;
+    }else if(currentTab==0){
+      pageToday=1;
+    }else if(currentTab==2){
+      pageUpComing=1;
+    }else if(currentTab==3){
+      pageDone = 1;
+    }else {
+      pageCanceled = 1;
+    }
     isPullRefresh=true;
     isLoading=true;
     notifyListeners();
