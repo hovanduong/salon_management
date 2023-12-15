@@ -13,57 +13,63 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class NotificationViewModel extends BaseViewModel{
-  bool isLoading=true;
-  bool loadingMore=false;
-  bool isShowCase=true;
+class NotificationViewModel extends BaseViewModel {
+  bool isLoading = true;
+  bool loadingMore = false;
+  bool isShowCase = true;
 
   NotificationApi notificationApi = NotificationApi();
 
-  ScrollController scrollController= ScrollController();
+  ScrollController scrollController = ScrollController();
 
-  List<NotificationModel> listNotification=[];
-  List<NotificationModel> listCurrent=[];
+  List<NotificationModel> listNotification = [];
+  List<NotificationModel> listCurrent = [];
 
-  int page=1;
+  int page = 1;
 
   Timer? timer;
 
-  GlobalKey keyNotification= GlobalKey();
+  GlobalKey keyNotification = GlobalKey();
 
-  Future<void> init()async{
-    page=1;
+  Future<void> init() async {
+    page = 1;
     await getNotification(page);
-    listCurrent=listNotification;
+    listCurrent = listNotification;
     scrollController.addListener(
       scrollListener,
     );
     await AppPref.getShowCase('showCaseNotification').then(
-      (value) => isShowCase=value??true,);
+      (value) => isShowCase = value ?? true,
+    );
     startShowCase();
     await hideShowcase();
     notifyListeners();
   }
 
-  Future<void> hideShowcase() async{
+  Future<void> hideShowcase() async {
     await AppPref.setShowCase('showCaseNotification', false);
-    isShowCase=false;
+    isShowCase = false;
     notifyListeners();
   }
 
-  void startShowCase(){
-    if(isShowCase){
+  void startShowCase() {
+    if (isShowCase) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [keyNotification,],
+          [
+            keyNotification,
+          ],
         );
       });
     }
     notifyListeners();
   }
 
-  Future<void> goToBookingDetails(BuildContext context, MyBookingParams model,)
-    => Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
+  Future<void> goToBookingDetails(
+    BuildContext context,
+    MyBookingParams model,
+  ) =>
+      Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
 
   Future<void> pullRefresh() async {
     await init();
@@ -78,26 +84,44 @@ class NotificationViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  dynamic scrollListener() async {
+  // dynamic scrollListener() async {
+  //   if (scrollController.position.pixels ==
+  //           scrollController.position.maxScrollExtent &&
+  //       scrollController.position.pixels > 0) {
+  //     loadingMore = true;
+  //     Future.delayed(const Duration(seconds: 2), () {
+  //       loadMoreData();
+  //       loadingMore = false;
+  //     });
+  //     notifyListeners();
+  //   }
+  // }
+
+  void scrollListener() {
     if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent &&
         scrollController.position.pixels > 0) {
-      loadingMore = true;
-      Future.delayed(const Duration(seconds: 2), () {
-        loadMoreData();
-        loadingMore = false;
-      });
-      notifyListeners();
+      print(scrollController.position.pixels);
+      if (!loadingMore) {
+        loadingMore = true;
+        notifyListeners();
+        Future.delayed(const Duration(seconds: 2), () {
+          loadMoreData();
+          loadingMore = false;
+          notifyListeners();
+        });
+      }
     }
-  }
-
-  void setColorNotification(int index){
-    listNotification[index].color=AppColors.BLACK_400;
     notifyListeners();
   }
 
-  dynamic showDialogSeeAllNotification(BuildContext context)async{
-     await showDialog(
+  void setColorNotification(int index) {
+    listNotification[index].color = AppColors.BLACK_400;
+    notifyListeners();
+  }
+
+  dynamic showDialogSeeAllNotification(BuildContext context) async {
+    await showDialog(
       context: context,
       builder: (_) {
         return WarningDialog(
@@ -111,14 +135,14 @@ class NotificationViewModel extends BaseViewModel{
           onTapLeft: () {
             Navigator.pop(context);
           },
-          onTapRight: () async{
+          onTapRight: () async {
             await AppBarge.addBarge();
             Navigator.pop(context);
             await readAllNotification();
           },
         );
       },
-     );
+    );
   }
 
   dynamic showErrorDialog(_) {
@@ -157,15 +181,15 @@ class NotificationViewModel extends BaseViewModel{
     );
   }
 
-  Future<void> readAndShowDetailBooking(int index)async{
-    final id= listCurrent[index].metaData?.appointmentId;
-    if(listCurrent[index].isRead==false && id!=null){
+  Future<void> readAndShowDetailBooking(int index) async {
+    final id = listCurrent[index].metaData?.appointmentId;
+    if (listCurrent[index].isRead == false && id != null) {
       await putReadNotification(
         listCurrent[index].id ?? 0,
       );
     }
     await AppBarge.addBarge();
-    if(listCurrent[index].type == 'reminder' && id!=null ){
+    if (listCurrent[index].type == 'reminder' && id != null) {
       await goToBookingDetails(
         context,
         MyBookingParams(
@@ -191,12 +215,12 @@ class NotificationViewModel extends BaseViewModel{
       isLoading = true;
     } else {
       listNotification = value as List<NotificationModel>;
-      isLoading=false;
+      isLoading = false;
     }
     notifyListeners();
   }
 
-  Future<void>  putReadNotification(int id) async {
+  Future<void> putReadNotification(int id) async {
     final result = await notificationApi.putReadNotification(id);
 
     final value = switch (result) {
@@ -208,8 +232,7 @@ class NotificationViewModel extends BaseViewModel{
       showDialogNetwork(context);
     } else if (value is Exception) {
       // showErrorDialog(context);
-    } else {
-    }
+    } else {}
     notifyListeners();
   }
 

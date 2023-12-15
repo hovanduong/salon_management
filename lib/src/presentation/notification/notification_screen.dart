@@ -90,8 +90,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
             description: NotificationLanguage.seeAllNotification,
             key: _viewModel!.keyNotification,
             child: InkWell(
-              onTap: ()=> _viewModel!.showDialogSeeAllNotification(context),
-              child: SvgPicture.asset(AppImages.icSeeAllNotification,
+              onTap: () => _viewModel!.showDialogSeeAllNotification(context),
+              child: SvgPicture.asset(
+                AppImages.icSeeAllNotification,
                 color: AppColors.COLOR_WHITE,
               ),
             ),
@@ -227,37 +228,51 @@ class _NotificationScreenState extends State<NotificationScreen> {
       child: _viewModel!.listCurrent[index].type == 'reminder'
           ? buildNewNotification(index)
           : NotificationUpdate(
-            date: date, 
-            color: _viewModel!.listCurrent[index].isRead??false
-              ? AppColors.BLACK_400:null,),
+              date: date,
+              color: _viewModel!.listCurrent[index].isRead ?? false
+                  ? AppColors.BLACK_400
+                  : null,
+            ),
     );
   }
 
   Widget buildBody() {
     return RefreshIndicator(
-      color: AppColors.PRIMARY_GREEN,
-      onRefresh: () => _viewModel!.pullRefresh(),
-      child: (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
-        ? buildEmptyData()
-        : SizedBox(
-            height: MediaQuery.sizeOf(context).height - 100,
-            child: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              controller: _viewModel!.scrollController,
-              itemCount: _viewModel!.loadingMore
-                  ? _viewModel!.listCurrent.length + 1
-                  : _viewModel!.listCurrent.length,
-              itemBuilder: (context, index) {
-                if (index < _viewModel!.listCurrent.length) {
-                  return buildCardNotification(index);
-                } else {
-                  return const CupertinoActivityIndicator();
-                }
-              },
-            ),
-          ),
-    );
+        color: AppColors.PRIMARY_GREEN,
+        onRefresh: () => _viewModel!.pullRefresh(),
+        child: (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
+            ? buildEmptyData()
+            : NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent &&
+                      scrollInfo.metrics.pixels > 0) {
+                    _viewModel!.scrollListener();
+                  }
+                  return false;
+                },
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height - 50,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      controller: _viewModel!.scrollController,
+                      itemCount: _viewModel!.loadingMore
+                          ? _viewModel!.listCurrent.length + 1
+                          : _viewModel!.listCurrent.length,
+                      itemBuilder: (context, index) {
+                        if (index < _viewModel!.listCurrent.length) {
+                          return buildCardNotification(index);
+                        } else {
+                          return const CupertinoActivityIndicator();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ));
   }
 
   Widget buildNotificationScreen() {
