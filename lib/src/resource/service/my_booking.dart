@@ -66,7 +66,7 @@ class MyBookingApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/my-booking/$id',
+        url: '/my-booking/${int.tryParse(id)}',
       );
       switch (response?.statusCode) {
         case 200:

@@ -12,9 +12,9 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class BookingDetailsViewModel extends BaseViewModel{
-  bool isLoading=true;
-  bool isShowListService=true;
+class BookingDetailsViewModel extends BaseViewModel {
+  bool isLoading = true;
+  bool isShowListService = true;
 
   Timer? timer;
 
@@ -25,27 +25,34 @@ class BookingDetailsViewModel extends BaseViewModel{
 
   List<MyBookingModel> listMyBooking = [];
 
-  Future<void> init(MyBookingParams params)async{
+  Future<void> init(MyBookingParams params) async {
     await getMyBookingUser(params.id.toString());
-    dataMyBooking=params;
-    isLoading=false;
+    dataMyBooking = params;
+    isLoading = false;
     notifyListeners();
   }
 
-  Future<void> goToBill(BuildContext context) 
-    => Navigator.pushNamed(context, Routers.bill, 
-      arguments: listMyBooking[0],);
+  Future<void> goToBill(BuildContext context) => Navigator.pushNamed(
+        context,
+        Routers.bill,
+        arguments: listMyBooking[0],
+      );
 
   Future<void> goToHome() => Navigator.pushReplacementNamed(
-    context, Routers.home,);
+        context,
+        Routers.home,
+      );
 
-  void closeDialog(BuildContext context){
-    Timer(const Duration(seconds: 1), () => Navigator.pop(context),);
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
     notifyListeners();
   }
 
-  void showListService(){
-    isShowListService=!isShowListService;
+  void showListService() {
+    isShowListService = !isShowListService;
     notifyListeners();
   }
 
@@ -60,7 +67,7 @@ class BookingDetailsViewModel extends BaseViewModel{
         );
       },
     );
-    timer= Timer(const Duration(seconds: 1), goToHome);
+    timer = Timer(const Duration(seconds: 1), goToHome);
     notifyListeners();
   }
 
@@ -78,7 +85,7 @@ class BookingDetailsViewModel extends BaseViewModel{
     );
   }
 
-  dynamic showWaningDiaglog(int id){
+  dynamic showWaningDiaglog(int id) {
     showDialog(
       context: context,
       builder: (context) {
@@ -90,7 +97,7 @@ class BookingDetailsViewModel extends BaseViewModel{
             Navigator.pop(context);
           },
           rightButtonName: BookingDetailsLanguage.confirm,
-          onTapRight: (){
+          onTapRight: () {
             postInvoice(id);
             Navigator.pop(context);
           },
@@ -106,15 +113,16 @@ class BookingDetailsViewModel extends BaseViewModel{
       Success(value: final listMyBooking) => listMyBooking,
       Failure(exception: final exception) => exception,
     };
-
-   if (!AppValid.isNetWork(value)) {
+    if (!AppValid.isNetWork(value)) {
       isLoading = true;
     } else if (value is Exception) {
-      isLoading=false;
+      isLoading = false;
     } else {
       isLoading = false;
       listMyBooking = value as List<MyBookingModel>;
     }
+    print(listMyBooking);
+
     isLoading = false;
     notifyListeners();
   }
