@@ -46,7 +46,7 @@ class RegisterTopic {
 
   static Future<void> registerTopic() async {
     final userId = await AppPref.getDataUSer('id');
-
+    print(userId);
     // Request notification permission
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings =
@@ -75,6 +75,7 @@ class RegisterTopic {
         await unsubscribeApp();
       }
     } else {
+      print(await FirebaseMessaging.instance.getToken());
       await FirebaseMessaging.instance.subscribeToTopic(userId ?? '');
       await unsubscribeApp();
     }

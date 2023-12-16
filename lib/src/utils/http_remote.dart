@@ -12,11 +12,10 @@ String accessToken = '';
 Map<String, String> requestHeaders = {};
 
 class Constants {
-  // static String baseUrl = 'https://spa-api.dhysolutions.net/api';÷
+  static String baseUrl = 'https://spa-api.dhysolutions.net/api';
 
   // static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
-  static String baseUrl =
-      'https://c9ed-2405-4802-6570-ab90-1528-6dc3-2656-478a.ngrok.io/api';
+  // static String baseUrl = 'https://40c2-58-186-124-192.ngrok.io/api';
 }
 
 class HttpRemote {
@@ -25,16 +24,15 @@ class HttpRemote {
   static final HttpRemote instance = HttpRemote._();
   static Future<void> init() async {
     accessToken = await AppPref.getToken() ?? '';
-    print(accessToken);
     // final fullName = await AppPref.getDataUSer('fullName') ?? '';
     // final id = await AppPref.getDataUSer('id') ?? '';
     // final email = await AppPref.getDataUSer('email') ?? '';
     // final gender = await AppPref.getDataUSer('gender') ?? '';
     // final phoneNumber = await AppPref.getDataUSer('phoneNumber') ?? '';
 
-    // log('accessToken: $accessToken');
+    print('accessToken: $accessToken');
     // log('fullName: $fullName');
-    // log('id: $id');
+    // print('id: $id');
     // log('email: $email');
     // log('gender: $gender');
     // log('phoneNumber: $phoneNumber');
