@@ -1,5 +1,6 @@
 export 'calendar_model.dart';
 export 'chart_data_model.dart';
+export 'data_my_booking_model.dart';
 export 'data_top_service.dart';
 export 'expense_management_model.dart';
 export 'income.dart';

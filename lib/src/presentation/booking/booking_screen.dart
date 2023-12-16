@@ -428,7 +428,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return SizedBox(
       height: 180,
       child: CupertinoDatePicker(
-        initialDateTime: _viewModel!.dateTime,
+        initialDateTime: _viewModel!.time,
         mode: CupertinoDatePickerMode.time,
         minimumDate: DateTime.now(),
         use24hFormat: true,

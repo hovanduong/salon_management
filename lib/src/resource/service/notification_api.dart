@@ -19,12 +19,14 @@ class NotificationParams {
     this.nameCustomer,
     this.address,
     this.bookingCode,
+    this.type,
   });
   final int? id;
   final int? idBooking;
   final String? bookingCode;
   final int? page;
   final String? status;
+  final String? type;
   final String? nameCustomer;
   final String? address;
   final bool isRemind;
@@ -73,14 +75,14 @@ class NotificationApi {
   }
 
   Future<Result<bool, Exception>> putReadNotification(
-    int id,
+    NotificationParams params,
   ) async {
     try {
       final response = await HttpRemote.put(
-        url: '/reminder/isRead/$id',
+        url: '/reminder/isRead/${params.id}',
         body: {
           'isRead': true,
-          // 'type': 'reminder',
+          'type': params.type,
         },
       );
       switch (response?.statusCode) {

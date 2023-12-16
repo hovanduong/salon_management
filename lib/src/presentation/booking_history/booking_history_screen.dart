@@ -137,16 +137,16 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         tabs: [
           Tab(
             text: _viewModel!.currentTab==0? '${HistoryLanguage.previousAppointment} (${
-              _viewModel!.listCurrentDaysBefore.length})' 
+              _viewModel!.itemTab})' 
               :HistoryLanguage.previousAppointment,
           ),
           Tab(
             text:_viewModel!.currentTab==1? '${HistoryLanguage.today} (${
-              _viewModel!.listCurrentToday.length})': HistoryLanguage.today,
+              _viewModel!.itemTab})': HistoryLanguage.today,
           ),
           Tab(
             text:_viewModel!.currentTab==2? '${HistoryLanguage.upcoming} (${
-              _viewModel!.listCurrentUpcoming.length})': HistoryLanguage.upcoming,
+              _viewModel!.itemTab})': HistoryLanguage.upcoming,
           ),
           Tab(
             text: HistoryLanguage.done,

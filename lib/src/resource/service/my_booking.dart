@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import '../../configs/configs.dart';
 import '../../utils/http_remote.dart';
-import '../model/my_booking_model.dart';
+import '../model/model.dart';
 
 class MyBookingParams {
   const MyBookingParams({
@@ -34,7 +34,7 @@ class MyBookingParams {
 }
 
 class MyBookingApi {
-  Future<Result<List<MyBookingModel>, Exception>> getMyBooking(
+  Future<Result<DataMyBookingModel, Exception>> getMyBooking(
     MyBookingParams params,
   ) async {
     try {
@@ -50,8 +50,8 @@ class MyBookingApi {
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
-          final data = json.encode(jsonMap['data']['items']);
-          final myBooking = MyBookingModelFactory.createList(data);
+          final data = json.encode(jsonMap['data']);
+          final myBooking = DataMyBookingModelFactory.create(data);
           return Success(myBooking);
         default:
           return Failure(Exception(response!.reasonPhrase));

@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/model.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
 import '../../resource/service/notification_api.dart';
@@ -36,7 +37,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   ScrollController scrollToday = ScrollController();
   ScrollController scrollDaysBefore = ScrollController();
 
-  List<MyBookingModel> listMyBooking = [];
+  DataMyBookingModel? listMyBooking;
   List<MyBookingModel> listCurrentUpcoming = [];
   List<MyBookingModel> listCurrentToday = [];
   List<MyBookingModel> listCurrentDone = [];
@@ -57,6 +58,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageToday = 1;
   int pageDaysBefore = 1;
   int currentTab = 1;
+  num itemTab=0;
 
   GlobalKey addBooking = GlobalKey();
   GlobalKey keyNotification = GlobalKey();
@@ -83,6 +85,13 @@ class BookingHistoryViewModel extends BaseViewModel {
     await startShowCase();
     await hideShowcase();
     tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
+    tabController!.addListener(handleTabChange);
+    notifyListeners();
+  }
+
+  Future<void> handleTabChange()async{
+    currentTab = tabController!.index;
+    await fetchData();
     notifyListeners();
   }
 
@@ -150,6 +159,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     => Navigator.pushNamed(context, Routers.notification,);
 
   Future<void> fetchData() async {
+    setTabPage();
     await getData();
     isPullRefresh=false;
     isLoading=false;
@@ -164,31 +174,36 @@ class BookingHistoryViewModel extends BaseViewModel {
     isLoading=true;
     if(currentTab==1){
       await getDataToday(pageToday);
-      listCurrentToday = listMyBooking;
+      listCurrentToday = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
       scrollToday.addListener(
         () => scrollListener(scrollToday),
       );
     }else if(currentTab==0){
       await getDataDaysBefore(pageDaysBefore);
-      listCurrentDaysBefore = listMyBooking;
+      listCurrentDaysBefore = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
       scrollDaysBefore.addListener(
         () => scrollListener(scrollDaysBefore),
       );
     }else if(currentTab==2){
       await getDataUpcoming(pageUpComing);
-      listCurrentUpcoming = listMyBooking;
+      listCurrentUpcoming = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
       scrollUpComing.addListener(
         () => scrollListener(scrollUpComing),
       );
     }else if(currentTab==3){
       await getDataDone(pageDone);
-      listCurrentDone = listMyBooking;
+      listCurrentDone = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
       scrollDone.addListener(
         () => scrollListener(scrollDone),
       );
     }else {
       await getDataCanceled(pageCanceled);
-      listCurrentCanceled = listMyBooking;
+      listCurrentCanceled = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
       scrollCanceled.addListener(
         () => scrollListener(scrollCanceled),
       );
@@ -196,10 +211,10 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> pullRefresh() async {
-    if(currentTab==1){
+  void setTabPage(){
+    if(currentTab==0){
       pageDaysBefore = 1;
-    }else if(currentTab==0){
+    }else if(currentTab==1){
       pageToday=1;
     }else if(currentTab==2){
       pageUpComing=1;
@@ -208,6 +223,10 @@ class BookingHistoryViewModel extends BaseViewModel {
     }else {
       pageCanceled = 1;
     }
+    notifyListeners();
+  }
+
+  Future<void> pullRefresh() async {
     isPullRefresh=true;
     isLoading=true;
     notifyListeners();
@@ -279,23 +298,28 @@ class BookingHistoryViewModel extends BaseViewModel {
     if (currentTab == 0) {
       pageDaysBefore += 1;
       await getDataDaysBefore(pageDaysBefore);
-      listCurrentDaysBefore = [...listCurrentDaysBefore, ...listMyBooking];
+      listCurrentDaysBefore = [...listCurrentDaysBefore, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 1) {
       pageToday += 1;
       await getDataToday(pageToday);
-      listCurrentToday = [...listCurrentToday, ...listMyBooking];
+      listCurrentToday = [...listCurrentToday, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 2) {
       pageUpComing += 1;
       await getDataUpcoming(pageUpComing);
-      listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
+      listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 3) {
       pageDone += 1;
       await getDataDone(pageDone);
-      listCurrentDone = [...listCurrentDone, ...listMyBooking];
+      listCurrentDone = [...listCurrentDone, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else {
       pageCanceled += 1;
       await getDataCanceled(pageCanceled);
-      listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
+      listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     }
     isLoadMore=false;
     isLoading=false;
@@ -529,7 +553,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value is Exception) {
       isLoading = true;
     } else {
-      listMyBooking = value as List<MyBookingModel>;
+      listMyBooking = value as DataMyBookingModel;
       isLoading=false;
     }
     notifyListeners();
@@ -663,6 +687,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       () {
         timer?.cancel();
         tabController?.dispose();
+        tabController!.removeListener(handleTabChange);
         scrollCanceled.dispose();
         scrollDaysBefore.dispose();
         scrollDone.dispose();

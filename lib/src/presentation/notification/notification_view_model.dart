@@ -190,7 +190,10 @@ class NotificationViewModel extends BaseViewModel {
     final id = listCurrent[index].metaData?.appointmentId;
     if (listCurrent[index].isRead == false && id != null) {
       await putReadNotification(
-        listCurrent[index].id ?? 0,
+        NotificationParams(
+          id: listCurrent[index].id ?? 0,
+          type: listCurrent[index].type,
+        ),
       );
     }
     await AppBarge.addBarge();
@@ -201,7 +204,7 @@ class NotificationViewModel extends BaseViewModel {
           id: id,
         ),
       );
-      // await pullRefresh();
+      await pullRefresh();
     }
     notifyListeners();
   }
@@ -225,8 +228,8 @@ class NotificationViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> putReadNotification(int id) async {
-    final result = await notificationApi.putReadNotification(id);
+  Future<void> putReadNotification(NotificationParams params) async {
+    final result = await notificationApi.putReadNotification(params);
 
     final value = switch (result) {
       Success(value: final isRead) => isRead,
