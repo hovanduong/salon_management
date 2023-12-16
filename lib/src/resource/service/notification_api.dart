@@ -80,7 +80,7 @@ class NotificationApi {
         url: '/reminder/isRead/$id',
         body: {
           'isRead': true,
-          // 'type': 'reminder',
+          'type': 'reminder',
         },
       );
       switch (response?.statusCode) {

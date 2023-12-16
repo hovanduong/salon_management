@@ -68,8 +68,13 @@ class NotificationViewModel extends BaseViewModel {
   Future<void> goToBookingDetails(
     BuildContext context,
     MyBookingParams model,
-  ) =>
-      Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
+  ) async {
+    await Navigator.pushNamed(
+      context,
+      Routers.bookingDetails,
+      arguments: model,
+    );
+  }
 
   Future<void> pullRefresh() async {
     await init();
