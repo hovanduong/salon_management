@@ -82,7 +82,7 @@ class NotificationApi {
         url: '/reminder/isRead/${params.id}',
         body: {
           'isRead': true,
-          'type': params.type,
+          'type': params.type ?? 'undefine',
         },
       );
       switch (response?.statusCode) {
