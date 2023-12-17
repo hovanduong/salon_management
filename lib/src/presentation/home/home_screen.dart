@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -300,36 +301,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildTransaction() {
     return _viewModel!.isShowTransaction
-    ? (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
-        ? Padding(
-            padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 3),
-            child: EmptyDataWidget(
-              title: HomePageLanguage.emptyTransaction,
-              content: HomePageLanguage.notificationEmptyTransaction,
-            ),
-          )
-        : ListView.builder(
-            padding: EdgeInsets.zero,
-            controller: _viewModel!.scrollController,
-            itemCount: _viewModel!.loadingMore
-                ? _viewModel!.listCurrent.length + 1
-                : _viewModel!.listCurrent.length,
-            itemBuilder: (context, index) {
-              if (index < _viewModel!.listCurrent.length) {
-                if (index == 0) {
-                  return Showcase(
-                    key: _viewModel!.cardRevenue,
-                    description: HomePageLanguage.dailyRevenue,
-                    child: buildCardTransaction(index),
-                  );
-                }
-                return buildCardTransaction(index);
-              } else {
-                return const CupertinoActivityIndicator();
-              }
-            },
-          )
-    : Container();
+        ? (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
+            ? Padding(
+                padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 3),
+                child: EmptyDataWidget(
+                  title: HomePageLanguage.emptyTransaction,
+                  content: HomePageLanguage.notificationEmptyTransaction,
+                ),
+              )
+            : ListView.builder(
+                padding: EdgeInsets.zero,
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    if (index == 0) {
+                      return Showcase(
+                        key: _viewModel!.cardRevenue,
+                        description: HomePageLanguage.dailyRevenue,
+                        child: buildCardTransaction(index),
+                      );
+                    }
+                    return buildCardTransaction(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              )
+        : Container();
   }
 
   Widget buildBody() {
@@ -352,32 +353,34 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildHomePage() {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      floatingActionButton: _viewModel!.isDate == 0
-          ? Padding(
-              padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
-              child: Showcase(
-                key: _viewModel!.add,
-                description: HomePageLanguage.addInvoice,
-                targetBorderRadius: BorderRadius.all(
-                  Radius.circular(
-                    BorderRadiusSize.sizeLarge,
+    return UpgradeAlert(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        floatingActionButton: _viewModel!.isDate == 0
+            ? Padding(
+                padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
+                child: Showcase(
+                  key: _viewModel!.add,
+                  description: HomePageLanguage.addInvoice,
+                  targetBorderRadius: BorderRadius.all(
+                    Radius.circular(
+                      BorderRadiusSize.sizeLarge,
+                    ),
+                  ),
+                  child: FloatingActionButton(
+                    heroTag: 'addBooking',
+                    backgroundColor: AppColors.PRIMARY_GREEN,
+                    onPressed: () => _viewModel!.goToAddInvoice(context),
+                    child: const Icon(
+                      Icons.add,
+                      color: AppColors.COLOR_WHITE,
+                    ),
                   ),
                 ),
-                child: FloatingActionButton(
-                  heroTag: 'addBooking',
-                  backgroundColor: AppColors.PRIMARY_GREEN,
-                  onPressed: () => _viewModel!.goToAddInvoice(context),
-                  child: const Icon(
-                    Icons.add,
-                    color: AppColors.COLOR_WHITE,
-                  ),
-                ),
-              ),
-            )
-          : null,
-      body: buildBody(),
+              )
+            : null,
+        body: buildBody(),
+      ),
     );
   }
 }

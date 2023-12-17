@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../configs/configs.dart';
 import '../../intl/generated/l10n.dart';
 import '../routers.dart';
 
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-
       key: key,
       debugShowCheckedModeBanner: false,
       // navigatorObservers: [ConfigAnalytics.observer],
