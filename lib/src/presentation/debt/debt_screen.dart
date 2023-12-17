@@ -234,11 +234,11 @@ class _DebtScreenState extends State<DebtScreen>
           right: SizeToPadding.sizeSmall,
         ),
         child: SlidableActionWidget(
-          isCheckCategory: true,
+          // isCheckCategory: true,
           onTapButtonFirst: (context) =>_viewModel!.deleteInvoiceOwes(id??0),
-          onTapButtonSecond: (context) =>_viewModel!.goToDebtAdd(
-            list: listCurrent[index], isEdit: true
-          ),
+          // onTapButtonSecond: (context) =>_viewModel!.goToDebtAdd(
+          //   list: listCurrent[index], isEdit: true
+          // ),
           child: Container(
             padding: EdgeInsets.symmetric(
               vertical: SizeToPadding.sizeVeryVerySmall,
