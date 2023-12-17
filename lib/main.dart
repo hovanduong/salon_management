@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'src/configs/configs.dart';
 import 'src/presentation/app/app.dart';
@@ -17,6 +18,7 @@ Future<void> main() async {
   );
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
+  await Upgrader.clearSavedSettings();
   ConfigCrashlytics.init();
   notificationInitialed();
   await ConfigPerformance.init();

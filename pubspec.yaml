@@ -62,6 +62,7 @@ dependencies:
   showcaseview: ^2.0.3
   flutter_app_badger: ^1.5.0
   permission_handler: ^11.1.0
+  upgrader: ^8.4.0
 
   flutter_localizations:
     sdk: flutter

@@ -1,6 +1,9 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -175,13 +178,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Paragraph(
             content: _viewModel!.userModel?.phoneNumber,
             style: STYLE_BIG.copyWith(
-                color: AppColors.COLOR_WHITE,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,),
+              color: AppColors.COLOR_WHITE,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Widget buildAppUpgrader() {
+    return Container(
+        // margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+        child: UpgradeCard());
+
+    // SettingProfileListWidget(
+    //   image: AppImages.icPrivacy,
+    //   title: 'Cập nhật ứng dụng',
+    //   isOntap: true,
+    //   onTap: () {
+    //     return UpgradeAlert(
+    //       upgrader: Upgrader(),
+    //     );
+    //   },
+    // );
   }
 
   Widget buildBody() {
@@ -209,13 +230,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ]),
         child: Column(
           children: [
-            // buildNameUserWidget(),
-            // buildLineWidget(),
             buildAccountInfoWidget(),
-            // buildPersonalProfileWidget(),
             buildCategoryWidget(),
-            // buildLoginAndSecurity(),
-            // buildDataAndPrivacyWidget(),
+            buildAppUpgrader(),
             buildLogoutWidget(),
           ],
         ),
@@ -236,10 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   height: MediaQuery.sizeOf(context).height - 100,
                 ),
-                // buildBackground(),
-                // buildHeaderWidget(),
                 buildInfoUSer(),
-                // buildAvatarWidget(),
                 buildBody(),
               ],
             ),

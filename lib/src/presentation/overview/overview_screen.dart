@@ -31,8 +31,8 @@ class _OverViewScreenState extends State<OverViewScreen>
     );
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-          statusBarColor: AppColors.PRIMARY_GREEN, // status bar color
-          ),
+        statusBarColor: AppColors.PRIMARY_GREEN, // status bar color
+      ),
     );
 
     return BaseWidget(
