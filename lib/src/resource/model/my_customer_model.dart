@@ -18,6 +18,7 @@ class MyCustomerModel {
   bool? isUser;
   num? money;
   OwesModel ? owesModel;
+  bool isEditDebt;
   MyCustomerModel({
     this.id,
     this.phoneNumber,
@@ -32,6 +33,7 @@ class MyCustomerModel {
     this.isUser,
     this.money,
     this.owesModel,
+    this.isEditDebt=false,
   });
 }
 

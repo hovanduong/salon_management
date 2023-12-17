@@ -237,7 +237,7 @@ class _DebtScreenState extends State<DebtScreen>
           isCheckCategory: true,
           onTapButtonFirst: (context) =>_viewModel!.deleteInvoiceOwes(id??0),
           onTapButtonSecond: (context) =>_viewModel!.goToDebtAdd(
-            list: listCurrent[index],
+            list: listCurrent[index], isEdit: true
           ),
           child: Container(
             padding: EdgeInsets.symmetric(

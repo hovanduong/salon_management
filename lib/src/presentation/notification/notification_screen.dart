@@ -10,10 +10,8 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
-import '../../configs/firebase/notification_firebase/app_barge.dart';
 import '../../configs/language/notification_language.dart';
 import '../../configs/widget/basic/notification_update.dart';
-import '../../resource/service/my_booking.dart';
 import '../../utils/check_time.dart';
 import '../base/base.dart';
 import 'components/message_notification.dart';

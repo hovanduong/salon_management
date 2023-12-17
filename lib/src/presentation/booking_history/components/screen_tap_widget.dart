@@ -60,7 +60,7 @@ class ScreenTap extends StatelessWidget {
   final String? contentEmpty;
   final Color? colorStatus;
   final String? status;
-  final Function(bool isRemind, MyBookingModel list)? onRemind;
+  final Function(bool isRemind, MyBookingModel list, int index)? onRemind;
   final GlobalKey? keyRemind;
   final GlobalKey? keyED;
   final GlobalKey? keyStatus;
@@ -97,7 +97,7 @@ class ScreenTap extends StatelessWidget {
                     keyED: keyED,
                     context: context,
                     isRemind: listCurrent![index].isReminder??false,
-                    onRemind: (value)=> onRemind!(value, listCurrent![index]),
+                    onRemind: (value)=> onRemind!(value, listCurrent![index], index),
                     onPay: () => onPay!(id!),
                     onTapEditBooking: () =>
                         onTapEditBooking!(listCurrent![index]),
@@ -143,7 +143,7 @@ class ScreenTap extends StatelessWidget {
                     context: context,
                     isDayBefore: isDayBefore,
                     isRemind: listCurrent![index].isReminder??false,
-                    onRemind: (value)=> onRemind!(value, listCurrent![index]),
+                    onRemind: (value)=> onRemind!(value, listCurrent![index], index),
                     onPay: () => onPay!(id!),
                     onTapEditBooking: () =>
                         onTapEditBooking!(listCurrent![index]),

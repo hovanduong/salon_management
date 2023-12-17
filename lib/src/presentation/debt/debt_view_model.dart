@@ -183,14 +183,15 @@ class DebtViewModel extends BaseViewModel{
   Future<void> goToDebtDetail(OwesModel owesModel)
     => Navigator.pushNamed(context, Routers.debtDetail, arguments: owesModel,);
   
-  Future<void> goToDebtAdd({OwesModel? list})async {
+  Future<void> goToDebtAdd({OwesModel? list, bool isEdit=false})async {
     final data = myCustomerModel;
-    final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
-    final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
-    data?.isMe= owesTotalModel?.isMe;
-    data?.isUser=owesTotalModel?.isUser;
-    data?.money= (owesTotalModel?.isMe??false)? myMoney: yourMoney;
+    // final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
+    // final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
+    // data?.isMe= owesTotalModel?.isMe;
+    // data?.isUser=owesTotalModel?.isUser;
+    // data?.money= (owesTotalModel?.isMe??false)? myMoney: yourMoney;
     data?.owesModel= list;
+    data?.isEditDebt=isEdit;
     await Navigator.pushNamed(context, 
       Routers.debtAdd, arguments: data,);
     dropValue=listName.first;

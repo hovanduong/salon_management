@@ -387,5 +387,7 @@
     "notificationNoPaid":"Hiện tại chưa có ai trả hết nợ",
     "selectMonthYear":"Chọn tháng năm",
     "contentBookingDetailEmpty":"Lịch hẹn này đã bị xóa hoặc không tồn tại",
+    "editDebtWaning":"Trong khi chỉnh sửa một khoản nợ, bạn không thể trả nợ",
+    "editPayDebtWaning":"Trong khi bạn đang chỉnh sửa khoản tiền trả nợ, bạn không thể ghi nợ",
     "lastLine": ""
 }

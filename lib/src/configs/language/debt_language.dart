@@ -56,4 +56,6 @@ class DebtLanguage {
   static final currentTransaction= S.current.currentTransaction;
   static final debtPaid = S.current.debtPaid;
   static final selectTransaction = S.current.selectTransaction;
+  static final editDebtWaning = S.current.editDebtWaning;
+  static final editPayDebtWaning = S.current.editPayDebtWaning;
 }

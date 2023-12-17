@@ -201,7 +201,8 @@ class BookingViewModel extends BaseViewModel {
       nameController.text = dataMyBooking?.myCustomer?.fullName??'';
       addressController.text = dataMyBooking?.address??'';
       noteController.text = dataMyBooking?.note ??'';
-      moneyController.text=AppCurrencyFormat.formatMoney(dataMyBooking!.money);
+      moneyController.text= dataMyBooking?.money !=null
+        ? AppCurrencyFormat.formatMoney(dataMyBooking?.money) : '';
       categoryId= myBookingModel.category?.id;
       myCustomerId=myBookingModel.myCustomer?.id;
       dateTime = DateTime.parse(
@@ -422,9 +423,9 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> checkDataExist()async{
     if(dataMyBooking!=null){
-      await putBooking();
       await getCancelRemind(
-        NotificationParams(id: dataMyBooking?.id, isRemind: false),);
+        NotificationParams(idBooking: dataMyBooking?.id, isRemind: false),);
+      await putBooking();
     }else{
       await postCustomer(); 
     }
@@ -673,6 +674,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> getCancelRemind(NotificationParams params) async {
     // LoadingDialog.showLoadingDialog(context);
+
     final result = await notificationApi.getCancelRemind(params.idBooking??0);
 
     final value = switch (result) {

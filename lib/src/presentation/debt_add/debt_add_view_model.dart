@@ -214,9 +214,21 @@ class DebtAddViewModel extends BaseViewModel{
     }
     notifyListeners();
   }
+
+  void setWaningChooseFormEdit(String? name){
+    if(isPay==false &&
+      name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
+        showDialogNotification(context, content: DebtLanguage.editDebtWaning);
+    }else if(isPay==true && name==DebtAddLanguage.debit){
+      showDialogNotification(context, content: DebtLanguage.editPayDebtWaning);
+    }
+    notifyListeners();
+  }
  
   void setButtonForm(String? name){
-    if(isOwes && name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
+    if(myCustomerModel?.isEditDebt??false){
+      setWaningChooseFormEdit(name);
+    } else if(isOwes && name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
       showDialogNotification(context, content: DebtLanguage.notificationOwes);
     }else{
       if(name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){

@@ -19,9 +19,11 @@ class MyBookingParams {
     this.isInvoice = false,
     this.isRemind = false,
     this.date,
+    this.pageSize,
   });
   final int? id;
   final int? page;
+  final int? pageSize;
   final String? status;
   final bool isPayment;
   final bool isToday;
@@ -42,10 +44,10 @@ class MyBookingApi {
         url: params.isDaysBefore
             ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&isBefore=true'
             : params.isToday
-                ? '/my-booking?pageSize=10&page=${params.page}&status=Confirmed&isToDay=true'
+                ? '/my-booking?pageSize=${params.pageSize}&page=${params.page}&status=Confirmed&isToDay=true'
                 : params.isUpcoming
-                    ? '/my-booking?pageSize=10&page=${params.page}&date=${DateTime.now()}&isUpComing=true&status=Confirmed'
-                    : '/my-booking?pageSize=20&page=${params.page}&status=${params.status}',
+                    ? '/my-booking?pageSize=${params.pageSize}&page=${params.page}&date=${DateTime.now()}&isUpComing=true&status=Confirmed'
+                    : '/my-booking?pageSize=10&page=${params.page}&status=${params.status}',
       );
       switch (response?.statusCode) {
         case 200:

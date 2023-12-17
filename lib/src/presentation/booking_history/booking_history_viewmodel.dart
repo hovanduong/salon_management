@@ -59,6 +59,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageDaysBefore = 1;
   int currentTab = 1;
   num itemTab=0;
+  int pageSize=1;
 
   GlobalKey addBooking = GlobalKey();
   GlobalKey keyNotification = GlobalKey();
@@ -90,6 +91,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> handleTabChange()async{
+    pageSize=1;
     currentTab = tabController!.index;
     await fetchData();
     notifyListeners();
@@ -173,21 +175,21 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> getData() async{
     isLoading=true;
     if(currentTab==1){
-      await getDataToday(pageToday);
+      await getDataToday(pageToday, pageSize*10);
       listCurrentToday = listMyBooking?.items ??[];
       itemTab= listMyBooking?.totalItems??0;
       scrollToday.addListener(
         () => scrollListener(scrollToday),
       );
     }else if(currentTab==0){
-      await getDataDaysBefore(pageDaysBefore);
+      await getDataDaysBefore(pageDaysBefore,);
       listCurrentDaysBefore = listMyBooking?.items ??[];
       itemTab= listMyBooking?.totalItems??0;
       scrollDaysBefore.addListener(
         () => scrollListener(scrollDaysBefore),
       );
     }else if(currentTab==2){
-      await getDataUpcoming(pageUpComing);
+      await getDataUpcoming(pageUpComing, pageSize*10);
       listCurrentUpcoming = listMyBooking?.items ??[];
       itemTab= listMyBooking?.totalItems??0;
       scrollUpComing.addListener(
@@ -227,6 +229,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> pullRefresh() async {
+    pageSize=1;
     isPullRefresh=true;
     isLoading=true;
     notifyListeners();
@@ -245,22 +248,24 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> getDataToday(int page) async {
+  Future<void> getDataToday(int page, int pageSize) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
         isToday: true,
         status: Contains.confirmed,
+        pageSize: pageSize,
       ),
     );
   }
 
-  Future<void> getDataUpcoming(int page) async {
+  Future<void> getDataUpcoming(int page, int pageSize) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
         isUpcoming: true,
         status: Contains.confirmed,
+        pageSize: pageSize,
       ),
     );
   }
@@ -293,8 +298,21 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void setPageTabLoadMore(){
+    if(pageSize>1){
+      if(currentTab==2){
+        pageUpComing = pageSize;
+      }else if(currentTab==1){
+        pageToday = pageSize;
+      }
+    }
+    pageSize=1;
+    notifyListeners();
+  }
+
   Future<void> loadMoreData() async {
     isLoading=true;
+    setPageTabLoadMore();
     if (currentTab == 0) {
       pageDaysBefore += 1;
       await getDataDaysBefore(pageDaysBefore);
@@ -302,12 +320,12 @@ class BookingHistoryViewModel extends BaseViewModel {
       itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 1) {
       pageToday += 1;
-      await getDataToday(pageToday);
+      await getDataToday(pageToday, 10);
       listCurrentToday = [...listCurrentToday, ...listMyBooking?.items ??[]];
       itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 2) {
       pageUpComing += 1;
-      await getDataUpcoming(pageUpComing);
+      await getDataUpcoming(pageUpComing, 10);
       listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking?.items ??[]];
       itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 3) {
@@ -327,6 +345,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   }
 
   Future<void> setStatus(int value) async {
+    pageSize=1;
     if (value == 0) {
       status = Contains.confirmed;
       currentTab = 0;
@@ -488,10 +507,12 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> checkAllowNotification(bool value, MyBookingModel list) async{
+  Future<void> checkAllowNotification(bool value, MyBookingModel list, int index)
+  async{
     final isAllow= await AppPermNotification.checkPermission(
       Permission.notification, context,);
     if(isAllow==true){
+      pageSize= int.parse((index/10).toString().split('.')[0])+1;
       await setRemind(value, list);
     }else{
       await AppPermNotification.showDialogSettings(context);
