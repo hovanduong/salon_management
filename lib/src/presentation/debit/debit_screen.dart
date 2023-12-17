@@ -10,7 +10,6 @@ import 'package:showcaseview/showcaseview.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/debit_language.dart';
-import '../../configs/language/homepage_language.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'debit_view_model.dart';
@@ -73,7 +72,7 @@ class _DebitScreenState extends State<DebitScreen> {
           leading: const SizedBox(),
           title: Center(
             child: Paragraph(
-              content: DebitLanguage.debit,
+              content: DebitLanguage.debitBook,
               style: STYLE_LARGE.copyWith(
                 color: AppColors.COLOR_WHITE,
                 fontWeight: FontWeight.w600,
@@ -103,6 +102,7 @@ class _DebitScreenState extends State<DebitScreen> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
         child: AppFormField(
+          textEditingController: _viewModel!.searchController,
           iconButton: IconButton(
             onPressed: () {},
             icon: const Icon(Icons.search),
@@ -162,7 +162,7 @@ class _DebitScreenState extends State<DebitScreen> {
           left: SizeToPadding.sizeSmall,
           right: SizeToPadding.sizeVerySmall,
         ),
-        height: MediaQuery.of(context).size.height-50,
+        height: MediaQuery.of(context).size.height-600,
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: const AlwaysScrollableScrollPhysics(),
@@ -182,9 +182,51 @@ class _DebitScreenState extends State<DebitScreen> {
     );
   }
 
+  Widget buildTotalMyDebit(){
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
+      child: FieldRevenueWidget(
+        totalOwe: DebitLanguage.totalIOwe,
+        totalPaid: DebitLanguage.totalIPaid,
+        descriptionOwe: DebitLanguage.showCaseMyDebt,
+        keyOwe: _viewModel!.keyMyDebt,
+        descriptionPaid: DebitLanguage.showCaseMyPaid,
+        keyPaid: _viewModel!.keyMyPaid,
+        title: DebitLanguage.myDebitEveryone,
+        money:( _viewModel!.totalDebtModel?.totalDebtMe ??0)
+          - (_viewModel!.totalDebtModel?.totalPaidMe??0),
+        colorTitle: AppColors.Red_Money,
+        totalLeft: _viewModel!.totalDebtModel?.totalPaidMe??0,
+        totalRight: _viewModel!.totalDebtModel?.totalDebtMe??0,
+      ),
+    );
+  }
+
+  Widget buildTotalEveryoneDebit(){
+    return Padding(
+      padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
+      child: FieldRevenueWidget(
+        totalOwe: DebitLanguage.totalEveryoneOwe,
+        totalPaid: DebitLanguage.totalEveryonePaid,
+        descriptionOwe: DebitLanguage.showCaseUDebt,
+        keyOwe: _viewModel!.keyUDebt,
+        descriptionPaid: DebitLanguage.showCaseUPaid,
+        keyPaid: _viewModel!.keyUPaid,
+        title: DebitLanguage.everyoneDebitMe,
+        money:( _viewModel!.totalDebtModel?.totalDebtUser ??0)
+          - (_viewModel!.totalDebtModel?.totalPaidUser??0),
+        colorTitle: AppColors.Red_Money,
+        totalLeft: _viewModel!.totalDebtModel?.totalPaidUser??0,
+        totalRight: _viewModel!.totalDebtModel?.totalDebtUser??0,
+      ),
+    );
+  }
+
   Widget buildBody(){
     return Column(
       children: [
+        buildTotalEveryoneDebit(),
+        buildTotalMyDebit(),
         buildSearch(),
         buildListDebit(),
       ],

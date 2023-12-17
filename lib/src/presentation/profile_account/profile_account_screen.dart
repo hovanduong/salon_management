@@ -141,7 +141,7 @@ class _ProfileAccountScreenState extends State<ProfileAccountScreen> {
           // buildGender(),
           buildNameUser(),
           buildPhoneNumber(),
-          buildEmail(),
+          // buildEmail(),
           // buildAddress(),
         ],
       ),

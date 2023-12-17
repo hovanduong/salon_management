@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'model.dart';
+
 class MyCustomerModel {
   int? id;
   String? phoneNumber;
@@ -15,6 +17,8 @@ class MyCustomerModel {
   bool? isMe;
   bool? isUser;
   num? money;
+  OwesModel ? owesModel;
+  bool isEditDebt;
   MyCustomerModel({
     this.id,
     this.phoneNumber,
@@ -28,6 +32,8 @@ class MyCustomerModel {
     this.isMe,
     this.isUser,
     this.money,
+    this.owesModel,
+    this.isEditDebt=false,
   });
 }
 

@@ -21,9 +21,11 @@ class MyBookingPramsApi {
   bool isBooking;
   bool isIncome;
   int? idCategory;
+  bool? isReminder;
   MyBookingPramsApi({
     this.isBooking = false,
     this.isIncome=false,
+    this.isReminder,
     this.myCustomerId,
     this.myServices,
     this.address,
@@ -55,6 +57,7 @@ class BookingApi {
           'isBooking': prams.isBooking,
           'income': prams.isIncome,
           'categoryId': prams.idCategory,
+          'isReminder':prams.isReminder,
         },
       );
       switch (response?.statusCode) {
@@ -85,6 +88,7 @@ class BookingApi {
           'categoryId': prams.idCategory,
           'myCustomerId': prams.myCustomerId,
           'status': 'Confirmed',
+          'isReminder': false,
         },
       );
       switch (response?.statusCode) {

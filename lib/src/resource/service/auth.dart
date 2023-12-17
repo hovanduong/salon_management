@@ -97,6 +97,23 @@ class AuthApi {
     }
   }
 
+  Future<Result<bool, Exception>> newVersionApp({bool? value}) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/auth/new-version-app/${value ?? false}',
+        body: {},
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase!));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
   Future<Result<bool, AppException>> changePassword(
     AuthParams params,
   ) async {

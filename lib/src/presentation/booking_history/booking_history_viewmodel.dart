@@ -1,19 +1,23 @@
-// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions, avoid_positional_boolean_parameters
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../configs/configs.dart';
-import '../../configs/widget/dialog/warnig_network_dialog.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/model.dart';
 import '../../resource/model/my_booking_model.dart';
 import '../../resource/service/my_booking.dart';
+import '../../resource/service/notification_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/date_format_utils.dart';
+import '../../configs/firebase/notification_firebase/permission_notification.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
@@ -25,6 +29,7 @@ class Contains {
 
 class BookingHistoryViewModel extends BaseViewModel {
   MyBookingApi myBookingApi = MyBookingApi();
+  NotificationApi notificationApi= NotificationApi();
 
   ScrollController scrollUpComing = ScrollController();
   ScrollController scrollDone = ScrollController();
@@ -32,7 +37,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   ScrollController scrollToday = ScrollController();
   ScrollController scrollDaysBefore = ScrollController();
 
-  List<MyBookingModel> listMyBooking = [];
+  DataMyBookingModel? listMyBooking;
   List<MyBookingModel> listCurrentUpcoming = [];
   List<MyBookingModel> listCurrentToday = [];
   List<MyBookingModel> listCurrentDone = [];
@@ -43,7 +48,9 @@ class BookingHistoryViewModel extends BaseViewModel {
   bool isLoading = true;
   bool isToday = true;
   bool isPullRefresh = false;
-  bool isShowCase=true;
+  bool isShowCase=false;
+  bool isShowCaseRemind=false;
+  bool isRemind=false;
 
   int pageUpComing = 1;
   int pageDone = 1;
@@ -51,8 +58,17 @@ class BookingHistoryViewModel extends BaseViewModel {
   int pageToday = 1;
   int pageDaysBefore = 1;
   int currentTab = 1;
+  num itemTab=0;
+  int pageSize=1;
 
   GlobalKey addBooking = GlobalKey();
+  GlobalKey keyNotification = GlobalKey();
+  GlobalKey keyRemind1 = GlobalKey();
+  GlobalKey keyRemind2= GlobalKey();
+  GlobalKey keyStatus1= GlobalKey();
+  GlobalKey keyStatus2 = GlobalKey();
+  GlobalKey keyED1 = GlobalKey();
+  GlobalKey keyED2 = GlobalKey();
 
   Timer? timer;
 
@@ -60,30 +76,69 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   TabController? tabController;
 
+  String? idNotification;
+
   Future<void> init({dynamic dataThis}) async {
+    await setId();
     await fetchData();
-    tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
     await AppPref.getShowCase('showCaseAppointment').then(
-      (value) => isShowCase=value??true,);
-    startShowCase();
+      (value) =>isShowCase=value??true,);
+    await startShowCase();
     await hideShowcase();
+    tabController=TabController(length: 5, vsync: dataThis, initialIndex: 1);
+    tabController!.addListener(handleTabChange);
+    notifyListeners();
+  }
+
+  Future<void> handleTabChange()async{
+    pageSize=1;
+    currentTab = tabController!.index;
+    await fetchData();
+    notifyListeners();
+  }
+
+  Future<void> setId()async{
+    idNotification= await AppPref.getDataUSer('id') ?? '0';
     notifyListeners();
   }
 
   Future<void> hideShowcase() async{
-    await AppPref.setShowCase('showCaseAppointment', false);
-    isShowCase=false;
+    if(isShowCase){
+      await AppPref.setShowCase('showCaseAppointment', false);
+      isShowCase=false;
+    }
+    if(listCurrentToday.isNotEmpty || 
+      (listCurrentUpcoming.isNotEmpty && currentTab==2)){
+      await AppPref.setShowCase('showCaseRemind', false);
+      isShowCaseRemind=false;
+    }
     notifyListeners();
   }
 
-  void startShowCase(){
+  Future<void> startShowCase()async{
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [addBooking],
+          [addBooking, keyNotification,keyRemind1, keyStatus1, keyED1],
         );
       });
     }
+    if(isShowCaseRemind){
+      if(listCurrentUpcoming.isNotEmpty && currentTab==2){
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ShowCaseWidget.of(context).startShowCase(
+            [keyRemind2, keyStatus2, keyED2],
+          );
+        });
+      }else{
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ShowCaseWidget.of(context).startShowCase(
+            [keyRemind1, keyStatus1, keyED1,addBooking, keyNotification,],
+          );
+        });
+      }
+    }
+    
   }
 
   Future<void> goToAddBooking({
@@ -101,49 +156,82 @@ class BookingHistoryViewModel extends BaseViewModel {
   Future<void> goToBookingDetails(
           BuildContext context, MyBookingParams model,) =>
       Navigator.pushNamed(context, Routers.bookingDetails, arguments: model);
+  
+  Future<void> goToNotification(BuildContext context,) 
+    => Navigator.pushNamed(context, Routers.notification,);
 
   Future<void> fetchData() async {
-    await getDataToday(pageToday);
-    listCurrentToday = listMyBooking;
-
-    await getDataDaysBefore(pageDaysBefore);
-    listCurrentDaysBefore = listMyBooking;
-
-    await getDataUpcoming(pageUpComing);
-    listCurrentUpcoming = listMyBooking;
-
-    await getDataCanceled(pageCanceled);
-    listCurrentCanceled = listMyBooking;
-
-    await getDataDone(pageDone);
-    listCurrentDone = listMyBooking;
-
-    scrollToday.addListener(
-      () => scrollListener(scrollToday),
-    );
-    scrollDaysBefore.addListener(
-      () => scrollListener(scrollDaysBefore),
-    );
-    scrollUpComing.addListener(
-      () => scrollListener(scrollUpComing),
-    );
-    scrollCanceled.addListener(
-      () => scrollListener(scrollCanceled),
-    );
-    scrollDone.addListener(
-      () => scrollListener(scrollDone),
-    );
+    setTabPage();
+    await getData();
     isPullRefresh=false;
+    isLoading=false;
+    await AppPref.getShowCase('showCaseRemind').then(
+      (value) => isShowCaseRemind=value??true,);
+    await startShowCase();
+    await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> getData() async{
+    isLoading=true;
+    if(currentTab==1){
+      await getDataToday(pageToday, pageSize*10);
+      listCurrentToday = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
+      scrollToday.addListener(
+        () => scrollListener(scrollToday),
+      );
+    }else if(currentTab==0){
+      await getDataDaysBefore(pageDaysBefore,);
+      listCurrentDaysBefore = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
+      scrollDaysBefore.addListener(
+        () => scrollListener(scrollDaysBefore),
+      );
+    }else if(currentTab==2){
+      await getDataUpcoming(pageUpComing, pageSize*10);
+      listCurrentUpcoming = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
+      scrollUpComing.addListener(
+        () => scrollListener(scrollUpComing),
+      );
+    }else if(currentTab==3){
+      await getDataDone(pageDone);
+      listCurrentDone = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
+      scrollDone.addListener(
+        () => scrollListener(scrollDone),
+      );
+    }else {
+      await getDataCanceled(pageCanceled);
+      listCurrentCanceled = listMyBooking?.items ??[];
+      itemTab= listMyBooking?.totalItems??0;
+      scrollCanceled.addListener(
+        () => scrollListener(scrollCanceled),
+      );
+    }
+    notifyListeners();
+  }
+
+  void setTabPage(){
+    if(currentTab==0){
+      pageDaysBefore = 1;
+    }else if(currentTab==1){
+      pageToday=1;
+    }else if(currentTab==2){
+      pageUpComing=1;
+    }else if(currentTab==3){
+      pageDone = 1;
+    }else {
+      pageCanceled = 1;
+    }
     notifyListeners();
   }
 
   Future<void> pullRefresh() async {
-    pageToday = 1;
-    pageUpComing = 1;
-    pageDone = 1;
-    pageCanceled = 1;
-    pageDaysBefore = 1;
+    pageSize=1;
     isPullRefresh=true;
+    isLoading=true;
     notifyListeners();
     await fetchData();
     isLoadMore = false;
@@ -160,22 +248,24 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> getDataToday(int page) async {
+  Future<void> getDataToday(int page, int pageSize) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
         isToday: true,
         status: Contains.confirmed,
+        pageSize: pageSize,
       ),
     );
   }
 
-  Future<void> getDataUpcoming(int page) async {
+  Future<void> getDataUpcoming(int page, int pageSize) async {
     await getMyBooking(
       MyBookingParams(
         page: page,
         isUpcoming: true,
         status: Contains.confirmed,
+        pageSize: pageSize,
       ),
     );
   }
@@ -208,34 +298,54 @@ class BookingHistoryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void setPageTabLoadMore(){
+    if(pageSize>1){
+      if(currentTab==2){
+        pageUpComing = pageSize;
+      }else if(currentTab==1){
+        pageToday = pageSize;
+      }
+    }
+    pageSize=1;
+    notifyListeners();
+  }
+
   Future<void> loadMoreData() async {
+    isLoading=true;
+    setPageTabLoadMore();
     if (currentTab == 0) {
       pageDaysBefore += 1;
       await getDataDaysBefore(pageDaysBefore);
-      listCurrentDaysBefore = [...listCurrentDaysBefore, ...listMyBooking];
+      listCurrentDaysBefore = [...listCurrentDaysBefore, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 1) {
       pageToday += 1;
-      await getDataToday(pageToday);
-      listCurrentToday = [...listCurrentToday, ...listMyBooking];
+      await getDataToday(pageToday, 10);
+      listCurrentToday = [...listCurrentToday, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 2) {
       pageUpComing += 1;
-      await getDataUpcoming(pageUpComing);
-      listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking];
+      await getDataUpcoming(pageUpComing, 10);
+      listCurrentUpcoming = [...listCurrentUpcoming, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else if (currentTab == 3) {
       pageDone += 1;
       await getDataDone(pageDone);
-      listCurrentDone = [...listCurrentDone, ...listMyBooking];
+      listCurrentDone = [...listCurrentDone, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     } else {
       pageCanceled += 1;
       await getDataCanceled(pageCanceled);
-      listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking];
+      listCurrentCanceled = [...listCurrentCanceled, ...listMyBooking?.items ??[]];
+      itemTab= listMyBooking?.totalItems??0;
     }
     isLoadMore=false;
+    isLoading=false;
     notifyListeners();
   }
 
   Future<void> setStatus(int value) async {
-    // await pullRefresh();
+    pageSize=1;
     if (value == 0) {
       status = Contains.confirmed;
       currentTab = 0;
@@ -245,6 +355,10 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value == 2) {
       status = Contains.confirmed;
       currentTab = 2;
+      await AppPref.getShowCase('showCaseRemind').then(
+      (value) => isShowCaseRemind=value??true,);
+      await startShowCase();
+      await hideShowcase();
     } else if (value == 3) {
       status = Contains.done;
       currentTab = 3;
@@ -252,6 +366,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       status = Contains.canceled;
       currentTab = 4;
     }
+    await getData();
     notifyListeners();
   }
 
@@ -316,9 +431,12 @@ class BookingHistoryViewModel extends BaseViewModel {
             Navigator.pop(context);
           },
           rightButtonName: BookingLanguage.confirm,
-          onTapRight: () {
-            deleteBookingHistory(id);
+          onTapRight: () async{
             Navigator.pop(context);
+            await getCancelRemind(NotificationParams(
+              idBooking: id, isRemind: false,
+            ),);
+            await deleteBookingHistory(id);
           },
         );
       },
@@ -389,6 +507,42 @@ class BookingHistoryViewModel extends BaseViewModel {
     );
   }
 
+  Future<void> checkAllowNotification(bool value, MyBookingModel list, int index)
+  async{
+    final isAllow= await AppPermNotification.checkPermission(
+      Permission.notification, context,);
+    if(isAllow==true){
+      pageSize= int.parse((index/10).toString().split('.')[0])+1;
+      await setRemind(value, list);
+    }else{
+      await AppPermNotification.showDialogSettings(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> setRemind(bool value, MyBookingModel list)async{
+    isRemind=value;
+    if(value){
+      await postRemindNotification(NotificationParams(
+        idBooking: list.id,
+        date: AppDateUtils.splitHourDate(
+          AppDateUtils.formatDateLocal(list.date??''),
+        ),
+        nameCustomer: list.myCustomer?.fullName!=''? list.myCustomer?.fullName
+          :null,
+        address: list.address!=''? list.address : null,
+        isRemind: value,
+        bookingCode: list.code,
+      ),);
+    }else{
+      await getCancelRemind(NotificationParams(
+        idBooking: list.id,
+        isRemind: value,
+      ),);
+    }
+    notifyListeners();
+  }
+
   // Future<List<MyBookingModel>> setListMyBooking({String? status,
   //   bool isToday=false, List<MyBookingModel>? value,})async{
   //     final list=<MyBookingModel>[];
@@ -405,7 +559,6 @@ class BookingHistoryViewModel extends BaseViewModel {
   // }
 
   Future<void> getMyBooking(MyBookingParams myBookingParams) async {
-    isLoading= (isPullRefresh || isLoadMore ? false: true);
     notifyListeners();
     final result = await myBookingApi.getMyBooking(
       myBookingParams,
@@ -421,8 +574,77 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value is Exception) {
       isLoading = true;
     } else {
-      listMyBooking = value as List<MyBookingModel>;
-      isLoading = false;
+      listMyBooking = value as DataMyBookingModel;
+      isLoading=false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> postRemindNotification(NotificationParams params) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await notificationApi.postRemindNotification(params);
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      await putRemindBooking(params.idBooking??0, params.isRemind);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getCancelRemind(NotificationParams params) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await notificationApi.getCancelRemind(params.idBooking??0);
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      await putRemindBooking(params.idBooking??0, params.isRemind);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putRemindBooking(int id, bool isRemind) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await myBookingApi.putRemindBooking(
+      MyBookingParams(
+        id: id,
+        isRemind: isRemind,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      // showSuccessDiaglog(context);
+      await fetchData();
     }
     notifyListeners();
   }
@@ -486,6 +708,7 @@ class BookingHistoryViewModel extends BaseViewModel {
       () {
         timer?.cancel();
         tabController?.dispose();
+        tabController!.removeListener(handleTabChange);
         scrollCanceled.dispose();
         scrollDaysBefore.dispose();
         scrollDone.dispose();

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
@@ -253,6 +255,85 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  Widget buildPhoneNumber(){
+    return RichText(
+      text: TextSpan(
+        style: STYLE_MEDIUM.copyWith(
+          color: AppColors.COLOR_WHITE,
+        ),
+        children: [
+          TextSpan(
+            text: '${SignInLanguage.customerCareHotline}: ',
+            style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const TextSpan(
+            text: '0944 01 04 99',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildWeb(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
+      child: RichText(
+        text: TextSpan(
+          style: STYLE_MEDIUM.copyWith(
+            color: AppColors.COLOR_WHITE,
+          ),
+          children: [
+            TextSpan(
+              text: 'Web: ',
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const TextSpan(
+              text: 'https://www.dhysolutions.net/vi',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildGroupFB(){
+    return RichText(
+      text: TextSpan(
+        style: STYLE_MEDIUM.copyWith(
+          color: AppColors.COLOR_WHITE,
+        ),
+        children: [
+          TextSpan(
+            text: '${SignInLanguage.group} Facebook: ',
+            style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const TextSpan(
+            text: 'Hỗ trợ sử dụng ApCare ',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInformationApp(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeBig),
+      child: Column(
+        children: [
+          buildPhoneNumber(),
+          buildWeb(),
+          buildGroupFB(),
+        ],
+      ),
+    );
+  }
+
   Widget buildSignUp() {
     return WillPopScope(
       onWillPop: () => _viewModel!.showExitPopup(),
@@ -266,6 +347,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: SpaceBox.sizeSmall * 10),
                 buildFormSignUp(),
                 SizedBox(height: SpaceBox.sizeSmall * 5),
+                buildInformationApp()
               ],
             ),
           ),

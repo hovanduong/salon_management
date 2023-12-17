@@ -12,6 +12,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../resource/model/my_booking_model.dart';
+import '../../utils/app_currency.dart';
 import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
 import 'booking.dart';
@@ -69,34 +70,41 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   }
 
   Widget buildBookingScreen() {
-    return SingleChildScrollView(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          buildAppbar(),
-          Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              buildInfo(),
-              buildLineWidget(),
-              // buildServiceInfo(),
-              // buildLineWidget(),
-              buildCategoryAndTime(),
-              buildConfirmButton(),
+              buildAppbar(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildInfo(),
+                  buildLineWidget(),
+                  // buildServiceInfo(),
+                  // buildLineWidget(),
+                  buildCategoryAndTime(),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Visibility(
+          visible: _viewModel!.isShowButton, child: buildConfirmButton()),
     );
   }
 
-  Widget buildTitleCategory(){
+  Widget buildTitleCategory() {
     return Showcase(
       key: _viewModel!.keyAddCategory,
       description: BookingLanguage.addCategory,
       child: GestureDetector(
-        onTap: ()=> _viewModel!.goToAddCategory(context),
+        onTap: () => _viewModel!.goToAddCategory(context),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall),
           child: Row(
@@ -108,7 +116,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Icon(Icons.add_circle, color: AppColors.PRIMARY_GREEN,)
+              const Icon(
+                Icons.add_circle,
+                color: AppColors.PRIMARY_GREEN,
+              )
             ],
           ),
         ),
@@ -116,7 +127,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildListCategory(){
+  Widget buildListCategory() {
     return Showcase(
       description: BookingLanguage.selectCategory,
       key: _viewModel!.keyCategory,
@@ -128,18 +139,19 @@ class _ServiceAddScreenState extends State<BookingScreen> {
           crossAxisCount: 3,
           crossAxisSpacing: SizeToPadding.sizeVeryVerySmall,
           mainAxisSpacing: SizeToPadding.sizeVeryVerySmall,
-        ), 
-        itemCount: _viewModel!.isShowAll? _viewModel!.listCategory.length+1
-          :_viewModel!.listCategory.length,
+        ),
+        itemCount: _viewModel!.isShowAll
+            ? _viewModel!.listCategory.length + 1
+            : _viewModel!.listCategory.length,
         itemBuilder: (context, index) {
-          if(index==8 && !_viewModel!.isShowAll){
-            return buildItemCategory(16,name: BookingLanguage.seeMore);
-          }else if(index<8){
+          if (index == 8 && !_viewModel!.isShowAll) {
+            return buildItemCategory(16, name: BookingLanguage.seeMore);
+          } else if (index < 8) {
             return buildItemCategory(index);
-          }else if(_viewModel!.isShowAll){
-            if(index==_viewModel!.listCategory.length){
-              return buildItemCategory(17,name: BookingLanguage.close);
-            }else{
+          } else if (_viewModel!.isShowAll) {
+            if (index == _viewModel!.listCategory.length) {
+              return buildItemCategory(17, name: BookingLanguage.close);
+            } else {
               return buildItemCategory(index);
             }
           }
@@ -149,27 +161,31 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildItemCategory(int index, {String? name}){
+  Widget buildItemCategory(int index, {String? name}) {
     return InkWell(
-      onTap: () =>_viewModel!.setCategorySelected(index),
+      onTap: () => _viewModel!.setCategorySelected(index),
       child: Container(
         padding: EdgeInsets.all(SizeToPadding.sizeMedium),
         decoration: BoxDecoration(
-          color: _viewModel!.categoryId==(
-            name!=null? 0: _viewModel!.listCategory[index].id)
-          ? AppColors.LINEAR_GREEN.withOpacity(0.3)
-          : AppColors.COLOR_WHITE,
+          color: _viewModel!.categoryId ==
+                  (name != null ? 0 : _viewModel!.listCategory[index].id)
+              ? AppColors.LINEAR_GREEN.withOpacity(0.3)
+              : AppColors.COLOR_WHITE,
           border: Border.all(color: AppColors.PRIMARY_GREEN),
         ),
         child: Column(
           children: [
             SvgPicture.asset(
               AppIcCategory.getIcCategory(
-                name!=null? index:
-                int.parse(_viewModel!.listCategory[index].imageId ?? '0'),),
+                name != null
+                    ? index
+                    : int.parse(_viewModel!.listCategory[index].imageId ?? '0'),
+              ),
               width: 50,
             ),
-            SizedBox(height: SpaceBox.sizeSmall,),
+            SizedBox(
+              height: SpaceBox.sizeSmall,
+            ),
             Paragraph(
               content: name ?? _viewModel!.listCategory[index].name,
               fontWeight: FontWeight.w600,
@@ -182,7 +198,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildCategory(){
+  Widget buildCategory() {
     return Padding(
       padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
       child: Column(
@@ -206,6 +222,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         children: [
           buildCategory(),
           buildDateTime(),
+          if (Platform.isIOS) const SizedBox(height: 50),
         ],
       ),
     );
@@ -233,38 +250,26 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   //   );
   // }
 
-  Widget buildInfoCustomer(){
-    return Showcase(
-      key: _viewModel!.keyInfoCustomer,
-      description: BookingLanguage.infoCustomerShowCase,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: SizeToPadding.sizeMedium,
-        ),
-        child: Column(
-          children: [
-            buildFieldPhone(),
-            buildName(),
-            buildAddress(),
-            buildNote(),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget buildInfo() {
     return Padding(
-      padding: EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: SizeToPadding.sizeMedium,
-      ),
-      child: Column(
-        children: [
-          buildInfoCustomer(),
-          buildFieldMoney(),
-        ],
-      ),
-    );
+          horizontal: SizeToPadding.sizeMedium,
+        ),
+        child: Showcase(
+          key: _viewModel!.keyInfoCustomer,
+          description: BookingLanguage.infoCustomerShowCase,
+          child: Column(
+            children: [
+              buildFieldPhone(),
+              buildName(),
+              buildAddress(),
+              buildNote(),
+              buildFieldMoney(),
+              buildRemindMoney(),
+            ],
+          ),
+        ));
   }
 
   // Widget buildTotalNoDis() {
@@ -412,7 +417,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       padding: EdgeInsets.all(SizeToPadding.sizeMedium),
       child: Paragraph(
         content: BookingLanguage.chooseTime,
-        style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600,),
+        style: STYLE_MEDIUM.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -421,7 +428,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     return SizedBox(
       height: 180,
       child: CupertinoDatePicker(
-        initialDateTime: _viewModel!.dateTime,
+        initialDateTime: _viewModel!.time,
         mode: CupertinoDatePickerMode.time,
         minimumDate: DateTime.now(),
         use24hFormat: true,
@@ -497,9 +504,10 @@ class _ServiceAddScreenState extends State<BookingScreen> {
 
   Widget buildName() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[1],
       hintText: BookingLanguage.nameCustomer,
       labelText: BookingLanguage.name,
-      textEditingController:  _viewModel!.nameController,
+      textEditingController: _viewModel!.nameController,
       validator: _viewModel!.addressMsg,
     );
   }
@@ -568,8 +576,9 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   //   );
   // }
 
-  Widget buildFieldPhone(){
+  Widget buildFieldPhone() {
     return AppFormField(
+      focusNode: _viewModel!.listFocus[0],
       textEditingController: _viewModel!.phoneController,
       labelText: BookingLanguage.phoneNumber,
       hintText: BookingLanguage.enterPhone,
@@ -580,6 +589,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
   Widget buildAddress() {
     return AppFormField(
       // isRequired: true,
+      focusNode: _viewModel!.listFocus[2],
       hintText: ServiceAddLanguage.enterAddress,
       labelText: ServiceAddLanguage.address,
       textEditingController: _viewModel!.addressController,
@@ -617,6 +627,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         vertical: SizeToPadding.sizeVerySmall,
       ),
       child: AppFormField(
+        focusNode: _viewModel!.listFocus[3],
         textEditingController: _viewModel!.noteController,
         labelText: BookingLanguage.note,
         hintText: BookingLanguage.enterNote,
@@ -627,40 +638,52 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildFieldMoney(){
-    return Showcase( 
-      key: _viewModel!.keyMoney,
-      description: BookingLanguage.requiredMoney,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: SizeToPadding.sizeMedium,
-        ),
-        child: AppFormField(
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(11),
-          ],
-          keyboardType: TextInputType.number,
-          labelText: BookingLanguage.amountOfMoney,
-          hintText: BookingLanguage.enterAmountOfMoney,
-          textEditingController: _viewModel!.moneyController,
-          onChanged: (value) {
-            _viewModel!
-              ..validPrice(value.trim())
-              ..formatMoney(value.trim())
-              ..enableConfirmButton();
-          },
-          validator: _viewModel!.messageErrorPrice,
-        ),
-      ),
+  Widget buildFieldMoney() {
+    return AppFormField(
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(11),
+      ],
+      focusNode: _viewModel!.listFocus[4],
+      keyboardType: TextInputType.number,
+      labelText: BookingLanguage.amountOfMoney,
+      hintText: BookingLanguage.enterAmountOfMoney,
+      textEditingController: _viewModel!.moneyController,
+      onChanged: (value) {
+        _viewModel!
+          ..formatMoney(value.trim())
+          ..enableConfirmButton()
+          ..setShowRemind(value);
+      },
+      validator: _viewModel!.messageErrorPrice,
     );
+  }
+
+  Widget buildRemindMoney() {
+    return _viewModel!.listMoney.isNotEmpty
+        ? Wrap(
+            children: List.generate(
+            _viewModel!.listMoney.length,
+            (index) => InkWell(
+              onTap: () => _viewModel!.setMoneyInput(index),
+              child: Padding(
+                padding: EdgeInsets.only(right: SizeToPadding.sizeSmall),
+                child: Chip(
+                    label: Paragraph(
+                  content: AppCurrencyFormat.formatMoneyD(
+                    _viewModel!.listMoney[index],
+                  ),
+                )),
+              ),
+            ),
+          ))
+        : const SizedBox();
   }
 
   Widget buildConfirmButton() {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium * 2,
         horizontal: SizeToPadding.sizeSmall,
       ),
       child: AppButton(

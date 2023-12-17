@@ -13,4 +13,6 @@ class SignInLanguage {
   static final tryAgain = S.current.tryAgain;
   static final exitApp = S.current.exitApp;
   static final exitAppContent = S.current.exitAppContent;
+  static final customerCareHotline = S.current.customerCareHotline;
+  static final group = S.current.group;
 }

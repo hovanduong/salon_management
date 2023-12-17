@@ -19,7 +19,8 @@ class WarningDialog extends StatelessWidget {
     this.isForm = false,
     this.controller,
     this.hintTextForm,
-    this.keyboardType,
+    this.keyboardType, 
+    this.radius,
   }) : super(key: key);
   final String? content;
   final String? title;
@@ -34,6 +35,7 @@ class WarningDialog extends StatelessWidget {
   final TextEditingController? controller;
   final String? hintTextForm;
   final TextInputType? keyboardType;
+  final double? radius;
 
   dynamic dialogContent(BuildContext context) {
     return DecoratedBox(
@@ -57,7 +59,7 @@ class WarningDialog extends StatelessWidget {
             if (image != null)
               CircleAvatar(
                 backgroundColor: AppColors.COLOR_WHITE,
-                radius: 35,
+                radius: radius?? 35,
                 child: SvgPicture.asset(
                   image ?? '',
                 ),

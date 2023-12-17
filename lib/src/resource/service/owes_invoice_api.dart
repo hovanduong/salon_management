@@ -37,13 +37,34 @@ class OwesInvoiceApi {
     try {
       final response = await HttpRemote.get(
         url: '/owes-invoice?pageSize=10&page=${params.page}&myCustomerOwesId=${
-          params.id}&isUser=${params.isGetMe}',
+          params.id}&isUser=${params.isGetMe}&paymentStatus=unPaid',
       );
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
           final owes = OwesModelFactory.createList(data);
+          return Success(owes);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<OwesPaidModel>, Exception>> getOwesInvoicePaid(
+    OwesInvoiceParams params,)async {
+    try {
+      final response = await HttpRemote.get(
+        url: '/owes-invoice/group-paid?pageSize=10&page=${
+          params.page}&myCustomerOwesId=${params.id}&paymentStatus=paid',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']['items']);
+          final owes = OwesPaidModelFactory.createList(data);
           return Success(owes);
         default:
           return Failure(Exception(response!.reasonPhrase));
@@ -65,41 +86,6 @@ class OwesInvoiceApi {
           final data = json.encode(jsonMap['data']);
           final owes = OwesTotalModelFactory.create(data);
           return Success(owes);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
-
-  Future<Result<bool, Exception>> deleteCategory(int id) async {
-    try {
-      final response = await HttpRemote.delete(
-        url: '/owes-customer/$id',
-      );
-      switch (response?.statusCode) {
-        case 200:
-          return const Success(true);
-        default:
-          return Failure(Exception(response!.reasonPhrase));
-      }
-    } on Exception catch (e) {
-      return Failure(e);
-    }
-  }
-
-  Future<Result<bool, Exception>> putCategory(OwesInvoiceParams? params) async {
-    try {
-      final response = await HttpRemote.put(
-        url: '/owes-customer/${params!.id}',
-        body: {
-          // 'fullName': params.fullName,
-        },
-      );
-      switch (response?.statusCode) {
-        case 200:
-          return const Success(true);
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -132,4 +118,40 @@ class OwesInvoiceApi {
       return Failure(e);
     }
   }
+
+  Future<Result<bool, Exception>> deleteInvoiceOwes(int id) async {
+    try {
+      final response = await HttpRemote.delete(
+        url: '/owes-invoice/$id',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  // Future<Result<bool, Exception>> putCategory(OwesInvoiceParams? params) async {
+  //   try {
+  //     final response = await HttpRemote.put(
+  //       url: '/owes-customer/${params!.id}',
+  //       body: {
+  //         // 'fullName': params.fullName,
+  //       },
+  //     );
+  //     switch (response?.statusCode) {
+  //       case 200:
+  //         return const Success(true);
+  //       default:
+  //         return Failure(Exception(response!.reasonPhrase));
+  //     }
+  //   } on Exception catch (e) {
+  //     return Failure(e);
+  //   }
+  // }
+
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/configs.dart';
@@ -11,6 +12,7 @@ import '../../configs/language/debt_add_language.dart';
 import '../../configs/language/payment_language.dart';
 import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../../resource/model/model.dart';
+import '../../utils/app_currency.dart';
 import '../base/base.dart';
 import 'components/components.dart';
 import 'debt_add_view_model.dart';
@@ -41,8 +43,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
     return const CustomBackGround();
   }
 
-  Widget buildAppBar() {
-    print(_viewModel!.isMe);
+  Widget buildHeader() {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeToPadding.sizeSmall,
@@ -57,7 +58,8 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
           ),
         ),
         title: Paragraph(
-        content: DebtAddLanguage.addDebt,
+        content: _viewModel!.myCustomerModel?.owesModel==null
+          ? DebtAddLanguage.addDebt : DebtAddLanguage.editDebt,
           style: STYLE_LARGE_BOLD.copyWith(
             color: AppColors.COLOR_WHITE,
           ),
@@ -82,10 +84,27 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
         _viewModel!
           ..validPrice(value.trim())
           ..formatMoney(value.trim())
-          ..onSubmit();
+          ..onSubmit()..setShowRemind(value.trim());
       },
       validator: _viewModel!.messageMoney,
     );
+  }
+
+  Widget buildRemindMoney(){
+    return _viewModel!.listMoney.isNotEmpty ? Wrap(
+      children: List.generate(_viewModel!.listMoney.length, (index) => InkWell(
+        onTap: ()=> _viewModel!.setMoneyInput(index),
+        child: Padding(
+          padding: EdgeInsets.only(right: SizeToPadding.sizeSmall),
+          child: Chip(
+            label: Paragraph(
+              content: AppCurrencyFormat.formatMoneyD(
+                _viewModel!.listMoney[index],),
+            )
+          ),
+        ),
+      ),) 
+    ):const SizedBox();
   }
 
   Widget buildChoosePersonButton(){
@@ -104,7 +123,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
   Widget buildChooseFormButton(){
     return ChooseButtonWidget(
       isButton: _viewModel!.isPay,
-      nameButtonLeft: DebtAddLanguage.pay,
+      nameButtonLeft: '${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}',
       nameButtonRight: DebtAddLanguage.debit,
       onTapLeft: (name)=> _viewModel!.setButtonForm(name),
       onTapRight: (name)=> _viewModel!.setButtonForm(name),
@@ -219,9 +238,19 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
       child: AppButton(
         enableButton: _viewModel!.enableButton,
         content: UpdateProfileLanguage.submit,
-        onTap: () {
-          _viewModel!.postDebt();
-        },
+        onTap: () =>_viewModel!.onEditOrAdd(),
+      ),
+    );
+  }
+
+  Widget buildFieldMoneyOwes(){
+    return Showcase(
+      key: _viewModel!.keyShowDebt,
+      description: DebtAddLanguage.whoDebt,
+      child: FieldNoteWidget(
+        hintText: _viewModel!.messageOwes??'',
+        colorHintText: AppColors.Red_Money,
+        colorBorder: AppColors.Red_Money,
       ),
     );
   }
@@ -231,6 +260,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
       top: 150,
       child: Container(
         width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height-130,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -245,16 +275,21 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
         ),
         child: Padding(
           padding: EdgeInsets.all(SpaceBox.sizeLarge),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildFieldMoney(),
-              buildChoosePersonButton(),
-              buildChooseFormButton(),
-              buildNote(),
-              buildDateTime(),
-              buildButtonApp(),
-            ],
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildFieldMoneyOwes(),
+                buildFieldMoney(),
+                buildRemindMoney(),
+                buildChoosePersonButton(),
+                buildChooseFormButton(),
+                buildNote(),
+                buildDateTime(),
+                buildButtonApp(),
+              ],
+            ),
           ),
         ),
       ),
@@ -272,7 +307,7 @@ class _DebtAddScreenState extends State<DebtAddScreen> {
             height: MediaQuery.sizeOf(context).height,
           ),
           background(),
-          buildAppBar(),
+          buildHeader(),
           buildCardField(),
         ],
       ),

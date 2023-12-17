@@ -47,6 +47,7 @@ class CalendarViewModel extends BaseViewModel{
   GlobalKey keyNextMonth=GlobalKey();
   GlobalKey keyDailyRevenue=GlobalKey();
   GlobalKey keyMonthlyRevenue=GlobalKey();
+  GlobalKey keySelectMonthYear=GlobalKey();
 
   Timer? timer;
 
@@ -81,7 +82,8 @@ class CalendarViewModel extends BaseViewModel{
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [keyLastMonth,keyNextMonth, keyDailyRevenue, keyMonthlyRevenue],
+          [keyLastMonth, keySelectMonthYear,keyNextMonth,  
+            keyDailyRevenue, keyMonthlyRevenue],
         );
       });
     }

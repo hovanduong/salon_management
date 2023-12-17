@@ -51,10 +51,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> onSearchCategory(String value) async {
-    // final searchCategory = TiengViet.parse(value.toLowerCase());
-    // final searchCategory= value;
-    // await getListSearch(searchCategory);
-    notifyListeners();
+    await getCategory(page, false, search: value.trim());
     notifyListeners();
   }
 
@@ -182,11 +179,12 @@ class CategoryViewModel extends BaseViewModel {
 
   Future<void> getCategory(
     int page,
-    bool? isNewList,
+    bool? isNewList, {String? search}
   ) async {
     final result = await categoryApi.getListCategory(CategoryParams(
       page: page,
       isUser: 1,
+      search: search??''
     ),);
 
     final value = switch (result) {

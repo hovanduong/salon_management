@@ -13,7 +13,9 @@ import '../../resource/model/model.dart';
 import '../../resource/service/booking.dart';
 import '../../resource/service/category_api.dart';
 import '../../resource/service/income_api.dart';
+import '../../resource/service/my_booking.dart';
 import '../../resource/service/my_customer_api.dart';
+import '../../resource/service/notification_api.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_valid.dart';
 import '../../utils/date_format_utils.dart';
@@ -26,6 +28,8 @@ class BookingViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
   CategoryApi categoryApi= CategoryApi();
+  MyBookingApi myBookingApi = MyBookingApi();
+  NotificationApi notificationApi= NotificationApi();
 
   // List<int>? myServiceId = [];
   // List<int> serviceId = [];
@@ -33,6 +37,7 @@ class BookingViewModel extends BaseViewModel {
   List<MyServiceModel> myService = [];
   List<MyCustomerModel> myCustomer = [];
   List<CategoryModel> listCategory = [];
+  List<int> listMoney = [];
   List<String> listImageCategory=[
     AppImages.icBodyMassage,
     AppImages.icNailCare,
@@ -42,6 +47,7 @@ class BookingViewModel extends BaseViewModel {
     AppImages.makeUp,
     AppImages.tattoo,
   ];
+  List<FocusNode> listFocus= List.generate(5, (index) => FocusNode());
 
   int? myCustomerId;
   int? index;
@@ -86,6 +92,7 @@ class BookingViewModel extends BaseViewModel {
   bool isLoading=true;
   bool isShowAll=false;
   bool isShowCase=true;
+  bool isShowButton=true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -128,6 +135,7 @@ class BookingViewModel extends BaseViewModel {
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
+    await setShowButton();
     await AppPref.getShowCase('showCaseBooking').then(
       (value) => isShowCase=value??true,);
     startShowCase();
@@ -145,10 +153,40 @@ class BookingViewModel extends BaseViewModel {
     if(isShowCase){
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [keyInfoCustomer,keyMoney, keyAddCategory, keyCategory, keyDateTime],
+          [keyInfoCustomer, keyAddCategory, keyCategory, keyDateTime],
         );
       });
     }
+  }
+
+   void setMoneyInput(int index){
+    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+    validPrice(moneyController.text);
+    listMoney=[];
+    notifyListeners();
+  }
+
+  void setShowRemind(String value){
+    if(value.length>3 || value==''){
+      listMoney=[];
+    }else{
+      listMoney=[];
+      for (var i = 0; i < 3; i++) {
+        listMoney.add(int.parse('$value${
+          i==0? '000': i==1?'0000': i==2? '00000':'0'
+        }'),);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> setShowButton() async{
+    listFocus.forEach((node) {
+      node.addListener(() {
+        isShowButton = !listFocus.any((focus) => focus.hasFocus);
+        notifyListeners();
+      });
+    });
   }
 
   Future<void> goToAddCategory(BuildContext context) async {
@@ -163,7 +201,8 @@ class BookingViewModel extends BaseViewModel {
       nameController.text = dataMyBooking?.myCustomer?.fullName??'';
       addressController.text = dataMyBooking?.address??'';
       noteController.text = dataMyBooking?.note ??'';
-      moneyController.text=AppCurrencyFormat.formatMoney(dataMyBooking!.money);
+      moneyController.text= dataMyBooking?.money !=null
+        ? AppCurrencyFormat.formatMoney(dataMyBooking?.money) : '';
       categoryId= myBookingModel.category?.id;
       myCustomerId=myBookingModel.myCustomer?.id;
       dateTime = DateTime.parse(
@@ -384,6 +423,8 @@ class BookingViewModel extends BaseViewModel {
 
   Future<void> checkDataExist()async{
     if(dataMyBooking!=null){
+      await getCancelRemind(
+        NotificationParams(idBooking: dataMyBooking?.id, isRemind: false),);
       await putBooking();
     }else{
       await postCustomer(); 
@@ -501,7 +542,8 @@ class BookingViewModel extends BaseViewModel {
     // selectedService.clear();
     // totalController.clear();
     // discountController.text = '';
-    categoryId=null;
+    listMoney=[];
+    categoryId=listCategory[0].id;
     dateTime = DateTime.now();
     time= DateTime.now();
     phoneController.text = '';
@@ -564,11 +606,13 @@ class BookingViewModel extends BaseViewModel {
         idCategory: categoryId,
         money: moneyController.text!=''?
          int.parse(moneyController.text.replaceAll(',', '')): null,
-        date: '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
+        date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',),
         address: addressController.text.trim(),
         isBooking: true,
         isIncome: true,
         note: noteController.text.trim(),
+        isReminder: false,
       ),
     );
 
@@ -627,6 +671,57 @@ class BookingViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+
+  Future<void> getCancelRemind(NotificationParams params) async {
+    // LoadingDialog.showLoadingDialog(context);
+
+    final result = await notificationApi.getCancelRemind(params.idBooking??0);
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      
+      await putRemindBooking(params.idBooking??0, params.isRemind);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putRemindBooking(int id, bool isRemind) async {
+    // LoadingDialog.showLoadingDialog(context);
+    final result = await myBookingApi.putRemindBooking(
+      MyBookingParams(
+        id: id,
+        isRemind: isRemind,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final bool) => bool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      // LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      // LoadingDialog.hideLoadingDialog(context);
+      // // showSuccessDiaglog(context);
+      // await fetchData();
+    }
+    notifyListeners();
+  }
+
 
   @override
   void dispose() {

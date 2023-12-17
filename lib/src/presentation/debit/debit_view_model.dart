@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
@@ -11,6 +12,7 @@ import '../../configs/widget/dialog/dialog_user_manual.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/debit_api.dart';
+import '../../resource/service/total_debt_api.dart';
 import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -25,8 +27,13 @@ class DebitViewModel extends BaseViewModel{
   GlobalKey keyAdd= GlobalKey();
   GlobalKey keySearch= GlobalKey();
   GlobalKey keyNote= GlobalKey();
+  GlobalKey keyMyDebt= GlobalKey();
+  GlobalKey keyMyPaid= GlobalKey();
+  GlobalKey keyUDebt= GlobalKey();
+  GlobalKey keyUPaid= GlobalKey();
 
   DebitApi debitApi= DebitApi();
+  TotalDebitApi totalDebitApi = TotalDebitApi();
 
   int page=1;
 
@@ -37,6 +44,8 @@ class DebitViewModel extends BaseViewModel{
 
   List<MyCustomerModel> listCustomer=[];
   List<MyCustomerModel> listCurrent=[];
+
+  TotalDebtModel? totalDebtModel;
 
   ScrollController scrollController= ScrollController();
 
@@ -51,6 +60,7 @@ class DebitViewModel extends BaseViewModel{
 
   Future<void> fetchData()async{
     page=1;
+    await getTotalDebit();
     await getDebit(page, '');
     listCurrent=listCustomer;
     scrollController.addListener(scrollListener);
@@ -67,15 +77,17 @@ class DebitViewModel extends BaseViewModel{
     if (isShowCase == true) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         return ShowCaseWidget.of(context).startShowCase(
-          [keyAdd, keyNote, keySearch,],
+          [keyAdd, keyNote,keyUPaid,keyUDebt, keyMyPaid, keyMyDebt,keySearch,],
         );
       });
     }
   }
 
-  Future<void> goToDebt({MyCustomerModel? myCustomerModel,}) =>
-    Navigator.pushNamed(context, 
+  Future<void> goToDebt({MyCustomerModel? myCustomerModel,})async{
+    await Navigator.pushNamed(context, 
       Routers.debt, arguments: myCustomerModel,);
+    await fetchData();
+  }
 
   Future<void> pullRefresh() async {
     listCurrent.clear();
@@ -319,7 +331,7 @@ class DebitViewModel extends BaseViewModel{
 
   Future<void> putDebit(int id) async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await debitApi.putCategory(DebitParams(
+    final result = await debitApi.putDebit(DebitParams(
       fullName: nameController.text.trim(),
       id: id,
     ),);
@@ -344,7 +356,7 @@ class DebitViewModel extends BaseViewModel{
 
   Future<void> deleteDebit(int id) async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await debitApi.deleteCategory(id);
+    final result = await debitApi.deleteDebit(id);
 
     final value = switch (result) {
       Success(value: final customer) => customer,
@@ -360,6 +372,24 @@ class DebitViewModel extends BaseViewModel{
     } else {
       LoadingDialog.hideLoadingDialog(context);
       showSuccessDiaglog(context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getTotalDebit() async {
+    final result = await totalDebitApi.getTotalDebit();
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading = true;
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      totalDebtModel = value as TotalDebtModel;
     }
     notifyListeners();
   }

@@ -15,6 +15,7 @@ class Constants {
   static String baseUrl = 'https://spa-api.dhysolutions.net/api';
 
   // static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
+  // static String baseUrl = 'https://40c2-58-186-124-192.ngrok.io/api';
 }
 
 class HttpRemote {
@@ -29,9 +30,9 @@ class HttpRemote {
     // final gender = await AppPref.getDataUSer('gender') ?? '';
     // final phoneNumber = await AppPref.getDataUSer('phoneNumber') ?? '';
 
-    // log('accessToken: $accessToken');
+    print('accessToken: $accessToken');
     // log('fullName: $fullName');
-    // log('id: $id');
+    // print('id: $id');
     // log('email: $email');
     // log('gender: $gender');
     // log('phoneNumber: $phoneNumber');

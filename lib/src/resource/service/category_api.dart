@@ -14,6 +14,7 @@ class CategoryParams {
     this.imageId,
     this.isUser,
     this.page,
+    this.search, 
   });
   final int? id;
   final int? isUser;
@@ -21,6 +22,7 @@ class CategoryParams {
   final bool income;
   final int? imageId;
   final int? page;
+  final String? search;
 }
 
 class CategoryApi {
@@ -30,7 +32,7 @@ class CategoryApi {
     try {
       final response = await HttpRemote.get(
         url: params!=null?
-         '/category?pageSize=20&page=${params.page}&isUser=${params.isUser}'
+         '/category?pageSize=20&page=${params.page}&isUser=${params.isUser}&search=${params.search}'
          : '/category',
       );
       switch (response?.statusCode) {

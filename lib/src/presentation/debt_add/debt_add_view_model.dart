@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../configs/app_result/app_result.dart';
@@ -12,7 +13,9 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/owes_invoice_api.dart';
 import '../../utils/app_currency.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
+import '../../utils/check_date.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 
@@ -25,6 +28,10 @@ class DebtAddViewModel extends BaseViewModel{
   bool isMeOwes=false;
   bool enableButton=false;
   bool isLoading=true;
+  bool isRemindMoney=false;
+  bool isShowCase=false;
+
+  GlobalKey keyShowDebt= GlobalKey();
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
@@ -37,6 +44,9 @@ class DebtAddViewModel extends BaseViewModel{
   MyCustomerModel? myCustomerModel;
 
   String? messageMoney;
+  String? messageOwes;
+
+  List<int> listMoney=[];
 
   DateTime dateTime = DateTime.now();
   DateTime time = DateTime.now();
@@ -46,26 +56,88 @@ class DebtAddViewModel extends BaseViewModel{
   Future<void> init(MyCustomerModel? data) async{
     myCustomerModel=data;
     await fetchData();
+    await AppPref.getShowCase('showCaseDebtAdd').then(
+      (value) => isShowCase=value??true,);
+    await startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async {
+    await AppPref.setShowCase('showCaseDebtAdd', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  Future<void> startShowCase() async{
+    if (isShowCase == true) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [keyShowDebt],
+        );
+      });
+    }
   }
 
   Future<void> fetchData() async{
     await getOwesTotal();
     checkData();
+    checkOwes();
+    notifyListeners();
+  }
+
+  void setMoneyInput(int index){
+    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+    validPrice(moneyController.text);
+    listMoney=[];
+    notifyListeners();
+  }
+
+  void setShowRemind(String value){
+    if(value.length>3 || value==''){
+      listMoney=[];
+    }else{
+      listMoney=[];
+      for (var i = 0; i < 3; i++) {
+        listMoney.add(int.parse('$value${
+          i==0? '000': i==1?'0000': i==2? '00000':'0'
+        }'),);
+      }
+    }
     notifyListeners();
   }
 
   void checkData(){
-    if(myCustomerModel?.isMe??false){
+    if(owesTotalModel?.isMe??false){
       isMe=true;
+      isOwes=false;
       // isHideMe=false;
-    }else if(myCustomerModel?.isUser??false){
+    }else if(owesTotalModel?.isUser??false){
       isMe=false;
+      isOwes=false;
       // isHideMe=true;
     }
-    if(myCustomerModel?.isMe==false && myCustomerModel?.isUser==false){
+    if(owesTotalModel?.isMe==false && owesTotalModel?.isUser==false){
       isPay=false;
       isOwes=true;
+    }
+    if(myCustomerModel?.owesModel!=null){
+      enableButton=true;
+      isPay= !(myCustomerModel?.owesModel?.isDebit?? false);
+      moneyController.text=AppCurrencyFormat.formatMoney(
+        myCustomerModel?.owesModel?.money??0,);
+      noteController.text=myCustomerModel?.owesModel?.note??'';
+      time=dateTime= AppCheckDate.parseDateTime(
+        AppDateUtils.formatDateLocal(myCustomerModel?.owesModel?.date??''),);
+    }
+    notifyListeners();
+  }
+
+  Future<void> onEditOrAdd()async{
+    if(myCustomerModel?.owesModel!=null){
+      await deleteInvoiceOwes(myCustomerModel?.owesModel?.id??0);
+    }else{
+      await postDebt();
     }
     notifyListeners();
   }
@@ -81,11 +153,13 @@ class DebtAddViewModel extends BaseViewModel{
   }
 
   void validPrice(String? value) {
+    final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
+    final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     if (value == null || value.isEmpty) {
       messageMoney = PaymentLanguage.emptyMoneyError;
     } else{
       final money=int.parse(value.replaceAll(',', ''));
-      if(money > (myCustomerModel?.money??0) && isPay){
+      if(money > ((owesTotalModel?.isMe??false)? myMoney: yourMoney) && isPay){
         messageMoney = PaymentLanguage.validMoneyPay; 
       }else{
         messageMoney=null;
@@ -106,6 +180,23 @@ class DebtAddViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  void checkOwes(){
+    final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
+    final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
+    if(owesTotalModel?.isMe??false){
+      messageOwes='${DebtLanguage.iOwe} ${
+        myCustomerModel?.fullName?.split(' ').last}: ${
+          AppCurrencyFormat.formatMoneyD(myMoney)}';
+    }else if(owesTotalModel?.isUser??false){
+      messageOwes='${myCustomerModel?.fullName?.split(' ').last} ${
+        DebtLanguage.yourOwes} ${DebtLanguage.me}: ${
+          AppCurrencyFormat.formatMoneyD(yourMoney)}';
+    }else{
+      messageOwes='${DebtLanguage.currentDebt}: 0';
+    }
+    notifyListeners();
+  }
+
   void setButtonPerson(String? name){
     if(isOwes){
       if(name==DebtAddLanguage.me){
@@ -115,24 +206,38 @@ class DebtAddViewModel extends BaseViewModel{
       }
     }else if(!isMe && name==DebtAddLanguage.me){
       showDialogNotification(context, 
-        content: DebtLanguage.notificationPaidOwes,);
-    }else if(isMe && name==myCustomerModel?.fullName){
+        content: '${myCustomerModel?.fullName?.split(' ').last} ${
+          DebtLanguage.notificationPaidOwes}',);
+    }else if(isMe && name==myCustomerModel?.fullName?.split(' ').last){
       showDialogNotification(context, 
-        content: DebtLanguage.notificationPaidOwes,);
+        content: '${DebtLanguage.you} ${DebtLanguage.notificationPaidOwes}',);
+    }
+    notifyListeners();
+  }
+
+  void setWaningChooseFormEdit(String? name){
+    if(isPay==false &&
+      name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
+        showDialogNotification(context, content: DebtLanguage.editDebtWaning);
+    }else if(isPay==true && name==DebtAddLanguage.debit){
+      showDialogNotification(context, content: DebtLanguage.editPayDebtWaning);
     }
     notifyListeners();
   }
  
   void setButtonForm(String? name){
-    if(isOwes && name==DebtAddLanguage.pay){
+    if(myCustomerModel?.isEditDebt??false){
+      setWaningChooseFormEdit(name);
+    } else if(isOwes && name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
       showDialogNotification(context, content: DebtLanguage.notificationOwes);
     }else{
-      if(name==DebtAddLanguage.pay){
+      if(name=='${DebtAddLanguage.pay} ${DebtAddLanguage.yourOwes}'){
         isPay=true;
       }else{
         isPay=false;
       }
       validPrice(moneyController.text.trim());
+      onSubmit();
     }
     notifyListeners();
   }
@@ -216,6 +321,9 @@ class DebtAddViewModel extends BaseViewModel{
         );
       },
     );
+    if(myCustomerModel?.owesModel!=null){
+      timer=Timer(const Duration(seconds: 2), () { Navigator.pop(context);});
+    }
   }
 
   void closeDialog(BuildContext context) {
@@ -227,6 +335,7 @@ class DebtAddViewModel extends BaseViewModel{
 
   void clearData(){
     enableButton=false;
+    listMoney=[];
     noteController.text='';
     moneyController.text='';
     dateTime = DateTime.now();
@@ -244,7 +353,7 @@ class DebtAddViewModel extends BaseViewModel{
       isUser: !isMe ? !isMe: null,
       isMe: isMe ? isMe: null,
       id: myCustomerModel?.id,
-      isDebit: !isPay
+      isDebit: !isPay,
     ),);
 
     final value = switch (result) {
@@ -261,7 +370,34 @@ class DebtAddViewModel extends BaseViewModel{
     } else {
       LoadingDialog.hideLoadingDialog(context);
       clearData();
-      showDialogSuccess(context);
+      await fetchData();
+      if(myCustomerModel?.owesModel!=null){
+        showSuccessDiaglog(context);
+      }else{
+        showDialogSuccess(context);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteInvoiceOwes(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await owesInvoiceApi.deleteInvoiceOwes(id);
+
+    final value = switch (result) {
+      Success(value: final isBool) => isBool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await postDebt();
     }
     notifyListeners();
   }

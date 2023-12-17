@@ -103,9 +103,12 @@ class CalendarWidget extends StatelessWidget {
                     content: AppCurrencyFormat.formatMoney(
                       revenueDay[index].money ?? 0,
                     ),
-                    color: (revenueDay[index].income ?? false)
-                      ? AppColors.Green_Money
-                      : AppColors.Red_Money,
+                    style: STYLE_VERY_SMALL.copyWith(
+                      color: (revenueDay[index].income ?? false)
+                        ? AppColors.Green_Money
+                        : AppColors.Red_Money,
+                      fontSize: 9,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

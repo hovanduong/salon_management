@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -5,6 +7,7 @@ import '../../configs/configs.dart';
 import '../../configs/language/debt_language.dart';
 import '../../configs/widget/basic/infomation_app.dart';
 import '../../configs/widget/dialog/dialog_user_manual.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/owes_invoice_api.dart';
 import '../../utils/app_currency.dart';
@@ -19,6 +22,7 @@ class DebtViewModel extends BaseViewModel{
   bool isShowOwes=true;
   bool isShowCase=false;
   bool loadingMore = false;
+  bool isShowListPaid = true;
 
   OwesInvoiceApi owesInvoiceApi= OwesInvoiceApi();
 
@@ -26,27 +30,39 @@ class DebtViewModel extends BaseViewModel{
   GlobalKey keyNote= GlobalKey();
   GlobalKey keyOwes= GlobalKey();
   GlobalKey keyHistory= GlobalKey();
+  GlobalKey keySelectTransaction= GlobalKey();
 
   MyCustomerModel? myCustomerModel;
   OwesTotalModel? owesTotalModel;
 
   List<OwesModel> listOwesMe=[];
-  List<OwesModel> listOwesUser=[];
   List<OwesModel> listOwes=[];
+  List<OwesPaidModel> listOwesPaid=[];
+  List<String> listName = [
+    // DebtLanguage.allTransactions,
+    // DebtLanguage.myHistory,
+    DebtLanguage.currentTransaction,
+    DebtLanguage.historyCompletion,
+  ];
 
-  TabController? tabController;
+  // TabController? tabController;
   ScrollController scrollControllerMe = ScrollController();
-  ScrollController scrollControllerUser = ScrollController();
 
   String? messageOwes;
+  String? dropValue;
 
   int pageMe=1;
-  int pageUser=1;
   int tabCurrent=0;
+  num? moneyRemaining;
+  num? moneyPaid;
+
+  Timer? timer;
 
   Future<void> init(MyCustomerModel? params, {dynamic dataThis}) async{
-    tabController=TabController(length: 2, vsync: dataThis);
+    // tabController=TabController(length: 2, vsync: dataThis);
     myCustomerModel=params;
+    // await setDataOwe();
+    dropValue=listName.first;
     await fetchDataOwes();
     await AppPref.getShowCase('showCaseDebt').then(
       (value) => isShowCase=value??true,);
@@ -65,38 +81,74 @@ class DebtViewModel extends BaseViewModel{
     if (isShowCase == true) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         return ShowCaseWidget.of(context).startShowCase(
-          [keyAddDebt, keyNote, keyOwes, keyHistory],
+          [keyAddDebt, keyNote, keyOwes,keySelectTransaction, keyHistory],
         );
       });
     }
   }
 
+  Future<void> setDataOwe()async{
+    dropValue=listName.first;
+    final name= myCustomerModel!.fullName!.split(' ').last;
+    final nameLocal= await AppPref.getDataUSer('get${myCustomerModel?.id}$name');
+    if(nameLocal==null ){
+        await AppPref.setDataUser('get${myCustomerModel?.id}$name', listName.first);
+    }else{
+      dropValue=nameLocal;
+    }
+    // if(myCustomerModel!=null){
+    //   listName.add('${DebtLanguage.uHistory} $name');
+    // }
+    notifyListeners();
+  }
+
+  Future<void> setData(String value)async{
+    final name= myCustomerModel!.fullName!.split(' ').last;
+    dropValue= value;
+    await AppPref.setDataUser('get${myCustomerModel?.id}$name', value);
+    await fetchDataOwes();
+    notifyListeners();
+  }
+
   Future<void> fetchDataOwes()async{
-    await getOwesTotal();
+    isLoading=true;
     pageMe=1;
-    pageUser=1;
-    await getOwesInvoice(pageMe, 1);
-    listOwesMe=listOwes;
-    await getOwesInvoice(pageUser, 0);
-    listOwesUser=listOwes;
+    await getOwesTotal();
+    if(dropValue==listName[0]){
+      listOwesPaid=[];
+      await getOwesInvoice(pageMe, 2);
+      listOwesMe=listOwes;
+    }else if(dropValue==listName[1]){
+      await getOwesPaidInvoice(pageMe, myCustomerModel?.id??0);
+    //   await getOwesInvoice(pageMe, 1);
+    //   listOwesMe=listOwes;
+    // }else{
+    //   await getOwesInvoice(pageMe, 0);
+    //   listOwesMe=listOwes;
+    }
     scrollControllerMe.addListener(
       () => scrollListener(scrollControllerMe),
     );
-    scrollControllerUser.addListener(
-      () => scrollListener(scrollControllerUser),
-    );
     checkOwes();
+    checkMoneyOwe();
+    notifyListeners();
+  }
+
+  void setShowListPaid(int index){
+    listOwesPaid[index].isShowListInvoice=!listOwesPaid[index].isShowListInvoice;
     notifyListeners();
   }
 
   Future<void> loadMoreData() async {
-    if(tabCurrent==0){
-      pageUser += 1;
-      await getOwesInvoice(pageUser, tabCurrent);
-      listOwesUser=[...listOwesUser, ...listOwes];
+    pageMe += 1;
+    if(dropValue==listName[0]){
+      await getOwesInvoice(pageMe, 2);
+      listOwesMe = [...listOwesMe, ...listOwes];
+    }else if(dropValue==listName[1]){
+      await getOwesInvoice(pageMe, 1);
+      listOwesMe = [...listOwesMe, ...listOwes];
     }else{
-      pageMe += 1;
-      await getOwesInvoice(pageMe, tabCurrent);
+      await getOwesInvoice(pageMe, 0);
       listOwesMe = [...listOwesMe, ...listOwes];
     }
     loadingMore=false;
@@ -123,31 +175,62 @@ class DebtViewModel extends BaseViewModel{
       listOwesMe=listOwes;
     }else{
       await getOwesInvoice(1, 0);
-      listOwesUser=listOwes;
+      // listOwesUser=listOwes;
     }
     notifyListeners();
   }
 
-  Future<void> goToDebtAdd()async {
+  Future<void> goToDebtDetail(OwesModel owesModel)
+    => Navigator.pushNamed(context, Routers.debtDetail, arguments: owesModel,);
+  
+  Future<void> goToDebtAdd({OwesModel? list, bool isEdit=false})async {
     final data = myCustomerModel;
-    data?.isMe= owesTotalModel?.isMe;
-    data?.isUser=owesTotalModel?.isUser;
-    data?.money= (owesTotalModel?.isMe??false)? (owesTotalModel?.oweMe??0)
-      : (owesTotalModel?.oweUser??0);
+    // final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
+    // final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
+    // data?.isMe= owesTotalModel?.isMe;
+    // data?.isUser=owesTotalModel?.isUser;
+    // data?.money= (owesTotalModel?.isMe??false)? myMoney: yourMoney;
+    data?.owesModel= list;
+    data?.isEditDebt=isEdit;
     await Navigator.pushNamed(context, 
       Routers.debtAdd, arguments: data,);
+    dropValue=listName.first;
+    await fetchDataOwes();
+  }
+
+  void checkMoneyOwe(){
+    if(dropValue==listName[0]){
+      if(owesTotalModel?.isMe??false){
+        moneyRemaining=owesTotalModel?.oweMe;
+        moneyPaid=owesTotalModel?.paidMe;
+      }else if(owesTotalModel?.isUser??false){
+        moneyRemaining=owesTotalModel?.oweUser;
+        moneyPaid=owesTotalModel?.paidUser;
+      }else{
+        moneyRemaining=0;
+        moneyPaid=0;
+      }
+    }else if(dropValue==listName[1]){
+      moneyRemaining=owesTotalModel?.oweMe;
+      moneyPaid=owesTotalModel?.paidMe;
+    }else{
+      moneyRemaining=owesTotalModel?.oweUser;
+      moneyPaid=owesTotalModel?.paidUser;
+    }
+    notifyListeners();
   }
 
   void checkOwes(){
     final myMoney=  (owesTotalModel?.oweMe??0)- (owesTotalModel?.paidMe??0);
     final yourMoney=  (owesTotalModel?.oweUser??0)- (owesTotalModel?.paidUser??0);
     if(owesTotalModel?.isMe??false){
-      messageOwes='${DebtLanguage.amountOfMoney} ${DebtLanguage.my} ${
-      DebtLanguage.yourOwes}: ${AppCurrencyFormat.formatMoneyD(myMoney)}';
+      messageOwes='${DebtLanguage.iOwe} ${
+        myCustomerModel?.fullName?.split(' ').last}: ${
+          AppCurrencyFormat.formatMoneyD(myMoney)}';
     }else if(owesTotalModel?.isUser??false){
-      messageOwes='${DebtLanguage.amountOfMoney} ${
-      myCustomerModel?.fullName?.split(' ').last} ${DebtLanguage.yourOwes}: ${
-        AppCurrencyFormat.formatMoneyD(yourMoney)}';
+      messageOwes='${myCustomerModel?.fullName?.split(' ').last} ${
+        DebtLanguage.yourOwes} ${DebtLanguage.me}: ${
+          AppCurrencyFormat.formatMoneyD(yourMoney)}';
     }else{
       messageOwes='0';
     }
@@ -206,6 +289,42 @@ class DebtViewModel extends BaseViewModel{
     );
   }
 
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  dynamic showSuccessDialog(_) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
+    );
+    await fetchDataOwes();
+  }
+
+  void closeDialog(BuildContext context) {
+    timer= Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
   Future<void> getOwesInvoice(int page, int isGet) async {
     final result = await owesInvoiceApi.getOwesInvoice(
       OwesInvoiceParams(
@@ -231,6 +350,53 @@ class DebtViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  Future<void> getOwesPaidInvoice(int page, int id) async {
+    final result = await owesInvoiceApi.getOwesInvoicePaid(
+      OwesInvoiceParams(
+        page: page,
+        id: myCustomerModel?.id,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final customer) => customer,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      isLoading = true;
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      listOwesPaid = value as List<OwesPaidModel>;
+      isLoading=false;
+      // listOwesPaid.reversed;
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteInvoiceOwes(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await owesInvoiceApi.deleteInvoiceOwes(id);
+
+    final value = switch (result) {
+      Success(value: final isBool) => isBool,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDialog(context);
+    }
+    notifyListeners();
+  }
+
   Future<void> getOwesTotal() async {
     final result = await owesInvoiceApi.getTotalOwesInvoice(
       OwesInvoiceParams(
@@ -252,5 +418,11 @@ class DebtViewModel extends BaseViewModel{
       isLoading=false;
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

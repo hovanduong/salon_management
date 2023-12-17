@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/category_language.dart';
-import '../../resource/model/model.dart';
 import '../base/base.dart';
 import 'category_view_model.dart';
 import 'components/components.dart';
@@ -90,7 +89,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             onTap: () {
               Navigator.pop(context);
             },
-            title: CategoryLanguage.category,
+            title: CategoryLanguage.myCatalog,
           ),
         ));
   }
@@ -258,7 +257,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // buildSearch(),
+            buildSearch(),
             showListCategory(),
           ],
         ),

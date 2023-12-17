@@ -11,7 +11,6 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/debit_language.dart';
 import '../../configs/language/debt_language.dart';
-import '../../configs/language/homepage_language.dart';
 import '../../resource/model/model.dart';
 import '../../utils/app_currency.dart';
 import '../base/base.dart';
@@ -88,7 +87,7 @@ class _DebtScreenState extends State<DebtScreen>
           onTap: () {
             Navigator.pop(context);
           },
-          title: DebtLanguage.debt,
+          title: DebtLanguage.debtManagement,
           widget: Showcase(
             key: _viewModel!.keyNote,
             description: DebtLanguage.userManual,
@@ -141,26 +140,26 @@ class _DebtScreenState extends State<DebtScreen>
     );
   }
 
-  Widget buildTabBar(){
-    return TabBar(
-      controller: _viewModel!.tabController,
-      onTap: (index)=> _viewModel!.changeTab(index),
-      tabs: [
-        Tab(text: DebtLanguage.me,),
-        Tab(text: _viewModel!.myCustomerModel?.fullName?.split(' ').last,),
-      ],
-      indicatorSize: TabBarIndicatorSize.tab,
-      indicatorPadding: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      labelPadding: EdgeInsets.symmetric(
-        horizontal: SizeToPadding.sizeSmall,
-      ),
-      indicatorColor: AppColors.PRIMARY_PINK,
-      labelStyle: STYLE_MEDIUM_BOLD,
-      unselectedLabelColor: AppColors.BLACK_400,
-      labelColor: AppColors.PRIMARY_PINK,
-    );
-  }
+  // Widget buildTabBar(){
+  //   return TabBar(
+  //     controller: _viewModel!.tabController,
+  //     onTap: (index)=> _viewModel!.changeTab(index),
+  //     tabs: [
+  //       Tab(text: DebtLanguage.me,),
+  //       Tab(text: _viewModel!.myCustomerModel?.fullName?.split(' ').last,),
+  //     ],
+  //     indicatorSize: TabBarIndicatorSize.tab,
+  //     indicatorPadding: EdgeInsets.zero,
+  //     padding: EdgeInsets.zero,
+  //     labelPadding: EdgeInsets.symmetric(
+  //       horizontal: SizeToPadding.sizeSmall,
+  //     ),
+  //     indicatorColor: AppColors.PRIMARY_PINK,
+  //     labelStyle: STYLE_MEDIUM_BOLD,
+  //     unselectedLabelColor: AppColors.BLACK_400,
+  //     labelColor: AppColors.PRIMARY_PINK,
+  //   );
+  // }
 
   Widget buildOwes({String? title, String? money, Color? colorMoney}){
     return Container(
@@ -198,14 +197,14 @@ class _DebtScreenState extends State<DebtScreen>
     return Row(
       children: [
         buildOwes(
-          title: DebtLanguage.totalRemainingOwes,
-          money: AppCurrencyFormat.formatMoneyD(moneyRemaining??0),
-          colorMoney: AppColors.Red_Money,
-        ),
-        buildOwes(
           title: DebtLanguage.totalOwesPaid,
           money: AppCurrencyFormat.formatMoneyD(moneyPaid??0),
           colorMoney: AppColors.Green_Money,
+        ),
+        buildOwes(
+          title: DebtLanguage.totalDebt,
+          money: AppCurrencyFormat.formatMoneyD(moneyRemaining??0),
+          colorMoney: AppColors.Red_Money,
         ),
       ],
     );
@@ -217,43 +216,59 @@ class _DebtScreenState extends State<DebtScreen>
         AppColors.Red_Money: AppColors.Green_Money,
       date: listCurrent[index].date,
       money: listCurrent[index].money,
-      title: listCurrent[index].code,
+      title: DebtLanguage.amountOfMoney,
+      nameCreator: listCurrent[index].isMe??false? DebtLanguage.me:
+        _viewModel!.myCustomerModel?.fullName?.split(' ').last,
+      note: listCurrent[index].note,
     );
   }
 
   Widget buildCardOwes(int index, List<OwesModel> listCurrent,){
-    return Container(
-      margin: EdgeInsets.only(
-        top: SizeToPadding.sizeSmall,
-        left: SizeToPadding.sizeSmall,
-        right: SizeToPadding.sizeSmall,
-      ),
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeVeryVerySmall,
-        horizontal: SizeToPadding.sizeSmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.COLOR_WHITE,
-        borderRadius: BorderRadius.all(
-          Radius.circular(BorderRadiusSize.sizeSmall),),
-        boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200,
-            blurRadius: BorderRadiusSize.sizeMedium,
-            blurStyle: BlurStyle.solid,
+    final id= listCurrent[index].id;
+    return InkWell(
+      onTap: ()=> _viewModel!.goToDebtDetail(listCurrent[index]),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: SizeToPadding.sizeSmall,
+          left: SizeToPadding.sizeSmall,
+          right: SizeToPadding.sizeSmall,
+        ),
+        child: SlidableActionWidget(
+          // isCheckCategory: true,
+          onTapButtonFirst: (context) =>_viewModel!.deleteInvoiceOwes(id??0),
+          // onTapButtonSecond: (context) =>_viewModel!.goToDebtAdd(
+          //   list: listCurrent[index], isEdit: true
+          // ),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: SizeToPadding.sizeVeryVerySmall,
+              horizontal: SizeToPadding.sizeSmall,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.COLOR_WHITE,
+              borderRadius: BorderRadius.all(
+                Radius.circular(BorderRadiusSize.sizeSmall),),
+              boxShadow: [
+                BoxShadow(color: AppColors.BLACK_200,
+                  blurRadius: BorderRadiusSize.sizeMedium,
+                  blurStyle: BlurStyle.solid,
+                ),
+              ],
+            ),
+            child: buildContentTransaction(index, listCurrent),
           ),
-        ],
+        ),
       ),
-      child: buildContentTransaction(index, listCurrent),
     );
   }
 
-  Widget buildIconEmpty(){
+  Widget buildIconEmpty(String content){
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 4),
         child: EmptyDataWidget(
           title: DebitLanguage.debit,
-          content: DebitLanguage.notificationDebitEmpty,
+          content: content,
         ),
       ),
     );
@@ -266,8 +281,9 @@ class _DebtScreenState extends State<DebtScreen>
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
-      child: SizedBox(
-        height: MediaQuery.sizeOf(context).height/1.7,
+      child: Container(
+        padding: EdgeInsets.only(bottom: SizeToPadding.sizeMedium),
+        height: MediaQuery.sizeOf(context).height/1.67,
         child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
@@ -290,56 +306,134 @@ class _DebtScreenState extends State<DebtScreen>
   Widget buildTabMyOwes( List<OwesModel> listCurrent, 
     ScrollController scrollController,{bool isOwes=false, 
       num? moneyRemaining, num? moneyPaid,}){
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          buildTotalOwes(
-            moneyPaid: moneyPaid,
-            moneyRemaining: moneyRemaining,
+    return Showcase(
+      key: _viewModel!.keyHistory,
+      description: DebtLanguage.historyOwes,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+          child: Column(
+            children: [
+              buildTotalOwes(
+                moneyPaid: moneyPaid,
+                moneyRemaining: moneyRemaining,
+              ),
+              if (listCurrent.isEmpty && !_viewModel!.isLoading) 
+              buildIconEmpty(DebitLanguage.notificationEmptyTransaction) 
+              else buildHistoryPaidAndOwes(listCurrent, scrollController),
+            ],
           ),
-          if (listCurrent.isEmpty && !_viewModel!.isLoading) 
-          buildIconEmpty() 
-          else buildHistoryPaidAndOwes(listCurrent, scrollController),
-        ],
+        ),
       ),
     );
   }
 
-  Widget buildTabBarView(){
+  // Widget buildTabBarView(){
+  //   return Showcase(
+  //     key: _viewModel!.keyHistory,
+  //     description: DebtLanguage.historyOwes,
+  //     child: RefreshIndicator(
+  //       color: AppColors.PRIMARY_GREEN,
+  //       onRefresh: () async {
+  //         await _viewModel!.pullRefresh();
+  //       },
+  //       child: SingleChildScrollView(
+  //         physics: const AlwaysScrollableScrollPhysics(),
+  //         child: Container(
+  //           color: AppColors.COLOR_GREY.withOpacity(0.05),
+  //           width: double.maxFinite,
+  //           height: MediaQuery.of(context).size.height - 270,
+  //           child: TabBarView(
+  //             controller: _viewModel!.tabController,
+  //             children: [
+  //               buildTabMyOwes(
+  //                 _viewModel!.listOwesMe,
+  //                 _viewModel!.scrollControllerMe,
+  //                 isOwes: _viewModel!.owesTotalModel?.isMe??false,
+  //                 moneyPaid: _viewModel!.owesTotalModel?.paidMe??0,
+  //                 moneyRemaining: _viewModel!.owesTotalModel?.oweMe??0,
+  //               ),
+  //               buildTabMyOwes(
+  //                 _viewModel!.listOwesUser,
+  //                 _viewModel!.scrollControllerUser,
+  //                 isOwes: _viewModel!.owesTotalModel?.isUser??false,
+  //                 moneyPaid: _viewModel!.owesTotalModel?.paidUser??0,
+  //                 moneyRemaining: _viewModel!.owesTotalModel?.oweUser??0,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget buildSelectCreator(){
     return Showcase(
-      key: _viewModel!.keyHistory,
-      description: DebtLanguage.historyOwes,
-      child: RefreshIndicator(
-        color: AppColors.PRIMARY_GREEN,
-        onRefresh: () async {
-          await _viewModel!.pullRefresh();
-        },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
-            color: AppColors.COLOR_GREY.withOpacity(0.05),
-            width: double.maxFinite,
-            height: MediaQuery.of(context).size.height - 270,
-            child: TabBarView(
-              controller: _viewModel!.tabController,
-              children: [
-                buildTabMyOwes(
-                  _viewModel!.listOwesMe,
-                  _viewModel!.scrollControllerMe,
-                  isOwes: _viewModel!.owesTotalModel?.isMe??false,
-                  moneyPaid: _viewModel!.owesTotalModel?.paidMe??0,
-                  moneyRemaining: _viewModel!.owesTotalModel?.oweMe??0,
-                ),
-                buildTabMyOwes(
-                  _viewModel!.listOwesUser,
-                  _viewModel!.scrollControllerUser,
-                  isOwes: _viewModel!.owesTotalModel?.isUser??false,
-                  moneyPaid: _viewModel!.owesTotalModel?.paidUser??0,
-                  moneyRemaining: _viewModel!.owesTotalModel?.oweUser??0,
-                ),
-              ],
-            ),
+      key: _viewModel!.keySelectTransaction,
+      description: DebtLanguage.selectTransaction,
+      child: SelectCreatorWidget( 
+        listName: _viewModel!.listName,
+        dropValue: _viewModel!.dropValue,
+        onChanged: (value)=> _viewModel!.setData(value),
+      ),
+    );
+  }
+
+  Widget buildCardInvoicePaid(int index){
+    return Container(
+      margin: EdgeInsets.only(top: SizeToPadding.sizeSmall),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeSmall,
+        horizontal: SizeToPadding.sizeSmall,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.COLOR_WHITE,
+        borderRadius: BorderRadius.all(
+          Radius.circular(BorderRadiusSize.sizeSmall),),
+        boxShadow: [
+          BoxShadow(color: AppColors.BLACK_200,
+            blurRadius: BorderRadiusSize.sizeMedium,
+            blurStyle: BlurStyle.solid,
           ),
+        ],
+      ),
+      child: ContentInvoicePaid(
+        index: index,
+        owesPaidModel: _viewModel!.listOwesPaid[index],
+        isShowListInvoice: _viewModel!.listOwesPaid[index].isShowListInvoice,
+        onShowInvoice: () => _viewModel!.setShowListPaid(index),
+        onGotoDetailInvoice: (owesModel) => _viewModel!.goToDebtDetail(owesModel),
+      ),
+    );
+  }
+
+  Widget buildListTransactionPaid(){
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: (_viewModel!.listOwesPaid.isEmpty && !_viewModel!.isLoading) ?
+        buildIconEmpty(DebitLanguage.notificationNoPaid): Container(
+        margin: EdgeInsets.symmetric(
+          horizontal: SizeToPadding.sizeMedium,
+        ),
+        height: MediaQuery.sizeOf(context).height-265,
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          controller: _viewModel!.scrollControllerMe,
+          itemCount: _viewModel!.loadingMore
+              ? _viewModel!.listOwesPaid.length + 1
+              : _viewModel!.listOwesPaid.length,
+          itemBuilder: (context, index) {
+            if (index < _viewModel!.listOwesPaid.length) {
+              return buildCardInvoicePaid(index);
+            } else {
+              return const CupertinoActivityIndicator();
+            }
+          },
         ),
       ),
     );
@@ -349,8 +443,16 @@ class _DebtScreenState extends State<DebtScreen>
     return Column(
       children: [
         buildCardDebt(),
-        buildTabBar(),
-        buildTabBarView(),
+        buildSelectCreator(),
+        if (_viewModel!.dropValue==_viewModel!.listName[0]) buildTabMyOwes(
+          _viewModel!.listOwesMe,
+          _viewModel!.scrollControllerMe,
+          isOwes: _viewModel!.owesTotalModel?.isMe??false,
+          moneyPaid: _viewModel!.moneyPaid??0,
+          moneyRemaining: _viewModel!.moneyRemaining??0,
+        ) else buildListTransactionPaid(),
+        // buildTabBar(),
+        // buildTabBarView(),
       ],
     );
   }

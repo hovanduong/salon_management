@@ -104,7 +104,7 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 ? AppImages.icHome
                 : AppImages.icHomeLine,
           ),
-          label: NavigateLanguage.overview,
+          label: NavigateLanguage.home,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
@@ -124,11 +124,13 @@ class _NavigateScreenState extends State<NavigateScreen> {
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
+            color: _viewModel!.selectedIndex == 3?
+              AppColors.PRIMARY_GREEN: AppColors.BLACK_300 ,
             name: _viewModel!.selectedIndex == 3
-                ? AppImages.icProfile
-                : AppImages.icProfileLine,
+                ? AppImages.icDebit
+                : AppImages.icDebit,
           ),
-          label: NavigateLanguage.debit,
+          label: NavigateLanguage.debitBook,
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(

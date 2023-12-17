@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
+import '../../configs/firebase/notification_firebase/register_topic.dart';
 import '../../configs/language/homepage_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
@@ -62,6 +63,7 @@ class HomeViewModel extends BaseViewModel {
   DateTime date = DateTime.now();
 
   Future<void> init({IncomeParams? params}) async {
+    await RegisterTopic.registerTopic();
     if (params != null) {
       date = params.date ?? DateTime.now();
       isDate = params.isDate ?? 0;
@@ -79,7 +81,7 @@ class HomeViewModel extends BaseViewModel {
     );
     startShowCase();
     await hideShowcase();
-   
+
     notifyListeners();
   }
 

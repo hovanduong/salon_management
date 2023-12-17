@@ -39,7 +39,7 @@ class AppCheckDate {
 
   static DateTime parseDateTime(String time) {
     try {
-      return DateFormat('yyyy-MM-dd HH:mm:ss.SSS').parse(time);
+      return DateFormat('yyyy-MM-dd HH:mm:ss').parse(time);
     } catch (e) {
       return DateFormat('yyyy-MM-dd').parse(DateTime.now().toString());
     }

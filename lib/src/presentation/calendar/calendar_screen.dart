@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -210,6 +209,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         subMonth: () => _viewModel!.subMonth(),
         keyLastMonth: _viewModel!.keyLastMonth,
         keyNextMonth: _viewModel!.keyNextMonth,
+        keySelectMonthYear: _viewModel!.keySelectMonthYear,
       ),
     );
   }

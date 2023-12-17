@@ -1,8 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
+import '../../configs/widget/basic/infomation_app.dart';
 import '../base/base.dart';
 import 'sign_in.dart';
 
@@ -132,6 +135,85 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  Widget buildPhoneNumber(){
+    return RichText(
+      text: TextSpan(
+        style: STYLE_MEDIUM.copyWith(
+          color: AppColors.COLOR_WHITE,
+        ),
+        children: [
+          TextSpan(
+            text: '${SignInLanguage.customerCareHotline}: ',
+            style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const TextSpan(
+            text: '0944 01 04 99',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildWeb(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
+      child: RichText(
+        text: TextSpan(
+          style: STYLE_MEDIUM.copyWith(
+            color: AppColors.COLOR_WHITE,
+          ),
+          children: [
+            TextSpan(
+              text: 'Web: ',
+              style: STYLE_MEDIUM.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const TextSpan(
+              text: 'https://www.dhysolutions.net/vi',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildGroupFB(){
+    return RichText(
+      text: TextSpan(
+        style: STYLE_MEDIUM.copyWith(
+          color: AppColors.COLOR_WHITE,
+        ),
+        children: [
+          TextSpan(
+            text: '${SignInLanguage.group} Facebook: ',
+             style: STYLE_MEDIUM.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const TextSpan(
+            text: 'Hỗ trợ sử dụng ApCare ',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInformationApp(){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeBig),
+      child: Column(
+        children: [
+          buildPhoneNumber(),
+          buildWeb(),
+          buildGroupFB(),
+        ],
+      ),
+    );
+  }
+
   Widget buildSignIn() {
     return WillPopScope(
       onWillPop: () => _viewModel!.showExitPopup(),
@@ -161,7 +243,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         end: Alignment.bottomCenter,
                         colors: <Color>[
                           AppColors.COLOR_WHITE,
-                          AppColors.COLOR_WHITE.withOpacity(0.7)
+                          AppColors.COLOR_WHITE.withOpacity(0.7),
                         ],
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -187,10 +269,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                 ),
+                buildInformationApp(),
               ],
             ),
           ),
-        )),
+        ),),
       ),
     );
   }

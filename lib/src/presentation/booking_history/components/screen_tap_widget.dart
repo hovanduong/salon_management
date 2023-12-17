@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -21,6 +24,7 @@ class ScreenTap extends StatelessWidget {
     this.isLoading = false,
     this.isPullRefresh = false,
     this.isCanceled=false,
+    this.isDayBefore=false,
     this.onTapCard,
     this.onChangedStatus,
     this.onTapDeleteBooking,
@@ -30,6 +34,10 @@ class ScreenTap extends StatelessWidget {
     this.contentEmpty, 
     this.colorStatus, 
     this.status,
+    this.onRemind, 
+    this.keyRemind, 
+    this.keyED, 
+    this.keyStatus,
   });
 
   final Function()? onRefresh;
@@ -40,6 +48,7 @@ class ScreenTap extends StatelessWidget {
   final bool isLoadMore;
   final bool isButton;
   final bool isLoading;
+  final bool isDayBefore;
   final bool isPullRefresh;
   final bool isCanceled;
   final Function(int id)? onTapCard;
@@ -51,6 +60,10 @@ class ScreenTap extends StatelessWidget {
   final String? contentEmpty;
   final Color? colorStatus;
   final String? status;
+  final Function(bool isRemind, MyBookingModel list, int index)? onRemind;
+  final GlobalKey? keyRemind;
+  final GlobalKey? keyED;
+  final GlobalKey? keyStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +92,58 @@ class ScreenTap extends StatelessWidget {
                   final phone = listCurrent![index].myCustomer?.phoneNumber;
                   final date = listCurrent![index].date;
                   final id = listCurrent![index].id;
-                  return NotificationService(
+                  return index==0? NotificationService(
+                    keyRemind: keyRemind,
+                    keyED: keyED,
                     context: context,
+                    isRemind: listCurrent![index].isReminder??false,
+                    onRemind: (value)=> onRemind!(value, listCurrent![index], index),
+                    onPay: () => onPay!(id!),
+                    onTapEditBooking: () =>
+                        onTapEditBooking!(listCurrent![index]),
+                    onTapDeleteBooking: () => onTapDeleteBooking!(id!),
+                    onTapCard: () => onTapCard!(id!),
+                    isButton: isButton,
+                    isDayBefore: isDayBefore,
+                    date: date != null
+                        ? AppDateUtils.splitHourDate(
+                            AppDateUtils.formatDateLocal(
+                              date,
+                            ),
+                          )
+                        : '',
+                    total:listCurrent?[index].money!=null?
+                     AppCurrencyFormat.formatMoneyD(
+                      listCurrent?[index].money ?? 0,
+                    ): null,
+                    nameUser: listCurrent![index].myCustomer?.fullName,
+                    phoneNumber: phone,
+                    onTapPhone: () => onTapPhone!(phone!),
+                    widget: widget ??
+                      Showcase(key: keyStatus??GlobalKey(),
+                        description: BookingLanguage.selectStatus, 
+                      child: SelectStatusWidget(
+                        money: listCurrent?[index].money,
+                        status: status ?? HistoryLanguage.confirmed,
+                        onChanged: (value) {
+                          if(isCanceled && value.contains(HistoryLanguage.confirmed)){
+                            onChangedStatus!('Confirmed', id!);
+                          }
+                          if(!isCanceled && value.contains(HistoryLanguage.cancel)){
+                            onChangedStatus!('Canceled', id!);
+                          } 
+                          if(!isCanceled && value.contains(HistoryLanguage.done)){
+                            onChangedStatus!('Done', id!);
+                          } 
+                        },
+                        color: colorStatus,
+                      ),
+                    ),
+                  ): NotificationService(
+                    context: context,
+                    isDayBefore: isDayBefore,
+                    isRemind: listCurrent![index].isReminder??false,
+                    onRemind: (value)=> onRemind!(value, listCurrent![index], index),
                     onPay: () => onPay!(id!),
                     onTapEditBooking: () =>
                         onTapEditBooking!(listCurrent![index]),
@@ -102,22 +165,22 @@ class ScreenTap extends StatelessWidget {
                     phoneNumber: phone,
                     onTapPhone: () => onTapPhone!(phone!),
                     widget: widget ??
-                        SelectStatusWidget(
-                          money: listCurrent?[index].money,
-                          status: status ?? HistoryLanguage.confirmed,
-                          onChanged: (value) {
-                            if(isCanceled && value.contains(HistoryLanguage.confirmed)){
-                              onChangedStatus!('Confirmed', id!);
-                            }
-                            if(!isCanceled && value.contains(HistoryLanguage.cancel)){
-                              onChangedStatus!('Canceled', id!);
-                            } 
-                            if(!isCanceled && value.contains(HistoryLanguage.done)){
-                              onChangedStatus!('Done', id!);
-                            } 
-                          },
-                          color: colorStatus,
-                        ),
+                      SelectStatusWidget(
+                        money: listCurrent?[index].money,
+                        status: status ?? HistoryLanguage.confirmed,
+                        onChanged: (value) {
+                          if(isCanceled && value.contains(HistoryLanguage.confirmed)){
+                            onChangedStatus!('Confirmed', id!);
+                          }
+                          if(!isCanceled && value.contains(HistoryLanguage.cancel)){
+                            onChangedStatus!('Canceled', id!);
+                          } 
+                          if(!isCanceled && value.contains(HistoryLanguage.done)){
+                            onChangedStatus!('Done', id!);
+                          } 
+                        },
+                        color: colorStatus,
+                      ),
                   );
                 } else {
                   return const CupertinoActivityIndicator();

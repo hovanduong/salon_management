@@ -50,6 +50,8 @@ class AppImages {
 
   static const String icSetting = 'assets/icons/setting.svg';
 
+  static const String icSeeAllNotification = 'assets/icons/seeAllNotification.svg';
+
   static const String backgroundHomePage =
       'assets/images/backgroundHomePage.png';
 
@@ -144,5 +146,11 @@ class AppImages {
   static const String spaMask = 'assets/icons/spaMask.svg';
 
   static const String accumulatedPoints = 'assets/icons/accumulatedPoints.svg';
+
+  static const String icBellApp = 'assets/icons/bell_app.svg';
+
+  static const String icStar = 'assets/icons/stars-filled.svg';
+
+  static const String icDebit = 'assets/icons/receipt-text.svg';
 
 }

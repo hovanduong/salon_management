@@ -34,6 +34,7 @@ class PaymentViewModel extends BaseViewModel {
 
   List<int>? myServiceId = [];
   List<int> serviceId = [];
+  List<int> listMoney = [];
 
   // List<RadioModel> selectedService = [];
   // List<MyServiceModel> myService = [];
@@ -85,6 +86,7 @@ class PaymentViewModel extends BaseViewModel {
   bool isButtonSpending=false;
   bool isShowAll=false;
   bool isShowCase=true;
+  bool isShowButton=true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -110,6 +112,8 @@ class PaymentViewModel extends BaseViewModel {
   final moneyCharsCheck = RegExp(r'^\d+$');
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
 
+  List<FocusNode> listFocus= List.generate(5, (index) => FocusNode());
+
   GlobalKey keyInfoCustomer= GlobalKey();
   GlobalKey keyMoney= GlobalKey();
   GlobalKey key= GlobalKey();
@@ -127,6 +131,7 @@ class PaymentViewModel extends BaseViewModel {
     // await fetchCustomer();
     // await initMapCustomer();
     // await initMapService();
+    await setShowButton();
     await AppPref.getShowCase('showCasePayment').then(
       (value) => isShowCase=value??true,);
     startShowCase();
@@ -362,6 +367,15 @@ class PaymentViewModel extends BaseViewModel {
   //   notifyListeners();
   // }
 
+  Future<void> setShowButton() async{
+    listFocus.forEach((node) {
+      node.addListener(() {
+        isShowButton = !listFocus.any((focus) => focus.hasFocus);
+        notifyListeners();
+      });
+    });
+  }
+
   Future<void> updateDateTime(DateTime time) async {
     dateTime = time;
     notifyListeners();
@@ -438,6 +452,26 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+ void setMoneyInput(int index){
+    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+    validPrice(moneyController.text);
+    listMoney=[];
+    notifyListeners();
+  }
+
+  void setShowRemind(String value){
+    if(value.length>3 || value==''){
+      listMoney=[];
+    }else{
+      listMoney=[];
+      for (var i = 0; i < 3; i++) {
+        listMoney.add(int.parse('$value${
+          i==0? '000': i==1?'0000': i==2? '00000':'0'
+        }'),);
+      }
+    }
+    notifyListeners();
+  }
 
 
   Future<void> onServiceList(BuildContext context) =>
@@ -503,6 +537,7 @@ class PaymentViewModel extends BaseViewModel {
 
   void clearData(){
     selectedCategory=0;
+    listMoney=[];
     categoryId=listCategory[0].id;
     isButtonSpending=false;
     phoneController.text='';
@@ -584,12 +619,14 @@ class PaymentViewModel extends BaseViewModel {
       myCustomerId: myCustomerId,
       idCategory: categoryId,
       money: int.parse(moneyController.text.replaceAll(',', '')),
-      date: '${dateTime.toString().split(' ')[0]} ${AppDateUtils.formatTimeToHHMM(time)}',
+      date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',),
       address: addressController.text=='' ? ''
         :addressController.text.trim(),
       isBooking: false,
       isIncome: isButtonSpending? false: true,
       note: noteController.text == '' ? '' : noteController.text,
+      isReminder: null,
     ),);
 
     final value = switch (result) {

@@ -6,7 +6,6 @@ class QuantityIncomeModel {
   num? beforeCount;
   num? pctInc;
 
-
   QuantityIncomeModel({
     this.currentCount,
     this.beforeCount,

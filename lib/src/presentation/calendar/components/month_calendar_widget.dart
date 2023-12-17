@@ -14,6 +14,7 @@ class MonthCalendarWidget extends StatelessWidget {
     this.addMonth, 
     this.keyLastMonth, 
     this.keyNextMonth,
+    this.keySelectMonthYear,
   });
 
   final String? month;
@@ -21,6 +22,7 @@ class MonthCalendarWidget extends StatelessWidget {
   final Function()? addMonth;
   final GlobalKey? keyLastMonth;
   final GlobalKey? keyNextMonth;
+  final GlobalKey? keySelectMonthYear;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,11 @@ class MonthCalendarWidget extends StatelessWidget {
                 ),
               ),
             ),
-            buildMonth(context),
+            Showcase(
+              key: keySelectMonthYear??GlobalKey(),
+              description: CalendarLanguage.selectMonthYear,
+              child: buildMonth(context)
+            ),
             Showcase(
               key: keyNextMonth ?? GlobalKey(),
               description: CalendarLanguage.showNextMonth,

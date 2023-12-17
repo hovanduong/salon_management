@@ -1,7 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -72,12 +74,43 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
     );
   }
 
+  Widget buildIcNotification(){
+    return Showcase(
+      description: BookingLanguage.notification,
+      key: _viewModel!.keyNotification,
+      child: InkWell(
+        onTap: ()=> _viewModel!.goToNotification(context),
+        child: Stack(
+          children:[
+            SizedBox(
+              width: 32,
+              height: 32,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: SvgPicture.asset(AppImages.icBellApp, 
+                  color: AppColors.COLOR_WHITE, height: 25, width: 25,
+                ),
+              ),
+            ),
+             Positioned(
+              right: 0,
+              top: 0,
+              child: NumberNotification(id: _viewModel!.idNotification),)
+          ]
+        ),
+      ),
+    );
+  }
+
   Widget buildHeader() {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40),
         child: ListTile(
+          titleAlignment: ListTileTitleAlignment.center,
+          minLeadingWidth: 35,
+          leading: const SizedBox(),
           title: Center(
             child: Paragraph(
               content: HistoryLanguage.appointmentSchedule,
@@ -87,6 +120,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
               ),
             ),
           ),
+          trailing: buildIcNotification(),
         ),
       ),
     );
@@ -102,13 +136,17 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
         },
         tabs: [
           Tab(
-            text: HistoryLanguage.daysBefore,
+            text: _viewModel!.currentTab==0? '${HistoryLanguage.previousAppointment} (${
+              _viewModel!.itemTab})' 
+              :HistoryLanguage.previousAppointment,
           ),
           Tab(
-            text: HistoryLanguage.today,
+            text:_viewModel!.currentTab==1? '${HistoryLanguage.today} (${
+              _viewModel!.itemTab})': HistoryLanguage.today,
           ),
           Tab(
-            text: HistoryLanguage.upcoming,
+            text:_viewModel!.currentTab==2? '${HistoryLanguage.upcoming} (${
+              _viewModel!.itemTab})': HistoryLanguage.upcoming,
           ),
           Tab(
             text: HistoryLanguage.done,
@@ -156,6 +194,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabDaysBefore() {
     return ScreenTap(
+      isDayBefore: true,
       contentEmpty: HistoryLanguage.notificationEmptyBefore,
       listCurrent: _viewModel!.listCurrentDaysBefore,
       isLoading: _viewModel!.isLoading,
@@ -185,6 +224,11 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabToday() {
     return ScreenTap(
+      keyRemind: _viewModel!.keyRemind1,
+      keyED: _viewModel!.keyED1,
+      keyStatus: _viewModel!.keyStatus1,
+      onRemind: (value, list, index)
+        => _viewModel!.checkAllowNotification(value, list, index),
       contentEmpty: HistoryLanguage.notificationEmptyToday,
       listCurrent: _viewModel!.listCurrentToday,
       isLoading: _viewModel!.isLoading,
@@ -214,6 +258,11 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen>
 
   Widget buildTabUpcoming() {
     return ScreenTap(
+      keyED: _viewModel!.keyED2,
+      keyStatus: _viewModel!.keyStatus2,
+      keyRemind: _viewModel!.keyRemind2,
+      onRemind: (value, list, index)
+        => _viewModel!.checkAllowNotification(value, list, index),
       contentEmpty: HistoryLanguage.notificationEmptyUpcoming,
       isLoading: _viewModel!.isLoading,
       listCurrent: _viewModel!.listCurrentUpcoming,

@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -16,10 +18,15 @@ class NotificationService extends StatelessWidget {
     this.phoneNumber,
     this.onTapPhone,
     this.isButton = false,
+    this.isRemind=false,
+    this.isDayBefore=false,
     this.onTapDeleteBooking,
     this.onTapEditBooking,
     this.onPay,
     this.context,
+    this.onRemind, 
+    this.keyRemind, 
+    this.keyED
   });
 
   final String? date;
@@ -34,6 +41,11 @@ class NotificationService extends StatelessWidget {
   final Function()? onTapEditBooking;
   final Function()? onPay;
   final BuildContext? context;
+  final bool isRemind;
+  final bool isDayBefore;
+  final Function(bool isRemind)? onRemind;
+  final GlobalKey? keyRemind;
+  final GlobalKey? keyED;
 
   Widget buildTitle({
     IconData? icon,
@@ -76,6 +88,31 @@ class NotificationService extends StatelessWidget {
     );
   }
 
+  Widget buildRemind(){
+    return !isDayBefore? Showcase(
+      description: BookingLanguage.remindBooking,
+      key: keyRemind?? GlobalKey(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Paragraph(
+            content: '${BookingLanguage.remind}: ',
+            style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
+          ),
+          // Switch(
+          //   activeColor: AppColors.PRIMARY_GREEN,
+          //   value: isRemind, 
+          //   onChanged:(value)=> onRemind!(value),
+          // ),
+          CupertinoSwitch(
+            value: isRemind,
+            onChanged:(value)=> onRemind!(value),
+          ),
+        ],
+      ),
+    ): Container();
+  }
+
   Widget buildHeaderCard() {
     return Column(
       children: [
@@ -100,6 +137,9 @@ class NotificationService extends StatelessWidget {
             color: AppColors.FIELD_GREEN,
           ),
         ),
+        if (isButton) 
+          buildRemind()  
+        else const SizedBox(),
       ],
     );
   }
@@ -134,64 +174,68 @@ class NotificationService extends StatelessWidget {
   }
 
   Widget buildButtonMore() {
-    return MenuAnchor(
-      builder: (context, controller, child) {
-        return GestureDetector(
-          onTap: () {
-            if (controller.isOpen) {
-              controller.close();
-            } else {
-              controller.open();
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.all(SpaceBox.sizeVerySmall),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(SpaceBox.sizeVerySmall),
-              ),
-              border: Border.all(
-                color: AppColors.BLACK_300,
-              ),
-            ),
-            child: const Icon(Icons.more_horiz),
-          ),
-        );
-      },
-      menuChildren: [
-        MenuItemButton(
-          onPressed: () => onTapEditBooking!(),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.edit,
-                color: AppColors.PRIMARY_GREEN,
-              ),
-              Paragraph(
-                content: HistoryLanguage.edit,
-                style: STYLE_MEDIUM_BOLD.copyWith(
-                  color: AppColors.PRIMARY_GREEN,
+    return Showcase(
+      key: keyED??GlobalKey(),
+      description: BookingLanguage.EDBooking,
+      child: MenuAnchor(
+        builder: (context, controller, child) {
+          return GestureDetector(
+            onTap: () {
+              if (controller.isOpen) {
+                controller.close();
+              } else {
+                controller.open();
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(SpaceBox.sizeVerySmall),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(SpaceBox.sizeVerySmall),
+                ),
+                border: Border.all(
+                  color: AppColors.BLACK_300,
                 ),
               ),
-            ],
+              child: const Icon(Icons.more_horiz),
+            ),
+          );
+        },
+        menuChildren: [
+          MenuItemButton(
+            onPressed: () => onTapEditBooking!(),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.edit,
+                  color: AppColors.PRIMARY_GREEN,
+                ),
+                Paragraph(
+                  content: HistoryLanguage.edit,
+                  style: STYLE_MEDIUM_BOLD.copyWith(
+                    color: AppColors.PRIMARY_GREEN,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        MenuItemButton(
-          onPressed: () => onTapDeleteBooking!(),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.delete,
-                color: AppColors.PRIMARY_RED,
-              ),
-              Paragraph(
-                content: HistoryLanguage.delete,
-                style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_RED),
-              ),
-            ],
+          MenuItemButton(
+            onPressed: () => onTapDeleteBooking!(),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.delete,
+                  color: AppColors.PRIMARY_RED,
+                ),
+                Paragraph(
+                  content: HistoryLanguage.delete,
+                  style: STYLE_MEDIUM_BOLD.copyWith(color: AppColors.PRIMARY_RED),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -207,7 +251,7 @@ class NotificationService extends StatelessWidget {
                 onTap: () {
                   onPay!();
                 },
-                content: HistoryLanguage.pay,
+                content: HistoryLanguage.payment,
                 enableButton: true,
               ): Container(),
             ),

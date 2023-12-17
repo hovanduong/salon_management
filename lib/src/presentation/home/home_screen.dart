@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -25,16 +26,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   HomeViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
-    final params= ModalRoute.of(context)?.settings.arguments as IncomeParams?;
+    final params = ModalRoute.of(context)?.settings.arguments as IncomeParams?;
     return BaseWidget(
-      viewModel: HomeViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        params: params,),
+      viewModel: HomeViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          params: params,
+        ),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
@@ -88,8 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildHeaderSecond() {
-    final title= '${HomePageLanguage.revenue} ${HomePageLanguage.date} ${
-      AppDateUtils.formatDateTime(_viewModel!.date.toString())}';
+    final title =
+        '${HomePageLanguage.revenue} ${HomePageLanguage.date} ${AppDateUtils.formatDateTime(_viewModel!.date.toString())}';
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
@@ -171,15 +173,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildCardMoney(){
+  Widget buildCardMoney() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
-        vertical: SizeToPadding.sizeSmall,),
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeSmall,
+      ),
       child: Showcase(
         key: _viewModel!.cardMoney,
         description: HomePageLanguage.totalRevenue,
         targetBorderRadius: BorderRadius.circular(
-          BorderRadiusSize.sizeMedium,),
+          BorderRadiusSize.sizeMedium,
+        ),
         child: CardMoneyWidget(
           context: context,
           isDate: _viewModel!.isDate,
@@ -195,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildTitleTransaction(){
+  Widget buildTitleTransaction() {
     return GestureDetector(
       onTap: () => _viewModel!.setShowTransaction(),
       child: Row(
@@ -208,8 +213,10 @@ class _HomeScreenState extends State<HomeScreen> {
               color: AppColors.PRIMARY_GREEN,
             ),
           ),
-          Icon(_viewModel!.isShowTransaction? Icons.arrow_drop_up
-            : Icons.arrow_drop_down, 
+          Icon(
+            _viewModel!.isShowTransaction
+                ? Icons.arrow_drop_up
+                : Icons.arrow_drop_down,
             color: AppColors.PRIMARY_GREEN,
           ),
         ],
@@ -217,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildTitleCardTransaction(int index){
+  Widget buildTitleCardTransaction(int index) {
     return ContentTransactionWidget(
       date: _viewModel!.listCurrent[index].date,
       money: _viewModel!.listCurrent[index].total,
@@ -227,15 +234,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildContentTransaction(int index, int indexService){
-    final name= _viewModel!.listCurrent[index].invoices
-      ?[indexService].myBooking?.category?.name;
+  Widget buildContentTransaction(int index, int indexService) {
+    final name = _viewModel!
+        .listCurrent[index].invoices?[indexService].myBooking?.category?.name;
     return InkWell(
       onTap: () => _viewModel!.goToBookingDetails(
-        context, MyBookingParams(
-          id: _viewModel!.listCurrent[index].invoices?[indexService].myBookingId, 
-          code: _viewModel!.listCurrent[index].invoices?[indexService].code, 
-          isInvoice: true,),),
+        context,
+        MyBookingParams(
+          id: _viewModel!
+              .listCurrent[index].invoices?[indexService].myBookingId,
+          code: _viewModel!.listCurrent[index].invoices?[indexService].code,
+          isInvoice: true,
+        ),
+      ),
       child: SlidableActionWidget(
         isEdit: true,
         onTapButtonDelete: (context) => _viewModel!.deleteBookingHistory(
@@ -245,28 +256,32 @@ class _HomeScreenState extends State<HomeScreen> {
           _viewModel!.listCurrent[index].invoices![indexService].myBooking!,
         ),
         child: ContentTransactionWidget(
-          money: _viewModel!.listCurrent[index].invoices?[indexService].myBooking?.money,
-          nameService: name!='null'? name : HomePageLanguage.dontHave,
-          color: _viewModel!.colors[indexService%_viewModel!.colors.length],
-          isMoneyIncome: _viewModel!.listCurrent[index].invoices
-            ?[indexService].myBooking?.income ?? false,
+          money: _viewModel!
+              .listCurrent[index].invoices?[indexService].myBooking?.money,
+          nameService: name != 'null' ? name : HomePageLanguage.dontHave,
+          color: _viewModel!.colors[indexService % _viewModel!.colors.length],
+          isMoneyIncome: _viewModel!.listCurrent[index].invoices?[indexService]
+                  .myBooking?.income ??
+              false,
         ),
       ),
     );
   }
 
-  Widget buildCardTransaction(int index){
+  Widget buildCardTransaction(int index) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeVerySmall,
         horizontal: SizeToPadding.sizeSmall,
       ),
       decoration: BoxDecoration(
         color: AppColors.COLOR_WHITE,
         borderRadius: BorderRadius.all(
-          Radius.circular(BorderRadiusSize.sizeMedium),),
+          Radius.circular(BorderRadiusSize.sizeMedium),
+        ),
         boxShadow: [
-          BoxShadow(color: AppColors.BLACK_200,
+          BoxShadow(
+            color: AppColors.BLACK_200,
             blurRadius: BorderRadiusSize.sizeMedium,
             blurStyle: BlurStyle.solid,
           ),
@@ -284,89 +299,88 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildTransaction(){
-    return _viewModel!.isShowTransaction?
-    (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)?
-    Padding(
-      padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-      child: EmptyDataWidget(
-        title: HomePageLanguage.emptyTransaction,
-        content: HomePageLanguage.notificationEmptyTransaction,
-      ),
-    ): SizedBox(
-      height: MediaQuery.sizeOf(context).height/1.85,
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-              ? _viewModel!.listCurrent.length + 1
-              : _viewModel!.listCurrent.length,
-          itemBuilder: (context, index) {
-            if (index < _viewModel!.listCurrent.length) {
-              if(index==0){
-                return Showcase(
-                  key: _viewModel!.cardRevenue,
-                  description: HomePageLanguage.dailyRevenue,
-                  child: buildCardTransaction(index),
-                );
-              }
-              return buildCardTransaction(index);
-            } else {
-              return const CupertinoActivityIndicator();
-            }
-          },
-      ),
-    ) : Container();
+  Widget buildTransaction() {
+    return _viewModel!.isShowTransaction
+        ? (_viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading)
+            ? Padding(
+                padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 3),
+                child: EmptyDataWidget(
+                  title: HomePageLanguage.emptyTransaction,
+                  content: HomePageLanguage.notificationEmptyTransaction,
+                ),
+              )
+            : ListView.builder(
+                padding: EdgeInsets.zero,
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    if (index == 0) {
+                      return Showcase(
+                        key: _viewModel!.cardRevenue,
+                        description: HomePageLanguage.dailyRevenue,
+                        child: buildCardTransaction(index),
+                      );
+                    }
+                    return buildCardTransaction(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              )
+        : Container();
   }
 
-  Widget buildBody(){
+  Widget buildBody() {
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () => _viewModel!.pullRefresh(),
       child: SizedBox(
         width: double.maxFinite,
-        height: MediaQuery.sizeOf(context).height-150,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildCardMoney(),
-              buildTitleTransaction(),
-              buildTransaction(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildHomePage() {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      floatingActionButton:_viewModel!.isDate==0? Padding(
-        padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
-        child: Showcase(
-          key: _viewModel!.add,
-          description: HomePageLanguage.addInvoice,
-          targetBorderRadius: BorderRadius.all(Radius.circular(
-            BorderRadiusSize.sizeLarge,),),
-          child: FloatingActionButton(
-            heroTag: 'addBooking',
-            backgroundColor: AppColors.PRIMARY_GREEN,
-            onPressed: () => _viewModel!.goToAddInvoice(context),
-            child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
-          ),
-        ),
-      ): null,
-      body: SingleChildScrollView(
+        height: MediaQuery.sizeOf(context).height - 75,
         child: Column(
           children: [
-            if (_viewModel!.isDate==0) buildHeader()
-            else buildHeaderSecond(),
-            buildBody(),
+            if (_viewModel!.isDate == 0) buildHeader() else buildHeaderSecond(),
+            buildCardMoney(),
+            buildTitleTransaction(),
+            Expanded(child: buildTransaction()),
           ],
         ),
       ),
     );
   }
 
+  Widget buildHomePage() {
+    return UpgradeAlert(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        floatingActionButton: _viewModel!.isDate == 0
+            ? Padding(
+                padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
+                child: Showcase(
+                  key: _viewModel!.add,
+                  description: HomePageLanguage.addInvoice,
+                  targetBorderRadius: BorderRadius.all(
+                    Radius.circular(
+                      BorderRadiusSize.sizeLarge,
+                    ),
+                  ),
+                  child: FloatingActionButton(
+                    heroTag: 'addBooking',
+                    backgroundColor: AppColors.PRIMARY_GREEN,
+                    onPressed: () => _viewModel!.goToAddInvoice(context),
+                    child: const Icon(
+                      Icons.add,
+                      color: AppColors.COLOR_WHITE,
+                    ),
+                  ),
+                ),
+              )
+            : null,
+        body: buildBody(),
+      ),
+    );
+  }
 }

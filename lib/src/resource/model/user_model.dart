@@ -10,6 +10,7 @@ class UserModel {
   String? email;
   String? passwordConfirm;
   num? id;
+  bool? newVersionApp;
 
   UserModel({
     this.id,
@@ -17,8 +18,9 @@ class UserModel {
     this.fullName,
     this.gender,
     this.password,
-    this.email, 
+    this.email,
     this.passwordConfirm,
+    this.newVersionApp,
   });
 }
 
@@ -51,6 +53,7 @@ abstract class UserModelFactory {
     data['email'] = userModel.email;
     data['gender'] = userModel.gender;
     data['id'] = userModel.id;
+    data['newVersionApp'] = userModel.newVersionApp;
 
     return data;
   }
@@ -61,6 +64,7 @@ abstract class UserModelFactory {
       ..fullName = json['fullName']
       ..email = json['email']
       ..gender = json['gender']
+      ..newVersionApp = json['newVersionApp']
       ..id = json['id'];
     return userModel;
   }
