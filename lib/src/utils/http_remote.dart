@@ -12,10 +12,11 @@ String accessToken = '';
 Map<String, String> requestHeaders = {};
 
 class Constants {
-  static String baseUrl = 'https://spa-api.dhysolutions.net/api';
+  // static String baseUrl = 'https://spa-api.dhysolutions.net/api';
 
   // static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
-  // static String baseUrl = 'https://40c2-58-186-124-192.ngrok.io/api';
+  static String baseUrl =
+      'https://1ab0-2405-4802-70ec-f290-b196-b2b8-f837-6213.ngrok.io/api';
 }
 
 class HttpRemote {
