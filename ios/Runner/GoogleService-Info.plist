@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCqBIO-yec2wWr1DxJJ0cGozYS2EeHqiOg</string>
+	<string>AIzaSyCj3XzZ6_azth6BgVuN_sZ72QylNg1pwmw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>665751697700</string>
+	<string>467887400203</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>vn.dhysolutions.management-spa</string>
 	<key>PROJECT_ID</key>
-	<string>spadev-64c7e</string>
+	<string>spa-product</string>
 	<key>STORAGE_BUCKET</key>
-	<string>spadev-64c7e.appspot.com</string>
+	<string>spa-product.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:665751697700:ios:d2539f71e9eeef2df95bb1</string>
+	<string>1:467887400203:ios:fcbd9303d75ffbbed66e0e</string>
 </dict>
 </plist>

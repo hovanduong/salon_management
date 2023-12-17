@@ -15,6 +15,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		9D10EC55038A0D9FE88CA41F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C12422F6406795802AAAC87C /* GoogleService-Info.plist */; };
 		A2468AA86AD17852B18903E5 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BC036EBDE2A8D5E1921F93 /* Pods_Runner.framework */; };
 		FC33E21F2ADD30DF00250E0E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FC33E21E2ADD30DF00250E0E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -65,6 +66,7 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C12422F6406795802AAAC87C /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E7BB5802E40F43B12424612B /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		FC0320782B263A220044AACB /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		FC0320792B263A330044AACB /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				F98436AD8F0D986D95240A4F /* Pods */,
 				5879442397A495235759ACAF /* Frameworks */,
+				C12422F6406795802AAAC87C /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -273,6 +276,7 @@
 				FC33E21F2ADD30DF00250E0E /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				9D10EC55038A0D9FE88CA41F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
