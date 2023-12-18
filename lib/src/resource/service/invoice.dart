@@ -53,7 +53,8 @@ class InvoiceApi {
   ) async {
     try {
       final response = await HttpRemote.get(
-        url: '/invoice?pageSize=10&page=${params.page}&paymentStatus=Paid&timeZone=${params.timeZone}&date=${params.date}&isDate=${params.isDate}',
+        url:
+            '/invoice?pageSize=10&page=${params.page}&paymentStatus=Paid&timeZone=${params.timeZone}&date=${params.date}&isDate=${params.isDate}',
       );
       switch (response?.statusCode) {
         case 200:
@@ -61,6 +62,9 @@ class InvoiceApi {
           final data = json.encode(jsonMap['data']['items']);
           final invoice = InvoiceOverViewModelFactory.createList(data);
           return Success(invoice);
+        case 401:
+          await HttpRemote.logOut(response!.statusCode);
+          return Failure(Exception(response.reasonPhrase));
         default:
           return Failure(Exception(response!.reasonPhrase));
       }
@@ -69,7 +73,9 @@ class InvoiceApi {
     }
   }
 
-  Future<Result<bool, Exception>> deleteInvoice(int id,) async {
+  Future<Result<bool, Exception>> deleteInvoice(
+    int id,
+  ) async {
     try {
       final response = await HttpRemote.delete(
         url: '/invoice/$id',
