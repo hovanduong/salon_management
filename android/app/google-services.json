@@ -1,79 +1,26 @@
 {
   "project_info": {
-    "project_number": "665751697700",
-    "project_id": "spadev-64c7e",
-    "storage_bucket": "spadev-64c7e.appspot.com"
+    "project_number": "467887400203",
+    "project_id": "spa-product",
+    "storage_bucket": "spa-product.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:665751697700:android:45c18ed535c22a0bf95bb1",
+        "mobilesdk_app_id": "1:467887400203:android:f6ed17176f331382d66e0e",
         "android_client_info": {
           "package_name": "com.dhysolutios.apcare"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "665751697700-r8gstqpd70ne3nb0c2394b3j42qr8l10.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyABvJk9RCujmSQ_KtohA-dvMsz6OkYFaZo"
+          "current_key": "AIzaSyBpiCIWpY0T_dlzHtM9hJB_l_RYUWRyE9Q"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "665751697700-r8gstqpd70ne3nb0c2394b3j42qr8l10.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "665751697700-1dik8gsbakqfv85l350ol6s21ene5unu.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.bookingApp.RunnerTests"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:665751697700:android:28b84ea98018f0aaf95bb1",
-        "android_client_info": {
-          "package_name": "com.spa.app.management"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "665751697700-r8gstqpd70ne3nb0c2394b3j42qr8l10.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyABvJk9RCujmSQ_KtohA-dvMsz6OkYFaZo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "665751697700-r8gstqpd70ne3nb0c2394b3j42qr8l10.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "665751697700-1dik8gsbakqfv85l350ol6s21ene5unu.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.bookingApp.RunnerTests"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
