@@ -13,8 +13,6 @@ Map<String, String> requestHeaders = {};
 
 class Constants {
   static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
-
-
 }
 
 class HttpRemote {

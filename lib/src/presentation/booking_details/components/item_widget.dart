@@ -40,7 +40,7 @@ class ItemWidget extends StatelessWidget {
           width: SpaceBox.sizeSmall,
         ),
         SizedBox(
-          width: width ?? null,
+          width: width,
           child: Paragraph(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

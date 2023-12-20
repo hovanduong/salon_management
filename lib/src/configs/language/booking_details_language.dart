@@ -14,4 +14,5 @@ class BookingDetailsLanguage {
   static final dontHave = S.current.dontHave;
   static final booking = S.current.booking;
   static final contentBookingDetailEmpty = S.current.contentBookingDetailEmpty;
+  static final phoneNumber = S.current.phoneNumber;
 }
