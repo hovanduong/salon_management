@@ -19,11 +19,11 @@ Future<void> main() async {
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
   await Upgrader.clearSavedSettings();
+  await HttpRemote.init();
   ConfigCrashlytics.init();
   notificationInitialed();
   await ConfigPerformance.init();
   await AppDeviceInfo.init();
-  await HttpRemote.init();
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
