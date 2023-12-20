@@ -21,7 +21,7 @@ class DeviceInfoApi {
   ) async {
     try {
       final response = await HttpRemote.post(
-        url: '/auth/device-info',
+        url: '/device-info',
         body: {
           'deviceID': params?.deviceID ?? '',
           'deviceName': params?.deviceName ?? '',
