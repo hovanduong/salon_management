@@ -48,14 +48,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Widget buildAddress(int index) {
-    return _viewModel!.listMyBooking[index].address == 'Trống'? ListTile(
+    return _viewModel!.listMyBooking[index].address != ''? ListTile(
       minLeadingWidth: SpaceBox.sizeSmall,
       leading: SvgPicture.asset(
         AppImages.icLocation,
         color: AppColors.PRIMARY_GREEN,
       ),
       title: Paragraph(
-        content: _viewModel!.listMyBooking[index].address == 'Trống'
+        content: _viewModel!.listMyBooking[index].address == ''
             ? ''
             : _viewModel!.listMyBooking[index].address,
         style: STYLE_SMALL_BOLD.copyWith(fontSize: SpaceBox.sizeMedium),
@@ -167,6 +167,16 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     ): Container();
   }
 
+  Widget buildPhoneNumber(int index) {
+    final phone= _viewModel!.listMyBooking[index].myCustomer?.phoneNumber;
+    return phone!=''? ItemWidget(
+      width: MediaQuery.of(context).size.width - 170,
+      title: '${BookingDetailsLanguage.phoneNumber}:',
+      content: phone,
+      fontWeightContent: FontWeight.w500,
+    ): Container();
+  }
+
   Widget buildToTalMoney(int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
@@ -202,6 +212,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         children: [
           buildDateAndStatus(index, date),
           buildNameClient(index),
+          buildPhoneNumber(index),
           buildDivider(),
           buildToTalMoney(index),
         ],
