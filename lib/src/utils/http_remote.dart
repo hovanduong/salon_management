@@ -12,7 +12,7 @@ String accessToken = '';
 Map<String, String> requestHeaders = {};
 
 class Constants {
-  static String baseUrl = 'https://2fba-113-22-101-238.ngrok-free.app/api';
+  static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
 }
 
 class HttpRemote {
