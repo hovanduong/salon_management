@@ -59,8 +59,8 @@ android {
         applicationId "com.dhysolutios.apcare"
         minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 12
-        versionName "1.0.8"
+        versionCode 13
+        versionName "1.0.9"
         multiDexEnabled true
 
     }
