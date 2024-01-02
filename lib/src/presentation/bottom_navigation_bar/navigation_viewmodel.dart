@@ -13,10 +13,7 @@ import '../base/base.dart';
 class NavigateViewModel extends BaseViewModel {
   int selectedIndex = 0;
   BannerAd? bannerAd;
-  bool showAd = true;
-
   dynamic init(IncomeParams? params) {
-    bannerAd = AdModService.loadAd(bannerAd);
     if (params != null) {
       selectedIndex = params.page ?? 0;
     }

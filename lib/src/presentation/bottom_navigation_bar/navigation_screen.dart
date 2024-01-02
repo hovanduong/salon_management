@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../../configs/ad_mode_service/ad_mode_service.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/navigate_language.dart';
 import '../../resource/service/income_api.dart';
@@ -91,21 +92,17 @@ class _NavigateScreenState extends State<NavigateScreen> {
           children: [
             appBarNavigator(),
             const SizedBox(
-              height: 120,
+              height: 135,
             ),
-            if (_viewModel!.showAd && _viewModel!.bannerAd != null)
-              Positioned(
+            Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _viewModel!.bannerAd!.size.width.toDouble(),
-                    height: _viewModel!.bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _viewModel!.bannerAd!),
-                  ),
-                ),
-              ),
+                child: AdBanner(
+                  banner: (value) {
+                    print(value);
+                  },
+                )),
           ],
         ),
       ),
