@@ -26,10 +26,10 @@ class NavigateScreen extends StatefulWidget {
 class _NavigateScreenState extends State<NavigateScreen> {
   final PageStorageBucket bucket = PageStorageBucket();
   NavigateViewModel? _viewModel;
-  BannerAd? _bannerAd;
+
   @override
   Widget build(BuildContext context) {
-    final page= ModalRoute.of(context)?.settings.arguments;
+    final page = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
       onViewModelReady: (viewModel) {
@@ -53,38 +53,61 @@ class _NavigateScreenState extends State<NavigateScreen> {
               //   // key: PageStorageKey('HomePage'),
               // )
               const HomeScreen(
-                // key: PageStorageKey('HomePage'),
-              )
+                  // key: PageStorageKey('HomePage'),
+                  )
             else
               Container(),
             if (_viewModel!.selectedIndex == 1)
               const CalendarScreen(
-                // key: PageStorageKey('invoicePage'),
-              )
+                  // key: PageStorageKey('invoicePage'),
+                  )
             else
               Container(),
             if (_viewModel!.selectedIndex == 2)
               const BookingHistoryScreen(
-                // key: PageStorageKey('BookingPage'),
-              )
+                  // key: PageStorageKey('BookingPage'),
+                  )
             else
               Container(),
             if (_viewModel!.selectedIndex == 3)
               const DebitScreen(
-                // key: PageStorageKey('BookingPage'),
-              )
+                  // key: PageStorageKey('BookingPage'),
+                  )
             else
               Container(),
             if (_viewModel!.selectedIndex == 4)
               const ProfileScreen(
-                // key: PageStorageKey('ProfilePage'),
-              )
+                  // key: PageStorageKey('ProfilePage'),
+                  )
             else
               Container(),
-            if (_viewModel!.selectedIndex == 5) const SizedBox() else Container(),
+            if (_viewModel!.selectedIndex == 5)
+              const SizedBox()
+            else
+              Container(),
           ],
         ),
-        bottomNavigationBar: appBarNavigator(),
+        bottomNavigationBar: Stack(
+          children: [
+            appBarNavigator(),
+            const SizedBox(
+              height: 120,
+            ),
+            if (_viewModel!.showAd && _viewModel!.bannerAd != null)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _viewModel!.bannerAd!.size.width.toDouble(),
+                    height: _viewModel!.bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _viewModel!.bannerAd!),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -126,8 +149,9 @@ class _NavigateScreenState extends State<NavigateScreen> {
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
-            color: _viewModel!.selectedIndex == 3?
-              AppColors.PRIMARY_GREEN: AppColors.BLACK_300 ,
+            color: _viewModel!.selectedIndex == 3
+                ? AppColors.PRIMARY_GREEN
+                : AppColors.BLACK_300,
             name: _viewModel!.selectedIndex == 3
                 ? AppImages.icDebit
                 : AppImages.icDebit,
