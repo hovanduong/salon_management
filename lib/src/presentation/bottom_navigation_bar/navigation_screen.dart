@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/navigate_language.dart';
@@ -25,6 +26,7 @@ class NavigateScreen extends StatefulWidget {
 class _NavigateScreenState extends State<NavigateScreen> {
   final PageStorageBucket bucket = PageStorageBucket();
   NavigateViewModel? _viewModel;
+  BannerAd? _bannerAd;
   @override
   Widget build(BuildContext context) {
     final page= ModalRoute.of(context)?.settings.arguments;
