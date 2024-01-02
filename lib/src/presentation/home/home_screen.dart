@@ -1,4 +1,4 @@
-// ignore_for_file: use_late_for_private_fields_and_variables
+// ignore_for_file: use_late_for_private_fields_and_variables, lines_longer_than_80_chars
 
 import 'dart:io';
 
@@ -148,8 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
         content: BookingLanguage.done,
         enableButton: true,
         onTap: () async {
-          await _viewModel!.init();
           Navigator.pop(context);
+          await _viewModel!.init();
         },
       ),
     );
