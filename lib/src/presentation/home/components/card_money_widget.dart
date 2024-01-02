@@ -10,14 +10,14 @@ import '../../../configs/language/homepage_language.dart';
 
 class CardMoneyWidget extends StatelessWidget {
   const CardMoneyWidget({
-    super.key, 
-    this.iconShowTotalBalance=true,
-    this.money, 
-    this.onShowTotalBalance, 
-    this.moneyIncome, 
-    this.moneyExpenses, 
-    this.context, 
-    this.onShowMonth, 
+    super.key,
+    this.iconShowTotalBalance = true,
+    this.money,
+    this.onShowTotalBalance,
+    this.moneyIncome,
+    this.moneyExpenses,
+    this.context,
+    this.onShowMonth,
     this.globalKey,
     this.isDate,
   });
@@ -30,7 +30,7 @@ class CardMoneyWidget extends StatelessWidget {
   final Function()? onShowMonth;
   final BuildContext? context;
   final GlobalKey? globalKey;
-  final int ? isDate;
+  final int? isDate;
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +51,23 @@ class CardMoneyWidget extends StatelessWidget {
           buildMoneyTotalBalance(),
           const Expanded(child: SizedBox()),
           buildTitleFluctuations(),
-          SizedBox(height: SpaceBox.sizeSmall,),
+          SizedBox(
+            height: SpaceBox.sizeSmall,
+          ),
           buildMoneyFluctuations(),
-          SizedBox(height: SpaceBox.sizeSmall,),
+          SizedBox(
+            height: SpaceBox.sizeSmall,
+          ),
         ],
       ),
     );
   }
 
-  Widget buildMoneyFluctuations(){
+  Widget buildMoneyFluctuations() {
     return buildRowBetween(
-      contentLeft:Container(
+      contentLeft: Container(
         alignment: Alignment.centerLeft,
-        width: MediaQuery.sizeOf(context!).width/2.6,
+        width: MediaQuery.sizeOf(context!).width / 2.6,
         child: Paragraph(
           content: moneyIncome ?? '',
           maxLines: 1,
@@ -76,7 +80,7 @@ class CardMoneyWidget extends StatelessWidget {
       ),
       contentRight: Container(
         alignment: Alignment.centerRight,
-        width: MediaQuery.sizeOf(context!).width/2.6,
+        width: MediaQuery.sizeOf(context!).width / 2.6,
         child: Paragraph(
           content: moneyExpenses ?? '',
           maxLines: 1,
@@ -90,12 +94,16 @@ class CardMoneyWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTitleFluctuations(){
+  Widget buildTitleFluctuations() {
     return buildRowBetween(
       contentLeft: Row(
         children: [
-          Image.asset(AppImages.arrowDownIcon,
-            width: 20, height: 20, color: AppColors.COLOR_WHITE,),
+          Image.asset(
+            AppImages.arrowDownIcon,
+            width: 20,
+            height: 20,
+            color: AppColors.COLOR_WHITE,
+          ),
           Paragraph(
             content: HomeLanguage.income,
             style: STYLE_LARGE.copyWith(
@@ -106,8 +114,12 @@ class CardMoneyWidget extends StatelessWidget {
       ),
       contentRight: Row(
         children: [
-          Image.asset(AppImages.arrowUpIcon,
-            width: 20, height: 20, color: AppColors.COLOR_WHITE,),
+          Image.asset(
+            AppImages.arrowUpIcon,
+            width: 20,
+            height: 20,
+            color: AppColors.COLOR_WHITE,
+          ),
           Paragraph(
             content: HomeLanguage.expenses,
             style: STYLE_LARGE.copyWith(
@@ -119,29 +131,31 @@ class CardMoneyWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMoneyTotalBalance(){
-    return iconShowTotalBalance? Paragraph(
-      content: money?? '',
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: STYLE_VERY_BIG.copyWith(
-        fontWeight: FontWeight.w800,
-        color: AppColors.COLOR_WHITE,
-      ),
-    ): Container();
+  Widget buildMoneyTotalBalance() {
+    return iconShowTotalBalance
+        ? Paragraph(
+            content: money ?? '',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: STYLE_VERY_BIG.copyWith(
+              fontWeight: FontWeight.w800,
+              color: AppColors.COLOR_WHITE,
+            ),
+          )
+        : Container();
   }
 
-  Widget buildRowBetween({Widget? contentLeft, Widget? contentRight}){
+  Widget buildRowBetween({Widget? contentLeft, Widget? contentRight}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         contentLeft ?? Container(),
-        contentRight?? Container(),
+        contentRight ?? Container(),
       ],
     );
   }
 
-  Widget buildTitleTotalBalance(){
+  Widget buildTitleTotalBalance() {
     return buildRowBetween(
       contentLeft: InkWell(
         onTap: () => onShowTotalBalance!(),
@@ -154,23 +168,30 @@ class CardMoneyWidget extends StatelessWidget {
                 color: AppColors.COLOR_WHITE,
               ),
             ),
-            Icon(iconShowTotalBalance
-              ? Icons.keyboard_arrow_up
-              : Icons.keyboard_arrow_down,
+            Icon(
+              iconShowTotalBalance
+                  ? Icons.keyboard_arrow_up
+                  : Icons.keyboard_arrow_down,
               color: AppColors.COLOR_WHITE,
             ),
           ],
         ),
       ),
-      contentRight:isDate==0? Showcase(
-        description: HomePageLanguage.chooseMonth,
-        key: globalKey?? GlobalKey(),
-        child: InkWell(
-          onTap: ()=> onShowMonth!(),
-          child: SvgPicture.asset(AppImages.icMore,
-            width: 25, height: 25, color: AppColors.COLOR_WHITE,),
-        ),
-      ): null,
+      contentRight: isDate == 0
+          ? Showcase(
+              description: HomePageLanguage.chooseMonth,
+              key: globalKey ?? GlobalKey(),
+              child: InkWell(
+                onTap: () => onShowMonth!(),
+                child: SvgPicture.asset(
+                  AppImages.icMore,
+                  width: 25,
+                  height: 25,
+                  color: AppColors.COLOR_WHITE,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }
