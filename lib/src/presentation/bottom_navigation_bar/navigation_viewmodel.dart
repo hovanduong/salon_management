@@ -12,7 +12,8 @@ import '../base/base.dart';
 
 class NavigateViewModel extends BaseViewModel {
   int selectedIndex = 0;
-  BannerAd? bannerAd;
+  bool isShowBanner = false;
+
   dynamic init(IncomeParams? params) {
     if (params != null) {
       selectedIndex = params.page ?? 0;
@@ -22,6 +23,12 @@ class NavigateViewModel extends BaseViewModel {
 
   void changeIndex(int index) {
     selectedIndex = index;
+    notifyListeners();
+  }
+
+  void onChangeBanner({bool? value}) {
+    isShowBanner = value ?? false;
+    // print("isShowBanner" + isShowBanner.toString());
     notifyListeners();
   }
 

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdBanner extends StatefulWidget {
-  const AdBanner({Key? key, this.banner}) : super(key: key);
-  final bool Function(bool? value)? banner;
+  const AdBanner({Key? key, this.onBanner}) : super(key: key);
+  final ValueChanged<bool>? onBanner;
   @override
   State<AdBanner> createState() => _AdBannerState();
 }
@@ -15,7 +15,7 @@ class _AdBannerState extends State<AdBanner> {
   bool _isLoaded = false;
   static final bannerAdUnitId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-3940256099942544/2934735716';
+      : 'ca-app-pub-4606907034597798/1078431304';
   @override
   void initState() {
     super.initState();
@@ -23,7 +23,6 @@ class _AdBannerState extends State<AdBanner> {
       final windowWidth = MediaQuery.of(context).size.width.truncate();
       _loadAd(windowWidth);
     });
-    widget.banner!(_isLoaded && _inlineAdaptiveAd != null);
   }
 
   void _loadAd(int windowWidth) async {
@@ -58,6 +57,7 @@ class _AdBannerState extends State<AdBanner> {
 
   @override
   Widget build(BuildContext context) {
+    widget.onBanner!(_isLoaded && _inlineAdaptiveAd != null);
     return (_isLoaded && _inlineAdaptiveAd != null)
         ? Align(
             alignment: Alignment.bottomCenter,

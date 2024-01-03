@@ -27,16 +27,18 @@ class NavigateScreen extends StatefulWidget {
 class _NavigateScreenState extends State<NavigateScreen> {
   final PageStorageBucket bucket = PageStorageBucket();
   NavigateViewModel? _viewModel;
-
+  bool isShowBanner = false;
   @override
   Widget build(BuildContext context) {
     final page = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
-      onViewModelReady: (viewModel) {
-        _viewModel = viewModel;
-        _viewModel!.init(page as IncomeParams?);
-      },
+      // onViewModelReady: (viewModel) {
+      //   _viewModel = viewModel;
+      //   _viewModel!.init(page as IncomeParams?);
+      // },
+      onViewModelReady: (viewModel) =>
+          _viewModel = viewModel!..init(page as IncomeParams?),
       builder: (context, viewModel, child) => buildNavigateScreen(),
     );
   }
@@ -91,16 +93,19 @@ class _NavigateScreenState extends State<NavigateScreen> {
         bottomNavigationBar: Stack(
           children: [
             appBarNavigator(),
-            const SizedBox(
-              height: 135,
-            ),
+            if (_viewModel!.isShowBanner)
+              const SizedBox(
+                height: 135,
+              ),
             Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: AdBanner(
-                  banner: (value) {
-                    print(value);
+                  onBanner: (value) {
+                    Future.delayed(Duration.zero, () {
+                      _viewModel!.onChangeBanner(value: value);
+                    });
                   },
                 )),
           ],

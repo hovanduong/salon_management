@@ -20,7 +20,7 @@ Future<void> main() async {
   );
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
-  unawaited(MobileAds.instance.initialize());
+  await MobileAds.instance.initialize();
   await Upgrader.clearSavedSettings();
   await HttpRemote.init();
   ConfigCrashlytics.init();
@@ -41,3 +41,4 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback = (cert, host, port) => true;
   }
 }
+
