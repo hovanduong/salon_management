@@ -67,6 +67,7 @@
 		E7BB5802E40F43B12424612B /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		FC0320782B263A220044AACB /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		FC0320792B263A330044AACB /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
+		FCAB18C02B46E76900E2F631 /* ApCare.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = ApCare.xcconfig; path = Flutter/ApCare.xcconfig; sourceTree = "<group>"; };
 		FCC1392E2A6B994300FB0EE2 /* RunnerProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerProfile.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +115,7 @@
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
 				9740EEB31CF90195004384FC /* Generated.xcconfig */,
+				FCAB18C02B46E76900E2F631 /* ApCare.xcconfig */,
 			);
 			name = Flutter;
 			sourceTree = "<group>";
@@ -317,11 +319,10 @@
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
-			dependencyFile = "$(DERIVED_FILES_DIR)/$(INPUT_FILE_PATH).d";
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/ApCare.xcconfig",
+				"",
 			);
 			name = "Run Script";
 			outputPaths = (
@@ -329,6 +330,7 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+			showEnvVarsInLog = 0;
 		};
 		AA502F36AE2229909148B613 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -519,6 +521,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
+				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -714,6 +717,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
+				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -747,6 +751,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
+				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.prod.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
