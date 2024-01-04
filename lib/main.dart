@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -7,15 +8,14 @@ import 'package:flutter/services.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'src/configs/configs.dart';
+import 'src/configs/firebase/init_firebase.dart';
 import 'src/presentation/app/app.dart';
 import 'src/utils/http_remote.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await InitFirebase.initializeApp();
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
   await Upgrader.clearSavedSettings();

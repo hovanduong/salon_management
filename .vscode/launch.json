@@ -1,0 +1,50 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ApCare(Dev)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "DART_DEFINES_APP_NAME=ApCare(Dev)",
+                "--dart-define",
+                // "DART_DEFINES_APP_SUFFIX=.dev",
+                "--dart-define",
+                "DART_DEFINES_BASE_URL=https://spa-api.dhysolutions.net/api",
+            ]
+        },
+        {
+            "name": "ApCare(Stg)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "DART_DEFINES_APP_NAME=ApCare(Stg)",
+                "--dart-define",
+                "DART_DEFINES_APP_SUFFIX=.stg",
+                "--dart-define",
+                "DART_DEFINES_BASE_URL=https://spa-api.dhysolutions.net/api",
+                "--profile",
+            ]
+        },
+        {
+            "name": "ApCare(Prod)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "DART_DEFINES_APP_NAME=ApCare",
+                "--dart-define",
+                "DART_DEFINES_BASE_URL=https://prod.spa.dhysolutions.net/api",
+                "--release",
+            ]
+        }
+    ]
+}
