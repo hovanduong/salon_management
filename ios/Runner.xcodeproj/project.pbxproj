@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0AD024E960D86B8A05320951 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F05A9E5C8A13B124B3C73929 /* GoogleService-Info.plist */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -67,7 +66,6 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7BB5802E40F43B12424612B /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
-		F05A9E5C8A13B124B3C73929 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FC0320782B263A220044AACB /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		FC0320792B263A330044AACB /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
 		FC33E21E2ADD30DF00250E0E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -131,7 +129,6 @@
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				F98436AD8F0D986D95240A4F /* Pods */,
 				5879442397A495235759ACAF /* Frameworks */,
-				F05A9E5C8A13B124B3C73929 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -211,6 +208,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				AA502F36AE2229909148B613 /* [CP] Embed Pods Frameworks */,
 				F13A28F1DCBCEBD36BC737B8 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
+				FCAED87F2B46C30E00B378A7 /* Copy Google Service Plist */,
 			);
 			buildRules = (
 			);
@@ -276,7 +274,6 @@
 				FC33E21F2ADD30DF00250E0E /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				0AD024E960D86B8A05320951 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +391,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" ";
+		};
+		FCAED87F2B46C30E00B378A7 /* Copy Google Service Plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Google Service Plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script fi# Type a script or drag a script file from your workspace to insert its path.\nGOOGLE_SERVICE_INFO_PLIST_FROM=\"${PROJECT_DIR}/Runner/Firebase/${GOOGLE_SERVICE_INFO_PLIST_NAME}\"\n\nBUILD_APP_DIR=\"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\"\n\nGOOGLE_SERVICE_INFO_PLIST_TO=\"${BUILD_APP_DIR}/GoogleService-Info.plist\"\n\ncp \"${GOOGLE_SERVICE_INFO_PLIST_FROM}\" \"${GOOGLE_SERVICE_INFO_PLIST_TO}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -534,9 +549,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GH5JTDDM48;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.bookingApp.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "vn.dhysolutions.management-spa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -552,9 +569,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GH5JTDDM48;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.prod.plist";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.bookingApp.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "vn.dhysolutions.management-spa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -568,9 +587,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GH5JTDDM48;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.bookingApp.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "vn.dhysolutions.management-spa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
