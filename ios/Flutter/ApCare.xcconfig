@@ -7,5 +7,5 @@
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
-DART_DEFINES_APP_NAME=ApCare(Dev)
-DART_DEFINES_APP_SUFFIX=.dev
+DART_DEFINES_APP_NAME=ApCare
+DART_DEFINES_APP_SUFFIX=
