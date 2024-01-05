@@ -7,7 +7,7 @@ import 'firebase_options_staging.dart';
 class InitFirebase {
   static bool isCheckProd() {
     const appName = EnvironmentConfig.appName;
-    const result = appName == 'ApCare(Prod)';
+    const result = appName == 'ApCare';
     return result;
   }
 
