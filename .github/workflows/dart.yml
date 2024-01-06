@@ -29,16 +29,26 @@ jobs:
       # - name: Run Tests
       #   run: flutter test
 
-      - name: Notify Discord on Failure
-        if: failure()
-        uses: appleboy/discord-action@latest
-        with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "CI Failed!"
-
-      - name: Notify Discord on Success
+      - name: Test Success
+        uses: rjstone/discord-webhook-notify@v1
         if: success()
-        uses: appleboy/discord-action@latest
         with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "CI Passed!"
+          severity: info
+          details: Test Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Test Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          details: Test Failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Test Cancelled
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+          severity: warn
+          details: Test Cancelled!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
