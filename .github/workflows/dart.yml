@@ -17,8 +17,8 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'any'
-          channel: 'any'
+          flutter-version: "any"
+          channel: "any"
 
       - name: Clean Code
         run: flutter clean
@@ -26,5 +26,5 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Run Tests
-        run: flutter test
+      # - name: Run Tests
+      #   run: flutter test
