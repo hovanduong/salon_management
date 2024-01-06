@@ -3,11 +3,11 @@
 class EnvironmentConfig {
   static const appName = String.fromEnvironment(
     'DART_DEFINES_APP_NAME',
-    defaultValue: 'QLTVX',
+    defaultValue: 'ApCare',
   );
   static const appSuffix = String.fromEnvironment('DART_DEFINES_APP_SUFFIX');
   static const baseUrl = String.fromEnvironment(
     'DART_DEFINES_BASE_URL',
-    defaultValue: 'https://ame.chuctet.online/api',
+    defaultValue: 'https://spa-api.dhysolutions.net/api',
   );
 }

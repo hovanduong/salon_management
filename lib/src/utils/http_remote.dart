@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import '../configs/configs.dart';
 import '../presentation/app/app.dart';
 import '../presentation/routers.dart';
 import 'utils.dart';
@@ -10,29 +11,17 @@ import 'utils.dart';
 Client client = http.Client();
 String accessToken = '';
 Map<String, String> requestHeaders = {};
-
-class Constants {
-  static String baseUrl = 'https://prod.spa.dhysolutions.net/api';
-}
+const baseUrl = EnvironmentConfig.baseUrl;
 
 class HttpRemote {
   HttpRemote._();
 
   static final HttpRemote instance = HttpRemote._();
+
   static Future<void> init() async {
     accessToken = await AppPref.getToken() ?? '';
-    // final fullName = await AppPref.getDataUSer('fullName') ?? '';
-    // final id = await AppPref.getDataUSer('id') ?? '';
-    // final email = await AppPref.getDataUSer('email') ?? '';
-    // final gender = await AppPref.getDataUSer('gender') ?? '';
-    // final phoneNumber = await AppPref.getDataUSer('phoneNumber') ?? '';
-
     print('accessToken: $accessToken');
-    // log('fullName: $fullName');
-    // print('id: $id');
-    // log('email: $email');
-    // log('gender: $gender');
-    // log('phoneNumber: $phoneNumber');
+    
 
     if (accessToken.isEmpty || accessToken == 'null') {
       requestHeaders = {
@@ -62,7 +51,7 @@ class HttpRemote {
     Object? body,
   }) {
     return client.get(
-      Uri.parse(Constants.baseUrl + url),
+      Uri.parse(baseUrl + url),
       headers: requestHeaders,
     );
   }
@@ -72,7 +61,7 @@ class HttpRemote {
     Object? body,
   }) {
     return client.post(
-      Uri.parse(Constants.baseUrl + url),
+      Uri.parse(baseUrl + url),
       headers: requestHeaders,
       body: jsonEncode(body),
     );
@@ -83,7 +72,7 @@ class HttpRemote {
     Object? body,
   }) {
     return client.put(
-      Uri.parse(Constants.baseUrl + url),
+      Uri.parse(baseUrl + url),
       headers: requestHeaders,
       body: body == null ? null : jsonEncode(body),
     );
@@ -94,7 +83,7 @@ class HttpRemote {
     Object? body,
   }) {
     return client.delete(
-      Uri.parse(Constants.baseUrl + url),
+      Uri.parse(baseUrl + url),
       headers: requestHeaders,
       body: body == null ? null : jsonEncode(body),
     );
@@ -105,7 +94,7 @@ class HttpRemote {
     Object? body,
   }) {
     return client.patch(
-      Uri.parse(Constants.baseUrl + url),
+      Uri.parse(baseUrl + url),
       headers: requestHeaders,
       body: jsonEncode(body),
     );

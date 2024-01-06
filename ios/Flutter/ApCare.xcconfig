@@ -1,0 +1,11 @@
+//
+//  ApCare.xcconfig
+//  Runner
+//
+//  Created by Ho Van Duong on 04/01/2024.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+DART_DEFINES_APP_NAME=ApCare
+DART_DEFINES_APP_SUFFIX=
