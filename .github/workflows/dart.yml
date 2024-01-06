@@ -28,17 +28,17 @@ jobs:
 
       # - name: Run Tests
       #   run: flutter test
-      
+
       - name: Notify Discord on Failure
         if: failure()
         uses: appleboy/discord-action@v0.9.1
         with:
           webhook_id: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'CI Failed!'
+          message: "CI Failed!"
 
       - name: Notify Discord on Success
         if: success()
         uses: appleboy/discord-action@v0.9.1
         with:
           webhook_id: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'CI Passed!'
+          message: "CI Passed!"
