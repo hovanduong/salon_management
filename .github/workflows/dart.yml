@@ -1,27 +1,26 @@
-
 name: Flutter CI
 
 on:
   push:
-      branches: ["master"]
+    branches: ["master"]
   pull_request:
-      branches: ["master"]
+    branches: ["master"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.16.1'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.0.1"
 
-    - name: Install Dependencies
-      run: flutter pub get
+      - name: Install Dependencies
+        run: flutter pub get
 
-    - name: Run Tests
-      run: flutter test
+      - name: Run Tests
+        run: flutter test
