@@ -24,12 +24,28 @@ class MyApp extends StatelessWidget {
       key: key,
       debugShowCheckedModeBanner: false,
       // navigatorObservers: [ConfigAnalytics.observer],
-      theme: ThemeData(fontFamily: Constants.fonts, 
-        primarySwatch: Colors.green,),
+      theme: ThemeData(
+        fontFamily: Constants.fonts,
+        primarySwatch: Colors.green,
+      ),
       builder: (context, widget) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: widget!,
+
       ),
+      // builder: (context, widget) {
+      //   final mediaQuery = MediaQuery.of(context);
+      //   var paddingBottom = 50.0;
+      //   var paddingRight = 0.0;
+      //   if (mediaQuery.orientation == Orientation.landscape) {
+      //     paddingBottom = 0.0;
+      //     paddingRight = 50.0;
+      //   }
+      //   return Padding(
+      //     padding: EdgeInsets.only(bottom: paddingBottom, right: paddingRight),
+      //     child: widget,
+      //   );
+      // },
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -47,7 +63,6 @@ class MyApp extends StatelessWidget {
       //           ),
       initialRoute: Routers.getStarted,
       onGenerateRoute: Routers.generateRoute,
-      // home: BookingDetailsScreen(),
     );
   }
 }

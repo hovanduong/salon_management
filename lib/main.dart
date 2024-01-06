@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'src/configs/configs.dart';
@@ -18,6 +20,7 @@ Future<void> main() async {
   await InitFirebase.initializeApp();
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
+  await MobileAds.instance.initialize();
   await Upgrader.clearSavedSettings();
   await HttpRemote.init();
   ConfigCrashlytics.init();
@@ -38,3 +41,4 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback = (cert, host, port) => true;
   }
 }
+

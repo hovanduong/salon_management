@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../../configs/ad_mode_service/ad_mode_service.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/navigate_language.dart';
 import '../../resource/service/income_api.dart';
@@ -25,15 +27,18 @@ class NavigateScreen extends StatefulWidget {
 class _NavigateScreenState extends State<NavigateScreen> {
   final PageStorageBucket bucket = PageStorageBucket();
   NavigateViewModel? _viewModel;
+  bool isShowBanner = false;
   @override
   Widget build(BuildContext context) {
-    final page= ModalRoute.of(context)?.settings.arguments;
+    final page = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
-      onViewModelReady: (viewModel) {
-        _viewModel = viewModel;
-        _viewModel!.init(page as IncomeParams?);
-      },
+      // onViewModelReady: (viewModel) {
+      //   _viewModel = viewModel;
+      //   _viewModel!.init(page as IncomeParams?);
+      // },
+      onViewModelReady: (viewModel) =>
+          _viewModel = viewModel!..init(page as IncomeParams?),
       builder: (context, viewModel, child) => buildNavigateScreen(),
     );
   }
@@ -47,42 +52,51 @@ class _NavigateScreenState extends State<NavigateScreen> {
           index: _viewModel!.selectedIndex,
           children: [
             if (_viewModel!.selectedIndex == 0)
-              // const OverViewScreen(
-              //   // key: PageStorageKey('HomePage'),
-              // )
-              const HomeScreen(
-                // key: PageStorageKey('HomePage'),
-              )
+              const HomeScreen()
             else
               Container(),
             if (_viewModel!.selectedIndex == 1)
-              const CalendarScreen(
-                // key: PageStorageKey('invoicePage'),
-              )
+              const CalendarScreen()
             else
               Container(),
             if (_viewModel!.selectedIndex == 2)
-              const BookingHistoryScreen(
-                // key: PageStorageKey('BookingPage'),
-              )
+              const BookingHistoryScreen()
             else
               Container(),
             if (_viewModel!.selectedIndex == 3)
-              const DebitScreen(
-                // key: PageStorageKey('BookingPage'),
-              )
+              const DebitScreen()
             else
               Container(),
             if (_viewModel!.selectedIndex == 4)
-              const ProfileScreen(
-                // key: PageStorageKey('ProfilePage'),
-              )
+              const ProfileScreen()
             else
               Container(),
-            if (_viewModel!.selectedIndex == 5) const SizedBox() else Container(),
+            if (_viewModel!.selectedIndex == 5)
+              const SizedBox()
+            else
+              Container(),
           ],
         ),
-        bottomNavigationBar: appBarNavigator(),
+        bottomNavigationBar: Stack(
+          children: [
+            appBarNavigator(),
+            if (_viewModel!.isShowBanner)
+              const SizedBox(
+                height: 135,
+              ),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AdBanner(
+                  onBanner: (value) {
+                    Future.delayed(Duration.zero, () {
+                      _viewModel!.onChangeBanner(value: value);
+                    });
+                  },
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -124,8 +138,9 @@ class _NavigateScreenState extends State<NavigateScreen> {
         ),
         BottomNavigationBarItem(
           icon: IconTabWidget(
-            color: _viewModel!.selectedIndex == 3?
-              AppColors.PRIMARY_GREEN: AppColors.BLACK_300 ,
+            color: _viewModel!.selectedIndex == 3
+                ? AppColors.PRIMARY_GREEN
+                : AppColors.BLACK_300,
             name: _viewModel!.selectedIndex == 3
                 ? AppImages.icDebit
                 : AppImages.icDebit,
