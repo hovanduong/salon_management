@@ -1,0 +1,2 @@
+json_key_file("/Users/hovanduong/Downloads/praxis-magnet-410519-9abc650ff951.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.dhysolutios.apcare") # e.g. com.krausefx.app
