@@ -1,13 +1,13 @@
 # # This file contains the fastlane.tools configuration
-# # You can find the documentation at https://docs.fastlane.tools
+# # You can find the documentation at https://d...content-available-to-author-only...e.tools
 # #
 # # For a list of all available actions, check out
 # #
-# #     https://docs.fastlane.tools/actions
+# #     https://d...content-available-to-author-only...e.tools/actions
 # #
 # # For a list of all available plugins, check out
 # #
-# #     https://docs.fastlane.tools/plugins/available-plugins
+# #     https://d...content-available-to-author-only...e.tools/plugins/available-plugins
 # #
 
 # # Uncomment the line if you want fastlane to automatically update itself
@@ -40,22 +40,40 @@ default_platform(:android)
 
 platform :android do
   
-  desc "Submit a new Build"
-  lane :beta do
+  # desc "Submit a new Build"
+  # lane :beta do
 
-  #   Dir.chdir "../.." do
-  #     # sh("flutter", "build", "appbundle", "--release")
-  #     sh("flutter", "build", "apk",)
+   desc "Runs all the tests"
+   lane :test do
+     gradle(task: "test")
+   end
+ 
+   desc "Submit a new Beta Build to Crashlytics Beta"
+   lane :beta do
+     gradle(task: "clean assembleRelease")
+     crashlytics
+   end
 
-  #  end
-     
-    firebase_app_distribution(
-        debug: true,
-        app: "spadev-64c7e",
-        firebase_cli_token: "1//0eYjREv00-98qCgYIARAAGA4SNwF-L9IrtBg85y-IhdWH3vfO18PN8otB1yyEnNxHJC23RBwMwz3X6s4Bgt248j7F5WjGd25XUjQ",
-        # apk_path: "../build/app/outputs/flutter-aab/app-release.aab",
-        apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
-        groups: "testers"
+    Dir.chdir "../.." do
+      sh("flutter", "build", "appbundle", "--release")
+      # sh("flutter", "build", "apk",)
+   end
+
+    # firebase_app_distribution(
+    #     debug: true,
+    #     app: "1:665751697700:android:45c18ed535c22a0bf95bb1",
+    #     firebase_cli_token: "1//0eYjREv00-98qCgYIARAAGA4SNwF-L9IrtBg85y-IhdWH3vfO18PN8otB1yyEnNxHJC23RBwMwz3X6s4Bgt248j7F5WjGd25XUjQ",
+    #     # apk_path: "../build/app/outputs/bundle/release/app-release.aab",
+    #     apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
+    #     groups: "testers"
+    # )
+  desc "Deploy a new version to the Internal Google Play"
+  lane :deploy do 
+    upload_to_play_store(
+      track: 'internal', 
+      release_status: 'draft',
+      skip_upload_changelogs: true,
+      aab:  "../build/app/outputs/bundle/release/app-release.aab",
     )
-  end  
+    end
 end

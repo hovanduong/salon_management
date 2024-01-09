@@ -1,0 +1,5 @@
+- Quản lý lịch hẹn. 
+- Quản lý dịch vụ. 
+- Quản lý sổ nợ.
+- Quản lý khách hàng. 
+- Theo dõi doanh thu.
