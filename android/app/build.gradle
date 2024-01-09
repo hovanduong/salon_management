@@ -80,8 +80,8 @@ android {
         applicationIdSuffix dartEnvironmentVariables.DART_DEFINES_APP_SUFFIX
         minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 15
-        versionName "2.0.0"
+        versionCode 16
+        versionName "2.0.1"
          ndk {
              debugSymbolLevel 'FULL'
          }
