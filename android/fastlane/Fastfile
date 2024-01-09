@@ -49,4 +49,41 @@ platform :android do
     )
   end
 
+
+  desc "Build File APK and send Discord notification"
+  lane :build_notify_APK do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-", 
+      title: "Build File Android APK successfully",
+      description:"For Android"
+    )
+  end
+
+  desc "Build File ABB and send Discord notification"
+  lane :build_notify_ABB do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-",
+      title: "Build File Android ABB successfully!",
+      description:"For Android"
+    )
+  end
+
+  desc "Notification Submit App To Distribution"
+  lane :build_notify_distribution do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-",
+      title: "App pushed to Distribution successfully",
+      description:"For Android"
+    )
+  end
+
+  desc "Notification Submit App To Ch Play"
+  lane :build_notify_CHPlay do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-", # Thay thế bằng URL Webhook Discord của bạn
+      title: "Successfully deployed the application to internal Google Play",
+      description:"For Android"
+    )
+  end
+
 end

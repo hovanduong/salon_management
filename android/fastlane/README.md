@@ -63,6 +63,38 @@ Submit File APK To App Distribution
 
 Deploy a new version to the Internal Google Play
 
+### android build_notify_APK
+
+```sh
+[bundle exec] fastlane android build_notify_APK
+```
+
+Build File APK and send Discord notification
+
+### android build_notify_ABB
+
+```sh
+[bundle exec] fastlane android build_notify_ABB
+```
+
+Build File ABB and send Discord notification
+
+### android build_notify_distribution
+
+```sh
+[bundle exec] fastlane android build_notify_distribution
+```
+
+Notification Submit App To Distribution
+
+### android build_notify_CHPlay
+
+```sh
+[bundle exec] fastlane android build_notify_CHPlay
+```
+
+Notification Submit App To Ch Play
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
