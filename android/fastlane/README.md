@@ -31,21 +31,37 @@ Runs all the tests
 
 Submit a new Beta Build to Crashlytics Beta
 
-### android apk
+### android build_apk
 
 ```sh
-[bundle exec] fastlane android apk
+[bundle exec] fastlane android build_apk
 ```
 
 Build File APK
 
-### android distribution
+### android build_aab
 
 ```sh
-[bundle exec] fastlane android distribution
+[bundle exec] fastlane android build_aab
+```
+
+Build File AAB
+
+### android build_distribution
+
+```sh
+[bundle exec] fastlane android build_distribution
 ```
 
 Submit File APK To App Distribution
+
+### android deploy
+
+```sh
+[bundle exec] fastlane android deploy
+```
+
+Deploy a new version to the Internal Google Play
 
 ----
 
