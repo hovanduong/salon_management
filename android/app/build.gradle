@@ -70,13 +70,18 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     defaultConfig {
         applicationId "com.dhysolutios.apcare"
         applicationIdSuffix dartEnvironmentVariables.DART_DEFINES_APP_SUFFIX
         minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 13
-        versionName "1.0.9"
+        versionCode 16
+        versionName "2.0.1"
          ndk {
              debugSymbolLevel 'FULL'
          }

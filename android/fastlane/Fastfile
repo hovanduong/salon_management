@@ -1,0 +1,89 @@
+default_platform(:android)
+
+platform :android do
+  
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  end
+
+  desc "Build File APK"
+  lane :build_apk do
+    Dir.chdir "../.." do 
+      sh("flutter", "build", "apk")
+    end
+  end
+
+  desc "Build File AAB"
+  lane :build_aab do
+    Dir.chdir "../.." do 
+      sh("flutter", "build", "appbundle", "--release")
+    end
+  end
+
+  desc "Submit File APK To App Distribution"
+  lane :build_distribution do
+    firebase_app_distribution(
+      debug: true,
+      app: "1:665751697700:android:45c18ed535c22a0bf95bb1",
+      firebase_cli_token: "1//0eYjREv00-98qCgYIARAAGA4SNwF-L9IrtBg85y-IhdWH3vfO18PN8otB1yyEnNxHJC23RBwMwz3X6s4Bgt248j7F5WjGd25XUjQ",
+      # apk_path: "../build/app/outputs/bundle/release/app-release.aab",
+      apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
+      groups: "testers"
+    )
+  end
+
+  desc "Deploy a new version to the Internal Google Play"
+  lane :deploy do 
+    upload_to_play_store(
+      track: 'internal', 
+      release_status: 'draft',
+      skip_upload_changelogs: true,
+      aab:  "../build/app/outputs/bundle/release/app-release.aab",
+    )
+  end
+
+
+  desc "Build File APK and send Discord notification"
+  lane :build_notify_APK do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-", 
+      title: "Build File Android APK successfully",
+      description:"For Android"
+    )
+  end
+
+  desc "Build File ABB and send Discord notification"
+  lane :build_notify_ABB do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-",
+      title: "Build File Android ABB successfully!",
+      description:"For Android"
+    )
+  end
+
+  desc "Notification Submit App To Distribution"
+  lane :build_notify_distribution do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-",
+      title: "App pushed to Distribution successfully",
+      description:"For Android"
+    )
+  end
+
+  desc "Notification Submit App To Ch Play"
+  lane :build_notify_CHPlay do
+    discord_notifier(
+      webhook_url: "https://discord.com/api/webhooks/1193150189016457357/CGMPZCyxaXMLysVhr8gZUp_gw0ORjL2xG-4qsaMm1WXdvCb-Ax4_JS7JVquJpiHdL2X-", # Thay thế bằng URL Webhook Discord của bạn
+      title: "Successfully deployed the application to internal Google Play",
+      description:"For Android"
+    )
+  end
+
+end
