@@ -70,14 +70,16 @@ class RegisterTopic {
         apnsToken = await FirebaseMessaging.instance.getAPNSToken();
       }
 
-      if (apnsToken != null) {
-        await FirebaseMessaging.instance.subscribeToTopic(userId ?? '');
+      if (apnsToken != null && userId != null) {
+        await FirebaseMessaging.instance.subscribeToTopic(userId);
         await unsubscribeApp();
       }
     } else {
-      print(await FirebaseMessaging.instance.getToken());
-      await FirebaseMessaging.instance.subscribeToTopic(userId ?? '');
-      await unsubscribeApp();
+      // print(await FirebaseMessaging.instance.getToken());
+      if (userId != null) {
+        await FirebaseMessaging.instance.subscribeToTopic(userId);
+        await unsubscribeApp();
+      }
     }
   }
 }
