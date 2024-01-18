@@ -166,7 +166,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildCategory() {
     return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -260,7 +260,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildDateTime() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,),
       child: ButtonDateTimeWidget(
         dateTime: _viewModel!.dateTime,
         time: _viewModel!.time,
@@ -274,8 +274,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildCategory(),
         buildDateTime(),
+        buildCategory(),
         if (Platform.isIOS) const SizedBox(height: 80),
       ],
     );
@@ -285,17 +285,14 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 80),
-          child: Column(
-            children: [
-              buildAppbar(),
-              buildInfo(),
-              buildLineWidget(),
-              // buildServiceInfo(),
-              buildCategoryAndTime(),
-            ],
-          ),
+        child: Column(
+          children: [
+            buildAppbar(),
+            buildInfo(),
+            // buildLineWidget(),
+            // buildServiceInfo(),
+            // buildCategoryAndTime(),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -413,20 +410,23 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildChooseButton() {
-    return Showcase(
-      description: PaymentLanguage.incomeExpenses,
-      key: _viewModel!.key,
-      child: Row(
-        children: [
-          buildButtonSelect(
-            PaymentLanguage.income,
-            !_viewModel!.isButtonSpending,
-          ),
-          buildButtonSelect(
-            PaymentLanguage.expenses,
-            _viewModel!.isButtonSpending,
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+      child: Showcase(
+        description: PaymentLanguage.incomeExpenses,
+        key: _viewModel!.key,
+        child: Row(
+          children: [
+            buildButtonSelect(
+              PaymentLanguage.income,
+              !_viewModel!.isButtonSpending,
+            ),
+            buildButtonSelect(
+              PaymentLanguage.expenses,
+              _viewModel!.isButtonSpending,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -441,9 +441,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         ),
         child: Column(
           children: [
-            buildFieldPhone(),
+            // buildFieldPhone(),
             buildName(),
-            buildAddress(),
+            // buildAddress(),
             buildNote(),
           ],
         ),
@@ -452,17 +452,25 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildInfo() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
+    return Container(
+      height: MediaQuery.sizeOf(context).height-70,
+      width: double.maxFinite,
+      padding: EdgeInsets.only(
+        top: SizeToPadding.sizeMedium,
+        bottom: 85,
       ),
-      child: Column(
-        children: [
-          buildInfoCustomer(),
-          buildFieldMoney(),
-          buildRemindMoney(),
-          buildChooseButton(),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildInfoCustomer(),
+            buildFieldMoney(),
+            buildRemindMoney(),
+            buildDateTime(),
+            buildChooseButton(),
+            buildCategory(),
+            if (Platform.isIOS) const SizedBox(height: 80),
+          ],
+        ),
       ),
     );
   }
