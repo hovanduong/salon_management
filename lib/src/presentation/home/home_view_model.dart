@@ -105,11 +105,19 @@ class HomeViewModel extends BaseViewModel {
       Navigator.pushNamed(context, Routers.payment);
 
   Future<void> goToEditInvoice(MyBookingModel myBookingModel) async {
-    await Navigator.pushNamed(
-      context,
-      Routers.addBooking,
-      arguments: myBookingModel,
-    );
+    if(myBookingModel.isBooking==false){
+      await Navigator.pushNamed(
+        context,
+        Routers.payment,
+        arguments: myBookingModel,
+      );
+    }else{
+      await Navigator.pushNamed(
+        context,
+        Routers.addBooking,
+        arguments: myBookingModel,
+      );
+    }
     await init();
   }
 

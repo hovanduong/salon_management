@@ -1,4 +1,4 @@
-// ignore_for_file: lines_longer_than_80_chars, cast_nullable_to_non_nullable, avoid_bool_literals_in_conditional_expressions
+// ignore_for_file: lines_longer_than_80_chars, cast_nullable_to_non_nullable, avoid_bool_literals_in_conditional_expressions, use_if_null_to_convert_nulls_to_bools
 
 import 'dart:async';
 
@@ -121,11 +121,12 @@ class PaymentViewModel extends BaseViewModel {
   GlobalKey keyCategory= GlobalKey();
   GlobalKey keyDateTime= GlobalKey();
 
-  Future<void> init() async {
+  Future<void> init(MyBookingModel? myBookingModel) async {
     await getCategory();
     selectedCategory=0;
     categoryId=listCategory[0].id;
     isButtonSpending=false;
+    await setDataMyBooking(myBookingModel);
     // await setDataMyBooking(myBookingModel);
     // await fetchService();
     // await fetchCustomer();
@@ -161,9 +162,36 @@ class PaymentViewModel extends BaseViewModel {
   
   Future<void> goToAddCategory(BuildContext context) async {
     await Navigator.pushNamed(context, Routers.addCategory,);
-    await init();
+    await init(null);
   } 
 
+  Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
+    if (myBookingModel != null) {
+      dataMyBooking = myBookingModel;
+      isButtonSpending= (myBookingModel.income!=null &&
+         myBookingModel.income==true)?false:true;
+      phoneController.text = dataMyBooking?.myCustomer?.phoneNumber??'';
+      nameController.text = dataMyBooking?.myCustomer?.fullName??'';
+      addressController.text = dataMyBooking?.address??'';
+      noteController.text = dataMyBooking?.note ??'';
+      moneyController.text= dataMyBooking?.money !=null
+        ? AppCurrencyFormat.formatMoney(dataMyBooking?.money) : '';
+      categoryId= myBookingModel.category?.id;
+      myCustomerId=myBookingModel.myCustomer?.id;
+      dateTime = DateTime.parse(
+        AppDateUtils.formatDateLocal(
+          dataMyBooking!.date!,
+        ),
+      );
+      time=dateTime;
+      // setSelectedService();
+      // await setServiceId();
+      // await fetchService();
+      // await calculateTotalPriceByName();
+      enableConfirmButton();
+    }
+    notifyListeners();
+  }
 
   void setButtonSelect(String name){
     if(name==PaymentLanguage.income){
@@ -190,23 +218,6 @@ class PaymentViewModel extends BaseViewModel {
     enableConfirmButton();
     notifyListeners();
   }
-
-  // Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
-  //   if (myBookingModel != null) {
-  //     dataMyBooking = myBookingModel;
-  //     phoneController.text = dataMyBooking!.myCustomer!.phoneNumber!;
-  //     nameController.text = dataMyBooking!.myCustomer!.fullName!;
-  //     addressController.text = dataMyBooking!.address!;
-  //     noteController.text =
-  //         dataMyBooking!.note != 'Trống' ? dataMyBooking!.note! : '';
-  //     // setSelectedService();
-  //     // await setServiceId();
-  //     // await fetchService();
-  //     // await calculateTotalPriceByName();
-  //     enableConfirmButton();
-  //   }
-  //   notifyListeners();
-  // }
 
   // Future<void> goToAddMyCustomer(BuildContext context) async {
   //   myCustomerModel= 
@@ -550,6 +561,21 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  dynamic showSuccessEdit(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.successEdit,
+        );
+      },
+    );
+    timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
+  }
+
   void closeDialog(BuildContext context) {
     timer= Timer(
       const Duration(seconds: 1),
@@ -580,10 +606,14 @@ class PaymentViewModel extends BaseViewModel {
   }
 
   Future<void> checkCustomer()async{
-    if(phoneController.text.trim()=='' && nameController.text.trim()==''){
-      await postBooking();
+    if(dataMyBooking!=null){
+      await putBooking();
     }else{
-      await postCustomer();
+      if(phoneController.text.trim()=='' && nameController.text.trim()==''){
+        await postBooking();
+      }else{
+        await postCustomer();
+      }
     }
     notifyListeners();
   }
@@ -643,6 +673,47 @@ class PaymentViewModel extends BaseViewModel {
     } else {
       listMyBooking=value as List<MyBookingModel>;
       await postInvoice(listMyBooking[0].id!, listMyBooking[0].date!);
+    }
+    notifyListeners();
+  }
+
+  Future<void> putBooking() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await bookingApi.putBooking(
+      MyBookingPramsApi(
+        id: dataMyBooking?.id,
+        address: addressController.text=='' ? ''
+        :addressController.text.trim(),
+        date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
+        ),
+        phoneNumber: phoneController.text=='' ? ''
+        :phoneController.text.trim(),
+        name: nameController.text!=''? nameController.text.trim(): '',
+        myCustomerId: myCustomerId,
+        idCategory: categoryId,
+        note: noteController.text=='' ? ''
+        : noteController.text.trim(),
+        isIncome: isButtonSpending? false: true,
+        money: moneyController.text!=''?
+         int.parse(moneyController.text.replaceAll(',', '')): null,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final listCategory) => listCategory,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      await showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await showSuccessEdit(context);
     }
     notifyListeners();
   }

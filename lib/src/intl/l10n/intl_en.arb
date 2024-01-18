@@ -79,6 +79,7 @@
     "deleteServiceContent": "If you delete this service, it will be removed from the list. Are you sure?",
     "serviceEdit": "Edit service",
     "successUpdate": "Service update successfully!",
+    "successEdit": "Update successfully!",
     "service": "Service",
     "details": "Details",
     "booking": "Booking",
@@ -389,5 +390,6 @@
     "contentBookingDetailEmpty":"This appointment has been deleted or does not exist",
     "editDebtWaning":"While editing a debt, you cannot repay the debt",
     "editPayDebtWaning":"While you're editing a repayment, you can't debit",
+    "editPayment":"Edit Payment",
     "lastLine": ""
 }

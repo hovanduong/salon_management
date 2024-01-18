@@ -88,6 +88,7 @@ class BookingApi {
           'categoryId': prams.idCategory,
           'myCustomerId': prams.myCustomerId,
           'status': 'Confirmed',
+          'income': prams.isIncome,
           'isReminder': false,
         },
       );

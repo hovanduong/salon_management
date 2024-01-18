@@ -12,6 +12,7 @@ class SignUpLanguage {
   static final success = S.current.success;
   static final addSuccess = S.current.addSuccess;
   static final successUpdate = S.current.successUpdate;
+  static final successEdit = S.current.successEdit;
   static final cancel = S.current.cancel;
   static final phoneNumberExists = S.current.phoneNumberExists;
   static final notification = S.current.notification;

@@ -12,6 +12,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/payment_language.dart';
+import '../../resource/model/model.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
@@ -31,9 +32,12 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dataBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<PaymentViewModel>(
       viewModel: PaymentViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
+        dataBooking as MyBookingModel?,
+      ),
       builder: (context, viewModel, child) => buildLoadingScreen(),
     );
   }
@@ -260,7 +264,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildDateTime() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeSmall,),
       child: ButtonDateTimeWidget(
         dateTime: _viewModel!.dateTime,
         time: _viewModel!.time,
@@ -628,7 +633,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
             color: AppColors.COLOR_WHITE,
           ),
           onTap: () => Navigator.pop(context),
-          title: PaymentLanguage.payment,
+          title: _viewModel!.dataMyBooking!=null? PaymentLanguage.editPayment
+          :PaymentLanguage.payment,
         ),
       ),
     );
@@ -683,7 +689,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
           horizontal: SizeToPadding.sizeSmall,
         ),
         child: AppButton(
-          content: ServiceAddLanguage.confirm,
+          content: _viewModel!.dataMyBooking!=null?
+          PaymentLanguage.edit: ServiceAddLanguage.confirm,
           enableButton: _viewModel!.enableButton,
           onTap: () {
             _viewModel!.checkCustomer();

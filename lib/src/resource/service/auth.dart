@@ -43,7 +43,6 @@ class AuthApi {
           // 'passwordConfirm': params.passwordConfirm,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);
@@ -68,7 +67,6 @@ class AuthApi {
           'password': params.password,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           final jsonMap = json.decode(response!.body);
