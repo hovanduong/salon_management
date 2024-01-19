@@ -391,5 +391,11 @@
     "editDebtWaning":"While editing a debt, you cannot repay the debt",
     "editPayDebtWaning":"While you're editing a repayment, you can't debit",
     "editPayment":"Edit Payment",
+    "addNote":"Add Note",
+    "title":"Title",
+    "typeSomething":"Type something",
+    "titleEmpty":"The title cannot be left blank",
+    "noteEmpty":"Notes cannot be blank",
+    "currentNoteEmpty":"There are currently no notes",
     "lastLine": ""
 }

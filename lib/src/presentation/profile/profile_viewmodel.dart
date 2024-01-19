@@ -31,6 +31,9 @@ class ProfileViewModel extends BaseViewModel {
 
   Future<void> goToCategory(BuildContext context) =>
       Navigator.pushNamed(context, Routers.category);
+  
+  Future<void> goToNote(BuildContext context) =>
+      Navigator.pushNamed(context, Routers.noteScreen);
 
   Future<void> goToSignIn(BuildContext context) =>
       Navigator.pushReplacementNamed(context, Routers.signIn);
