@@ -166,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildButtonSignIn() {
+  Widget buildButtonSignUp() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
       child: AppButton(
@@ -227,7 +227,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // buildGender(),
             buildFieldPass(),
             buildFieldConfirmPass(),
-            buildButtonSignIn(),
+            buildButtonSignUp(),
             buildNote(),
           ],
         ),

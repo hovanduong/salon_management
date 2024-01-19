@@ -12,6 +12,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/payment_language.dart';
+import '../../resource/model/model.dart';
 import '../../utils/app_currency.dart';
 import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
@@ -31,9 +32,12 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dataBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<PaymentViewModel>(
       viewModel: PaymentViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
+        dataBooking as MyBookingModel?,
+      ),
       builder: (context, viewModel, child) => buildLoadingScreen(),
     );
   }
@@ -166,7 +170,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildCategory() {
     return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -260,7 +264,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildDateTime() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeSmall,),
       child: ButtonDateTimeWidget(
         dateTime: _viewModel!.dateTime,
         time: _viewModel!.time,
@@ -274,8 +279,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildCategory(),
         buildDateTime(),
+        buildCategory(),
         if (Platform.isIOS) const SizedBox(height: 80),
       ],
     );
@@ -285,17 +290,14 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 80),
-          child: Column(
-            children: [
-              buildAppbar(),
-              buildInfo(),
-              buildLineWidget(),
-              // buildServiceInfo(),
-              buildCategoryAndTime(),
-            ],
-          ),
+        child: Column(
+          children: [
+            buildAppbar(),
+            buildInfo(),
+            // buildLineWidget(),
+            // buildServiceInfo(),
+            // buildCategoryAndTime(),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -413,20 +415,23 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildChooseButton() {
-    return Showcase(
-      description: PaymentLanguage.incomeExpenses,
-      key: _viewModel!.key,
-      child: Row(
-        children: [
-          buildButtonSelect(
-            PaymentLanguage.income,
-            !_viewModel!.isButtonSpending,
-          ),
-          buildButtonSelect(
-            PaymentLanguage.expenses,
-            _viewModel!.isButtonSpending,
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
+      child: Showcase(
+        description: PaymentLanguage.incomeExpenses,
+        key: _viewModel!.key,
+        child: Row(
+          children: [
+            buildButtonSelect(
+              PaymentLanguage.income,
+              !_viewModel!.isButtonSpending,
+            ),
+            buildButtonSelect(
+              PaymentLanguage.expenses,
+              _viewModel!.isButtonSpending,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -441,9 +446,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
         ),
         child: Column(
           children: [
-            buildFieldPhone(),
+            // buildFieldPhone(),
             buildName(),
-            buildAddress(),
+            // buildAddress(),
             buildNote(),
           ],
         ),
@@ -452,17 +457,25 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
   }
 
   Widget buildInfo() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeToPadding.sizeMedium,
+    return Container(
+      height: MediaQuery.sizeOf(context).height-70,
+      width: double.maxFinite,
+      padding: EdgeInsets.only(
+        top: SizeToPadding.sizeMedium,
+        bottom: 85,
       ),
-      child: Column(
-        children: [
-          buildInfoCustomer(),
-          buildFieldMoney(),
-          buildRemindMoney(),
-          buildChooseButton(),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildInfoCustomer(),
+            buildFieldMoney(),
+            buildRemindMoney(),
+            buildDateTime(),
+            buildChooseButton(),
+            buildCategory(),
+            if (Platform.isIOS) const SizedBox(height: 80),
+          ],
+        ),
       ),
     );
   }
@@ -620,7 +633,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
             color: AppColors.COLOR_WHITE,
           ),
           onTap: () => Navigator.pop(context),
-          title: PaymentLanguage.payment,
+          title: _viewModel!.dataMyBooking!=null? PaymentLanguage.editPayment
+          :PaymentLanguage.payment,
         ),
       ),
     );
@@ -675,7 +689,8 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
           horizontal: SizeToPadding.sizeSmall,
         ),
         child: AppButton(
-          content: ServiceAddLanguage.confirm,
+          content: _viewModel!.dataMyBooking!=null?
+          PaymentLanguage.edit: ServiceAddLanguage.confirm,
           enableButton: _viewModel!.enableButton,
           onTap: () {
             _viewModel!.checkCustomer();

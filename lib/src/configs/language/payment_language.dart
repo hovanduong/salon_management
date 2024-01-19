@@ -4,6 +4,7 @@ class PaymentLanguage {
   static final addMyCustomer = S.current.addMyCustomer;
   static final pay = S.current.pay;
   static final payment = S.current.payment;
+  static final editPayment = S.current.editPayment;
   static final phoneNumber = S.current.phoneNumber;
   static final enterPhoneNumber = S.current.enterPhoneNumber;
   static final addCategory = S.current.addCategory;

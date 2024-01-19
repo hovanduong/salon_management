@@ -40,7 +40,7 @@ class AuthApi {
           'gender': params.gender,
           'email': params.email,
           'password': params.password,
-          'passwordConfirm': params.passwordConfirm,
+          // 'passwordConfirm': params.passwordConfirm,
         },
       );
       switch (response?.statusCode) {

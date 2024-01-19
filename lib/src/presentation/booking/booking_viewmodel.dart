@@ -509,7 +509,7 @@ class BookingViewModel extends BaseViewModel {
         closeDialog(context);
         return WarningOneDialog(
           image: AppImages.icCheck,
-          title: SignUpLanguage.successUpdate,
+          title: SignUpLanguage.successEdit,
         );
       },
     );

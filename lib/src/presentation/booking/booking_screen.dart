@@ -69,28 +69,36 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
+  Widget buildBodyBooking() {
+    return Container(
+      height: MediaQuery.sizeOf(context).height - 70,
+      width: double.maxFinite,
+      padding: const EdgeInsets.only(
+        bottom: 80,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            buildInfo(),
+
+            buildLineWidget(),
+            // buildServiceInfo(),
+            // buildLineWidget(),
+            buildCategoryAndTime(),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildBookingScreen() {
     return Scaffold(
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 70),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildAppbar(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildInfo(),
-                  buildLineWidget(),
-                  // buildServiceInfo(),
-                  // buildLineWidget(),
-                  buildCategoryAndTime(),
-                ],
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [buildAppbar(), buildBodyBooking()],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -221,7 +229,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildCategory(),
-          buildDateTime(),
           if (Platform.isIOS) const SizedBox(height: 50),
         ],
       ),
@@ -267,6 +274,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
               buildNote(),
               buildFieldMoney(),
               buildRemindMoney(),
+              buildDateTime(),
             ],
           ),
         ));
