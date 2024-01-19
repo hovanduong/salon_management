@@ -18,8 +18,5 @@ class InitFirebase {
           ? DefaultFirebaseOptionsProduct.currentPlatform
           : DefaultFirebaseOptionsStaging.currentPlatform,
     );
-    // await Firebase.initializeApp(
-    //   options: DefaultFirebaseOptionsStaging.currentPlatform,
-    // );
   }
 }
