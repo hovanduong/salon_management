@@ -80,21 +80,21 @@ class _NavigateScreenState extends State<NavigateScreen> {
         bottomNavigationBar: Stack(
           children: [
             appBarNavigator(),
-            if (_viewModel!.isShowBanner)
-              const SizedBox(
-                height: 135,
-              ),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: AdBanner(
-                  onBanner: (value) {
-                    Future.delayed(Duration.zero, () {
-                      _viewModel!.onChangeBanner(value: value);
-                    });
-                  },
-                )),
+            // if (_viewModel!.isShowBanner)
+            //   const SizedBox(
+            //     height: 135,
+            //   ),
+            // Positioned(
+            //     bottom: 0,
+            //     left: 0,
+            //     right: 0,
+            //     child: AdBanner(
+            //       onBanner: (value) {
+            //         Future.delayed(Duration.zero, () {
+            //           _viewModel!.onChangeBanner(value: value);
+            //         });
+            //       },
+            //     )),
           ],
         ),
       ),

@@ -20,7 +20,7 @@ Future<void> main() async {
   await InitFirebase.initializeApp();
   final trace = FirebasePerformance.instance.newTrace('app_start');
   await trace.start();
-  await MobileAds.instance.initialize();
+  // await MobileAds.instance.initialize();
   await Upgrader.clearSavedSettings();
   await HttpRemote.init();
   ConfigCrashlytics.init();
