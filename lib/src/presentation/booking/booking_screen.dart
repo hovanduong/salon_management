@@ -69,16 +69,19 @@ class _ServiceAddScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget buildBodyBooking(){
+  Widget buildBodyBooking() {
     return Container(
-      height: MediaQuery.sizeOf(context).height-70,
+      height: MediaQuery.sizeOf(context).height - 70,
       width: double.maxFinite,
-      padding: const EdgeInsets.only(bottom: 80,),
+      padding: const EdgeInsets.only(
+        bottom: 80,
+      ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             buildInfo(),
+
             buildLineWidget(),
             // buildServiceInfo(),
             // buildLineWidget(),
@@ -95,10 +98,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildAppbar(),
-            buildBodyBooking()
-          ],
+          children: [buildAppbar(), buildBodyBooking()],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -229,7 +229,6 @@ class _ServiceAddScreenState extends State<BookingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildCategory(),
-          buildDateTime(),
           if (Platform.isIOS) const SizedBox(height: 50),
         ],
       ),
@@ -275,6 +274,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
               buildNote(),
               buildFieldMoney(),
               buildRemindMoney(),
+              buildDateTime(),
             ],
           ),
         ));
