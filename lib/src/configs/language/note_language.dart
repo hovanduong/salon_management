@@ -9,6 +9,9 @@ class NoteLanguage {
   static final typeSomething = S.current.typeSomething;
   static final titleEmpty = S.current.titleEmpty;
   static final currentNoteEmpty = S.current.currentNoteEmpty;
+  static final detailNote = S.current.detailNote;
+  static final editNote = S.current.editNote;
+  static final save = S.current.save;
 
   static final home = S.current.home;
 

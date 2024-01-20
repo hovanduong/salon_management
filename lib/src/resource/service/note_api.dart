@@ -52,7 +52,7 @@ class NoteApi {
         url: '/notes',
         body: {
           'title': params?.title,
-          'color': params?.color,
+          'color': params?.color??'',
           'note': params?.note,
           'password': null,
         },
@@ -68,10 +68,33 @@ class NoteApi {
     }
   }
 
-  Future<Result<bool, Exception>> deleteService(int idNote,) async {
+  Future<Result<bool, Exception>> deleteNote(int idNote,) async {
     try {
       final response = await HttpRemote.delete(
         url: '/notes/$idNote',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> putNote(NoteParams? params,) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/notes/${params?.id??0}',
+        body: {
+          'title': params?.title,
+          'color': params?.color??'',
+          'note': params?.note,
+          'password': null,
+          'oldPassword': null,
+        },
       );
       switch (response?.statusCode) {
         case 200:

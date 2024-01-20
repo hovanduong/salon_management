@@ -139,9 +139,9 @@ class _NoteScreenState extends State<NoteScreen> {
                 crossAxisCellCount: _viewModel!.tileCounts[i % 7][0],
                 mainAxisCellCount: _viewModel!.tileCounts[i % 7][1],
                 child: NoteTitleWidget(
-                  index: i,
                   note: _viewModel!.listNote[i],
-                  // tileType: _tileTypes[i % 7],
+                  onTap: () => _viewModel!.gotoDetailNote(
+                    _viewModel!.listNote[i],),
                 ),),
           ],),
         ),

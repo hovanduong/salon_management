@@ -8,14 +8,12 @@ import '../../../utils/date_format_utils.dart';
 class NoteTitleWidget extends StatelessWidget {
   const NoteTitleWidget({super.key, 
     this.note,  
-    this.index,
     this.color,
     this.onTap,
   });
 
   final NoteModel? note;
   final int? color;
-  final int? index;
   final Function()? onTap;
 
   @override

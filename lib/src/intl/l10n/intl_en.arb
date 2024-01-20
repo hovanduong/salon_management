@@ -397,5 +397,8 @@
     "titleEmpty":"The title cannot be left blank",
     "noteEmpty":"Notes cannot be blank",
     "currentNoteEmpty":"There are currently no notes",
+    "detailNote":"Detail Note",
+    "save":"Save",
+    "editNote":"Edit notes",
     "lastLine": ""
 }

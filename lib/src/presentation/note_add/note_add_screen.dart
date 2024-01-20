@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/note_language.dart';
+import '../../resource/model/model.dart';
 import '../base/base.dart';
 import 'note_add.dart';
 
@@ -23,9 +24,12 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final noteModel= ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
       viewModel: NoteAddViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
+      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
+        noteModel as NoteModel?,
+      ),
       builder: (context, viewModel, child) => buildNoteAddScreen(),
     );
   }
@@ -41,7 +45,8 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
         ),
         child: CustomerAppBar(
           onTap: () => Navigator.pop(context),
-          title: NoteLanguage.addNote,
+          title: _viewModel!.noteModel==null? NoteLanguage.addNote
+            : NoteLanguage.editNote,
           color: AppColors.COLOR_WHITE,
           style: STYLE_LARGE.copyWith(
             color: AppColors.COLOR_WHITE,

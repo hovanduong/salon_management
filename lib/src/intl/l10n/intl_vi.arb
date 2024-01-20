@@ -397,5 +397,8 @@
     "titleEmpty":"Không thể để trống tiêu đề",
     "noteEmpty":"Ghi chú không được để trống",
     "currentNoteEmpty":"Hiện tại không có ghi chú nào",
+    "detailNote":"Chi tiết ghi chú",
+    "save":"Lưu",
+    "editNote":"Chỉnh sửa ghi chú",
     "lastLine": ""
 }

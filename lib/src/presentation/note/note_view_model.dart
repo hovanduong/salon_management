@@ -34,8 +34,18 @@ class NoteViewModel extends BaseViewModel{
     await getNotes();
   }
 
-  Future<void> gotoAddNote()
-    => Navigator.pushNamed(context, Routers.noteAddScreen,);
+  Future<void> gotoAddNote()async{
+    await Navigator.pushNamed(context, Routers.noteAddScreen,);
+    await pullRefresh();
+    notifyListeners();
+  }
+
+  Future<void> gotoDetailNote(NoteModel noteModel)async{
+    await Navigator.pushNamed(context, Routers.noteDetailScreen,
+      arguments: noteModel,);
+    await pullRefresh();
+    notifyListeners();
+  }
 
   Future<void> onSearchNotes(String value) async {
     // final searchCustomer = TiengViet.parse(value.toLowerCase());

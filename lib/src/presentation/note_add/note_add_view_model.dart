@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
+import '../../resource/model/model.dart';
 import '../../resource/service/note_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
@@ -21,8 +22,21 @@ class NoteAddViewModel extends BaseViewModel{
 
   NoteApi noteApi = NoteApi();
 
-  Future<void> init()async{
+  NoteModel? noteModel;
 
+  Timer? timer;
+
+  Future<void> init(NoteModel? note)async{
+    noteModel=note;
+    await setData();
+    notifyListeners();
+  }
+
+  Future<void> setData()async{
+    titleTextController.text= noteModel?.title??'';
+    noteTextController.text= noteModel?.note??'';
+    onEnableButton();
+    notifyListeners();
   }
 
   void validTitle(String value) {
@@ -53,7 +67,11 @@ class NoteAddViewModel extends BaseViewModel{
   }
 
   Future<void> onButton()async{
-    await addNote();
+    if(noteModel!=null){
+      await updateNote();
+    }else{
+      await addNote();
+    }
     notifyListeners();
   }
 
@@ -83,6 +101,12 @@ class NoteAddViewModel extends BaseViewModel{
         );
       },
     );
+    if(noteModel!=null){
+      timer= Timer(const Duration(seconds: 2), () { 
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    }
   }
 
   void closeDialog(BuildContext context) {
@@ -125,5 +149,43 @@ class NoteAddViewModel extends BaseViewModel{
       clearData();
     }
     notifyListeners();
+  }
+
+  Future<void> updateNote() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await noteApi.putNote(
+      NoteParams(
+        id: noteModel?.id,
+        title: titleTextController.text.trim(),
+        note: noteTextController.text.trim(),
+        // color: color,
+      ),
+    );
+
+    final value = switch (result) {
+      Success(value: final listRevenueChart) => listRevenueChart,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      showSuccessDiaglog(context);
+      clearData();
+    }
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    titleTextController.dispose();
+    noteTextController.dispose();
+    super.dispose();
   }
 }
