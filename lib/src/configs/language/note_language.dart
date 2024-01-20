@@ -12,6 +12,7 @@ class NoteLanguage {
   static final detailNote = S.current.detailNote;
   static final editNote = S.current.editNote;
   static final save = S.current.save;
+  static final update = S.current.update;
 
   static final home = S.current.home;
 

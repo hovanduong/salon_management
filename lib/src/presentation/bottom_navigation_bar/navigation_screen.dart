@@ -13,6 +13,7 @@ import '../booking_history/booking_history.dart';
 import '../calendar/calendar.dart';
 import '../debit/debit_screen.dart';
 import '../home/home.dart';
+import '../note/note.dart';
 import '../profile/profile_screen.dart';
 import 'components/icon_tabs.dart';
 import 'navigation.dart';
@@ -68,11 +69,11 @@ class _NavigateScreenState extends State<NavigateScreen> {
             else
               Container(),
             if (_viewModel!.selectedIndex == 4)
-              const ProfileScreen()
+              const NoteScreen()
             else
               Container(),
             if (_viewModel!.selectedIndex == 5)
-              const SizedBox()
+              const ProfileScreen()
             else
               Container(),
           ],
@@ -107,7 +108,11 @@ class _NavigateScreenState extends State<NavigateScreen> {
       currentIndex: _viewModel!.selectedIndex,
       selectedItemColor: AppColors.PRIMARY_PINK,
       unselectedItemColor: AppColors.BLACK_400,
-      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+      unselectedFontSize: FONT_SIZE_VERY_SMALL,
+      selectedLabelStyle: const TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: FONT_SIZE_VERY_SMALL,
+      ),
       onTap: (index) {
         _viewModel!.changeIndex(index);
       },
@@ -150,6 +155,14 @@ class _NavigateScreenState extends State<NavigateScreen> {
         BottomNavigationBarItem(
           icon: IconTabWidget(
             name: _viewModel!.selectedIndex == 4
+                ? AppImages.icProfile
+                : AppImages.icProfileLine,
+          ),
+          label: NavigateLanguage.note,
+        ),
+        BottomNavigationBarItem(
+          icon: IconTabWidget(
+            name: _viewModel!.selectedIndex == 5
                 ? AppImages.icProfile
                 : AppImages.icProfileLine,
           ),

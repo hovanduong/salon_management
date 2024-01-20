@@ -148,17 +148,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildNote() {
-    return SettingProfileListWidget(
-      image: AppImages.icMessage,
-      title: ProfileLanguage.note,
-      isOntap: true,
-      onTap: () {
-        _viewModel!.goToNote(context);
-      },
-    );
-  }
-
   Widget buildLogoutWidget() {
     return SettingProfileListWidget(
       image: AppImages.icSecurity,
@@ -243,7 +232,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             buildAccountInfoWidget(),
             buildCategoryWidget(),
-            buildNote(),
             buildAppUpgrader(),
             buildLogoutWidget(),
           ],

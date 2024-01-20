@@ -9,6 +9,7 @@ import '../../configs/constants/app_space.dart';
 import '../../configs/language/note_language.dart';
 import '../../resource/model/model.dart';
 import '../base/base.dart';
+import 'components/components.dart';
 import 'note_add.dart';
 
 class NoteAddScreen extends StatefulWidget {
@@ -34,45 +35,93 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildHeader(){
-    return Container(
-      color: AppColors.PRIMARY_GREEN,
-      child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40,
-          left: SizeToPadding.sizeMedium, 
-          right: SizeToPadding.sizeMedium,
-          bottom: SizeToPadding.sizeVerySmall,
-        ),
-        child: CustomerAppBar(
-          onTap: () => Navigator.pop(context),
-          title: _viewModel!.noteModel==null? NoteLanguage.addNote
-            : NoteLanguage.editNote,
-          color: AppColors.COLOR_WHITE,
-          style: STYLE_LARGE.copyWith(
-            color: AppColors.COLOR_WHITE,
-            fontWeight: FontWeight.w700,
+  Future noteColorPicker() {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) {
+        return Container(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Paragraph(
+                content: 'chon mau', 
+                style: STYLE_MEDIUM,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+                child: SelectNoteColor(
+                  onTap: (color) => _viewModel!.changedSelectColor(color),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildButtonHeader(){
+    print(_viewModel!.selectColor.toHex());
+    return Row(
+      children: [
+        InkWell(
+          onTap: noteColorPicker,
+          child: Icon(Icons.color_lens_outlined,
+            color: _viewModel!.selectColor!=const Color(0xff2f4f4f)?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE)),
+        SizedBox(width: SizeToPadding.sizeMedium,),
+        InkWell(
+          onTap: () => _viewModel!.onButton(),
+          child: Paragraph(
+            content: _viewModel!.noteModel!=null? NoteLanguage.update 
+            : NoteLanguage.save,
+            style: STYLE_BIG.copyWith(
+              fontWeight: FontWeight.w600,
+              color: _viewModel!.selectColor!=const Color(0xff2f4f4f)?
+                AppColors.BLACK_500: AppColors.COLOR_WHITE
+            ),
           ),
         ),
+      ],
+    );
+  }
+
+  Widget buildHeader(){
+    return Container(
+      margin: EdgeInsets.only(top: SizeToPadding.sizeBig*2),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ButtonIconWidget(
+            onTap: () => Navigator.pop(context),
+            icon: Icons.keyboard_arrow_left,
+          ),
+          buildButtonHeader(),
+        ],
       ),
     );
   }
 
   Widget buildFileTitle(){
-    return AppFormField(
+    return FieldWidget(
+      color: _viewModel!.selectColor,
       textEditingController: _viewModel!.titleTextController,
-      maxLines: 3,
+      fontSize: FONT_SIZE_BIG,
       hintText: NoteLanguage.title,
-      onChanged: (value) => _viewModel!..validTitle(value)..onEnableButton(),
       validator: _viewModel!.messageTitle,
     );
   }
 
   Widget buildFieldNote(){
-    return AppFormField(
+    return FieldWidget(
+      color: _viewModel!.selectColor,
+      // onChange: (value) => _viewModel!..validNote(value)..onEnableButton(),
       textEditingController: _viewModel!.noteTextController,
-      maxLines: 12,
+      fontSize: FONT_SIZE_MEDIUM,
       hintText: '${NoteLanguage.typeSomething}...',
-      onChanged: (value) => _viewModel!..validNote(value)..onEnableButton(),
       validator: _viewModel!.messageNote,
     );
   }
@@ -94,25 +143,16 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildButton(){
-    return Padding(
-      padding: EdgeInsets.all(SizeToPadding.sizeMedium),
-      child: AppButton(
-        enableButton: _viewModel!.enableButton,
-        content: NoteLanguage.confirm,
-        onTap: ()=> _viewModel!.onButton(),
-      ),
-    );
-  }
-
   Widget buildNoteAddScreen(){
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          buildHeader(),
-          buildBody(),
-          buildButton(),
-        ],
+    return Scaffold(
+      backgroundColor: _viewModel!.selectColor??AppColors.COLOR_WHITE,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildHeader(),
+            buildBody(),
+          ],
+        ),
       ),
     );
   }

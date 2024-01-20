@@ -9,6 +9,7 @@ import '../../configs/language/note_language.dart';
 import '../../resource/model/model.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
+import 'components/components.dart';
 import 'note_detail.dart';
 
 class NoteDetailScreen extends StatefulWidget {
@@ -61,26 +62,22 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
     );
   }
 
-   Widget buildHeader(){
+  Widget buildHeader(){
     return Container(
-      color: AppColors.PRIMARY_GREEN,
-      child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40,
-          left: SizeToPadding.sizeMedium, 
-          right: SizeToPadding.sizeMedium,
-        ),
-        child: CustomerAppBar(
-          onTap: () => Navigator.pop(context),
-          title: NoteLanguage.detailNote,
-          color: AppColors.COLOR_WHITE,
-          style: STYLE_LARGE.copyWith(
-            color: AppColors.COLOR_WHITE,
-            fontWeight: FontWeight.w700,
+      margin: EdgeInsets.only(top: SizeToPadding.sizeBig*2),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ButtonIconWidget(
+            onTap: () => Navigator.pop(context),
+            icon: Icons.keyboard_arrow_left,
           ),
-          widget: IconButton(
-            onPressed: () => _viewModel!.deleteNote(), 
-            icon: const Icon(Icons.delete, color: AppColors.COLOR_WHITE,),),
-        ),
+          ButtonIconWidget(
+            onTap: () => _viewModel!.deleteNote(), 
+            icon:  Icons.delete,
+          ),
+        ],
       ),
     );
   }

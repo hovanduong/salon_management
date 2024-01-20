@@ -1,3 +1,5 @@
+// ignore_for_file: parameter_assignments
+
 import 'package:flutter/material.dart';
 
 import '../../configs/configs.dart';
@@ -32,6 +34,22 @@ class NoteViewModel extends BaseViewModel{
 
   Future<void> init()async{
     await getNotes();
+  }
+
+  Color getColorFromHex(String hexColor, {Color? defaultColor}) {
+    if (hexColor.isEmpty || hexColor==null) {
+      if (defaultColor != null) {
+        return defaultColor;
+      } else {
+        throw ArgumentError('Can not parse provided hex $hexColor');
+      }
+    }
+
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF$hexColor';
+    }
+    return Color(int.parse(hexColor, radix: 16));
   }
 
   Future<void> gotoAddNote()async{

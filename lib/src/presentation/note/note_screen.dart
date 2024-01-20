@@ -78,27 +78,26 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildHeader(){
+ Widget buildHeader() {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40,
-          left: SizeToPadding.sizeMedium, 
-          right: SizeToPadding.sizeMedium,
-          bottom: SizeToPadding.sizeVerySmall,
-        ),
-        child: CustomerAppBar(
-          onTap: () => Navigator.pop(context),
-          title: NoteLanguage.note,
-          color: AppColors.COLOR_WHITE,
-          style: STYLE_LARGE.copyWith(
-            color: AppColors.COLOR_WHITE,
-            fontWeight: FontWeight.w700,
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 40),
+        child: ListTile(
+          title: Center(
+            child: Paragraph(
+              content: NoteLanguage.note,
+              style: STYLE_LARGE.copyWith(
+                color: AppColors.COLOR_WHITE,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ),
     );
   }
+
 
   Widget buildIconEmpty(){
     return SingleChildScrollView(
@@ -123,9 +122,9 @@ class _NoteScreenState extends State<NoteScreen> {
       ? buildIconEmpty()
       : SizedBox(
         width: double.maxFinite,
-        height: MediaQuery.sizeOf(context).height-170,
+        height: MediaQuery.sizeOf(context).height-240,
         child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, ),
         child:  SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: StaggeredGrid.count(

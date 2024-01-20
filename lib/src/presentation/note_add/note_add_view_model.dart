@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations, parameter_assignments
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -6,9 +8,11 @@ import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
+import '../../resource/service/income_api.dart';
 import '../../resource/service/note_api.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
+import '../routers.dart';
 
 class NoteAddViewModel extends BaseViewModel{
 
@@ -19,6 +23,8 @@ class NoteAddViewModel extends BaseViewModel{
   String? messageNote;
 
   bool enableButton=false;
+
+  Color selectColor= AppColors.COLOR_WHITE;
 
   NoteApi noteApi = NoteApi();
 
@@ -35,7 +41,15 @@ class NoteAddViewModel extends BaseViewModel{
   Future<void> setData()async{
     titleTextController.text= noteModel?.title??'';
     noteTextController.text= noteModel?.note??'';
+    // selectColor= noteModel?.color!=null?
+    // Color(int.parse(noteModel?.color??''))
+    // :AppColors.COLOR_WHITE;
     onEnableButton();
+    notifyListeners();
+  }
+
+  void changedSelectColor(Color color){
+    selectColor= color;
     notifyListeners();
   }
 
@@ -67,10 +81,12 @@ class NoteAddViewModel extends BaseViewModel{
   }
 
   Future<void> onButton()async{
-    if(noteModel!=null){
-      await updateNote();
-    }else{
-      await addNote();
+    if(titleTextController.text.trim()!='' && noteTextController.text.trim()!=''){
+      if(noteModel!=null){
+        await updateNote();
+      }else{
+        await addNote();
+      }
     }
     notifyListeners();
   }
@@ -103,8 +119,8 @@ class NoteAddViewModel extends BaseViewModel{
     );
     if(noteModel!=null){
       timer= Timer(const Duration(seconds: 2), () { 
-        Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, Routers.navigation, 
+          arguments: const IncomeParams(page: 4),);
       });
     }
   }
@@ -128,7 +144,8 @@ class NoteAddViewModel extends BaseViewModel{
       NoteParams(
         title: titleTextController.text.trim(),
         note: noteTextController.text.trim(),
-        // color: color,
+        // color: selectColor.toString(),
+
       ),
     );
 
@@ -158,7 +175,7 @@ class NoteAddViewModel extends BaseViewModel{
         id: noteModel?.id,
         title: titleTextController.text.trim(),
         note: noteTextController.text.trim(),
-        // color: color,
+        color: selectColor?.value.toString(),
       ),
     );
 

@@ -19,4 +19,6 @@ class NavigateLanguage {
 
   static final report = S.current.report;
 
+  static final note = S.current.note;
+
 }
