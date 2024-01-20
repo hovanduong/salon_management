@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
-import '../../../configs/constants/app_space.dart';
 
 class FieldWidget extends StatelessWidget {
   const FieldWidget({super.key, 
-    this.onChange, 
     this.textEditingController, 
     this.fontSize, 
-    this.hintText, 
-    this.validator, 
+    this.hintText,  
     this.color,
   });
-
-  final Function(String value)? onChange;
   final TextEditingController? textEditingController;
   final double? fontSize;
   final String? hintText;
-  final String? validator;
   final Color? color;
 
   @override
@@ -26,7 +20,6 @@ class FieldWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children:[
         TextFormField(
-          onChanged: (value) => onChange!(value),
           controller: textEditingController,
           style: TextStyle(fontSize: fontSize, color: AppColors.BLACK_500),
           cursorColor: color==AppColors.COLOR_WHITE? AppColors.BLACK_500:
@@ -43,15 +36,6 @@ class FieldWidget extends StatelessWidget {
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide.none),
           ),
-        ),
-        SizedBox(
-          height: SpaceBox.sizeVerySmall,
-        ),
-        Paragraph(
-          textAlign: TextAlign.center,
-          content: validator ?? '',
-          fontWeight: FontWeight.w500,
-          color: AppColors.PRIMARY_RED,
         ),
       ] 
     );

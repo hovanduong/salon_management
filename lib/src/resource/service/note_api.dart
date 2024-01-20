@@ -57,7 +57,6 @@ class NoteApi {
           'password': null,
         },
       );
-      print(response?.statusCode);
       switch (response?.statusCode) {
         case 201:
           return const Success(true);

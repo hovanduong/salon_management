@@ -10,6 +10,8 @@ import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/income_api.dart';
 import '../../resource/service/note_api.dart';
+import '../../utils/app_handel_color.dart';
+import '../../utils/app_handle_hex_color.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -41,9 +43,9 @@ class NoteAddViewModel extends BaseViewModel{
   Future<void> setData()async{
     titleTextController.text= noteModel?.title??'';
     noteTextController.text= noteModel?.note??'';
-    // selectColor= noteModel?.color!=null?
-    // Color(int.parse(noteModel?.color??''))
-    // :AppColors.COLOR_WHITE;
+    selectColor= noteModel?.color!=null && noteModel?.color!=''?
+    AppHandleColor.getColorFromHex(noteModel?.color??'')
+    :AppColors.COLOR_WHITE;
     onEnableButton();
     notifyListeners();
   }
@@ -135,6 +137,7 @@ class NoteAddViewModel extends BaseViewModel{
   void clearData(){
     noteTextController.text='';
     titleTextController.text='';
+    selectColor= AppColors.COLOR_WHITE;
     notifyListeners();
   }
 
@@ -144,8 +147,7 @@ class NoteAddViewModel extends BaseViewModel{
       NoteParams(
         title: titleTextController.text.trim(),
         note: noteTextController.text.trim(),
-        // color: selectColor.toString(),
-
+        color: selectColor.toHex().toString(),
       ),
     );
 
@@ -175,7 +177,7 @@ class NoteAddViewModel extends BaseViewModel{
         id: noteModel?.id,
         title: titleTextController.text.trim(),
         note: noteTextController.text.trim(),
-        color: selectColor?.value.toString(),
+        color: selectColor.toHex().toString(),
       ),
     );
 

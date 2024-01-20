@@ -7,6 +7,7 @@ import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/note_language.dart';
 import '../../resource/model/model.dart';
+import '../../utils/app_handel_color.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
 import 'components/components.dart';
@@ -69,13 +70,14 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ButtonIconWidget(
-            onTap: () => Navigator.pop(context),
-            icon: Icons.keyboard_arrow_left,
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back_outlined, size: 35,) ,
           ),
-          ButtonIconWidget(
-            onTap: () => _viewModel!.deleteNote(), 
-            icon:  Icons.delete,
+          IconButton(
+            onPressed: () => _viewModel!.deleteNote(), 
+            icon: const Icon(Icons.delete, 
+              size: 35, color: AppColors.Red_Money,) ,
           ),
         ],
       ),
@@ -135,6 +137,11 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
 
   Widget buildNoteDetailScreen(){
     return Scaffold(
+      backgroundColor: (_viewModel!.noteModel?.color!='' &&
+       _viewModel!.noteModel?.color!=null)
+       ? AppHandleColor.getColorFromHex(
+        _viewModel!.noteModel?.color??'',
+      ): AppColors.COLOR_WHITE,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -63,7 +63,6 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   }
 
   Widget buildButtonHeader(){
-    print(_viewModel!.selectColor.toHex());
     return Row(
       children: [
         InkWell(
@@ -95,9 +94,9 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ButtonIconWidget(
-            onTap: () => Navigator.pop(context),
-            icon: Icons.keyboard_arrow_left,
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back_outlined, size: 35,) ,
           ),
           buildButtonHeader(),
         ],
@@ -111,7 +110,6 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
       textEditingController: _viewModel!.titleTextController,
       fontSize: FONT_SIZE_BIG,
       hintText: NoteLanguage.title,
-      validator: _viewModel!.messageTitle,
     );
   }
 
@@ -122,7 +120,6 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
       textEditingController: _viewModel!.noteTextController,
       fontSize: FONT_SIZE_MEDIUM,
       hintText: '${NoteLanguage.typeSomething}...',
-      validator: _viewModel!.messageNote,
     );
   }
 
@@ -145,7 +142,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildNoteAddScreen(){
     return Scaffold(
-      backgroundColor: _viewModel!.selectColor??AppColors.COLOR_WHITE,
+      backgroundColor: _viewModel!.selectColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
