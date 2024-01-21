@@ -21,15 +21,19 @@ class FieldWidget extends StatelessWidget {
       children:[
         TextFormField(
           controller: textEditingController,
-          style: TextStyle(fontSize: fontSize, color: AppColors.BLACK_500),
+          style: TextStyle(fontSize: fontSize, 
+              color: color!=const Color(0xff2f4f4f)?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE,),
           cursorColor: color==AppColors.COLOR_WHITE? AppColors.BLACK_500:
             AppColors.COLOR_WHITE,
           maxLines: 3,
           minLines: 1,
           decoration: InputDecoration(
             hintText: hintText??'',
+            
             hintStyle: STYLE_MEDIUM.copyWith(fontSize: fontSize,
-              color: AppColors.BLACK_400,),
+              color: color!=const Color(0xff2f4f4f)?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: color?? AppColors.COLOR_WHITE),
             ),

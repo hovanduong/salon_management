@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
@@ -20,6 +21,8 @@ class NoteAddViewModel extends BaseViewModel{
 
   TextEditingController titleTextController = TextEditingController();
   TextEditingController noteTextController = TextEditingController();
+
+  QuillController quillController= QuillController.basic();
 
   String? messageTitle;
   String? messageNote;

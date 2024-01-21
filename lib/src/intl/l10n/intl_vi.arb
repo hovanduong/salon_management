@@ -400,5 +400,7 @@
     "detailNote":"Chi tiết ghi chú",
     "save":"Lưu",
     "editNote":"Chỉnh sửa ghi chú",
+    "selectColor":"Chọn màu",
+    "deleteNoteNotification":"Bạn muốn xóa ghi chú này không?",
     "lastLine": ""
 }

@@ -45,8 +45,8 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Paragraph(
-                content: 'chon mau', 
+              Paragraph(
+                content: NoteLanguage.selectColor, 
                 style: STYLE_MEDIUM,
               ),
               Padding(
@@ -96,7 +96,9 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_outlined, size: 35,) ,
+            icon: Icon(Icons.arrow_back_outlined, size: 35,
+              color: _viewModel!.selectColor!=const Color(0xff2f4f4f)?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE) ,
           ),
           buildButtonHeader(),
         ],

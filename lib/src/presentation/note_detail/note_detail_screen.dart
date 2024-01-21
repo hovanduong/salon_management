@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -64,6 +66,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
   }
 
   Widget buildHeader(){
+    final color=_viewModel!.noteModel?.color;
     return Container(
       margin: EdgeInsets.only(top: SizeToPadding.sizeBig*2),
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -72,10 +75,12 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_outlined, size: 35,) ,
+            icon: Icon(Icons.arrow_back_outlined, size: 35,
+              color: color!='#2F4F4F'?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE,) ,
           ),
           IconButton(
-            onPressed: () => _viewModel!.deleteNote(), 
+            onPressed: () => _viewModel!.showDialogDeleteNote(), 
             icon: const Icon(Icons.delete, 
               size: 35, color: AppColors.Red_Money,) ,
           ),
@@ -94,6 +99,8 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
         content: _viewModel!.noteModel?.title??'',
         style: STYLE_LARGE_BIG.copyWith(
           fontWeight: FontWeight.w600,
+          color: _viewModel!.noteModel?.color!='#2F4F4F'?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE,
         ),
       ),
     );
@@ -113,6 +120,8 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
           : '',
         style:STYLE_SMALL.copyWith(
           fontWeight: FontWeight.w500,
+          color: _viewModel!.noteModel?.color!='#2F4F4F'?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE,
         ),
       ),
     );
@@ -129,6 +138,8 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
           content: _viewModel!.noteModel?.note??'',
           style: STYLE_MEDIUM.copyWith(
             fontWeight: FontWeight.w500,
+            color: _viewModel!.noteModel?.color!='#2F4F4F'?
+              AppColors.BLACK_500: AppColors.COLOR_WHITE,
           ),
         ),
       ),

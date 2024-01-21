@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
+import '../../configs/language/note_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/note_api.dart';
@@ -30,6 +31,31 @@ class NoteDetailViewModel extends BaseViewModel{
     await Navigator.pushNamed(context, Routers.noteAddScreen,
       arguments: noteModel,);
     notifyListeners();
+  }
+
+  dynamic showDialogDeleteNote() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: NoteLanguage.notification,
+          content: NoteLanguage.deleteNoteNotification,
+          leftButtonName: NoteLanguage.cancel,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: NoteLanguage.confirm,
+          onTapLeft: () {
+            Navigator.pop(context,);
+          },
+          onTapRight: () async {
+            Navigator.pop(context,);
+            await deleteNote();
+          },
+        );
+      },
+    );
   }
 
   dynamic showErrorDialog(_) {

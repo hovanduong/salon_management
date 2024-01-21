@@ -13,6 +13,13 @@ class NoteLanguage {
   static final editNote = S.current.editNote;
   static final save = S.current.save;
   static final update = S.current.update;
+  static final selectColor = S.current.selectColor;
+  static final close = S.current.close;
+  static final back = S.current.back;
+  static final notification = S.current.notification;
+  static final deleteNoteNotification= S.current.deleteNoteNotification;
+  static final yes= S.current.yes;
+  static final cancel= S.current.cancel;
 
   static final home = S.current.home;
 
