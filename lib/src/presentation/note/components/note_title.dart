@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -49,7 +52,7 @@ class NoteTitleWidget extends StatelessWidget {
             ),
             SizedBox(height: SizeToPadding.sizeVerySmall,),
             Paragraph(
-              content: note?.note??'',
+              content: Document.fromJson(jsonDecode(note?.note??'')).toPlainText(),
               maxLines: 4,
               style: STYLE_SMALL.copyWith(
                 fontWeight: FontWeight.w600,

@@ -133,123 +133,58 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  // Widget buildBody(){
-  //   print(jsonEncode(_viewModel!.quillController.document.toDelta().toJson()));
-  //   // final a=jsonEncode(_viewModel!.quillController.document.toDelta().toJson());
-  //   print(_viewModel!.quillController.document.toPlainText());
-  //   final json = jsonDecode(r'[{"insert":"hello\n"}]');
-  //   _viewModel!.quillController.document= Document.fromJson(json);
-
-  //   return Container(
-  //     margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
-  //     padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         buildFileTitle(),
-  //         const SizedBox(
-  //           height: 12,
-  //         ),
-  //         buildFieldNote(),
-
-  //         QuillProvider(
-  //           configurations: QuillConfigurations(
-  //             controller: _viewModel!.quillController,
-  //             sharedConfigurations: const QuillSharedConfigurations(
-  //               locale: Locale('de'),
-  //             ),
-  //           ),
-  //           child: Column(
-  //             children: [
-  //               QuillEditor.basic(
-  //                 configurations: const QuillEditorConfigurations(
-  //                   readOnly: true,
-  //                   // enableInteractiveSelection: false,
-
-  //                 ),
-  //               ),
-  //               Expanded(
-  //                 child: const QuillToolbar(
-  //                   configurations: QuillToolbarConfigurations(
-  //                     toolbarIconCrossAlignment: WrapCrossAlignment.end,
-  //                     toolbarIconAlignment: WrapAlignment.start,
-  //                     axis: Axis.horizontal,
-  //                     multiRowsDisplay: false,
-  //                     showCenterAlignment: true,
-  //                     showRedo: false,
-  //                     showUndo: false,
-  //                     showBackgroundColorButton: false,
-  //                     showFontFamily: false,
-  //                     showStrikeThrough: true,
-  //                     showColorButton: false,
-  //                     showListCheck: false,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget buildFieldNoteQuill(){
+    return Expanded(
+      child: QuillEditor.basic(
+        configurations: QuillEditorConfigurations(
+          controller: _viewModel!.quillController,
+          readOnly: false,
+          placeholder: '${NoteLanguage.typeSomething}...',
+          sharedConfigurations: const QuillSharedConfigurations(
+            locale: Locale('de'),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget buildBody() {
-    print(jsonEncode(_viewModel!.quillController.document.toDelta().toJson()));
-    // final a=jsonEncode(_viewModel!.quillController.document.toDelta().toJson());
-    print(_viewModel!.quillController.document.toPlainText());
-    final json = jsonDecode(r'[{"insert":"hello\n"}]');
-    _viewModel!.quillController.document = Document.fromJson(json);
+    return Container(
+      height: MediaQuery.sizeOf(context).height-110,
+      margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
+      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildFileTitle(),
+          const SizedBox(
+            height: 12,
+          ),
+          // buildFieldNote(),
+          buildFieldNoteQuill(),
+        ],
+      ),
+    );
+  }
 
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
-        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildFileTitle(),
-            const SizedBox(
-              height: 12,
-            ),
-            buildFieldNote(),
-            QuillProvider(
-              configurations: QuillConfigurations(
-                controller: _viewModel!.quillController,
-                sharedConfigurations: const QuillSharedConfigurations(
-                  locale: Locale('de'),
-                ),
-              ),
-              child: Column(
-                children: [
-                  QuillEditor.basic(
-                    configurations: const QuillEditorConfigurations(
-                      readOnly: true,
-                      // enableInteractiveSelection: false,
-                    ),
-                  ),
-                  const Expanded(
-                    child: const QuillToolbar(
-                      configurations: QuillToolbarConfigurations(
-                        toolbarIconCrossAlignment: WrapCrossAlignment.end,
-                        toolbarIconAlignment: WrapAlignment.start,
-                        axis: Axis.horizontal,
-                        multiRowsDisplay: false,
-                        showCenterAlignment: true,
-                        showRedo: false,
-                        showUndo: false,
-                        showBackgroundColorButton: false,
-                        showFontFamily: false,
-                        showStrikeThrough: true,
-                        showColorButton: false,
-                        showListCheck: false,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+  Widget buildItemEditTextNote(){
+    return QuillToolbar.simple(
+      configurations: QuillSimpleToolbarConfigurations(
+        toolbarIconCrossAlignment: WrapCrossAlignment.end,
+        toolbarIconAlignment: WrapAlignment.start,
+        axis: Axis.horizontal,
+        multiRowsDisplay: false,
+        showCenterAlignment: true,
+        showRedo: false,
+        showUndo: false,
+        showBackgroundColorButton: false,
+        showFontFamily: false,
+        showStrikeThrough: true,
+        showColorButton: true,
+        showListCheck: false,
+        controller: _viewModel!.quillController,
+        sharedConfigurations: const QuillSharedConfigurations(
+          locale: Locale('de'),
         ),
       ),
     );
@@ -265,6 +200,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
           ],
         ),
       ),
+      floatingActionButton: buildItemEditTextNote(),
     );
   }
 }

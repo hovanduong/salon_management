@@ -27,10 +27,8 @@ class FieldWidget extends StatelessWidget {
           minLines: 1,
           decoration: InputDecoration(
             hintText: hintText??'',
-            
             hintStyle: STYLE_MEDIUM.copyWith(fontSize: fontSize,
-              color: color!=const Color(0xff2f4f4f)?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE),
+              color: AppColors.BLACK_300),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: color?? AppColors.COLOR_WHITE),
             ),

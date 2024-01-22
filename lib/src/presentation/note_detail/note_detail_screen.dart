@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -66,7 +67,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
   }
 
   Widget buildHeader(){
-    final color=_viewModel!.noteModel?.color;
     return Container(
       margin: EdgeInsets.only(top: SizeToPadding.sizeBig*2),
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -75,9 +75,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back_outlined, size: 35,
-              color: color!='#2F4F4F'?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE,) ,
+            icon: const Icon(Icons.arrow_back_outlined, size: 35,) ,
           ),
           IconButton(
             onPressed: () => _viewModel!.showDialogDeleteNote(), 
@@ -99,8 +97,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
         content: _viewModel!.noteModel?.title??'',
         style: STYLE_LARGE_BIG.copyWith(
           fontWeight: FontWeight.w600,
-          color: _viewModel!.noteModel?.color!='#2F4F4F'?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE,
         ),
       ),
     );
@@ -120,8 +116,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
           : '',
         style:STYLE_SMALL.copyWith(
           fontWeight: FontWeight.w500,
-          color: _viewModel!.noteModel?.color!='#2F4F4F'?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE,
         ),
       ),
     );
@@ -146,13 +140,29 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
     );
   }
 
+  Widget buildFieldNoteQuill(){
+    return Container(
+      width: double.maxFinite,
+      height: MediaQuery.sizeOf(context).height-180,
+      padding: EdgeInsets.only(right: SizeToPadding.sizeMedium,
+        left: SizeToPadding.sizeMedium, 
+      ),
+      child: QuillEditor.basic(
+        configurations: QuillEditorConfigurations(
+          controller: _viewModel!.quillController,
+          readOnly: true,
+          enableInteractiveSelection: false,
+          enableSelectionToolbar: false,
+          sharedConfigurations: const QuillSharedConfigurations(
+            locale: Locale('de'),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildNoteDetailScreen(){
     return Scaffold(
-      backgroundColor: (_viewModel!.noteModel?.color!='' &&
-       _viewModel!.noteModel?.color!=null)
-       ? AppHandleColor.getColorFromHex(
-        _viewModel!.noteModel?.color??'',
-      ): AppColors.COLOR_WHITE,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +170,8 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
             buildHeader(),
             buildTitle(),
             buildDate(),
-            buildNote(),
+            // buildNote(),
+            buildFieldNoteQuill(),
           ],
         ),
       ),

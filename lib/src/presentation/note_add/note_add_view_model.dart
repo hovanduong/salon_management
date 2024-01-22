@@ -1,6 +1,7 @@
 // ignore_for_file: cascade_invocations, parameter_assignments
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -44,12 +45,15 @@ class NoteAddViewModel extends BaseViewModel{
   }
 
   Future<void> setData()async{
-    titleTextController.text= noteModel?.title??'';
-    noteTextController.text= noteModel?.note??'';
-    selectColor= noteModel?.color!=null && noteModel?.color!=''?
-    AppHandleColor.getColorFromHex(noteModel?.color??'')
-    :AppColors.COLOR_WHITE;
-    onEnableButton();
+    if(noteModel!=null){
+      titleTextController.text= noteModel?.title??'';
+      noteTextController.text= noteModel?.note??'';
+      selectColor= noteModel?.color!=null && noteModel?.color!=''?
+      AppHandleColor.getColorFromHex(noteModel?.color??'')
+      :AppColors.COLOR_WHITE;
+      final json = jsonDecode(noteModel?.note ?? '');
+      quillController.document = Document.fromJson(json);
+    }
     notifyListeners();
   }
 
@@ -77,7 +81,6 @@ class NoteAddViewModel extends BaseViewModel{
   }
 
   void onEnableButton(){
-    // quillController.document.toDelta().toJson();
     if(titleTextController.text.trim()!='' && noteTextController.text.trim()!=''){
       enableButton=true;
     }else{
@@ -87,7 +90,8 @@ class NoteAddViewModel extends BaseViewModel{
   }
 
   Future<void> onButton()async{
-    if(titleTextController.text.trim()!='' && noteTextController.text.trim()!=''){
+    if(titleTextController.text.trim()!='' && 
+      quillController.document.toPlainText()!=''){
       if(noteModel!=null){
         await updateNote();
       }else{
@@ -142,6 +146,7 @@ class NoteAddViewModel extends BaseViewModel{
     noteTextController.text='';
     titleTextController.text='';
     selectColor= AppColors.COLOR_WHITE;
+    quillController.clear();
     notifyListeners();
   }
 
@@ -150,7 +155,7 @@ class NoteAddViewModel extends BaseViewModel{
     final result = await noteApi.postNotes(
       NoteParams(
         title: titleTextController.text.trim(),
-        note: noteTextController.text.trim(),
+        note: jsonEncode(quillController.document.toDelta().toJson()),
         color: selectColor.toHex().toString(),
       ),
     );
@@ -180,7 +185,7 @@ class NoteAddViewModel extends BaseViewModel{
       NoteParams(
         id: noteModel?.id,
         title: titleTextController.text.trim(),
-        note: noteTextController.text.trim(),
+        note: jsonEncode(quillController.document.toDelta().toJson()),
         color: selectColor.toHex().toString(),
       ),
     );

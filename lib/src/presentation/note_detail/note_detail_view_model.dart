@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
@@ -20,10 +22,13 @@ class NoteDetailViewModel extends BaseViewModel{
 
   NoteApi noteApi= NoteApi();
 
+  QuillController quillController= QuillController.basic();
+
   Timer? timer;
 
   Future<void> init(NoteModel? note) async{
     noteModel=note;
+    quillController.document= Document.fromJson(jsonDecode(note?.note??''));
     notifyListeners();
   }
 

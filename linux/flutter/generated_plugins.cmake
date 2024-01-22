@@ -4,8 +4,9 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
-  pasteboard
+  irondash_engine_context
   smart_auth
+  super_native_extensions
   url_launcher_linux
 )
 
