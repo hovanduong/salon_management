@@ -22,17 +22,17 @@ class NoteAddScreen extends StatefulWidget {
 }
 
 class _NoteAddScreenState extends State<NoteAddScreen> {
-
   NoteAddViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
-    final noteModel= ModalRoute.of(context)?.settings.arguments;
+    final noteModel = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
-      viewModel: NoteAddViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        noteModel as NoteModel?,
-      ),
+      viewModel: NoteAddViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          noteModel as NoteModel?,
+        ),
       builder: (context, viewModel, child) => buildNoteAddScreen(),
     );
   }
@@ -48,11 +48,12 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Paragraph(
-                content: NoteLanguage.selectColor, 
+                content: NoteLanguage.selectColor,
                 style: STYLE_MEDIUM,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
+                padding:
+                    EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
                 child: SelectNoteColor(
                   onTap: (color) => _viewModel!.changedSelectColor(color),
                 ),
@@ -64,20 +65,26 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildButtonHeader(){
+  Widget buildButtonHeader() {
     return Row(
       children: [
         InkWell(
-          onTap: noteColorPicker,
-          child: Icon(Icons.color_lens_outlined,
-            color: _viewModel!.selectColor!= AppColors.COLOR_WHITE
-              ?_viewModel!.selectColor : AppColors.BLACK_500,)),
-        SizedBox(width: SizeToPadding.sizeMedium,),
+            onTap: noteColorPicker,
+            child: Icon(
+              Icons.color_lens_outlined,
+              color: _viewModel!.selectColor != AppColors.COLOR_WHITE
+                  ? _viewModel!.selectColor
+                  : AppColors.BLACK_500,
+            )),
+        SizedBox(
+          width: SizeToPadding.sizeMedium,
+        ),
         InkWell(
           onTap: () => _viewModel!.onButton(),
           child: Paragraph(
-            content: _viewModel!.noteModel!=null? NoteLanguage.update 
-            : NoteLanguage.save,
+            content: _viewModel!.noteModel != null
+                ? NoteLanguage.update
+                : NoteLanguage.save,
             style: STYLE_BIG.copyWith(
               fontWeight: FontWeight.w600,
             ),
@@ -87,16 +94,19 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildHeader(){
+  Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeBig*2),
+      margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_outlined, size: 30,) ,
+            icon: const Icon(
+              Icons.arrow_back_outlined,
+              size: 30,
+            ),
           ),
           buildButtonHeader(),
         ],
@@ -104,7 +114,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildFileTitle(){
+  Widget buildFileTitle() {
     return FieldWidget(
       color: _viewModel!.selectColor,
       textEditingController: _viewModel!.titleTextController,
@@ -113,7 +123,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildFieldNote(){
+  Widget buildFieldNote() {
     return FieldWidget(
       color: _viewModel!.selectColor,
       // onChange: (value) => _viewModel!..validNote(value)..onEnableButton(),
@@ -123,68 +133,129 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildBody(){
+  // Widget buildBody(){
+  //   print(jsonEncode(_viewModel!.quillController.document.toDelta().toJson()));
+  //   // final a=jsonEncode(_viewModel!.quillController.document.toDelta().toJson());
+  //   print(_viewModel!.quillController.document.toPlainText());
+  //   final json = jsonDecode(r'[{"insert":"hello\n"}]');
+  //   _viewModel!.quillController.document= Document.fromJson(json);
+
+  //   return Container(
+  //     margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
+  //     padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         buildFileTitle(),
+  //         const SizedBox(
+  //           height: 12,
+  //         ),
+  //         buildFieldNote(),
+
+  //         QuillProvider(
+  //           configurations: QuillConfigurations(
+  //             controller: _viewModel!.quillController,
+  //             sharedConfigurations: const QuillSharedConfigurations(
+  //               locale: Locale('de'),
+  //             ),
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               QuillEditor.basic(
+  //                 configurations: const QuillEditorConfigurations(
+  //                   readOnly: true,
+  //                   // enableInteractiveSelection: false,
+
+  //                 ),
+  //               ),
+  //               Expanded(
+  //                 child: const QuillToolbar(
+  //                   configurations: QuillToolbarConfigurations(
+  //                     toolbarIconCrossAlignment: WrapCrossAlignment.end,
+  //                     toolbarIconAlignment: WrapAlignment.start,
+  //                     axis: Axis.horizontal,
+  //                     multiRowsDisplay: false,
+  //                     showCenterAlignment: true,
+  //                     showRedo: false,
+  //                     showUndo: false,
+  //                     showBackgroundColorButton: false,
+  //                     showFontFamily: false,
+  //                     showStrikeThrough: true,
+  //                     showColorButton: false,
+  //                     showListCheck: false,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget buildBody() {
     print(jsonEncode(_viewModel!.quillController.document.toDelta().toJson()));
     // final a=jsonEncode(_viewModel!.quillController.document.toDelta().toJson());
     print(_viewModel!.quillController.document.toPlainText());
     final json = jsonDecode(r'[{"insert":"hello\n"}]');
-    _viewModel!.quillController.document= Document.fromJson(json);
+    _viewModel!.quillController.document = Document.fromJson(json);
 
-    return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildFileTitle(),
-          const SizedBox(
-            height: 12,
-          ),
-          buildFieldNote(),
-          
-          QuillProvider(
-            configurations: QuillConfigurations(
-              controller: _viewModel!.quillController,
-              sharedConfigurations: const QuillSharedConfigurations(
-                locale: Locale('de'),
-              ),
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildFileTitle(),
+            const SizedBox(
+              height: 12,
             ),
-            child: Column(
-              children: [
-                QuillEditor.basic(
-                  configurations: const QuillEditorConfigurations(
-                    readOnly: true,
-                    // enableInteractiveSelection: false,
-                          
-                  ),
+            buildFieldNote(),
+            QuillProvider(
+              configurations: QuillConfigurations(
+                controller: _viewModel!.quillController,
+                sharedConfigurations: const QuillSharedConfigurations(
+                  locale: Locale('de'),
                 ),
-                Expanded(
-                  child: const QuillToolbar(
-                    configurations: QuillToolbarConfigurations(
-                      toolbarIconCrossAlignment: WrapCrossAlignment.end,
-                      toolbarIconAlignment: WrapAlignment.start,
-                      axis: Axis.horizontal,
-                      multiRowsDisplay: false,
-                      showCenterAlignment: true,
-                      showRedo: false,
-                      showUndo: false,
-                      showBackgroundColorButton: false,
-                      showFontFamily: false,
-                      showStrikeThrough: true,
-                      showColorButton: false,
-                      showListCheck: false,
+              ),
+              child: Column(
+                children: [
+                  QuillEditor.basic(
+                    configurations: const QuillEditorConfigurations(
+                      readOnly: true,
+                      // enableInteractiveSelection: false,
                     ),
                   ),
-                ),
-              ],
+                  const Expanded(
+                    child: const QuillToolbar(
+                      configurations: QuillToolbarConfigurations(
+                        toolbarIconCrossAlignment: WrapCrossAlignment.end,
+                        toolbarIconAlignment: WrapAlignment.start,
+                        axis: Axis.horizontal,
+                        multiRowsDisplay: false,
+                        showCenterAlignment: true,
+                        showRedo: false,
+                        showUndo: false,
+                        showBackgroundColorButton: false,
+                        showFontFamily: false,
+                        showStrikeThrough: true,
+                        showColorButton: false,
+                        showListCheck: false,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildNoteAddScreen(){
+  Widget buildNoteAddScreen() {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
