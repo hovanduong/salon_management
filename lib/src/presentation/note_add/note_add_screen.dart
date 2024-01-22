@@ -1,8 +1,10 @@
 // ignore_for_file: use_late_for_private_fields_and_variables
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -68,8 +70,8 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
         InkWell(
           onTap: noteColorPicker,
           child: Icon(Icons.color_lens_outlined,
-            color: _viewModel!.selectColor!=const Color(0xff2f4f4f)?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE)),
+            color: _viewModel!.selectColor!= AppColors.COLOR_WHITE
+              ?_viewModel!.selectColor : AppColors.BLACK_500,)),
         SizedBox(width: SizeToPadding.sizeMedium,),
         InkWell(
           onTap: () => _viewModel!.onButton(),
@@ -78,8 +80,6 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             : NoteLanguage.save,
             style: STYLE_BIG.copyWith(
               fontWeight: FontWeight.w600,
-              color: _viewModel!.selectColor!=const Color(0xff2f4f4f)?
-                AppColors.BLACK_500: AppColors.COLOR_WHITE
             ),
           ),
         ),
@@ -96,9 +96,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back_outlined, size: 35,
-              color: _viewModel!.selectColor!=const Color(0xff2f4f4f)?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE) ,
+            icon: const Icon(Icons.arrow_back_outlined, size: 30,) ,
           ),
           buildButtonHeader(),
         ],
@@ -126,6 +124,12 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   }
 
   Widget buildBody(){
+    print(jsonEncode(_viewModel!.quillController.document.toDelta().toJson()));
+    // final a=jsonEncode(_viewModel!.quillController.document.toDelta().toJson());
+    print(_viewModel!.quillController.document.toPlainText());
+    final json = jsonDecode(r'[{"insert":"hello\n"}]');
+    _viewModel!.quillController.document= Document.fromJson(json);
+
     return Container(
       margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
       padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
@@ -137,6 +141,44 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             height: 12,
           ),
           buildFieldNote(),
+          
+          QuillProvider(
+            configurations: QuillConfigurations(
+              controller: _viewModel!.quillController,
+              sharedConfigurations: const QuillSharedConfigurations(
+                locale: Locale('de'),
+              ),
+            ),
+            child: Column(
+              children: [
+                QuillEditor.basic(
+                  configurations: const QuillEditorConfigurations(
+                    readOnly: true,
+                    // enableInteractiveSelection: false,
+                          
+                  ),
+                ),
+                Expanded(
+                  child: const QuillToolbar(
+                    configurations: QuillToolbarConfigurations(
+                      toolbarIconCrossAlignment: WrapCrossAlignment.end,
+                      toolbarIconAlignment: WrapAlignment.start,
+                      axis: Axis.horizontal,
+                      multiRowsDisplay: false,
+                      showCenterAlignment: true,
+                      showRedo: false,
+                      showUndo: false,
+                      showBackgroundColorButton: false,
+                      showFontFamily: false,
+                      showStrikeThrough: true,
+                      showColorButton: false,
+                      showListCheck: false,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -144,7 +186,6 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildNoteAddScreen(){
     return Scaffold(
-      backgroundColor: _viewModel!.selectColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

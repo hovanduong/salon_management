@@ -21,11 +21,8 @@ class FieldWidget extends StatelessWidget {
       children:[
         TextFormField(
           controller: textEditingController,
-          style: TextStyle(fontSize: fontSize, 
-              color: color!=const Color(0xff2f4f4f)?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE,),
-          cursorColor: color==AppColors.COLOR_WHITE? AppColors.BLACK_500:
-            AppColors.COLOR_WHITE,
+          style: TextStyle(fontSize: fontSize,),
+          cursorColor:  AppColors.BLACK_500,
           maxLines: 3,
           minLines: 1,
           decoration: InputDecoration(

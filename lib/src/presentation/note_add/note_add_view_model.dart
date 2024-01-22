@@ -77,6 +77,7 @@ class NoteAddViewModel extends BaseViewModel{
   }
 
   void onEnableButton(){
+    // quillController.document.toDelta().toJson();
     if(titleTextController.text.trim()!='' && noteTextController.text.trim()!=''){
       enableButton=true;
     }else{
