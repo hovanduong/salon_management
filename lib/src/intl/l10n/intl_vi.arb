@@ -402,5 +402,8 @@
     "editNote":"Chỉnh sửa ghi chú",
     "selectColor":"Chọn màu",
     "deleteNoteNotification":"Bạn muốn xóa ghi chú này không?",
+    "listView":"Danh sách",
+    "gridView":"Bộ sưu tập",
+    "searchColor":"Tìm kiếm theo màu",
     "lastLine": ""
 }

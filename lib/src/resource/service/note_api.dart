@@ -29,7 +29,7 @@ class NoteApi {
   Future<Result<List<NoteModel>, Exception>> getNotes(NoteParams params) async {
     try {
       final response = await HttpRemote.get(
-        url: '/notes?pageSize=10&page=${params.page}&color=${
+        url: '/notes?pageSize=10&page=${params.page}&color=%23${
           params.color ?? ''}&search=${params.search ?? ''}',
       );
       switch (response?.statusCode) {
