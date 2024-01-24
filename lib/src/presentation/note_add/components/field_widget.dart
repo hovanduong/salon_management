@@ -29,8 +29,8 @@ class FieldWidget extends StatelessWidget {
             hintText: hintText??'',
             hintStyle: STYLE_MEDIUM.copyWith(fontSize: fontSize,
               color: AppColors.BLACK_300),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: color?? AppColors.COLOR_WHITE),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide.none,
             ),
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide.none),

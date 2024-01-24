@@ -116,7 +116,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildFileTitle() {
     return FieldWidget(
-      color: _viewModel!.selectColor,
+      // color: _viewModel!.selectColor,
       textEditingController: _viewModel!.titleTextController,
       fontSize: FONT_SIZE_BIG,
       hintText: NoteLanguage.title,
