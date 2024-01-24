@@ -19,6 +19,9 @@ import 'invoice/invoice_screen.dart';
 import 'my_customer/my_customer.dart';
 import 'my_customer_add/my_customer_add_screen.dart';
 import 'my_customer_edit/my_customer_edit_screen.dart';
+import 'note/note_screen.dart';
+import 'note_add/note_add.dart';
+import 'note_detail/note_detail.dart';
 import 'notification/notification.dart';
 import 'payment/payment.dart';
 import 'payment_bill/bill_payment_screen.dart';
@@ -76,6 +79,9 @@ class Routers {
   static const String profileAccount = '/profileAccount';
   static const String calendar = '/calendar';
   static const String debtDetail = '/debtDetail';
+  static const String noteScreen = '/noteScreen';
+  static const String noteAddScreen = '/noteAddScreen';
+  static const String noteDetailScreen = '/noteDetailScreen';
   static const String homeScreen = '/homeScreen';
 
 
@@ -106,6 +112,30 @@ class Routers {
           arguments: arguments,
         );
 
+      case noteDetailScreen:
+        return animRoute(
+          const NoteDetailScreen(),
+          beginOffset: right,
+          name: noteDetailScreen,
+          arguments: arguments,
+        );
+
+      case noteAddScreen:
+        return animRoute(
+          const NoteAddScreen(),
+          beginOffset: right,
+          name: noteAddScreen,
+          arguments: arguments,
+        );
+
+      case noteScreen:
+        return animRoute(
+          const NoteScreen(),
+          beginOffset: right,
+          name: noteScreen,
+          arguments: arguments,
+        );
+      
       case debtDetail:
         return animRoute(
           const DebtDetailsScreen(),

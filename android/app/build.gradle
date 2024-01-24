@@ -78,7 +78,7 @@ android {
     defaultConfig {
         applicationId "com.dhysolutios.apcare"
         applicationIdSuffix dartEnvironmentVariables.DART_DEFINES_APP_SUFFIX
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode 17
         versionName "2.0.2"
