@@ -153,4 +153,7 @@ class AppImages {
 
   static const String icDebit = 'assets/icons/receipt-text.svg';
 
+    static const String icNote = 'assets/icons/note.svg';
+
+
 }
