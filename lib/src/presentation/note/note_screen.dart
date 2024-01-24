@@ -213,27 +213,32 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildGridViewScreen(){
-    return StaggeredGrid.count(
-      crossAxisCount: 4,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 8,
-      axisDirection: AxisDirection.down,
+  Widget buildGridViewScreen() {
+    final gridChildren = List<Widget>.generate(_viewModel!.listCurrent.length, 
+      (index) {
+        return StaggeredGridTile.count(
+          crossAxisCellCount: _viewModel!.tileCounts[index % 7][0],
+          mainAxisCellCount: _viewModel!.tileCounts[index % 7][1],
+          child: NoteTitleWidget(
+            note: _viewModel!.listCurrent[index],
+            onTap: () => _viewModel!.gotoDetailNote(
+              _viewModel!.listCurrent[index],
+            ),
+          ),
+        );
+    });
+
+    return Column(
       children: [
-        for (int i = 0; i < (_viewModel!.isLoadMore?
-          _viewModel!.listCurrent.length+1
-          : _viewModel!.listCurrent.length); i++)
-          if (i < _viewModel!.listCurrent.length) 
-            StaggeredGridTile.count(
-              crossAxisCellCount: _viewModel!.tileCounts[i % 7][0],
-              mainAxisCellCount: _viewModel!.tileCounts[i % 7][1],
-              child: NoteTitleWidget(
-                note: _viewModel!.listCurrent[i],
-                onTap: () => _viewModel!.gotoDetailNote(
-                  _viewModel!.listCurrent[i],),
-              ),
-            )
-          else const Center(child: CupertinoActivityIndicator()),
+        StaggeredGrid.count(
+          crossAxisCount: 4,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          axisDirection: AxisDirection.down,
+          children: gridChildren,
+        ),
+        if (_viewModel!.isLoadMore) 
+          const Center(child: CupertinoActivityIndicator()),
       ],
     );
   }
