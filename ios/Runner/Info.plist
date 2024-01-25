@@ -23,7 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>8</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -65,7 +65,7 @@
 	<key>FLTEnableImpeller</key>
 	<false />
 	<key>GADApplicationIdentifier</key>
-  <string>ca-app-pub-4606907034597798~9824381487</string>
+  <string>ca-app-pub-4606907034597798~6786903613</string>
   <key>SKAdNetworkItems</key>
   <array>
     <dict>

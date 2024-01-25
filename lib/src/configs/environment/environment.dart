@@ -8,6 +8,6 @@ class EnvironmentConfig {
   static const appSuffix = String.fromEnvironment('DART_DEFINES_APP_SUFFIX');
   static const baseUrl = String.fromEnvironment(
     'DART_DEFINES_BASE_URL',
-    defaultValue: 'https://spa-api.dhysolutions.net/api',
+    defaultValue: 'https://prod.spa.dhysolutions.net/api',
   );
 }

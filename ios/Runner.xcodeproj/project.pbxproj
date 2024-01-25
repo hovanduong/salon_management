@@ -545,7 +545,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerProfile.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
 				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
@@ -741,7 +741,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
 				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
@@ -775,7 +775,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
 				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.prod.plist";

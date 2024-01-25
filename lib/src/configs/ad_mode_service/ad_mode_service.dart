@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -15,7 +15,7 @@ class _AdBannerState extends State<AdBanner> {
   bool _isLoaded = false;
   static final bannerAdUnitId = Platform.isAndroid
       ? 'ca-app-pub-4606907034597798/3786382905'
-      : 'ca-app-pub-4606907034597798/4027407124';
+      : 'ca-app-pub-4606907034597798/1078431304';
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,7 @@ class _AdBannerState extends State<AdBanner> {
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (Ad ad) async {
-          debugPrint('Inline BannerAdListener onAdLoaded');
+          log('Inline BannerAdListener onAdLoaded');
           if (mounted) {
             setState(() {
               _isLoaded = true;
@@ -46,8 +46,9 @@ class _AdBannerState extends State<AdBanner> {
           }
         },
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          debugPrint('Inline adaptive banner failedToLoad: $error');
+          log('Inline adaptive banner failedToLoad: $error');
           _isLoaded = false;
+          setState(() {});
           ad.dispose();
         },
       ),
