@@ -85,7 +85,6 @@ class _NavigateScreenState extends State<NavigateScreen> {
               const SizedBox(
                 height: 135,
               ),
-            // if (_viewModel!.isShowBanner)
             Positioned(
               bottom: 0,
               left: 0,
