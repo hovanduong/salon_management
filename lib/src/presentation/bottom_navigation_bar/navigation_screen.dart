@@ -29,9 +29,12 @@ class _NavigateScreenState extends State<NavigateScreen> {
   final PageStorageBucket bucket = PageStorageBucket();
   NavigateViewModel? _viewModel;
   bool isShowBanner = false;
+
   @override
   Widget build(BuildContext context) {
     final page = ModalRoute.of(context)?.settings.arguments;
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
     return BaseWidget<NavigateViewModel>(
       viewModel: NavigateViewModel(),
       // onViewModelReady: (viewModel) {
@@ -40,11 +43,12 @@ class _NavigateScreenState extends State<NavigateScreen> {
       // },
       onViewModelReady: (viewModel) =>
           _viewModel = viewModel!..init(page as IncomeParams?),
-      builder: (context, viewModel, child) => buildNavigateScreen(),
+      builder: (context, viewModel, child) =>
+          buildNavigateScreen(isKeyboardOpen),
     );
   }
 
-  Widget buildNavigateScreen() {
+  Widget buildNavigateScreen(isKeyboardOpen) {
     return WillPopScope(
       onWillPop: () => _viewModel!.showExitPopup(),
       child: Scaffold(
@@ -78,27 +82,29 @@ class _NavigateScreenState extends State<NavigateScreen> {
               Container(),
           ],
         ),
-        bottomNavigationBar: Stack(
-          children: [
-            appBarNavigator(),
-            if (_viewModel!.isShowBanner)
-              const SizedBox(
-                height: 135,
+        bottomNavigationBar: isKeyboardOpen
+            ? null
+            : Stack(
+                children: [
+                  appBarNavigator(),
+                  if (_viewModel!.isShowBanner)
+                    const SizedBox(
+                      height: 135,
+                    ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: AdBanner(
+                      onBanner: (value) {
+                        Future.delayed(Duration.zero, () {
+                          _viewModel!.onChangeBanner(value: value);
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: AdBanner(
-                onBanner: (value) {
-                  Future.delayed(Duration.zero, () {
-                    _viewModel!.onChangeBanner(value: value);
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

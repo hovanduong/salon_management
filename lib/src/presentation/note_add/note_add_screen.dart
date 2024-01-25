@@ -80,7 +80,9 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
           width: SizeToPadding.sizeMedium,
         ),
         InkWell(
-          onTap: () => _viewModel!.onButton(),
+          onTap: () async {
+            await _viewModel!.onButton();
+          },
           child: Paragraph(
             content: _viewModel!.noteModel != null
                 ? NoteLanguage.update
@@ -97,7 +99,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   Widget buildHeader() {
     return Container(
       margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(right: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -133,7 +135,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildFieldNoteQuill(){
+  Widget buildFieldNoteQuill() {
     return Expanded(
       child: QuillEditor.basic(
         configurations: QuillEditorConfigurations(
@@ -150,7 +152,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildBody() {
     return Container(
-      height: MediaQuery.sizeOf(context).height-110,
+      height: MediaQuery.sizeOf(context).height - 110,
       margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
       padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       child: Column(
@@ -167,7 +169,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
     );
   }
 
-  Widget buildItemEditTextNote(){
+  Widget buildItemEditTextNote() {
     return QuillToolbar.simple(
       configurations: QuillSimpleToolbarConfigurations(
         toolbarIconCrossAlignment: WrapCrossAlignment.end,

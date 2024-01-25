@@ -27,19 +27,18 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-
   NoteViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
       viewModel: NoteViewModel(),
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(), 
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
 
-  Widget buildLoading(){
+  Widget buildLoading() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -67,7 +66,7 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
- Widget buildSearch() {
+  Widget buildSearch() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
       child: AppFormField(
@@ -84,7 +83,7 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildButtonOptionView(){
+  Widget buildButtonOptionView() {
     return MenuAnchor(
       builder: (context, controller, child) {
         return GestureDetector(
@@ -95,17 +94,21 @@ class _NoteScreenState extends State<NoteScreen> {
               controller.open();
             }
           },
-          child: const CircleAvatar(
+          child: CircleAvatar(
             radius: 13,
-            backgroundColor: AppColors.BLACK_500,
-            child: Icon(Icons.more_horiz, size: 17, 
-              color: AppColors.COLOR_WHITE,),
+            backgroundColor: AppColors.COLOR_WHITE.withOpacity(0.2),
+            child: const Icon(
+              Icons.more_horiz,
+              size: 17,
+              color: AppColors.COLOR_WHITE,
+            ),
           ),
         );
       },
       menuChildren: [
         MenuItemButton(
-          onPressed: () => _viewModel!.onChangeViewScreen(NoteLanguage.gridView),
+          onPressed: () =>
+              _viewModel!.onChangeViewScreen(NoteLanguage.gridView),
           child: Paragraph(
             content: NoteLanguage.gridView,
             style: STYLE_MEDIUM.copyWith(
@@ -114,7 +117,8 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ),
         MenuItemButton(
-          onPressed: () => _viewModel!.onChangeViewScreen(NoteLanguage.listView),
+          onPressed: () =>
+              _viewModel!.onChangeViewScreen(NoteLanguage.listView),
           child: Paragraph(
             content: NoteLanguage.listView,
             style: STYLE_MEDIUM.copyWith(
@@ -157,20 +161,24 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildButtonHeader(){
+  Widget buildButtonHeader() {
     return Padding(
-      padding: EdgeInsets.only(right: SizeToPadding.sizeMedium),
+      padding: EdgeInsets.only(right: SizeToPadding.sizeMedium, bottom: 15),
       child: Row(
         children: [
           InkWell(
             onTap: noteColorPicker,
             child: Icon(
               Icons.color_lens_outlined,
-              color: _viewModel!.selectColor!=AppColors.COLOR_WHITE?
-                _viewModel!.selectColor : AppColors.BLACK_500 ,
+              color: AppColors.COLOR_WHITE.withOpacity(0.7),
+              // color: _viewModel!.selectColor != AppColors.COLOR_WHITE
+              //     ? _viewModel!.selectColor
+              //     : AppColors.COLOR_WHITE,
             ),
           ),
-          SizedBox(width: SizeToPadding.sizeSmall,),
+          SizedBox(
+            width: SizeToPadding.sizeSmall,
+          ),
           buildButtonOptionView(),
         ],
       ),
@@ -178,29 +186,68 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Widget buildHeader() {
-    return Padding(
-      padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40,
-        left: SizeToPadding.sizeMedium,),
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      padding: EdgeInsets.only(
+        top: Platform.isAndroid ? 20 : 60,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          InkWell(
-            onTap: () => _viewModel!.onSearchNotes(),
-            child: Paragraph(
-              content: NoteLanguage.note,
-              style: STYLE_VERY_BIG.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          const Spacer(),
+          const Spacer(),
+          Center(
+            child: Column(
+              children: [
+                Paragraph(
+                  textAlign: TextAlign.center,
+                  content: NoteLanguage.note,
+                  style: STYLE_LARGE.copyWith(
+                    color: AppColors.COLOR_WHITE,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                )
+              ],
             ),
           ),
+          const Spacer(),
           buildButtonHeader(),
         ],
       ),
     );
   }
 
+  // Widget buildHeader() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(
+  //       top: Platform.isAndroid ? 30 : 40,
+  //       left: SizeToPadding.sizeMedium,
+  //     ),
+  //     child: Row(
+  //       children: [
+  //         Expanded(
+  //           flex: 7,
+  //           child: InkWell(
+  //             onTap: () => _viewModel!.onSearchNotes(),
+  //             child: Paragraph(
+  //               textAlign: TextAlign.center,
+  //               content: NoteLanguage.note,
+  //               style: STYLE_VERY_BIG.copyWith(
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         buildButtonHeader(),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget buildIconEmpty(){
+  Widget buildIconEmpty() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       child: Padding(
@@ -214,18 +261,18 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Widget buildGridViewScreen() {
-    final gridChildren = List<Widget>.generate(_viewModel!.listCurrent.length, 
-      (index) {
-        return StaggeredGridTile.count(
-          crossAxisCellCount: _viewModel!.tileCounts[index % 7][0],
-          mainAxisCellCount: _viewModel!.tileCounts[index % 7][1],
-          child: NoteTitleWidget(
-            note: _viewModel!.listCurrent[index],
-            onTap: () => _viewModel!.gotoDetailNote(
-              _viewModel!.listCurrent[index],
-            ),
+    final gridChildren =
+        List<Widget>.generate(_viewModel!.listCurrent.length, (index) {
+      return StaggeredGridTile.count(
+        crossAxisCellCount: _viewModel!.tileCounts[index % 7][0],
+        mainAxisCellCount: _viewModel!.tileCounts[index % 7][1],
+        child: NoteTitleWidget(
+          note: _viewModel!.listCurrent[index],
+          onTap: () => _viewModel!.gotoDetailNote(
+            _viewModel!.listCurrent[index],
           ),
-        );
+        ),
+      );
     });
 
     return Column(
@@ -237,80 +284,96 @@ class _NoteScreenState extends State<NoteScreen> {
           axisDirection: AxisDirection.down,
           children: gridChildren,
         ),
-        if (_viewModel!.isLoadMore) 
+        if (_viewModel!.isLoadMore)
           const Center(child: CupertinoActivityIndicator()),
       ],
     );
   }
 
-  Widget buildTitleContentListView(int index){
+  Widget buildTitleContentListView(int index) {
     return Paragraph(
-      content: _viewModel!.listCurrent[index].title??'',
+      content: _viewModel!.listCurrent[index].title ?? '',
       maxLines: 1,
       style: STYLE_MEDIUM.copyWith(
         fontWeight: FontWeight.w600,
-        color: (_viewModel!.listCurrent[index].color!=null)?
-          AppHandleColor.getColorFromHex(_viewModel!.listCurrent[index].color!)
-          !=AppColors.COLOR_WHITE?
-          AppColors.COLOR_WHITE: AppColors.BLACK_500: null,
+        color: (_viewModel!.listCurrent[index].color != null)
+            ? AppHandleColor.getColorFromHex(
+                        _viewModel!.listCurrent[index].color!) !=
+                    AppColors.COLOR_WHITE
+                ? AppColors.COLOR_WHITE
+                : AppColors.BLACK_500
+            : null,
       ),
       overflow: TextOverflow.ellipsis,
     );
   }
 
-  Widget buildNoteContentListView(int index){
+  Widget buildNoteContentListView(int index) {
     return Paragraph(
-      content: Document.fromJson(jsonDecode(
-        _viewModel!.listCurrent[index].note??'',),).toPlainText(),
+      content: Document.fromJson(
+        jsonDecode(
+          _viewModel!.listCurrent[index].note ?? '',
+        ),
+      ).toPlainText(),
       maxLines: 1,
       style: STYLE_SMALL.copyWith(
         fontWeight: FontWeight.w600,
-        color: (_viewModel!.listCurrent[index].color!=null)?
-          AppHandleColor.getColorFromHex(_viewModel!.listCurrent[index].color!)
-          !=AppColors.COLOR_WHITE?
-          AppColors.COLOR_WHITE: AppColors.BLACK_500: null,
+        color: (_viewModel!.listCurrent[index].color != null)
+            ? AppHandleColor.getColorFromHex(
+                        _viewModel!.listCurrent[index].color!) !=
+                    AppColors.COLOR_WHITE
+                ? AppColors.COLOR_WHITE
+                : AppColors.BLACK_500
+            : null,
       ),
       overflow: TextOverflow.ellipsis,
     );
   }
 
-  Widget buildDateContentListView(int index){
+  Widget buildDateContentListView(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Paragraph(
-          content: _viewModel!.listCurrent[index].updatedAt!= null
-            ? AppDateUtils.splitHourDate(
-                AppDateUtils.formatDateLocal(
-                  _viewModel!.listCurrent[index].updatedAt!,
-                ),
-              )
-            : '',
-          style:STYLE_SMALL.copyWith(
-            color: (_viewModel!.listCurrent[index].color!=null)?
-              AppHandleColor.getColorFromHex(_viewModel!.listCurrent[index].color!)
-              !=AppColors.COLOR_WHITE?
-              AppColors.COLOR_WHITE: AppColors.BLACK_500: null,)
-        ),
+            content: _viewModel!.listCurrent[index].updatedAt != null
+                ? AppDateUtils.splitHourDate(
+                    AppDateUtils.formatDateLocal(
+                      _viewModel!.listCurrent[index].updatedAt!,
+                    ),
+                  )
+                : '',
+            style: STYLE_SMALL.copyWith(
+              color: (_viewModel!.listCurrent[index].color != null)
+                  ? AppHandleColor.getColorFromHex(
+                              _viewModel!.listCurrent[index].color!) !=
+                          AppColors.COLOR_WHITE
+                      ? AppColors.COLOR_WHITE
+                      : AppColors.BLACK_500
+                  : null,
+            )),
       ],
     );
   }
 
-  Widget buildContentListView(int index){
+  Widget buildContentListView(int index) {
     return InkWell(
-      onTap: ()=> _viewModel!.gotoDetailNote(
-        _viewModel!.listCurrent[index],),
+      onTap: () => _viewModel!.gotoDetailNote(
+        _viewModel!.listCurrent[index],
+      ),
       child: Container(
         margin: EdgeInsets.only(top: SizeToPadding.sizeMedium),
-        padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall,
-          horizontal: SizeToPadding.sizeMedium,),
+        padding: EdgeInsets.symmetric(
+          vertical: SizeToPadding.sizeSmall,
+          horizontal: SizeToPadding.sizeMedium,
+        ),
         height: 100,
         width: double.maxFinite,
         decoration: BoxDecoration(
-          color: (_viewModel!.listCurrent[index].color!=null)?
-            AppHandleColor.getColorFromHex(
-              _viewModel!.listCurrent[index].color!,
-            ): null,
+          color: (_viewModel!.listCurrent[index].color != null)
+              ? AppHandleColor.getColorFromHex(
+                  _viewModel!.listCurrent[index].color!,
+                )
+              : null,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: AppColors.BLACK_200),
         ),
@@ -327,13 +390,14 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildListViewScreen(){
+  Widget buildListViewScreen() {
     return Column(
       children: [
         ...List.generate(
-          _viewModel!.isLoadMore?
-          _viewModel!.listCurrent.length+1
-          : _viewModel!.listCurrent.length, (index){
+          _viewModel!.isLoadMore
+              ? _viewModel!.listCurrent.length + 1
+              : _viewModel!.listCurrent.length,
+          (index) {
             if (index < _viewModel!.listCurrent.length) {
               return buildContentListView(index);
             } else {
@@ -344,33 +408,38 @@ class _NoteScreenState extends State<NoteScreen> {
       ],
     );
   }
-  
-  Widget buildListNote(){
+
+  Widget buildListNote() {
     return RefreshIndicator(
       color: AppColors.PRIMARY_GREEN,
       onRefresh: () async {
         await _viewModel!.pullRefresh();
       },
       child: _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
-      ? buildIconEmpty()
-      : SizedBox(
-          width: double.maxFinite,
-          height: MediaQuery.sizeOf(context).height-240,
-          child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, ),
-          child:  SingleChildScrollView(
-            controller: _viewModel!.scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            child:_viewModel!.isGridView? buildGridViewScreen()
-              : buildListViewScreen(),
-          ),
-        ),
-      ),
+          ? buildIconEmpty()
+          : SizedBox(
+              width: double.maxFinite,
+              height: MediaQuery.sizeOf(context).height - 240,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: SingleChildScrollView(
+                  controller: _viewModel!.scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: _viewModel!.isGridView
+                      ? buildGridViewScreen()
+                      : buildListViewScreen(),
+                ),
+              ),
+            ),
     );
   }
 
-  Widget buildNoteScreen(){
+  Widget buildNoteScreen() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -385,7 +454,10 @@ class _NoteScreenState extends State<NoteScreen> {
         child: FloatingActionButton(
           backgroundColor: AppColors.PRIMARY_GREEN,
           onPressed: () => _viewModel!.gotoAddNote(),
-          child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
+          child: const Icon(
+            Icons.add,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
       ),
     );

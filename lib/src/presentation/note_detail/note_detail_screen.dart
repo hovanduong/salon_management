@@ -23,22 +23,23 @@ class NoteDetailScreen extends StatefulWidget {
   State<NoteDetailScreen> createState() => _NoteDetailScreenState();
 }
 
-class _NoteDetailScreenState extends State<NoteDetailScreen>{
-
+class _NoteDetailScreenState extends State<NoteDetailScreen> {
   NoteDetailViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
-    final noteModel= ModalRoute.of(context)?.settings.arguments;
+    final noteModel = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget(
-      viewModel: NoteDetailViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(
-        noteModel as NoteModel?,),
+      viewModel: NoteDetailViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          noteModel as NoteModel?,
+        ),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
 
-  Widget buildLoading(){
+  Widget buildLoading() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -66,86 +67,99 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
     );
   }
 
-  Widget buildHeader(){
+  Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeBig*2),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
+      padding: const EdgeInsets.only(right: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_outlined, size: 35,) ,
+            icon: const Icon(
+              Icons.arrow_back_outlined,
+              size: 35,
+            ),
           ),
           IconButton(
-            onPressed: () => _viewModel!.showDialogDeleteNote(), 
-            icon: const Icon(Icons.delete, 
-              size: 35, color: AppColors.Red_Money,) ,
+            onPressed: () => _viewModel!.showDialogDeleteNote(),
+            icon: const Icon(
+              Icons.delete,
+              size: 35,
+              color: AppColors.Red_Money,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTitle(){
+  Widget buildTitle() {
     return Padding(
-      padding: EdgeInsets.only(right: SizeToPadding.sizeMedium,
-        left: SizeToPadding.sizeMedium, 
+      padding: EdgeInsets.only(
+        right: SizeToPadding.sizeMedium,
+        left: SizeToPadding.sizeMedium,
         top: SizeToPadding.sizeSmall,
       ),
       child: Paragraph(
-        content: _viewModel!.noteModel?.title??'',
+        content: _viewModel!.noteModel?.title ?? '',
         style: STYLE_LARGE_BIG.copyWith(
           fontWeight: FontWeight.w600,
         ),
       ),
     );
-  }  
+  }
 
-  Widget buildDate(){
+  Widget buildDate() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVerySmall,
-        horizontal: SizeToPadding.sizeMedium,),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeVerySmall,
+        horizontal: SizeToPadding.sizeMedium,
+      ),
       child: Paragraph(
-        content: _viewModel!.noteModel?.updatedAt!= null
-          ? AppDateUtils.splitHourDate(
-              AppDateUtils.formatDateLocal(
-                _viewModel!.noteModel!.updatedAt!,
-              ),
-            )
-          : '',
-        style:STYLE_SMALL.copyWith(
+        content: _viewModel!.noteModel?.updatedAt != null
+            ? AppDateUtils.splitHourDate(
+                AppDateUtils.formatDateLocal(
+                  _viewModel!.noteModel!.updatedAt!,
+                ),
+              )
+            : '',
+        style: STYLE_SMALL.copyWith(
           fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
-  Widget buildNote(){
+  Widget buildNote() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall,
-        horizontal: SizeToPadding.sizeMedium,),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeToPadding.sizeSmall,
+        horizontal: SizeToPadding.sizeMedium,
+      ),
       width: double.maxFinite,
-      height: MediaQuery.sizeOf(context).height-170,
+      height: MediaQuery.sizeOf(context).height - 170,
       child: SingleChildScrollView(
         child: Paragraph(
-          content: _viewModel!.noteModel?.note??'',
+          content: _viewModel!.noteModel?.note ?? '',
           style: STYLE_MEDIUM.copyWith(
             fontWeight: FontWeight.w500,
-            color: _viewModel!.noteModel?.color!='#2F4F4F'?
-              AppColors.BLACK_500: AppColors.COLOR_WHITE,
+            color: _viewModel!.noteModel?.color != '#2F4F4F'
+                ? AppColors.BLACK_500
+                : AppColors.COLOR_WHITE,
           ),
         ),
       ),
     );
   }
 
-  Widget buildFieldNoteQuill(){
+  Widget buildFieldNoteQuill() {
     return Container(
       width: double.maxFinite,
-      height: MediaQuery.sizeOf(context).height-180,
-      padding: EdgeInsets.only(right: SizeToPadding.sizeMedium,
-        left: SizeToPadding.sizeMedium, 
+      height: MediaQuery.sizeOf(context).height - 180,
+      padding: EdgeInsets.only(
+        right: SizeToPadding.sizeMedium,
+        left: SizeToPadding.sizeMedium,
       ),
       child: QuillEditor.basic(
         configurations: QuillEditorConfigurations(
@@ -161,7 +175,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
     );
   }
 
-  Widget buildNoteDetailScreen(){
+  Widget buildNoteDetailScreen() {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -179,8 +193,11 @@ class _NoteDetailScreenState extends State<NoteDetailScreen>{
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
         child: FloatingActionButton(
           backgroundColor: AppColors.PRIMARY_GREEN,
-          onPressed: () =>_viewModel!.gotoUpdateNote(),
-          child: const Icon(Icons.edit, color: AppColors.COLOR_WHITE,),
+          onPressed: () => _viewModel!.gotoUpdateNote(),
+          child: const Icon(
+            Icons.edit,
+            color: AppColors.COLOR_WHITE,
+          ),
         ),
       ),
     );

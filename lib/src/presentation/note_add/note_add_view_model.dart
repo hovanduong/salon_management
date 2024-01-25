@@ -18,19 +18,18 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class NoteAddViewModel extends BaseViewModel{
-
+class NoteAddViewModel extends BaseViewModel {
   TextEditingController titleTextController = TextEditingController();
   TextEditingController noteTextController = TextEditingController();
 
-  QuillController quillController= QuillController.basic();
+  QuillController quillController = QuillController.basic();
 
   String? messageTitle;
   String? messageNote;
 
-  bool enableButton=false;
+  bool enableButton = false;
 
-  Color selectColor= AppColors.COLOR_WHITE;
+  Color selectColor = AppColors.COLOR_WHITE;
 
   NoteApi noteApi = NoteApi();
 
@@ -38,27 +37,27 @@ class NoteAddViewModel extends BaseViewModel{
 
   Timer? timer;
 
-  Future<void> init(NoteModel? note)async{
-    noteModel=note;
+  Future<void> init(NoteModel? note) async {
+    noteModel = note;
     await setData();
     notifyListeners();
   }
 
-  Future<void> setData()async{
-    if(noteModel!=null){
-      titleTextController.text= noteModel?.title??'';
-      noteTextController.text= noteModel?.note??'';
-      selectColor= noteModel?.color!=null && noteModel?.color!=''?
-      AppHandleColor.getColorFromHex(noteModel?.color??'')
-      :AppColors.COLOR_WHITE;
+  Future<void> setData() async {
+    if (noteModel != null) {
+      titleTextController.text = noteModel?.title ?? '';
+      noteTextController.text = noteModel?.note ?? '';
+      selectColor = noteModel?.color != null && noteModel?.color != ''
+          ? AppHandleColor.getColorFromHex(noteModel?.color ?? '')
+          : AppColors.COLOR_WHITE;
       final json = jsonDecode(noteModel?.note ?? '');
       quillController.document = Document.fromJson(json);
     }
     notifyListeners();
   }
 
-  void changedSelectColor(Color color){
-    selectColor= color;
+  void changedSelectColor(Color color) {
+    selectColor = color;
     notifyListeners();
   }
 
@@ -71,7 +70,7 @@ class NoteAddViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-   void validNote(String value) {
+  void validNote(String value) {
     if (noteTextController.text.trim().isEmpty) {
       messageNote = NoteLanguage.account;
     } else {
@@ -80,28 +79,32 @@ class NoteAddViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  void onEnableButton(){
-    if(titleTextController.text.trim()!='' && noteTextController.text.trim()!=''){
-      enableButton=true;
-    }else{
-      enableButton=false;
+  void onEnableButton() {
+    if (titleTextController.text.trim() != '' &&
+        noteTextController.text.trim() != '') {
+      enableButton = true;
+    } else {
+      enableButton = false;
     }
     notifyListeners();
   }
 
-  Future<void> onButton()async{
-    if(titleTextController.text.trim()!='' && 
-      quillController.document.toPlainText()!=''){
-      if(noteModel!=null){
-        await updateNote();
-      }else{
-        await addNote();
-      }
+  Future<void> onButton() async {
+    if (titleTextController.text.trim() == '' &&
+        quillController.document.toPlainText() == '') {
+      return;
+    }
+    if (noteModel != null) {
+      await updateNote();
+      // noteModel = null;
+    } else {
+      await addNote();
+      // noteModel = null;
     }
     notifyListeners();
   }
 
-   dynamic showErrorDialog(_) {
+  dynamic showErrorDialog(_) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -127,10 +130,13 @@ class NoteAddViewModel extends BaseViewModel{
         );
       },
     );
-    if(noteModel!=null){
-      timer= Timer(const Duration(seconds: 2), () { 
-        Navigator.pushReplacementNamed(context, Routers.navigation, 
-          arguments: const IncomeParams(page: 4),);
+    if (noteModel != null) {
+      timer = Timer(const Duration(seconds: 2), () {
+        Navigator.pushReplacementNamed(
+          context,
+          Routers.navigation,
+          arguments: const IncomeParams(page: 4),
+        );
       });
     }
   }
@@ -142,10 +148,10 @@ class NoteAddViewModel extends BaseViewModel{
     );
   }
 
-  void clearData(){
-    noteTextController.text='';
-    titleTextController.text='';
-    selectColor= AppColors.COLOR_WHITE;
+  void clearData() {
+    noteTextController.text = '';
+    titleTextController.text = '';
+    selectColor = AppColors.COLOR_WHITE;
     quillController.clear();
     notifyListeners();
   }

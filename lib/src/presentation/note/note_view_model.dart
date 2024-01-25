@@ -12,8 +12,7 @@ import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
 
-class NoteViewModel extends BaseViewModel{
-
+class NoteViewModel extends BaseViewModel {
   final tileCounts = [
     [2, 2],
     [2, 2],
@@ -28,30 +27,32 @@ class NoteViewModel extends BaseViewModel{
 
   ScrollController scrollController = ScrollController();
 
-  bool isLoading=true;
-  bool isGridView=true;
-  bool isLoadMore= false;
+  bool isLoading = true;
+  bool isGridView = true;
+  bool isLoadMore = false;
 
   String? color;
   String? search;
 
   int? idUser;
-  int page=1;
+  int page = 1;
 
-  NoteApi noteApi= NoteApi();
+  NoteApi noteApi = NoteApi();
 
-  List<NoteModel> listNote=[];
-  List<NoteModel> listCurrent=[];
+  List<NoteModel> listNote = [];
+  List<NoteModel> listCurrent = [];
 
-  Future<void> init()async{
-    idUser= int.parse(await AppPref.getDataUSer('id') ?? '0');
+  Future<void> init() async {
+    selectColor = AppColors.COLOR_WHITE;
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await AppPref.getShowCase('isGridView$idUser').then(
-      (value) => isGridView=value??true,);
+      (value) => isGridView = value ?? true,
+    );
     scrollController.addListener(
       scrollListener,
     );
     await getNotes();
-    listCurrent=listNote;
+    listCurrent = listNote;
   }
 
   dynamic scrollListener() async {
@@ -75,46 +76,52 @@ class NoteViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  Future<void> gotoAddNote()async{
-    await Navigator.pushNamed(context, Routers.noteAddScreen,);
+  Future<void> gotoAddNote() async {
+    await Navigator.pushNamed(
+      context,
+      Routers.noteAddScreen,
+    );
     await pullRefresh();
     notifyListeners();
   }
 
-  Future<void> gotoDetailNote(NoteModel noteModel)async{
-    await Navigator.pushNamed(context, Routers.noteDetailScreen,
-      arguments: noteModel,);
+  Future<void> gotoDetailNote(NoteModel noteModel) async {
+    await Navigator.pushNamed(
+      context,
+      Routers.noteDetailScreen,
+      arguments: noteModel,
+    );
     await pullRefresh();
     notifyListeners();
   }
-  
-  Future<void> onChangeViewScreen(String value) async{
-    if(value==NoteLanguage.listView){
+
+  Future<void> onChangeViewScreen(String value) async {
+    if (value == NoteLanguage.listView) {
       await AppPref.setShowCase('isGridView$idUser', false);
-    }else{
+    } else {
       await AppPref.setShowCase('isGridView$idUser', true);
     }
-    isGridView=(await AppPref.getShowCase('isGridView$idUser'))!;
+    isGridView = (await AppPref.getShowCase('isGridView$idUser'))!;
     notifyListeners();
   }
 
   Future<void> onSearchNotes({String? value, Color? color}) async {
     // final searchCustomer = TiengViet.parse(value.toLowerCase());
-    page=1;
-    search= value;
-    selectColor= color;
+    page = 1;
+    search = value;
+    selectColor = color;
     await getNotes();
-    listCurrent=listNote;
+    listCurrent = listNote;
     notifyListeners();
   }
 
   Future<void> pullRefresh() async {
     listCurrent.clear();
-    page=1;
-    selectColor=null;
-    search=null;
+    page = 1;
+    selectColor = null;
+    search = null;
     await getNotes();
-    listCurrent=listNote;
+    listCurrent = listNote;
     notifyListeners();
   }
 
@@ -123,8 +130,9 @@ class NoteViewModel extends BaseViewModel{
       NoteParams(
         page: page,
         search: search,
-        color: selectColor!=null?
-           selectColor?.toHex().toString().split('#')[1]: null,
+        color: selectColor != null
+            ? selectColor?.toHex().toString().split('#')[1]
+            : null,
       ),
     );
 

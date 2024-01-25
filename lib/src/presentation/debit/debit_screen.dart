@@ -22,19 +22,18 @@ class DebitScreen extends StatefulWidget {
 }
 
 class _DebitScreenState extends State<DebitScreen> {
-
   DebitViewModel? _viewModel;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      viewModel: DebitViewModel(), 
-      onViewModelReady: (viewModel) => _viewModel=viewModel!..init(),
+      viewModel: DebitViewModel(),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(),
       builder: (context, viewModel, child) => buildLoading(),
     );
   }
 
-  Widget buildLoading(){
+  Widget buildLoading() {
     return Scaffold(
       body: StreamProvider<NetworkStatus>(
         initialData: NetworkStatus.online,
@@ -83,8 +82,9 @@ class _DebitScreenState extends State<DebitScreen> {
             key: _viewModel!.keyNote,
             description: DebitLanguage.userManual,
             child: InkWell(
-              onTap: ()=> _viewModel!.showDialogNote(context),
-              child: const Icon(Icons.not_listed_location_outlined, 
+              onTap: () => _viewModel!.showDialogNote(context),
+              child: const Icon(
+                Icons.not_listed_location_outlined,
                 color: AppColors.COLOR_WHITE,
                 size: 30,
               ),
@@ -95,7 +95,7 @@ class _DebitScreenState extends State<DebitScreen> {
     );
   }
 
-   Widget buildSearch() {
+  Widget buildSearch() {
     return Showcase(
       description: DebitLanguage.searchDebitCustomer,
       key: _viewModel!.keySearch,
@@ -117,12 +117,13 @@ class _DebitScreenState extends State<DebitScreen> {
     );
   }
 
-  Widget buildCustomerDebit(int index){
+  Widget buildCustomerDebit(int index) {
     final id = _viewModel?.listCurrent[index].id;
     final name = _viewModel?.listCurrent[index].fullName;
     return InkWell(
-      onTap: ()=>_viewModel!.goToDebt(
-        myCustomerModel: _viewModel!.listCurrent[index],),
+      onTap: () => _viewModel!.goToDebt(
+        myCustomerModel: _viewModel!.listCurrent[index],
+      ),
       child: CardCustomerWidget(
         name: name,
         onTapDelete: (context) => _viewModel!.showWaningDiaglog(
@@ -130,13 +131,15 @@ class _DebitScreenState extends State<DebitScreen> {
           title: DebitLanguage.waningDeleteCustomer,
         ),
         onTapUpdate: (context) => _viewModel!.showDialogAddDebit(
-          context, idEdit: id, name: name,
+          context,
+          idEdit: id,
+          name: name,
         ),
       ),
     );
   }
 
-  Widget buildIconEmpty(){
+  Widget buildIconEmpty() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       child: Padding(
@@ -156,33 +159,33 @@ class _DebitScreenState extends State<DebitScreen> {
         await _viewModel!.pullRefresh();
       },
       child: _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
-      ? buildIconEmpty()
-      : Container(
-        padding: EdgeInsets.only(
-          left: SizeToPadding.sizeSmall,
-          right: SizeToPadding.sizeVerySmall,
-        ),
-        height: MediaQuery.of(context).size.height-600,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          physics: const AlwaysScrollableScrollPhysics(),
-          controller: _viewModel!.scrollController,
-          itemCount: _viewModel!.loadingMore
-              ? _viewModel!.listCurrent.length + 1
-              : _viewModel!.listCurrent.length,
-          itemBuilder: (context, index) {
-            if (index < _viewModel!.listCurrent.length) {
-              return buildCustomerDebit(index);
-            } else {
-              return const CupertinoActivityIndicator();
-            }
-          },
-        ),
-      ),
+          ? buildIconEmpty()
+          : Container(
+              padding: EdgeInsets.only(
+                left: SizeToPadding.sizeSmall,
+                right: SizeToPadding.sizeVerySmall,
+              ),
+              height: MediaQuery.of(context).size.height - 600,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: const AlwaysScrollableScrollPhysics(),
+                controller: _viewModel!.scrollController,
+                itemCount: _viewModel!.loadingMore
+                    ? _viewModel!.listCurrent.length + 1
+                    : _viewModel!.listCurrent.length,
+                itemBuilder: (context, index) {
+                  if (index < _viewModel!.listCurrent.length) {
+                    return buildCustomerDebit(index);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              ),
+            ),
     );
   }
 
-  Widget buildTotalMyDebit(){
+  Widget buildTotalMyDebit() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       child: FieldRevenueWidget(
@@ -193,16 +196,16 @@ class _DebitScreenState extends State<DebitScreen> {
         descriptionPaid: DebitLanguage.showCaseMyPaid,
         keyPaid: _viewModel!.keyMyPaid,
         title: DebitLanguage.myDebitEveryone,
-        money:( _viewModel!.totalDebtModel?.totalDebtMe ??0)
-          - (_viewModel!.totalDebtModel?.totalPaidMe??0),
+        money: (_viewModel!.totalDebtModel?.totalDebtMe ?? 0) -
+            (_viewModel!.totalDebtModel?.totalPaidMe ?? 0),
         colorTitle: AppColors.Red_Money,
-        totalLeft: _viewModel!.totalDebtModel?.totalPaidMe??0,
-        totalRight: _viewModel!.totalDebtModel?.totalDebtMe??0,
+        totalLeft: _viewModel!.totalDebtModel?.totalPaidMe ?? 0,
+        totalRight: _viewModel!.totalDebtModel?.totalDebtMe ?? 0,
       ),
     );
   }
 
-  Widget buildTotalEveryoneDebit(){
+  Widget buildTotalEveryoneDebit() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
       child: FieldRevenueWidget(
@@ -213,16 +216,16 @@ class _DebitScreenState extends State<DebitScreen> {
         descriptionPaid: DebitLanguage.showCaseUPaid,
         keyPaid: _viewModel!.keyUPaid,
         title: DebitLanguage.everyoneDebitMe,
-        money:( _viewModel!.totalDebtModel?.totalDebtUser ??0)
-          - (_viewModel!.totalDebtModel?.totalPaidUser??0),
+        money: (_viewModel!.totalDebtModel?.totalDebtUser ?? 0) -
+            (_viewModel!.totalDebtModel?.totalPaidUser ?? 0),
         colorTitle: AppColors.Red_Money,
-        totalLeft: _viewModel!.totalDebtModel?.totalPaidUser??0,
-        totalRight: _viewModel!.totalDebtModel?.totalDebtUser??0,
+        totalLeft: _viewModel!.totalDebtModel?.totalPaidUser ?? 0,
+        totalRight: _viewModel!.totalDebtModel?.totalDebtUser ?? 0,
       ),
     );
   }
 
-  Widget buildBody(){
+  Widget buildBody() {
     return Column(
       children: [
         buildTotalEveryoneDebit(),
@@ -233,21 +236,27 @@ class _DebitScreenState extends State<DebitScreen> {
     );
   }
 
-  Widget buildDebit(){
+  Widget buildDebit() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton:Padding(
+      floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
         child: Showcase(
           key: _viewModel!.keyAdd,
           description: DebitLanguage.addDebitCustomer,
-          targetBorderRadius: BorderRadius.all(Radius.circular(
-            BorderRadiusSize.sizeLarge,),),
+          targetBorderRadius: BorderRadius.all(
+            Radius.circular(
+              BorderRadiusSize.sizeLarge,
+            ),
+          ),
           child: FloatingActionButton(
             heroTag: 'addBooking',
             backgroundColor: AppColors.PRIMARY_GREEN,
             onPressed: () => _viewModel!.showDialogAddDebit(context),
-            child: const Icon(Icons.add, color: AppColors.COLOR_WHITE,),
+            child: const Icon(
+              Icons.add,
+              color: AppColors.COLOR_WHITE,
+            ),
           ),
         ),
       ),
