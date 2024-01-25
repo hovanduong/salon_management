@@ -15,7 +15,7 @@ class _AdBannerState extends State<AdBanner> {
   bool _isLoaded = false;
   static final bannerAdUnitId = Platform.isAndroid
       ? 'ca-app-pub-4606907034597798/3786382905'
-      : 'ca-app-pub-4606907034597798/1078431304';
+      : 'ca-app-pub-4606907034597798/4027407124';
   @override
   void initState() {
     super.initState();
