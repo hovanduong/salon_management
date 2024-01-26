@@ -189,7 +189,7 @@ class _NoteScreenState extends State<NoteScreen> {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       padding: EdgeInsets.only(
-        top: Platform.isAndroid ? 20 : 60,
+        top: Platform.isAndroid ? 30 : 60,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -439,7 +439,6 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget buildNoteScreen() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      
       body: SingleChildScrollView(
         child: Column(
           children: [

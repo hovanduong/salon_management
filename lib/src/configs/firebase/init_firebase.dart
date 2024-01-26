@@ -14,9 +14,10 @@ class InitFirebase {
   static Future<void> initializeApp() async {
     final isProd = isCheckProd();
     await Firebase.initializeApp(
-      options: isProd
-          ? DefaultFirebaseOptionsProduct.currentPlatform
-          : DefaultFirebaseOptionsStaging.currentPlatform,
-    );
+        options: DefaultFirebaseOptionsProduct.currentPlatform
+        // isProd
+        //     ? DefaultFirebaseOptionsProduct.currentPlatform
+        //     : DefaultFirebaseOptionsStaging.currentPlatform,
+        );
   }
 }

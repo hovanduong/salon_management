@@ -35,9 +35,10 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
     final dataBooking = ModalRoute.of(context)?.settings.arguments;
     return BaseWidget<PaymentViewModel>(
       viewModel: PaymentViewModel(),
-      onViewModelReady: (viewModel) => _viewModel = viewModel!..init(
-        dataBooking as MyBookingModel?,
-      ),
+      onViewModelReady: (viewModel) => _viewModel = viewModel!
+        ..init(
+          dataBooking as MyBookingModel?,
+        ),
       builder: (context, viewModel, child) => buildLoadingScreen(),
     );
   }
@@ -264,8 +265,10 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildDateTime() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium,
-        vertical: SizeToPadding.sizeSmall,),
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeToPadding.sizeMedium,
+        vertical: SizeToPadding.sizeSmall,
+      ),
       child: ButtonDateTimeWidget(
         dateTime: _viewModel!.dateTime,
         time: _viewModel!.time,
@@ -458,7 +461,7 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
 
   Widget buildInfo() {
     return Container(
-      height: MediaQuery.sizeOf(context).height-70,
+      height: MediaQuery.sizeOf(context).height - 70,
       width: double.maxFinite,
       padding: EdgeInsets.only(
         top: SizeToPadding.sizeMedium,
@@ -633,8 +636,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
             color: AppColors.COLOR_WHITE,
           ),
           onTap: () => Navigator.pop(context),
-          title: _viewModel!.dataMyBooking!=null? PaymentLanguage.editPayment
-          :PaymentLanguage.payment,
+          title: _viewModel!.dataMyBooking != null
+              ? PaymentLanguage.editPayment
+              : PaymentLanguage.payment,
         ),
       ),
     );
@@ -689,8 +693,9 @@ class _ServiceAddScreenState extends State<PaymentScreen> {
           horizontal: SizeToPadding.sizeSmall,
         ),
         child: AppButton(
-          content: _viewModel!.dataMyBooking!=null?
-          PaymentLanguage.edit: ServiceAddLanguage.confirm,
+          content: _viewModel!.dataMyBooking != null
+              ? PaymentLanguage.edit
+              : ServiceAddLanguage.confirm,
           enableButton: _viewModel!.enableButton,
           onTap: () {
             _viewModel!.checkCustomer();

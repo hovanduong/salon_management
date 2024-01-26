@@ -26,7 +26,7 @@ import '../routers.dart';
 
 class PaymentViewModel extends BaseViewModel {
   BookingApi bookingApi = BookingApi();
-  CategoryApi categoryApi= CategoryApi();
+  CategoryApi categoryApi = CategoryApi();
   MyCustomerApi myCustomerApi = MyCustomerApi();
   MyBookingApi myBookingApi = MyBookingApi();
   InvoiceApi invoiceApi = InvoiceApi();
@@ -38,7 +38,7 @@ class PaymentViewModel extends BaseViewModel {
 
   // List<RadioModel> selectedService = [];
   // List<MyServiceModel> myService = [];
-  List<MyBookingModel> listMyBooking=[];
+  List<MyBookingModel> listMyBooking = [];
   List<CategoryModel> listCategory = [];
   List<CategoryModel> listCategoryIncome = [];
   List<CategoryModel> listCategoryExpense = [];
@@ -67,7 +67,7 @@ class PaymentViewModel extends BaseViewModel {
   TextEditingController noteController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController moneyController = TextEditingController();
-  DateRangePickerController dateController= DateRangePickerController();
+  DateRangePickerController dateController = DateRangePickerController();
   // final totalController = TextEditingController();
   // TextEditingController discountController = TextEditingController();
 
@@ -82,11 +82,11 @@ class PaymentViewModel extends BaseViewModel {
   bool onNote = true;
   bool isListViewVisible = false;
   bool enableButton = false;
-  bool isLoading=true;
-  bool isButtonSpending=false;
-  bool isShowAll=false;
-  bool isShowCase=true;
-  bool isShowButton=true;
+  bool isLoading = true;
+  bool isButtonSpending = false;
+  bool isShowAll = false;
+  bool isShowCase = true;
+  bool isShowButton = true;
 
   String? phoneErrorMsg;
   String? topicErrorMsg;
@@ -112,20 +112,20 @@ class PaymentViewModel extends BaseViewModel {
   final moneyCharsCheck = RegExp(r'^\d+$');
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
 
-  List<FocusNode> listFocus= List.generate(5, (index) => FocusNode());
+  List<FocusNode> listFocus = List.generate(5, (index) => FocusNode());
 
-  GlobalKey keyInfoCustomer= GlobalKey();
-  GlobalKey keyMoney= GlobalKey();
-  GlobalKey key= GlobalKey();
-  GlobalKey keyAddCategory= GlobalKey();
-  GlobalKey keyCategory= GlobalKey();
-  GlobalKey keyDateTime= GlobalKey();
+  GlobalKey keyInfoCustomer = GlobalKey();
+  GlobalKey keyMoney = GlobalKey();
+  GlobalKey key = GlobalKey();
+  GlobalKey keyAddCategory = GlobalKey();
+  GlobalKey keyCategory = GlobalKey();
+  GlobalKey keyDateTime = GlobalKey();
 
   Future<void> init(MyBookingModel? myBookingModel) async {
     await getCategory();
-    selectedCategory=0;
-    categoryId=listCategory[0].id;
-    isButtonSpending=false;
+    selectedCategory = 0;
+    categoryId = listCategory[0].id;
+    isButtonSpending = false;
     await setDataMyBooking(myBookingModel);
     // await setDataMyBooking(myBookingModel);
     // await fetchService();
@@ -134,56 +134,72 @@ class PaymentViewModel extends BaseViewModel {
     // await initMapService();
     await setShowButton();
     await AppPref.getShowCase('showCasePayment').then(
-      (value) => isShowCase=value??true,);
+      (value) => isShowCase = value ?? true,
+    );
     startShowCase();
     await hideShowcase();
     notifyListeners();
   }
 
-  Future<void> hideShowcase() async{
+  Future<void> hideShowcase() async {
     await AppPref.setShowCase('showCasePayment', false);
-    isShowCase=false;
+    isShowCase = false;
     notifyListeners();
   }
 
-  void startShowCase(){
-    if(isShowCase){
+  void startShowCase() {
+    if (isShowCase) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ShowCaseWidget.of(context).startShowCase(
-          [keyInfoCustomer,keyMoney,key, keyAddCategory, keyCategory, keyDateTime],
+          [
+            keyInfoCustomer,
+            keyMoney,
+            key,
+            keyAddCategory,
+            keyCategory,
+            keyDateTime
+          ],
         );
       });
     }
   }
 
-  Future<void> goToBill(BuildContext context) 
-    => Navigator.pushNamed(context, Routers.bill, 
-      arguments: listMyBooking[0],);
-  
+  Future<void> goToBill(BuildContext context) => Navigator.pushNamed(
+        context,
+        Routers.bill,
+        arguments: listMyBooking[0],
+      );
+
   Future<void> goToAddCategory(BuildContext context) async {
-    await Navigator.pushNamed(context, Routers.addCategory,);
+    await Navigator.pushNamed(
+      context,
+      Routers.addCategory,
+    );
     await init(null);
-  } 
+  }
 
   Future<void> setDataMyBooking(MyBookingModel? myBookingModel) async {
     if (myBookingModel != null) {
       dataMyBooking = myBookingModel;
-      isButtonSpending= (myBookingModel.income!=null &&
-         myBookingModel.income==true)?false:true;
-      phoneController.text = dataMyBooking?.myCustomer?.phoneNumber??'';
-      nameController.text = dataMyBooking?.myCustomer?.fullName??'';
-      addressController.text = dataMyBooking?.address??'';
-      noteController.text = dataMyBooking?.note ??'';
-      moneyController.text= dataMyBooking?.money !=null
-        ? AppCurrencyFormat.formatMoney(dataMyBooking?.money) : '';
-      categoryId= myBookingModel.category?.id;
-      myCustomerId=myBookingModel.myCustomer?.id;
+      isButtonSpending =
+          (myBookingModel.income != null && myBookingModel.income == true)
+              ? false
+              : true;
+      phoneController.text = dataMyBooking?.myCustomer?.phoneNumber ?? '';
+      nameController.text = dataMyBooking?.myCustomer?.fullName ?? '';
+      addressController.text = dataMyBooking?.address ?? '';
+      noteController.text = dataMyBooking?.note ?? '';
+      moneyController.text = dataMyBooking?.money != null
+          ? AppCurrencyFormat.formatMoney(dataMyBooking?.money)
+          : '';
+      categoryId = myBookingModel.category?.id;
+      myCustomerId = myBookingModel.myCustomer?.id;
       dateTime = DateTime.parse(
         AppDateUtils.formatDateLocal(
           dataMyBooking!.date!,
         ),
       );
-      time=dateTime;
+      time = dateTime;
       // setSelectedService();
       // await setServiceId();
       // await fetchService();
@@ -193,34 +209,34 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setButtonSelect(String name){
-    if(name==PaymentLanguage.income){
-      categoryId=listCategoryIncome[0].id;
-      listCategory=listCategoryIncome;
-      isButtonSpending=false;
-    }else{
-      listCategory=listCategoryExpense;
-      categoryId=listCategoryExpense[0].id;
-      isButtonSpending=true;
+  void setButtonSelect(String name) {
+    if (name == PaymentLanguage.income) {
+      categoryId = listCategoryIncome[0].id;
+      listCategory = listCategoryIncome;
+      isButtonSpending = false;
+    } else {
+      listCategory = listCategoryExpense;
+      categoryId = listCategoryExpense[0].id;
+      isButtonSpending = true;
     }
-    isShowAll=false;
-    selectedCategory=0;
+    isShowAll = false;
+    selectedCategory = 0;
     notifyListeners();
   }
 
-  void setCategorySelected(int index){
-    if(index==16 || index ==17){
-      isShowAll=!isShowAll;
-    }else{
-      selectedCategory=index;
-      categoryId=listCategory[index].id;
+  void setCategorySelected(int index) {
+    if (index == 16 || index == 17) {
+      isShowAll = !isShowAll;
+    } else {
+      selectedCategory = index;
+      categoryId = listCategory[index].id;
     }
     enableConfirmButton();
     notifyListeners();
   }
 
   // Future<void> goToAddMyCustomer(BuildContext context) async {
-  //   myCustomerModel= 
+  //   myCustomerModel=
   //     await Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true)
   //     as MyCustomerModel?;
   //   await setDataCustomer();
@@ -230,7 +246,7 @@ class PaymentViewModel extends BaseViewModel {
   //   nameController.text=myCustomerModel!.fullName ?? '';
   //   phoneController.text=myCustomerModel!.phoneNumber ?? '';
   //   await fetchCustomer();
-  //   myCustomerId= myCustomer.where((element) => 
+  //   myCustomerId= myCustomer.where((element) =>
   //     element.phoneNumber==myCustomerModel!.phoneNumber,).first.id;
   //   notifyListeners();
   // }
@@ -334,7 +350,7 @@ class PaymentViewModel extends BaseViewModel {
   //       .first
   //       .fullName
   //       .toString();
-        
+
   //   myCustomerId = value.key;
 
   //   notifyListeners();
@@ -378,7 +394,7 @@ class PaymentViewModel extends BaseViewModel {
   //   notifyListeners();
   // }
 
-  Future<void> setShowButton() async{
+  Future<void> setShowButton() async {
     listFocus.forEach((node) {
       node.addListener(() {
         isShowButton = !listFocus.any((focus) => focus.hasFocus);
@@ -412,7 +428,7 @@ class PaymentViewModel extends BaseViewModel {
     if (value == null || value.isEmpty) {
       messageErrorPrice = PaymentLanguage.emptyMoneyError;
     } else {
-      messageErrorPrice = null; 
+      messageErrorPrice = null;
     }
     notifyListeners();
   }
@@ -454,8 +470,9 @@ class PaymentViewModel extends BaseViewModel {
   // }
 
   void enableConfirmButton() {
-    if (messageErrorPrice==null && 
-      moneyController.text.trim()!='' && categoryId!=null) {
+    if (messageErrorPrice == null &&
+        moneyController.text.trim() != '' &&
+        categoryId != null) {
       enableButton = true;
     } else {
       enableButton = false;
@@ -463,27 +480,27 @@ class PaymentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
- void setMoneyInput(int index){
-    moneyController.text=AppCurrencyFormat.formatMoney(listMoney[index]);
+  void setMoneyInput(int index) {
+    moneyController.text = AppCurrencyFormat.formatMoney(listMoney[index]);
     validPrice(moneyController.text);
-    listMoney=[];
+    listMoney = [];
     notifyListeners();
   }
 
-  void setShowRemind(String value){
-    if(value.length>3 || value==''){
-      listMoney=[];
-    }else{
-      listMoney=[];
+  void setShowRemind(String value) {
+    if (value.length > 3 || value == '') {
+      listMoney = [];
+    } else {
+      listMoney = [];
       for (var i = 0; i < 3; i++) {
-        listMoney.add(int.parse('$value${
-          i==0? '000': i==1?'0000': i==2? '00000':'0'
-        }'),);
+        listMoney.add(
+          int.parse(
+              '$value${i == 0 ? '000' : i == 1 ? '0000' : i == 2 ? '00000' : '0'}'),
+        );
       }
     }
     notifyListeners();
   }
-
 
   Future<void> onServiceList(BuildContext context) =>
       Navigator.pushNamed(context, Routers.serviceList);
@@ -530,7 +547,7 @@ class PaymentViewModel extends BaseViewModel {
     );
   }
 
-   dynamic showSuccessDialog(_) {
+  dynamic showSuccessDialog(_) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -546,18 +563,18 @@ class PaymentViewModel extends BaseViewModel {
     );
   }
 
-  void clearData(){
-    selectedCategory=0;
-    listMoney=[];
-    categoryId=listCategory[0].id;
-    isButtonSpending=false;
-    phoneController.text='';
-    nameController.text='';
-    addressController.text='';
-    noteController.text='';
-    moneyController.text='';
+  void clearData() {
+    selectedCategory = 0;
+    listMoney = [];
+    categoryId = listCategory[0].id;
+    isButtonSpending = false;
+    phoneController.text = '';
+    nameController.text = '';
+    addressController.text = '';
+    noteController.text = '';
+    moneyController.text = '';
     updateDateTime(DateTime.now());
-    listCategory=listCategoryIncome;
+    listCategory = listCategoryIncome;
     notifyListeners();
   }
 
@@ -573,45 +590,48 @@ class PaymentViewModel extends BaseViewModel {
         );
       },
     );
-    timer= Timer(const Duration(seconds: 2), () {Navigator.pop(context);});
+    timer = Timer(const Duration(seconds: 2), () {
+      Navigator.pop(context);
+    });
   }
 
   void closeDialog(BuildContext context) {
-    timer= Timer(
+    timer = Timer(
       const Duration(seconds: 1),
       () => Navigator.pop(context),
     );
   }
 
-  DateTime date= DateTime.now();
+  DateTime date = DateTime.now();
 
-  String setDateTime(){
-    final time= '${date.hour}:${date.minute}';
-    final day='${date.day}/${date.month}/${date.year}';
+  String setDateTime() {
+    final time = '${date.hour}:${date.minute}';
+    final day = '${date.day}/${date.month}/${date.year}';
     return '$time $day';
   }
 
-  void setDataCategory(){
+  void setDataCategory() {
     listCategoryExpense.clear();
     listCategoryIncome.clear();
     listCategory.forEach((element) {
-      if(element.income!){
+      if (element.income!) {
         listCategoryIncome.add(element);
-      }else{
+      } else {
         listCategoryExpense.add(element);
       }
     });
-    listCategory=listCategoryIncome;
+    listCategory = listCategoryIncome;
     notifyListeners();
   }
 
-  Future<void> checkCustomer()async{
-    if(dataMyBooking!=null){
+  Future<void> checkCustomer() async {
+    if (dataMyBooking != null) {
       await putBooking();
-    }else{
-      if(phoneController.text.trim()=='' && nameController.text.trim()==''){
+    } else {
+      if (phoneController.text.trim() == '' &&
+          nameController.text.trim() == '') {
         await postBooking();
-      }else{
+      } else {
         await postCustomer();
       }
     }
@@ -635,8 +655,8 @@ class PaymentViewModel extends BaseViewModel {
       await showDialogNetwork(context);
     } else if (value is Exception) {
     } else {
-      myCustomerModel=value as MyCustomerModel;
-      myCustomerId=myCustomerModel?.id;
+      myCustomerModel = value as MyCustomerModel;
+      myCustomerId = myCustomerModel?.id;
       await postBooking();
     }
     notifyListeners();
@@ -644,20 +664,23 @@ class PaymentViewModel extends BaseViewModel {
 
   Future<void> postBooking() async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await bookingApi.postBooking(MyBookingPramsApi(
-      // myServices: serviceId,
-      myCustomerId: myCustomerId,
-      idCategory: categoryId,
-      money: int.parse(moneyController.text.replaceAll(',', '')),
-      date: AppDateUtils.formatDateTT(
-          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',),
-      address: addressController.text=='' ? ''
-        :addressController.text.trim(),
-      isBooking: false,
-      isIncome: isButtonSpending? false: true,
-      note: noteController.text == '' ? '' : noteController.text,
-      isReminder: null,
-    ),);
+    final result = await bookingApi.postBooking(
+      MyBookingPramsApi(
+        // myServices: serviceId,
+        myCustomerId: myCustomerId,
+        idCategory: categoryId,
+        money: int.parse(moneyController.text.replaceAll(',', '')),
+        date: AppDateUtils.formatDateTT(
+          '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
+        ),
+        address:
+            addressController.text == '' ? '' : addressController.text.trim(),
+        isBooking: false,
+        isIncome: isButtonSpending ? false : true,
+        note: noteController.text == '' ? '' : noteController.text,
+        isReminder: null,
+      ),
+    );
 
     final value = switch (result) {
       Success(value: final listCategory) => listCategory,
@@ -671,7 +694,7 @@ class PaymentViewModel extends BaseViewModel {
       LoadingDialog.hideLoadingDialog(context);
       await showErrorDialog(context);
     } else {
-      listMyBooking=value as List<MyBookingModel>;
+      listMyBooking = value as List<MyBookingModel>;
       await postInvoice(listMyBooking[0].id!, listMyBooking[0].date!);
     }
     notifyListeners();
@@ -682,21 +705,21 @@ class PaymentViewModel extends BaseViewModel {
     final result = await bookingApi.putBooking(
       MyBookingPramsApi(
         id: dataMyBooking?.id,
-        address: addressController.text=='' ? ''
-        :addressController.text.trim(),
+        address:
+            addressController.text == '' ? '' : addressController.text.trim(),
         date: AppDateUtils.formatDateTT(
           '${dateTime.toString().split(' ')[0]} ${time.toString().split(' ')[1]}',
         ),
-        phoneNumber: phoneController.text=='' ? ''
-        :phoneController.text.trim(),
-        name: nameController.text!=''? nameController.text.trim(): '',
+        phoneNumber:
+            phoneController.text == '' ? '' : phoneController.text.trim(),
+        name: nameController.text != '' ? nameController.text.trim() : '',
         myCustomerId: myCustomerId,
         idCategory: categoryId,
-        note: noteController.text=='' ? ''
-        : noteController.text.trim(),
-        isIncome: isButtonSpending? false: true,
-        money: moneyController.text!=''?
-         int.parse(moneyController.text.replaceAll(',', '')): null,
+        note: noteController.text == '' ? '' : noteController.text.trim(),
+        isIncome: isButtonSpending ? false : true,
+        money: moneyController.text != ''
+            ? int.parse(moneyController.text.replaceAll(',', ''))
+            : null,
       ),
     );
 
@@ -727,13 +750,13 @@ class PaymentViewModel extends BaseViewModel {
     };
 
     if (!AppValid.isNetWork(value)) {
-      isLoading=false;
+      isLoading = false;
       await showDialogNetwork(context);
     } else if (value is Exception) {
-      isLoading=true;
+      isLoading = true;
     } else {
-      isLoading=false;
-      listCategory=value as List<CategoryModel>;
+      isLoading = false;
+      listCategory = value as List<CategoryModel>;
       setDataCategory();
     }
     notifyListeners();
@@ -741,7 +764,9 @@ class PaymentViewModel extends BaseViewModel {
 
   Future<void> postInvoice(int id, String date) async {
     final result = await invoiceApi.postInvoice(InvoiceParams(
-      id: id, date: date,));
+      id: id,
+      date: date,
+    ));
 
     final value = switch (result) {
       Success(value: final isBool) => isBool,

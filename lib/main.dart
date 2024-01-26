@@ -41,4 +41,3 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback = (cert, host, port) => true;
   }
 }
-
