@@ -152,7 +152,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildBody() {
     return Container(
-      height: MediaQuery.sizeOf(context).height - 110,
+      height: MediaQuery.sizeOf(context).height - 160,
       margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
       padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
       child: Column(
