@@ -405,5 +405,13 @@
   "listView":"List View",
   "gridView":"Grid View",
   "searchColor":"Search by color",
+  "all":"All",
+  "favorite":"Favorite",
+  "selectViewDescription":"Select view mode",
+  "chooseNoteBackground":"Choose note background",
+  "enterCompleteInformation":"Enter complete information",
+  "formatNoteContent":"Format note content",
+  "likeNote":"Likes to take notes",
+  "deleteNote":"Delete notes",
   "lastLine": ""
 }

@@ -50,7 +50,8 @@ class AppImages {
 
   static const String icSetting = 'assets/icons/setting.svg';
 
-  static const String icSeeAllNotification = 'assets/icons/seeAllNotification.svg';
+  static const String icSeeAllNotification =
+      'assets/icons/seeAllNotification.svg';
 
   static const String backgroundHomePage =
       'assets/images/backgroundHomePage.png';
@@ -129,7 +130,7 @@ class AppImages {
 
   static const String icClose = 'assets/icons/close.svg';
 
-  static const String eyelash= 'assets/icons/eyelash.svg';
+  static const String eyelash = 'assets/icons/eyelash.svg';
 
   static const String makeHair = 'assets/icons/makeHair.svg';
 
@@ -153,7 +154,9 @@ class AppImages {
 
   static const String icDebit = 'assets/icons/receipt-text.svg';
 
-    static const String icNote = 'assets/icons/note.svg';
+  static const String icNote = 'assets/icons/note.svg';
 
+  static const String icClock = 'assets/icons/clock.svg';
 
+  static const String icSelectColor = 'assets/icons/selectColor.svg';
 }

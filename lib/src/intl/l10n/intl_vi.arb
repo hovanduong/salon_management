@@ -405,5 +405,13 @@
     "listView":"Danh sách",
     "gridView":"Bộ sưu tập",
     "searchColor":"Tìm kiếm theo màu",
+    "all":"Tất cả",
+    "favorite":"Yêu thích",
+    "selectViewDescription":"Chọn chế độ xem",
+    "chooseNoteBackground":"Chọn nền ghi chú",
+    "enterCompleteInformation":"Nhập thông tin đầy đủ",
+    "formatNoteContent":"Định dạng nội dung ghi chú",
+    "likeNote":"Thích ghi chú",
+    "deleteNote":"Xóa ghi chú",
     "lastLine": ""
 }

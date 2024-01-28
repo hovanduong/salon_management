@@ -60,6 +60,7 @@ class BookingHistoryViewModel extends BaseViewModel {
   int currentTab = 1;
   num itemTab=0;
   int pageSize=1;
+  int? idUser;
 
   GlobalKey addBooking = GlobalKey();
   GlobalKey keyNotification = GlobalKey();
@@ -79,9 +80,10 @@ class BookingHistoryViewModel extends BaseViewModel {
   String? idNotification;
 
   Future<void> init({dynamic dataThis}) async {
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await setId();
     await fetchData();
-    await AppPref.getShowCase('showCaseAppointment').then(
+    await AppPref.getShowCase('showCaseAppointment$idUser').then(
       (value) =>isShowCase=value??true,);
     await startShowCase();
     await hideShowcase();
@@ -104,12 +106,12 @@ class BookingHistoryViewModel extends BaseViewModel {
 
   Future<void> hideShowcase() async{
     if(isShowCase){
-      await AppPref.setShowCase('showCaseAppointment', false);
+      await AppPref.setShowCase('showCaseAppointment$idUser', false);
       isShowCase=false;
     }
     if(listCurrentToday.isNotEmpty || 
       (listCurrentUpcoming.isNotEmpty && currentTab==2)){
-      await AppPref.setShowCase('showCaseRemind', false);
+      await AppPref.setShowCase('showCaseRemind$idUser', false);
       isShowCaseRemind=false;
     }
     notifyListeners();
@@ -165,7 +167,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     await getData();
     isPullRefresh=false;
     isLoading=false;
-    await AppPref.getShowCase('showCaseRemind').then(
+    await AppPref.getShowCase('showCaseRemind$idUser').then(
       (value) => isShowCaseRemind=value??true,);
     await startShowCase();
     await hideShowcase();
@@ -355,7 +357,7 @@ class BookingHistoryViewModel extends BaseViewModel {
     } else if (value == 2) {
       status = Contains.confirmed;
       currentTab = 2;
-      await AppPref.getShowCase('showCaseRemind').then(
+      await AppPref.getShowCase('showCaseRemind$idUser').then(
       (value) => isShowCaseRemind=value??true,);
       await startShowCase();
       await hideShowcase();

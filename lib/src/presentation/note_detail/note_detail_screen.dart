@@ -4,16 +4,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/note_language.dart';
 import '../../resource/model/model.dart';
-import '../../utils/app_handel_color.dart';
 import '../../utils/date_format_utils.dart';
 import '../base/base.dart';
-import 'components/components.dart';
 import 'note_detail.dart';
 
 class NoteDetailScreen extends StatefulWidget {
@@ -67,28 +67,69 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     );
   }
 
-  Widget buildHeader() {
-    return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
-      padding: const EdgeInsets.only(right: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-              size: 35,
-            ),
+  Widget buildButtonFavoriteNote(){
+    return Showcase(
+      key: _viewModel!.favoriteKey,
+      description: NoteLanguage.likeNote,
+      child: InkWell(
+        onTap: () => _viewModel!.pinNote(),
+        child: Center(
+          child: Icon(
+            (_viewModel!.noteModel?.pined??false)? 
+            Icons.favorite
+            :Icons.favorite_border,
+            size: 30,
+            color:  (_viewModel!.noteModel?.pined??false)? 
+              AppColors.Red_Money : AppColors.COLOR_WHITE,
           ),
-          IconButton(
+        ),
+      ),
+    );
+  }
+
+  Widget buildButtonHeader() {
+    return Row(
+      children: [
+        buildButtonFavoriteNote(),
+        SizedBox(
+          width: SizeToPadding.sizeVeryVerySmall,
+        ),
+        Showcase(
+          key: _viewModel!.deleteKey,
+          description: NoteLanguage.deleteNote,
+          child: IconButton(
             onPressed: () => _viewModel!.showDialogDeleteNote(),
             icon: const Icon(
               Icons.delete,
-              size: 35,
-              color: AppColors.Red_Money,
+              size: 30,
+              color: AppColors.COLOR_WHITE,
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildHeader() {
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      padding: EdgeInsets.only(
+        left: SizeToPadding.sizeSmall,
+        top: Platform.isAndroid ? 30 : 60,
+        bottom: SizeToPadding.sizeVerySmall,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: SvgPicture.asset(
+              AppImages.icArrowLeft,
+              height: 30,
+              color: AppColors.COLOR_WHITE,
+            ),
+          ),
+          buildButtonHeader(),
         ],
       ),
     );
@@ -191,12 +232,16 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
-        child: FloatingActionButton(
-          backgroundColor: AppColors.PRIMARY_GREEN,
-          onPressed: () => _viewModel!.gotoUpdateNote(),
-          child: const Icon(
-            Icons.edit,
-            color: AppColors.COLOR_WHITE,
+        child: Showcase(
+          key: _viewModel!.editKey,
+          description: NoteLanguage.editNote,
+          child: FloatingActionButton(
+            backgroundColor: AppColors.PRIMARY_GREEN,
+            onPressed: () => _viewModel!.gotoUpdateNote(),
+            child: const Icon(
+              Icons.edit,
+              color: AppColors.COLOR_WHITE,
+            ),
           ),
         ),
       ),

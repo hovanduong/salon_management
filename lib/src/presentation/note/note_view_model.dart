@@ -1,9 +1,13 @@
 // ignore_for_file: parameter_assignments
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
+import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/note_api.dart';
 import '../../utils/app_handle_hex_color.dart';
@@ -30,20 +34,30 @@ class NoteViewModel extends BaseViewModel {
   bool isLoading = true;
   bool isGridView = true;
   bool isLoadMore = false;
+  bool? isFavorite;
+  bool isShowCase=false;
 
   String? color;
   String? search;
 
   int? idUser;
   int page = 1;
+  int selectItem=0;
 
   NoteApi noteApi = NoteApi();
 
   List<NoteModel> listNote = [];
   List<NoteModel> listCurrent = [];
+  List<String> listSelectItem=[
+    NoteLanguage.all,
+    NoteLanguage.favorite,
+  ];
+
+  GlobalKey selectColorKey= GlobalKey();
+  GlobalKey addKey= GlobalKey();
+  GlobalKey selectViewKey= GlobalKey();
 
   Future<void> init() async {
-    selectColor = AppColors.COLOR_WHITE;
     idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await AppPref.getShowCase('isGridView$idUser').then(
       (value) => isGridView = value ?? true,
@@ -53,6 +67,28 @@ class NoteViewModel extends BaseViewModel {
     );
     await getNotes();
     listCurrent = listNote;
+    await AppPref.getShowCase('showCaseNote$idUser').then(
+      (value) => isShowCase = value ?? true,
+    );
+    startShowCase();
+    await hideShowcase();
+    notifyListeners();
+  }
+
+  Future<void> hideShowcase() async {
+    await AppPref.setShowCase('showCaseNote$idUser', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  void startShowCase() {
+    if (isShowCase == true) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [addKey, selectColorKey, selectViewKey],
+        );
+      });
+    }
   }
 
   dynamic scrollListener() async {
@@ -105,6 +141,22 @@ class NoteViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> onChangeSelectItem(int value) async {
+    isLoading=true;
+    listCurrent.clear();
+    selectItem=value;
+    if(selectItem==0){
+      await pullRefresh();
+    }else if(selectItem==1){
+      search = null;
+      selectColor = null;
+      isFavorite=true;
+      await getNotes();
+      listCurrent=listNote;
+    }
+    notifyListeners();
+  }
+  
   Future<void> onSearchNotes({String? value, Color? color}) async {
     // final searchCustomer = TiengViet.parse(value.toLowerCase());
     page = 1;
@@ -115,11 +167,73 @@ class NoteViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  dynamic showDialogDeleteNote(int id) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return WarningDialog(
+          image: AppImages.icPlus,
+          title: NoteLanguage.notification,
+          content: NoteLanguage.deleteNoteNotification,
+          leftButtonName: NoteLanguage.cancel,
+          color: AppColors.BLACK_500,
+          colorNameLeft: AppColors.BLACK_500,
+          rightButtonName: NoteLanguage.confirm,
+          onTapLeft: () {
+            Navigator.pop(context,);
+          },
+          onTapRight: () async {
+            Navigator.pop(context,);
+            // await deleteNote(id);
+          },
+        );
+      },
+    );
+  }
+
+  dynamic showErrorDialog(_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icPlus,
+          title: SignUpLanguage.failed,
+        );
+      },
+    );
+  }
+
+  dynamic showSuccessDiaglog(_) async{
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        closeDialog(context);
+        return WarningOneDialog(
+          image: AppImages.icCheck,
+          title: SignUpLanguage.success,
+        );
+      },
+    );
+    await pullRefresh();
+  }
+
+  void closeDialog(BuildContext context) {
+    Timer(
+      const Duration(seconds: 1),
+      () => Navigator.pop(context),
+    );
+  }
+
   Future<void> pullRefresh() async {
     listCurrent.clear();
     page = 1;
     selectColor = null;
     search = null;
+    isFavorite=null;
     await getNotes();
     listCurrent = listNote;
     notifyListeners();
@@ -133,6 +247,7 @@ class NoteViewModel extends BaseViewModel {
         color: selectColor != null
             ? selectColor?.toHex().toString().split('#')[1]
             : null,
+        pined: isFavorite,
       ),
     );
 
@@ -148,6 +263,29 @@ class NoteViewModel extends BaseViewModel {
     } else {
       isLoading = false;
       listNote = value as List<NoteModel>;
+    }
+    notifyListeners();
+  }
+
+  Future<void> pinNote(int id) async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await noteApi.pinNote(id);
+
+    final value = switch (result) {
+      Success(value: final listRevenueChart) => listRevenueChart,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      await pullRefresh();
+      // showSuccessDiaglog(context);
     }
     notifyListeners();
   }

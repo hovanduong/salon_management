@@ -36,6 +36,7 @@ class CalendarViewModel extends BaseViewModel{
   int year=DateTime.now().year;
   int? day;
   int? isOverView;
+  int? idUser;
 
   DateTime dateTime= DateTime.now();
 
@@ -52,8 +53,9 @@ class CalendarViewModel extends BaseViewModel{
   Timer? timer;
 
   Future<void> init()async{
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await getList();
-    await AppPref.getShowCase('showCaseRevenue').then(
+    await AppPref.getShowCase('showCaseRevenue$idUser').then(
       (value) => isShowCase=value??true,);
     startShowCase();
     await hideShowcase();
@@ -73,7 +75,7 @@ class CalendarViewModel extends BaseViewModel{
   }
 
   Future<void> hideShowcase() async{
-    await AppPref.setShowCase('showCaseRevenue', false);
+    await AppPref.setShowCase('showCaseRevenue$idUser', false);
     isShowCase=false;
     notifyListeners();
   }

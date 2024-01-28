@@ -48,6 +48,7 @@ class PaymentViewModel extends BaseViewModel {
   int? myCustomerId;
   int? selectedCategory;
   int? categoryId;
+  int? idUser;
 
   // num totalCost = 0;
   // num totalPrice = 0;
@@ -122,6 +123,7 @@ class PaymentViewModel extends BaseViewModel {
   GlobalKey keyDateTime = GlobalKey();
 
   Future<void> init(MyBookingModel? myBookingModel) async {
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await getCategory();
     selectedCategory = 0;
     categoryId = listCategory[0].id;
@@ -133,7 +135,7 @@ class PaymentViewModel extends BaseViewModel {
     // await initMapCustomer();
     // await initMapService();
     await setShowButton();
-    await AppPref.getShowCase('showCasePayment').then(
+    await AppPref.getShowCase('showCasePayment$idUser').then(
       (value) => isShowCase = value ?? true,
     );
     startShowCase();
@@ -142,7 +144,7 @@ class PaymentViewModel extends BaseViewModel {
   }
 
   Future<void> hideShowcase() async {
-    await AppPref.setShowCase('showCasePayment', false);
+    await AppPref.setShowCase('showCasePayment$idUser', false);
     isShowCase = false;
     notifyListeners();
   }

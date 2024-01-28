@@ -26,19 +26,21 @@ class NotificationViewModel extends BaseViewModel {
   List<NotificationModel> listCurrent = [];
 
   int page = 1;
+  int ? idUser;
 
   Timer? timer;
 
   GlobalKey keyNotification = GlobalKey();
 
   Future<void> init() async {
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     page = 1;
     await getNotification(page);
     listCurrent = listNotification;
     scrollController.addListener(
       scrollListener,
     );
-    await AppPref.getShowCase('showCaseNotification').then(
+    await AppPref.getShowCase('showCaseNotification$idUser').then(
       (value) => isShowCase = value ?? true,
     );
     startShowCase();
@@ -47,7 +49,7 @@ class NotificationViewModel extends BaseViewModel {
   }
 
   Future<void> hideShowcase() async {
-    await AppPref.setShowCase('showCaseNotification', false);
+    await AppPref.setShowCase('showCaseNotification$idUser', false);
     isShowCase = false;
     notifyListeners();
   }

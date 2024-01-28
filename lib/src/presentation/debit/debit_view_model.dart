@@ -36,6 +36,7 @@ class DebitViewModel extends BaseViewModel{
   TotalDebitApi totalDebitApi = TotalDebitApi();
 
   int page=1;
+  int? idUser;
 
   Timer? timer;
 
@@ -50,8 +51,9 @@ class DebitViewModel extends BaseViewModel{
   ScrollController scrollController= ScrollController();
 
   Future<void> init() async{
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await fetchData();
-    await AppPref.getShowCase('showCaseDebit').then(
+    await AppPref.getShowCase('showCaseDebit$idUser').then(
       (value) => isShowCase = value ?? true,
     );
     startShowCase();
@@ -68,7 +70,7 @@ class DebitViewModel extends BaseViewModel{
   }
 
   Future<void> hideShowcase() async {
-    await AppPref.setShowCase('showCaseDebit', false);
+    await AppPref.setShowCase('showCaseDebit$idUser', false);
     isShowCase = false;
     notifyListeners();
   }

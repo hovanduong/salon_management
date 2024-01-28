@@ -5,6 +5,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -40,16 +42,20 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   Future noteColorPicker() {
     return showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.BLACK_500,
       isScrollControlled: true,
       builder: (_) {
         return Container(
+          width: double.maxFinite,
           padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Paragraph(
                 content: NoteLanguage.selectColor,
-                style: STYLE_MEDIUM,
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_WHITE,
+                ),
               ),
               Padding(
                 padding:
@@ -68,16 +74,19 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   Widget buildButtonHeader() {
     return Row(
       children: [
-        InkWell(
+        Showcase(
+          key: _viewModel!.selectColorKey,
+          description: NoteLanguage.chooseNoteBackground,
+          child: InkWell(
             onTap: noteColorPicker,
-            child: Icon(
-              Icons.color_lens_outlined,
-              color: _viewModel!.selectColor != AppColors.COLOR_WHITE
-                  ? _viewModel!.selectColor
-                  : AppColors.BLACK_500,
-            )),
+            child: SvgPicture.asset(
+              AppImages.icSelectColor,
+              color: AppColors.COLOR_WHITE.withOpacity(0.7),
+            ),
+          ),
+        ),
         SizedBox(
-          width: SizeToPadding.sizeMedium,
+          width: SizeToPadding.sizeBig,
         ),
         InkWell(
           onTap: () async {
@@ -87,8 +96,9 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             content: _viewModel!.noteModel != null
                 ? NoteLanguage.update
                 : NoteLanguage.save,
-            style: STYLE_BIG.copyWith(
+            style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w600,
+              color: AppColors.COLOR_WHITE,
             ),
           ),
         ),
@@ -98,16 +108,22 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
-      padding: const EdgeInsets.only(right: 16),
+      color: AppColors.PRIMARY_GREEN,
+      padding: EdgeInsets.only(
+        left: SizeToPadding.sizeSmall,
+        right: SizeToPadding.sizeSmall,
+        top: Platform.isAndroid ? 30 : 60,
+        bottom: SizeToPadding.sizeVerySmall,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-              size: 30,
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: SvgPicture.asset(
+              AppImages.icArrowLeft,
+              height: 30,
+              color: AppColors.COLOR_WHITE,
             ),
           ),
           buildButtonHeader(),
@@ -151,42 +167,50 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   }
 
   Widget buildBody() {
-    return Container(
-      height: MediaQuery.sizeOf(context).height - 110,
-      margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildFileTitle(),
-          const SizedBox(
-            height: 12,
-          ),
-          // buildFieldNote(),
-          buildFieldNoteQuill(),
-        ],
+    return Showcase(
+      key: _viewModel!.enterInformationKey,
+      description: NoteLanguage.enterCompleteInformation,
+      child: Container(
+        height: MediaQuery.sizeOf(context).height - 160,
+        margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildFileTitle(),
+            const SizedBox(
+              height: 12,
+            ),
+            // buildFieldNote(),
+            buildFieldNoteQuill(),
+          ],
+        ),
       ),
     );
   }
 
   Widget buildItemEditTextNote() {
-    return QuillToolbar.simple(
-      configurations: QuillSimpleToolbarConfigurations(
-        toolbarIconCrossAlignment: WrapCrossAlignment.end,
-        toolbarIconAlignment: WrapAlignment.start,
-        axis: Axis.horizontal,
-        multiRowsDisplay: false,
-        showCenterAlignment: true,
-        showRedo: false,
-        showUndo: false,
-        showBackgroundColorButton: false,
-        showFontFamily: false,
-        showStrikeThrough: true,
-        showColorButton: true,
-        showListCheck: false,
-        controller: _viewModel!.quillController,
-        sharedConfigurations: const QuillSharedConfigurations(
-          locale: Locale('de'),
+    return Showcase(
+      description: NoteLanguage.formatNoteContent,
+      key: _viewModel!.editContentNoteKey,
+      child: QuillToolbar.simple(
+        configurations: QuillSimpleToolbarConfigurations(
+          toolbarIconCrossAlignment: WrapCrossAlignment.end,
+          toolbarIconAlignment: WrapAlignment.start,
+          axis: Axis.horizontal,
+          multiRowsDisplay: false,
+          showCenterAlignment: true,
+          showRedo: false,
+          showUndo: false,
+          showBackgroundColorButton: false,
+          showFontFamily: false,
+          showStrikeThrough: true,
+          showColorButton: true,
+          showListCheck: false,
+          controller: _viewModel!.quillController,
+          sharedConfigurations: const QuillSharedConfigurations(
+            locale: Locale('de'),
+          ),
         ),
       ),
     );
