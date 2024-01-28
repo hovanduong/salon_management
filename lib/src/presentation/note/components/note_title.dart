@@ -47,15 +47,15 @@ class NoteTitleWidget extends StatelessWidget {
                 height: SizeToPadding.sizeVerySmall,
               ),
               Paragraph(
-                content:
-                    Document.fromJson(jsonDecode(note?.note ?? '')).toPlainText(),
-                maxLines: 4,
+                content: Document.fromJson(jsonDecode(note?.note ?? ''))
+                    .toPlainText(),
+                maxLines: 3,
                 style: STYLE_SMALL.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w300,
                   color: (note?.color != null && note?.color != '')
                       ? AppHandleColor.getColorFromHex(note!.color!) !=
                               AppColors.COLOR_WHITE
-                          ? AppColors.COLOR_WHITE
+                          ? AppColors.BLACK_500
                           : AppColors.BLACK_500
                       : null,
                 ),
@@ -90,21 +90,22 @@ class NoteTitleWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTitleNote(BuildContext context, BoxConstraints constraints){
+  Widget buildTitleNote(BuildContext context, BoxConstraints constraints) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: constraints.maxWidth/1.8,
+          width: constraints.maxWidth / 1.8,
           child: Paragraph(
             content: note?.title ?? '',
             maxLines: 1,
             style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w600,
+              fontSize: 20,
               color: (note?.color != null && note?.color != '')
                   ? AppHandleColor.getColorFromHex(note!.color!) !=
                           AppColors.COLOR_WHITE
-                      ? AppColors.COLOR_WHITE
+                      ? AppColors.BLACK_500
                       : AppColors.BLACK_500
                   : null,
             ),
@@ -116,30 +117,28 @@ class NoteTitleWidget extends StatelessWidget {
     );
   }
 
-  Widget buildButtonFavoriteNote(){
+  Widget buildButtonFavoriteNote() {
     return InkWell(
       onTap: () => onTapFavorite!(),
       child: CircleAvatar(
         radius: 17,
-        backgroundColor:(note?.color != null)
-          ? AppHandleColor.getColorFromHex(
-                      note?.color??'',) !=
-                  AppColors.COLOR_WHITE
-              ? AppColors.COLOR_WHITE
-              : AppColors.PRIMARY_GREEN
-          : null,
+        backgroundColor: (note?.color != null)
+            ? AppHandleColor.getColorFromHex(
+                      note?.color ?? '',
+                    ) !=
+                    AppColors.COLOR_WHITE
+                ? AppColors.COLOR_WHITE
+                : AppColors.PRIMARY_GREEN
+            : null,
         child: Center(
           child: Icon(
-            (note?.pined??false)? 
-            Icons.favorite
-            :Icons.favorite_border,
-            size: 25,
-            color:  (note?.pined??false)? 
-              AppColors.Red_Money : 
-                (note?.color != '#FFFFFF'
-                ? AppColors.PRIMARY_GREEN
-                : AppColors.COLOR_WHITE)
-          ),
+              (note?.pined ?? false) ? Icons.favorite : Icons.favorite_border,
+              size: 20,
+              color: (note?.pined ?? false)
+                  ? AppColors.Red_Money
+                  : (note?.color != '#FFFFFF'
+                      ? AppColors.BLACK_500
+                      : AppColors.COLOR_WHITE)),
         ),
       ),
     );

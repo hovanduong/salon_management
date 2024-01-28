@@ -79,14 +79,14 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
           description: NoteLanguage.chooseNoteBackground,
           child: InkWell(
             onTap: noteColorPicker,
-            child: Icon(
-              Icons.color_lens_outlined,
-              color: _viewModel!.selectColor,
+            child: SvgPicture.asset(
+              AppImages.icSelectColor,
+              color: AppColors.COLOR_WHITE.withOpacity(0.7),
             ),
           ),
         ),
         SizedBox(
-          width: SizeToPadding.sizeMedium,
+          width: SizeToPadding.sizeBig,
         ),
         InkWell(
           onTap: () async {
@@ -96,7 +96,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             content: _viewModel!.noteModel != null
                 ? NoteLanguage.update
                 : NoteLanguage.save,
-            style: STYLE_BIG.copyWith(
+            style: STYLE_MEDIUM.copyWith(
               fontWeight: FontWeight.w600,
               color: AppColors.COLOR_WHITE,
             ),

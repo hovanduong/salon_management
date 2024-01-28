@@ -157,4 +157,6 @@ class AppImages {
   static const String icNote = 'assets/icons/note.svg';
 
   static const String icClock = 'assets/icons/clock.svg';
+
+  static const String icSelectColor = 'assets/icons/selectColor.svg';
 }

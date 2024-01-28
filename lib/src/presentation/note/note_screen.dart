@@ -180,12 +180,9 @@ class _NoteScreenState extends State<NoteScreen> {
             child: Showcase(
               key: _viewModel!.selectColorKey,
               description: NoteLanguage.searchColor,
-              child: Icon(
-                Icons.color_lens_outlined,
+              child: SvgPicture.asset(
+                AppImages.icSelectColor,
                 color: AppColors.COLOR_WHITE.withOpacity(0.7),
-                // color: _viewModel!.selectColor != AppColors.COLOR_WHITE
-                //     ? _viewModel!.selectColor
-                //     : AppColors.COLOR_WHITE,
               ),
             ),
           ),
