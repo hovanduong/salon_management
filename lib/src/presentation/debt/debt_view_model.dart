@@ -55,16 +55,18 @@ class DebtViewModel extends BaseViewModel{
   int tabCurrent=0;
   num? moneyRemaining;
   num? moneyPaid;
+  int? idUser;
 
   Timer? timer;
 
   Future<void> init(MyCustomerModel? params, {dynamic dataThis}) async{
     // tabController=TabController(length: 2, vsync: dataThis);
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     myCustomerModel=params;
     // await setDataOwe();
     dropValue=listName.first;
     await fetchDataOwes();
-    await AppPref.getShowCase('showCaseDebt').then(
+    await AppPref.getShowCase('showCaseDebt$idUser').then(
       (value) => isShowCase=value??true,);
     startShowCase();
     await hideShowcase();
@@ -72,7 +74,7 @@ class DebtViewModel extends BaseViewModel{
   }
 
   Future<void> hideShowcase() async {
-    await AppPref.setShowCase('showCaseDebt', false);
+    await AppPref.setShowCase('showCaseDebt$idUser', false);
     isShowCase = false;
     notifyListeners();
   }

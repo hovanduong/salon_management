@@ -52,6 +52,7 @@ class BookingViewModel extends BaseViewModel {
   int? myCustomerId;
   int? index;
   int? categoryId;
+  int? idUser;
 
   // num totalCost = 0;
   // num totalPrice = 0;
@@ -127,6 +128,7 @@ class BookingViewModel extends BaseViewModel {
   final onlySpecialChars = RegExp(r'^[\s,\-]*$');
 
   Future<void> init(MyBookingModel? myBookingModel) async {
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await getCategory();
     categoryId=listCategory[0].id;
     await setDataMyBooking(myBookingModel);
@@ -136,7 +138,7 @@ class BookingViewModel extends BaseViewModel {
     // await initMapCustomer();
     // await initMapService();
     await setShowButton();
-    await AppPref.getShowCase('showCaseBooking').then(
+    await AppPref.getShowCase('showCaseBooking$idUser').then(
       (value) => isShowCase=value??true,);
     startShowCase();
     await hideShowcase();
@@ -144,7 +146,7 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<void> hideShowcase() async{
-    await AppPref.setShowCase('showCaseBooking', false);
+    await AppPref.setShowCase('showCaseBooking$idUser', false);
     isShowCase=false;
     notifyListeners();
   }

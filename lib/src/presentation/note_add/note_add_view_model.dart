@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
@@ -14,6 +15,7 @@ import '../../resource/service/income_api.dart';
 import '../../resource/service/note_api.dart';
 import '../../utils/app_handel_color.dart';
 import '../../utils/app_handle_hex_color.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -28,6 +30,7 @@ class NoteAddViewModel extends BaseViewModel {
   String? messageNote;
 
   bool enableButton = false;
+  bool isShowCase=false;
 
   Color selectColor = AppColors.COLOR_WHITE;
 
@@ -37,10 +40,37 @@ class NoteAddViewModel extends BaseViewModel {
 
   Timer? timer;
 
+  int? idUser;
+
+  GlobalKey selectColorKey= GlobalKey();
+  GlobalKey editContentNoteKey= GlobalKey();
+  GlobalKey enterInformationKey= GlobalKey();
+
   Future<void> init(NoteModel? note) async {
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     noteModel = note;
     await setData();
+    await AppPref.getShowCase('addNote$idUser').then(
+      (value) => isShowCase=value??true,);
+    await startShowCase();
+    await hideShowCase();
     notifyListeners();
+  }
+
+  Future<void> hideShowCase()async{
+    await AppPref.setShowCase('addNote$idUser', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  Future<void> startShowCase()async{
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [selectColorKey, enterInformationKey, editContentNoteKey],
+        );
+      });
+    }
   }
 
   Future<void> setData() async {

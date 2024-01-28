@@ -3,13 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:showcaseview/showcaseview.dart';
 
-import '../../configs/app_result/app_result.dart';
 import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
 import '../../configs/widget/loading/loading_diaglog.dart';
 import '../../resource/model/model.dart';
 import '../../resource/service/note_api.dart';
+import '../../utils/app_pref.dart';
 import '../../utils/app_valid.dart';
 import '../base/base.dart';
 import '../routers.dart';
@@ -17,6 +18,7 @@ import '../routers.dart';
 class NoteDetailViewModel extends BaseViewModel{
 
   bool isLoading=false;
+  bool isShowCase=false;
   
   NoteModel? noteModel;
 
@@ -26,10 +28,37 @@ class NoteDetailViewModel extends BaseViewModel{
 
   Timer? timer;
 
+  int? idUser;
+
+  GlobalKey editKey= GlobalKey();
+  GlobalKey deleteKey= GlobalKey();
+  GlobalKey favoriteKey= GlobalKey();
+
   Future<void> init(NoteModel? note) async{
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     noteModel=note;
     quillController.document= Document.fromJson(jsonDecode(note?.note??''));
+    await AppPref.getShowCase('detailsNote$idUser').then(
+      (value) => isShowCase=value??true,);
+    await startShowCase();
+    await hideShowCase();
     notifyListeners();
+  }
+
+  Future<void> hideShowCase()async{
+    await AppPref.setShowCase('detailsNote$idUser', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  Future<void> startShowCase()async{
+    if(isShowCase){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [editKey, deleteKey, favoriteKey],
+        );
+      });
+    }
   }
 
   Future<void> gotoUpdateNote()async{

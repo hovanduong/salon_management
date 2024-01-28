@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -44,6 +45,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
       isScrollControlled: true,
       builder: (_) {
         return Container(
+          width: double.maxFinite,
           padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -69,12 +71,16 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   Widget buildButtonHeader() {
     return Row(
       children: [
-        InkWell(
-            onTap: noteColorPicker,
-            child: Icon(
-              Icons.color_lens_outlined,
-              color: _viewModel!.selectColor,
-            ),),
+        Showcase(
+          key: _viewModel!.selectColorKey,
+          description: NoteLanguage.chooseNoteBackground,
+          child: InkWell(
+              onTap: noteColorPicker,
+              child: Icon(
+                Icons.color_lens_outlined,
+                color: _viewModel!.selectColor,
+              ),),
+        ),
         SizedBox(
           width: SizeToPadding.sizeMedium,
         ),
@@ -157,42 +163,50 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   }
 
   Widget buildBody() {
-    return Container(
-      height: MediaQuery.sizeOf(context).height - 160,
-      margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
-      padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildFileTitle(),
-          const SizedBox(
-            height: 12,
-          ),
-          // buildFieldNote(),
-          buildFieldNoteQuill(),
-        ],
+    return Showcase(
+      key: _viewModel!.enterInformationKey,
+      description: NoteLanguage.enterCompleteInformation,
+      child: Container(
+        height: MediaQuery.sizeOf(context).height - 160,
+        margin: EdgeInsets.only(top: SizeToPadding.sizeVerySmall),
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildFileTitle(),
+            const SizedBox(
+              height: 12,
+            ),
+            // buildFieldNote(),
+            buildFieldNoteQuill(),
+          ],
+        ),
       ),
     );
   }
 
   Widget buildItemEditTextNote() {
-    return QuillToolbar.simple(
-      configurations: QuillSimpleToolbarConfigurations(
-        toolbarIconCrossAlignment: WrapCrossAlignment.end,
-        toolbarIconAlignment: WrapAlignment.start,
-        axis: Axis.horizontal,
-        multiRowsDisplay: false,
-        showCenterAlignment: true,
-        showRedo: false,
-        showUndo: false,
-        showBackgroundColorButton: false,
-        showFontFamily: false,
-        showStrikeThrough: true,
-        showColorButton: true,
-        showListCheck: false,
-        controller: _viewModel!.quillController,
-        sharedConfigurations: const QuillSharedConfigurations(
-          locale: Locale('de'),
+    return Showcase(
+      description: NoteLanguage.formatNoteContent,
+      key: _viewModel!.editContentNoteKey,
+      child: QuillToolbar.simple(
+        configurations: QuillSimpleToolbarConfigurations(
+          toolbarIconCrossAlignment: WrapCrossAlignment.end,
+          toolbarIconAlignment: WrapAlignment.start,
+          axis: Axis.horizontal,
+          multiRowsDisplay: false,
+          showCenterAlignment: true,
+          showRedo: false,
+          showUndo: false,
+          showBackgroundColorButton: false,
+          showFontFamily: false,
+          showStrikeThrough: true,
+          showColorButton: true,
+          showListCheck: false,
+          controller: _viewModel!.quillController,
+          sharedConfigurations: const QuillSharedConfigurations(
+            locale: Locale('de'),
+          ),
         ),
       ),
     );

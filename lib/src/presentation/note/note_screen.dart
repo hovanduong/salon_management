@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -172,16 +173,23 @@ class _NoteScreenState extends State<NoteScreen> {
         children: [
           InkWell(
             onTap: noteColorPicker,
-            child: Icon(
-              Icons.color_lens_outlined,
-              color: AppColors.COLOR_WHITE.withOpacity(0.7),
-              // color: _viewModel!.selectColor != AppColors.COLOR_WHITE
-              //     ? _viewModel!.selectColor
-              //     : AppColors.COLOR_WHITE,
+            child: Showcase(
+              key: _viewModel!.selectColorKey,
+              description: NoteLanguage.searchColor,
+              child: Icon(
+                Icons.color_lens_outlined,
+                color: AppColors.COLOR_WHITE.withOpacity(0.7),
+                // color: _viewModel!.selectColor != AppColors.COLOR_WHITE
+                //     ? _viewModel!.selectColor
+                //     : AppColors.COLOR_WHITE,
+              ),
             ),
           ),
           SizedBox(width: SizeToPadding.sizeSmall,),
-          buildButtonOptionView(),
+          Showcase(
+            key: _viewModel!.selectViewKey,
+            description: NoteLanguage.selectViewDescription,
+            child: buildButtonOptionView()),
         ],
       ),
     );
@@ -539,7 +547,9 @@ class _NoteScreenState extends State<NoteScreen> {
           child: Container(
             margin: EdgeInsets.symmetric(
               horizontal: SizeToPadding.sizeVeryVerySmall,),
-            padding: EdgeInsets.all(SizeToPadding.sizeVeryVerySmall),
+            padding: EdgeInsets.symmetric(
+              vertical: SizeToPadding.sizeVeryVerySmall,
+              horizontal: SizeToPadding.sizeSmall,),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(BorderRadiusSize.sizeSmall),
@@ -577,12 +587,16 @@ class _NoteScreenState extends State<NoteScreen> {
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeSmall),
-        child: FloatingActionButton(
-          backgroundColor: AppColors.PRIMARY_GREEN,
-          onPressed: () => _viewModel!.gotoAddNote(),
-          child: const Icon(
-            Icons.add,
-            color: AppColors.COLOR_WHITE,
+        child: Showcase(
+          description: NoteLanguage.addNote,
+          key: _viewModel!.addKey,
+          child: FloatingActionButton(
+            backgroundColor: AppColors.PRIMARY_GREEN,
+            onPressed: () => _viewModel!.gotoAddNote(),
+            child: const Icon(
+              Icons.add,
+              color: AppColors.COLOR_WHITE,
+            ),
           ),
         ),
       ),

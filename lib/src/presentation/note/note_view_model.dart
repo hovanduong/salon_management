@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/language/note_language.dart';
@@ -34,6 +35,7 @@ class NoteViewModel extends BaseViewModel {
   bool isGridView = true;
   bool isLoadMore = false;
   bool? isFavorite;
+  bool isShowCase=false;
 
   String? color;
   String? search;
@@ -51,6 +53,10 @@ class NoteViewModel extends BaseViewModel {
     NoteLanguage.favorite,
   ];
 
+  GlobalKey selectColorKey= GlobalKey();
+  GlobalKey addKey= GlobalKey();
+  GlobalKey selectViewKey= GlobalKey();
+
   Future<void> init() async {
     idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await AppPref.getShowCase('isGridView$idUser').then(
@@ -61,7 +67,28 @@ class NoteViewModel extends BaseViewModel {
     );
     await getNotes();
     listCurrent = listNote;
+    await AppPref.getShowCase('showCaseNote$idUser').then(
+      (value) => isShowCase = value ?? true,
+    );
+    startShowCase();
+    await hideShowcase();
     notifyListeners();
+  }
+
+  Future<void> hideShowcase() async {
+    await AppPref.setShowCase('showCaseNote$idUser', false);
+    isShowCase = false;
+    notifyListeners();
+  }
+
+  void startShowCase() {
+    if (isShowCase == true) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return ShowCaseWidget.of(context).startShowCase(
+          [addKey, selectColorKey, selectViewKey],
+        );
+      });
+    }
   }
 
   dynamic scrollListener() async {

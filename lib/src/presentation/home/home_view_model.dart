@@ -50,6 +50,7 @@ class HomeViewModel extends BaseViewModel {
 
   int page = 1;
   int isDate = 0;
+  int? idUser;
 
   String? totalBalance;
   String? totalIncome;
@@ -63,6 +64,7 @@ class HomeViewModel extends BaseViewModel {
   DateTime date = DateTime.now();
 
   Future<void> init({IncomeParams? params}) async {
+    idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await RegisterTopic.registerTopic();
     if (params != null) {
       date = params.date ?? DateTime.now();
@@ -76,7 +78,7 @@ class HomeViewModel extends BaseViewModel {
     scrollController.addListener(
       scrollListener,
     );
-    await AppPref.getShowCase('showCaseHome').then(
+    await AppPref.getShowCase('showCaseHome$idUser').then(
       (value) => isShowCase = value ?? true,
     );
     startShowCase();
@@ -86,7 +88,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> hideShowcase() async {
-    await AppPref.setShowCase('showCaseHome', false);
+    await AppPref.setShowCase('showCaseHome$idUser', false);
     isShowCase = false;
     notifyListeners();
   }

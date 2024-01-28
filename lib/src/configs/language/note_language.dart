@@ -25,6 +25,12 @@ class NoteLanguage {
   static final listView= S.current.listView;
   static final all= S.current.all;
   static final favorite= S.current.favorite;
+  static final selectViewDescription= S.current.selectViewDescription;
+  static final chooseNoteBackground= S.current.chooseNoteBackground;
+  static final formatNoteContent= S.current.formatNoteContent;
+  static final enterCompleteInformation= S.current.enterCompleteInformation;
+  static final deleteNote= S.current.deleteNote;
+  static final likeNote= S.current.likeNote;
 
   static final home = S.current.home;
 
