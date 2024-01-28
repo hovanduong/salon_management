@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../configs/configs.dart';
 import '../../../configs/constants/app_space.dart';
@@ -49,7 +50,7 @@ class NoteTitleWidget extends StatelessWidget {
               Paragraph(
                 content: Document.fromJson(jsonDecode(note?.note ?? ''))
                     .toPlainText(),
-                maxLines: 3,
+                maxLines: 2,
                 style: STYLE_SMALL.copyWith(
                   fontWeight: FontWeight.w300,
                   color: (note?.color != null && note?.color != '')
@@ -62,32 +63,77 @@ class NoteTitleWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Paragraph(
-                      content: note?.updatedAt != null
-                          ? AppDateUtils.splitHourDate(
-                              AppDateUtils.formatDateLocal(
-                                note!.updatedAt!,
-                              ),
-                            )
-                          : '',
-                      style: STYLE_SMALL.copyWith(
-                        color: (note?.color != null && note?.color != '')
-                            ? AppHandleColor.getColorFromHex(note!.color!) !=
-                                    AppColors.COLOR_WHITE
-                                ? AppColors.COLOR_WHITE
-                                : AppColors.BLACK_500
-                            : null,
-                      )),
-                ],
-              ),
+              buildDateNote()
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget buildDateNote() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+        color: note?.color == '#FFFFFF'
+            ? AppColors.PRIMARY_GREEN
+            : AppColors.COLOR_WHITE,
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            AppImages.icClock,
+            height: 10,
+            color: note?.color == '#FFFFFF' ? AppColors.COLOR_WHITE : null,
+          ),
+          const SizedBox(width: 7),
+          Paragraph(
+            content: note?.updatedAt != null
+                ? AppDateUtils.splitHourDate(
+                    AppDateUtils.formatDateLocal(
+                      note!.updatedAt!,
+                    ),
+                  )
+                : '',
+            style: STYLE_SMALL.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 10,
+              color: (note?.color != null)
+                  ? AppHandleColor.getColorFromHex(
+                            note!.color!,
+                          ) !=
+                          AppColors.COLOR_WHITE
+                      ? AppColors.BLACK_500
+                      : AppColors.COLOR_WHITE
+                  : null,
+            ),
+          ),
+        ],
+      ),
+    );
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.,
+    //   children: [
+    //     Paragraph(
+    //         content: note?.updatedAt != null
+    //             ? AppDateUtils.splitHourDate(
+    //                 AppDateUtils.formatDateLocal(
+    //                   note!.updatedAt!,
+    //                 ),
+    //               )
+    //             : '',
+    //         style: STYLE_SMALL.copyWith(
+    //           color: (note?.color != null && note?.color != '')
+    //               ? AppHandleColor.getColorFromHex(note!.color!) !=
+    //                       AppColors.COLOR_WHITE
+    //                   ? AppColors.COLOR_WHITE
+    //                   : AppColors.BLACK_500
+    //               : null,
+    //         )),
+    //   ],
+    // );
   }
 
   Widget buildTitleNote(BuildContext context, BoxConstraints constraints) {
