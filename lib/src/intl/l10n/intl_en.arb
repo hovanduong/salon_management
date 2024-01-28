@@ -405,5 +405,7 @@
   "listView":"List View",
   "gridView":"Grid View",
   "searchColor":"Search by color",
+  "all":"All",
+  "favorite":"Favorite",
   "lastLine": ""
 }

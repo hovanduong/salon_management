@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
@@ -72,10 +73,8 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             onTap: noteColorPicker,
             child: Icon(
               Icons.color_lens_outlined,
-              color: _viewModel!.selectColor != AppColors.COLOR_WHITE
-                  ? _viewModel!.selectColor
-                  : AppColors.BLACK_500,
-            )),
+              color: _viewModel!.selectColor,
+            ),),
         SizedBox(
           width: SizeToPadding.sizeMedium,
         ),
@@ -89,6 +88,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                 : NoteLanguage.save,
             style: STYLE_BIG.copyWith(
               fontWeight: FontWeight.w600,
+              color: AppColors.COLOR_WHITE,
             ),
           ),
         ),
@@ -98,16 +98,22 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
 
   Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
-      padding: const EdgeInsets.only(right: 16),
+      color: AppColors.PRIMARY_GREEN,
+      padding: EdgeInsets.only(
+        left: SizeToPadding.sizeSmall,
+        right: SizeToPadding.sizeSmall,
+        top: Platform.isAndroid ? 30 : 60,
+        bottom: SizeToPadding.sizeVerySmall,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-              size: 30,
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: SvgPicture.asset(
+              AppImages.icArrowLeft,
+              height: 30,
+              color: AppColors.COLOR_WHITE,
             ),
           ),
           buildButtonHeader(),

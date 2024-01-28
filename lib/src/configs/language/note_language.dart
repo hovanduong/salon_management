@@ -23,6 +23,8 @@ class NoteLanguage {
   static final cancel= S.current.cancel;
   static final gridView= S.current.gridView;
   static final listView= S.current.listView;
+  static final all= S.current.all;
+  static final favorite= S.current.favorite;
 
   static final home = S.current.home;
 

@@ -405,5 +405,7 @@
     "listView":"Danh sách",
     "gridView":"Bộ sưu tập",
     "searchColor":"Tìm kiếm theo màu",
+    "all":"Tất cả",
+    "favorite":"Yêu thích",
     "lastLine": ""
 }

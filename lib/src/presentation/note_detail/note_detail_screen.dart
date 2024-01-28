@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/configs.dart';
@@ -67,28 +68,62 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     );
   }
 
+  Widget buildButtonFavoriteNote(){
+    print(_viewModel!.noteModel?.id);
+    return InkWell(
+      onTap: () => _viewModel!.pinNote(),
+      child: Center(
+        child: Icon(
+          (_viewModel!.noteModel?.pined??false)? 
+          Icons.favorite
+          :Icons.favorite_border,
+          size: 30,
+          color:  (_viewModel!.noteModel?.pined??false)? 
+            AppColors.Red_Money : AppColors.COLOR_WHITE,
+        ),
+      ),
+    );
+  }
+
+  Widget buildButtonHeader() {
+    return Row(
+      children: [
+        buildButtonFavoriteNote(),
+        SizedBox(
+          width: SizeToPadding.sizeVeryVerySmall,
+        ),
+        IconButton(
+          onPressed: () => _viewModel!.showDialogDeleteNote(),
+          icon: const Icon(
+            Icons.delete,
+            size: 30,
+            color: AppColors.COLOR_WHITE,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget buildHeader() {
     return Container(
-      margin: EdgeInsets.only(top: SizeToPadding.sizeBig * 2),
-      padding: const EdgeInsets.only(right: 16),
+      color: AppColors.PRIMARY_GREEN,
+      padding: EdgeInsets.only(
+        left: SizeToPadding.sizeSmall,
+        top: Platform.isAndroid ? 30 : 60,
+        bottom: SizeToPadding.sizeVerySmall,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-              size: 35,
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: SvgPicture.asset(
+              AppImages.icArrowLeft,
+              height: 30,
+              color: AppColors.COLOR_WHITE,
             ),
           ),
-          IconButton(
-            onPressed: () => _viewModel!.showDialogDeleteNote(),
-            icon: const Icon(
-              Icons.delete,
-              size: 35,
-              color: AppColors.Red_Money,
-            ),
-          ),
+          buildButtonHeader(),
         ],
       ),
     );

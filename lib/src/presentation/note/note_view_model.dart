@@ -33,17 +33,23 @@ class NoteViewModel extends BaseViewModel {
   bool isLoading = true;
   bool isGridView = true;
   bool isLoadMore = false;
+  bool? isFavorite;
 
   String? color;
   String? search;
 
   int? idUser;
   int page = 1;
+  int selectItem=0;
 
   NoteApi noteApi = NoteApi();
 
   List<NoteModel> listNote = [];
   List<NoteModel> listCurrent = [];
+  List<String> listSelectItem=[
+    NoteLanguage.all,
+    NoteLanguage.favorite,
+  ];
 
   Future<void> init() async {
     idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
@@ -107,8 +113,23 @@ class NoteViewModel extends BaseViewModel {
     isGridView = (await AppPref.getShowCase('isGridView$idUser'))!;
     notifyListeners();
   }
-  
 
+  Future<void> onChangeSelectItem(int value) async {
+    isLoading=true;
+    listCurrent.clear();
+    selectItem=value;
+    if(selectItem==0){
+      await pullRefresh();
+    }else if(selectItem==1){
+      search = null;
+      selectColor = null;
+      isFavorite=true;
+      await getNotes();
+      listCurrent=listNote;
+    }
+    notifyListeners();
+  }
+  
   Future<void> onSearchNotes({String? value, Color? color}) async {
     // final searchCustomer = TiengViet.parse(value.toLowerCase());
     page = 1;
@@ -137,7 +158,7 @@ class NoteViewModel extends BaseViewModel {
           },
           onTapRight: () async {
             Navigator.pop(context,);
-            await deleteNote(id);
+            // await deleteNote(id);
           },
         );
       },
@@ -185,6 +206,7 @@ class NoteViewModel extends BaseViewModel {
     page = 1;
     selectColor = null;
     search = null;
+    isFavorite=null;
     await getNotes();
     listCurrent = listNote;
     notifyListeners();
@@ -198,6 +220,7 @@ class NoteViewModel extends BaseViewModel {
         color: selectColor != null
             ? selectColor?.toHex().toString().split('#')[1]
             : null,
+        pined: isFavorite,
       ),
     );
 
@@ -217,9 +240,9 @@ class NoteViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> deleteNote(int id) async {
+  Future<void> pinNote(int id) async {
     LoadingDialog.showLoadingDialog(context);
-    final result = await noteApi.deleteNote(id);
+    final result = await noteApi.pinNote(id);
 
     final value = switch (result) {
       Success(value: final listRevenueChart) => listRevenueChart,
@@ -234,7 +257,8 @@ class NoteViewModel extends BaseViewModel {
       showErrorDialog(context);
     } else {
       LoadingDialog.hideLoadingDialog(context);
-      showSuccessDiaglog(context);
+      await pullRefresh();
+      // showSuccessDiaglog(context);
     }
     notifyListeners();
   }

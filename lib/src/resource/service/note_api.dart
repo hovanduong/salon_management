@@ -15,8 +15,10 @@ class NoteParams {
     this.color,
     this.search,
     this.page,
+    this.pined,
   });
   final int? id;
+  final bool? pined;
   final String? note;
   final String? title;
   final String? color;
@@ -30,13 +32,34 @@ class NoteApi {
     try {
       final response = await HttpRemote.get(
         url: '/notes?pageSize=10&page=${params.page}&color=%23${
-          params.color ?? ''}&search=${params.search ?? ''}',
+          params.color ?? ''}&search=${params.search ?? ''}${
+            params.pined!=null? '&pined=${params.pined}': ''
+          }',
       );
       switch (response?.statusCode) {
         case 200:
           final jsonMap = json.decode(response!.body);
           final data = json.encode(jsonMap['data']['items']);
           final notes = NoteFactory.createList(data);
+          return Success(notes);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<NoteModel, Exception>> getNotesDetail(int id) async {
+    try {
+      final response = await HttpRemote.get(
+        url: '/notes/$id',
+      );
+      switch (response?.statusCode) {
+        case 200:
+          final jsonMap = json.decode(response!.body);
+          final data = json.encode(jsonMap['data']);
+          final notes = NoteFactory.create(data);
           return Success(notes);
         default:
           return Failure(Exception(response!.reasonPhrase));
@@ -95,6 +118,22 @@ class NoteApi {
           'password': null,
           'oldPassword': null,
         },
+      );
+      switch (response?.statusCode) {
+        case 200:
+          return const Success(true);
+        default:
+          return Failure(Exception(response!.reasonPhrase));
+      }
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<bool, Exception>> pinNote(int id,) async {
+    try {
+      final response = await HttpRemote.put(
+        url: '/notes/$id/pin',
       );
       switch (response?.statusCode) {
         case 200:

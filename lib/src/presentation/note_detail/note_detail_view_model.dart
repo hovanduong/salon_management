@@ -121,6 +121,49 @@ class NoteDetailViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  Future<void> pinNote() async {
+    LoadingDialog.showLoadingDialog(context);
+    final result = await noteApi.pinNote(noteModel?.id??0);
+
+    final value = switch (result) {
+      Success(value: final listRevenueChart) => listRevenueChart,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      LoadingDialog.hideLoadingDialog(context);
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      LoadingDialog.hideLoadingDialog(context);
+      showErrorDialog(context);
+    } else {
+      LoadingDialog.hideLoadingDialog(context);
+      isLoading=true;
+      await getNotesDetails();
+    }
+    notifyListeners();
+  }
+
+  Future<void> getNotesDetails() async {
+    final result = await noteApi.getNotesDetail(
+      noteModel?.id??0
+    );
+
+    final value = switch (result) {
+      Success(value: final listRevenueChart) => listRevenueChart,
+      Failure(exception: final exception) => exception,
+    };
+
+    if (!AppValid.isNetWork(value)) {
+      showDialogNetwork(context);
+    } else if (value is Exception) {
+      isLoading = true;
+    } else {
+      isLoading = false;
+      noteModel = value as NoteModel;
+    }
+    notifyListeners();
+  }
 
   @override
   void dispose() {
