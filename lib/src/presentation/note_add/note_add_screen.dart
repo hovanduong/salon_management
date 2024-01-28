@@ -42,6 +42,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   Future noteColorPicker() {
     return showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.BLACK_500,
       isScrollControlled: true,
       builder: (_) {
         return Container(
@@ -52,7 +53,9 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             children: [
               Paragraph(
                 content: NoteLanguage.selectColor,
-                style: STYLE_MEDIUM,
+                style: STYLE_MEDIUM.copyWith(
+                  color: AppColors.COLOR_WHITE,
+                ),
               ),
               Padding(
                 padding:
@@ -75,11 +78,12 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
           key: _viewModel!.selectColorKey,
           description: NoteLanguage.chooseNoteBackground,
           child: InkWell(
-              onTap: noteColorPicker,
-              child: Icon(
-                Icons.color_lens_outlined,
-                color: _viewModel!.selectColor,
-              ),),
+            onTap: noteColorPicker,
+            child: Icon(
+              Icons.color_lens_outlined,
+              color: _viewModel!.selectColor,
+            ),
+          ),
         ),
         SizedBox(
           width: SizeToPadding.sizeMedium,
