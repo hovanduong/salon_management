@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -168,7 +169,10 @@ class _NoteScreenState extends State<NoteScreen> {
 
   Widget buildButtonHeader() {
     return Padding(
-      padding: EdgeInsets.only(right: SizeToPadding.sizeMedium, bottom: 15,),
+      padding: EdgeInsets.only(
+        right: SizeToPadding.sizeMedium,
+        bottom: 15,
+      ),
       child: Row(
         children: [
           InkWell(
@@ -185,11 +189,13 @@ class _NoteScreenState extends State<NoteScreen> {
               ),
             ),
           ),
-          SizedBox(width: SizeToPadding.sizeSmall,),
+          SizedBox(
+            width: SizeToPadding.sizeSmall,
+          ),
           Showcase(
-            key: _viewModel!.selectViewKey,
-            description: NoteLanguage.selectViewDescription,
-            child: buildButtonOptionView()),
+              key: _viewModel!.selectViewKey,
+              description: NoteLanguage.selectViewDescription,
+              child: buildButtonOptionView()),
         ],
       ),
     );
@@ -277,11 +283,12 @@ class _NoteScreenState extends State<NoteScreen> {
         crossAxisCellCount: _viewModel!.tileCounts[index % 7][0],
         mainAxisCellCount: _viewModel!.tileCounts[index % 7][1],
         child: Padding(
-        padding: EdgeInsets.only(
-          top: ((index==0 || index==1)? SizeToPadding.sizeSmall: 0),),
+          padding: EdgeInsets.only(
+            top: ((index == 0 || index == 1) ? SizeToPadding.sizeSmall : 0),
+          ),
           child: NoteTitleWidget(
             onTapFavorite: () => _viewModel!.pinNote(
-              _viewModel!.listCurrent[index].id??0,
+              _viewModel!.listCurrent[index].id ?? 0,
             ),
             note: _viewModel!.listCurrent[index],
             onTap: () => _viewModel!.gotoDetailNote(
@@ -312,17 +319,19 @@ class _NoteScreenState extends State<NoteScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: MediaQuery.sizeOf(context).width/1.5,
+          width: MediaQuery.sizeOf(context).width / 1.5,
           child: Paragraph(
             content: _viewModel!.listCurrent[index].title ?? '',
             maxLines: 1,
             style: STYLE_MEDIUM.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
               color: (_viewModel!.listCurrent[index].color != null)
                   ? AppHandleColor.getColorFromHex(
-                              _viewModel!.listCurrent[index].color!,) !=
+                            _viewModel!.listCurrent[index].color!,
+                          ) !=
                           AppColors.COLOR_WHITE
-                      ? AppColors.COLOR_WHITE
+                      ? AppColors.BLACK_500
                       : AppColors.BLACK_500
                   : null,
             ),
@@ -334,31 +343,31 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildButtonFavoriteNote(int index){
+  Widget buildButtonFavoriteNote(int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: SizeToPadding.sizeVeryVerySmall),
       child: InkWell(
         onTap: () => _viewModel!.pinNote(
-          _viewModel!.listCurrent[index].id??0,
+          _viewModel!.listCurrent[index].id ?? 0,
         ),
         child: CircleAvatar(
           radius: 17,
-          backgroundColor:(_viewModel!.listCurrent[index].color != null)
-            ? _viewModel!.listCurrent[index].color != '#FFFFFF'
-                ? AppColors.COLOR_WHITE
-                : AppColors.PRIMARY_GREEN
-            : null,
+          backgroundColor: (_viewModel!.listCurrent[index].color != null)
+              ? _viewModel!.listCurrent[index].color != '#FFFFFF'
+                  ? AppColors.COLOR_WHITE
+                  : AppColors.PRIMARY_GREEN
+              : null,
           child: Center(
             child: Icon(
-              (_viewModel!.listCurrent[index].pined??false)? 
-              Icons.favorite
-              :Icons.favorite_border,
-              size: 25,
-              color: (_viewModel!.listCurrent[index].pined??false)? 
-                AppColors.Red_Money : 
-                (_viewModel!.listCurrent[index].color != '#FFFFFF'
-                ? AppColors.PRIMARY_GREEN
-                : AppColors.COLOR_WHITE)
+              (_viewModel!.listCurrent[index].pined ?? false)
+                  ? Icons.favorite
+                  : Icons.favorite_border,
+              size: 20,
+              color: (_viewModel!.listCurrent[index].pined ?? false)
+                  ? AppColors.Red_Money
+                  : (_viewModel!.listCurrent[index].color != '#FFFFFF'
+                      ? AppColors.BLACK_500
+                      : AppColors.COLOR_WHITE),
             ),
           ),
         ),
@@ -375,12 +384,13 @@ class _NoteScreenState extends State<NoteScreen> {
       ).toPlainText(),
       maxLines: 4,
       style: STYLE_SMALL.copyWith(
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w300,
         color: (_viewModel!.listCurrent[index].color != null)
             ? AppHandleColor.getColorFromHex(
-                        _viewModel!.listCurrent[index].color!,) !=
+                      _viewModel!.listCurrent[index].color!,
+                    ) !=
                     AppColors.COLOR_WHITE
-                ? AppColors.COLOR_WHITE
+                ? AppColors.BLACK_500
                 : AppColors.BLACK_500
             : null,
       ),
@@ -389,32 +399,51 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Widget buildDateContentListView(int index) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Paragraph(
-          content: _viewModel!.listCurrent[index].updatedAt != null
-              ? AppDateUtils.splitHourDate(
-                  AppDateUtils.formatDateLocal(
-                    _viewModel!.listCurrent[index].updatedAt!,
-                  ),
-                )
-              : '',
-          style: STYLE_SMALL.copyWith(
-            color: (_viewModel!.listCurrent[index].color != null)
-                ? AppHandleColor.getColorFromHex(
-                            _viewModel!.listCurrent[index].color!,) !=
-                        AppColors.COLOR_WHITE
-                    ? AppColors.COLOR_WHITE
-                    : AppColors.BLACK_500
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+        color: _viewModel!.listCurrent[index].color == '#FFFFFF'
+            ? AppColors.PRIMARY_GREEN
+            : AppColors.COLOR_WHITE,
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            AppImages.icClock,
+            height: 20,
+            color: _viewModel!.listCurrent[index].color == '#FFFFFF'
+                ? AppColors.COLOR_WHITE
                 : null,
           ),
-        ),
-      ],
+          const SizedBox(width: 7),
+          Paragraph(
+            content: _viewModel!.listCurrent[index].updatedAt != null
+                ? AppDateUtils.splitHourDate(
+                    AppDateUtils.formatDateLocal(
+                      _viewModel!.listCurrent[index].updatedAt!,
+                    ),
+                  )
+                : '',
+            style: STYLE_SMALL.copyWith(
+              fontWeight: FontWeight.w500,
+              color: (_viewModel!.listCurrent[index].color != null)
+                  ? AppHandleColor.getColorFromHex(
+                            _viewModel!.listCurrent[index].color!,
+                          ) !=
+                          AppColors.COLOR_WHITE
+                      ? AppColors.BLACK_500
+                      : AppColors.COLOR_WHITE
+                  : null,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget buildCardNote(int index){
+  Widget buildCardNote(int index) {
     return InkWell(
       onTap: () => _viewModel!.gotoDetailNote(
         _viewModel!.listCurrent[index],
@@ -423,10 +452,11 @@ class _NoteScreenState extends State<NoteScreen> {
         margin: EdgeInsets.only(top: SizeToPadding.sizeMedium),
         padding: EdgeInsets.only(
           left: SizeToPadding.sizeSmall,
-          right: SizeToPadding.sizeSmall,
+          right: SizeToPadding.sizeMedium,
           bottom: SizeToPadding.sizeSmall,
+          top: SizeToPadding.sizeVerySmall,
         ),
-        height: 150,
+        height: 200,
         width: double.maxFinite,
         decoration: BoxDecoration(
           color: (_viewModel!.listCurrent[index].color != null)
@@ -434,7 +464,6 @@ class _NoteScreenState extends State<NoteScreen> {
                   _viewModel!.listCurrent[index].color!,
                 )
               : null,
-          // color: AppColors.Green_Money,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: AppColors.BLACK_200),
         ),
@@ -442,6 +471,7 @@ class _NoteScreenState extends State<NoteScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildTitleContentListView(index),
+            const SizedBox(height: 10),
             buildNoteContentListView(index),
             const Spacer(),
             buildDateContentListView(index),
@@ -451,7 +481,7 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget buildButtonCardNote(int index){
+  Widget buildButtonCardNote(int index) {
     return Positioned(
       bottom: 0,
       right: 0,
@@ -476,18 +506,6 @@ class _NoteScreenState extends State<NoteScreen> {
       ),
     );
   }
-
-  // Widget buildContentListView(int index) {
-  //   return Stack(
-  //     children:[
-  //       ClipPath(
-  //         clipper: CustomCornerClipPath(),
-  //         child: buildCardNote(index),
-  //       ),
-  //       buildButtonCardNote(index),
-  //     ] 
-  //   );
-  // }
 
   Widget buildListViewScreen() {
     return Column(
@@ -515,27 +533,27 @@ class _NoteScreenState extends State<NoteScreen> {
         await _viewModel!.pullRefresh();
       },
       child: _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
-      ? buildIconEmpty()
-      : SizedBox(
-          width: double.maxFinite,
-          height: MediaQuery.sizeOf(context).height - 265,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
+          ? buildIconEmpty()
+          : SizedBox(
+              width: double.maxFinite,
+              height: MediaQuery.sizeOf(context).height - 265,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: SingleChildScrollView(
+                  controller: _viewModel!.scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: _viewModel!.isGridView
+                      ? buildGridViewScreen()
+                      : buildListViewScreen(),
+                ),
+              ),
             ),
-            child: SingleChildScrollView(
-              controller: _viewModel!.scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: _viewModel!.isGridView
-                  ? buildGridViewScreen()
-                  : buildListViewScreen(),
-            ),
-          ),
-        ),
     );
   }
 
-  Widget buildListSelectItem(){
+  Widget buildListSelectItem() {
     return SizedBox(
       height: 30,
       child: ListView.builder(
@@ -546,24 +564,28 @@ class _NoteScreenState extends State<NoteScreen> {
           onTap: () => _viewModel!.onChangeSelectItem(index),
           child: Container(
             margin: EdgeInsets.symmetric(
-              horizontal: SizeToPadding.sizeVeryVerySmall,),
+              horizontal: SizeToPadding.sizeVeryVerySmall,
+            ),
             padding: EdgeInsets.symmetric(
               vertical: SizeToPadding.sizeVeryVerySmall,
-              horizontal: SizeToPadding.sizeSmall,),
+              horizontal: SizeToPadding.sizeSmall,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(BorderRadiusSize.sizeSmall),
               ),
-              color: _viewModel!.selectItem==index?
-                AppColors.PRIMARY_GREEN : AppColors.COLOR_WHITE,
+              color: _viewModel!.selectItem == index
+                  ? AppColors.PRIMARY_GREEN
+                  : AppColors.COLOR_WHITE,
               border: Border.all(color: AppColors.BLACK_200),
             ),
             child: Paragraph(
               content: _viewModel!.listSelectItem[index],
               style: STYLE_SMALL.copyWith(
                 fontWeight: FontWeight.w600,
-                color: _viewModel!.selectItem==index?
-                AppColors.COLOR_WHITE : AppColors.BLACK_500,
+                color: _viewModel!.selectItem == index
+                    ? AppColors.COLOR_WHITE
+                    : AppColors.BLACK_500,
               ),
             ),
           ),

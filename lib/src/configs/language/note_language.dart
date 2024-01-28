@@ -18,19 +18,19 @@ class NoteLanguage {
   static final close = S.current.close;
   static final back = S.current.back;
   static final notification = S.current.notification;
-  static final deleteNoteNotification= S.current.deleteNoteNotification;
-  static final yes= S.current.yes;
-  static final cancel= S.current.cancel;
-  static final gridView= S.current.gridView;
-  static final listView= S.current.listView;
-  static final all= S.current.all;
-  static final favorite= S.current.favorite;
-  static final selectViewDescription= S.current.selectViewDescription;
-  static final chooseNoteBackground= S.current.chooseNoteBackground;
-  static final formatNoteContent= S.current.formatNoteContent;
-  static final enterCompleteInformation= S.current.enterCompleteInformation;
-  static final deleteNote= S.current.deleteNote;
-  static final likeNote= S.current.likeNote;
+  static final deleteNoteNotification = S.current.deleteNoteNotification;
+  static final yes = S.current.yes;
+  static final cancel = S.current.cancel;
+  static final gridView = S.current.gridView;
+  static final listView = S.current.listView;
+  static final all = S.current.all;
+  static final favorite = S.current.favorite;
+  static final selectViewDescription = S.current.selectViewDescription;
+  static final chooseNoteBackground = S.current.chooseNoteBackground;
+  static final formatNoteContent = S.current.formatNoteContent;
+  static final enterCompleteInformation = S.current.enterCompleteInformation;
+  static final deleteNote = S.current.deleteNote;
+  static final likeNote = S.current.likeNote;
 
   static final home = S.current.home;
 
@@ -47,5 +47,4 @@ class NoteLanguage {
   static final exitAppContent = S.current.exitAppContent;
 
   static final report = S.current.report;
-
 }

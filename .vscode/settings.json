@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "Diaglog"
-    ]
+    ],
+    "cmake.configureOnOpen": false
 }
