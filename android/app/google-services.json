@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "467887400203",
+    "project_id": "spa-product",
+    "storage_bucket": "spa-product.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467887400203:android:f6ed17176f331382d66e0e",
+        "android_client_info": {
+          "package_name": "com.dhysolutios.apcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpiCIWpY0T_dlzHtM9hJB_l_RYUWRyE9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
