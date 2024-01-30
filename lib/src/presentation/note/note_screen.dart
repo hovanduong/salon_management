@@ -551,26 +551,28 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Widget buildListSelectItem() {
-    return CupertinoSlidingSegmentedControl(
-      groupValue: _viewModel!.selectItem,
-      thumbColor: AppColors.PRIMARY_GREEN,
-      children: <int, Widget>{
-        for(int i=0; i<_viewModel!.listSelectItem.length; i++)
-          i: Paragraph(
-            content: _viewModel!.listSelectItem[i],
-            style: STYLE_SMALL.copyWith(
-              fontWeight: FontWeight.w600,
-              color: _viewModel!.selectItem == i
-                  ? AppColors.COLOR_WHITE
-                  : AppColors.BLACK_500,
+    return Padding(
+      padding: const EdgeInsets.only(left: 15),
+      child: CupertinoSlidingSegmentedControl(
+        groupValue: _viewModel!.selectItem,
+        thumbColor: AppColors.PRIMARY_GREEN,
+        children: <int, Widget>{
+          for (int i = 0; i < _viewModel!.listSelectItem.length; i++)
+            i: Paragraph(
+              content: _viewModel!.listSelectItem[i],
+              style: STYLE_SMALL.copyWith(
+                fontWeight: FontWeight.w600,
+                color: _viewModel!.selectItem == i
+                    ? AppColors.COLOR_WHITE
+                    : AppColors.BLACK_500,
+              ),
             ),
-          ),
-      },
-      onValueChanged: (i) {
-        _viewModel!.onChangeSelectItem(i??0);
-      }
+        },
+        onValueChanged: (i) {
+          _viewModel!.onChangeSelectItem(i ?? 0);
+        },
+      ),
     );
-    
   }
 
   Widget buildNoteScreen() {
@@ -578,6 +580,7 @@ class _NoteScreenState extends State<NoteScreen> {
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildHeader(),
             buildSearch(),

@@ -38,6 +38,11 @@ List<Color> getNoteColors() {
   colors.add(AppHandleColor.getColorFromHex('#B8860B'));
   colors.add(AppHandleColor.getColorFromHex('#2E8B57'));
 
+  colors.add(AppHandleColor.getColorFromHex('#B6F5F7'));
+  colors.add(AppHandleColor.getColorFromHex('#EFCE89'));
+  colors.add(AppHandleColor.getColorFromHex('#CDA7E6'));
+  colors.add(AppHandleColor.getColorFromHex('#A2BEF4'));
+
   return colors;
 }
 
