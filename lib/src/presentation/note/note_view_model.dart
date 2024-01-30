@@ -142,7 +142,7 @@ class NoteViewModel extends BaseViewModel {
   }
 
   Future<void> onChangeSelectItem(int value) async {
-    isLoading=true;
+    LoadingDialog.showLoadingDialog(context);
     listCurrent.clear();
     selectItem=value;
     if(selectItem==0){
@@ -154,6 +154,7 @@ class NoteViewModel extends BaseViewModel {
       await getNotes();
       listCurrent=listNote;
     }
+    LoadingDialog.hideLoadingDialog(context);
     notifyListeners();
   }
   
@@ -233,7 +234,9 @@ class NoteViewModel extends BaseViewModel {
     page = 1;
     selectColor = null;
     search = null;
-    isFavorite=null;
+    if(selectItem!=1){
+      isFavorite=null;
+    }
     await getNotes();
     listCurrent = listNote;
     notifyListeners();
