@@ -551,42 +551,26 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Widget buildListSelectItem() {
-    return SizedBox(
-      height: 30,
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.horizontal,
-        itemCount: _viewModel!.listSelectItem.length,
-        itemBuilder: (context, index) => InkWell(
-          onTap: () => _viewModel!.onChangeSelectItem(index),
-          child: Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: SizeToPadding.sizeVeryVerySmall,
-            ),
-            padding: EdgeInsets.symmetric(
-              vertical: SizeToPadding.sizeVeryVerySmall,
-              horizontal: SizeToPadding.sizeSmall,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(BorderRadiusSize.sizeSmall),
-              ),
-              color: _viewModel!.selectItem == index
-                  ? AppColors.PRIMARY_GREEN
-                  : AppColors.COLOR_WHITE,
-              border: Border.all(color: AppColors.BLACK_200),
-            ),
-            child: Paragraph(
-              content: _viewModel!.listSelectItem[index],
+    return Padding(
+      padding: const EdgeInsets.only(left: 15),
+      child: CupertinoSlidingSegmentedControl(
+        groupValue: _viewModel!.selectItem,
+        thumbColor: AppColors.PRIMARY_GREEN,
+        children: <int, Widget>{
+          for (int i = 0; i < _viewModel!.listSelectItem.length; i++)
+            i: Paragraph(
+              content: _viewModel!.listSelectItem[i],
               style: STYLE_SMALL.copyWith(
                 fontWeight: FontWeight.w600,
-                color: _viewModel!.selectItem == index
+                color: _viewModel!.selectItem == i
                     ? AppColors.COLOR_WHITE
                     : AppColors.BLACK_500,
               ),
             ),
-          ),
-        ),
+        },
+        onValueChanged: (i) {
+          _viewModel!.onChangeSelectItem(i ?? 0);
+        },
       ),
     );
   }
@@ -596,6 +580,7 @@ class _NoteScreenState extends State<NoteScreen> {
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildHeader(),
             buildSearch(),

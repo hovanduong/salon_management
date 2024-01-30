@@ -61,7 +61,10 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                 padding:
                     EdgeInsets.symmetric(vertical: SizeToPadding.sizeMedium),
                 child: SelectNoteColor(
-                  onTap: (color) => _viewModel!.changedSelectColor(color),
+                  onTap: (color){
+                    _viewModel!.changedSelectColor(color);
+                    Navigator.pop(context);
+                  } 
                 ),
               ),
             ],
@@ -81,7 +84,8 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
             onTap: noteColorPicker,
             child: SvgPicture.asset(
               AppImages.icSelectColor,
-              color: AppColors.COLOR_WHITE.withOpacity(0.7),
+              color: _viewModel!.selectColor!=AppColors.COLOR_WHITE?
+                _viewModel!.selectColor: AppColors.COLOR_WHITE.withOpacity(0.7),
             ),
           ),
         ),
