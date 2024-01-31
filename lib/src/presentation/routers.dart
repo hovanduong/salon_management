@@ -14,6 +14,7 @@ import 'debit/debit_screen.dart';
 import 'debt/debt.dart';
 import 'debt_add/debt__add_screen.dart';
 import 'debt_detail/debt_detail.dart';
+import 'debtor/debtor.dart';
 import 'home/home.dart';
 import 'invoice/invoice_screen.dart';
 import 'my_customer/my_customer.dart';
@@ -79,6 +80,7 @@ class Routers {
   static const String profileAccount = '/profileAccount';
   static const String calendar = '/calendar';
   static const String debtDetail = '/debtDetail';
+  static const String debtor = '/debtor';
   static const String noteScreen = '/noteScreen';
   static const String noteAddScreen = '/noteAddScreen';
   static const String noteDetailScreen = '/noteDetailScreen';
@@ -133,6 +135,14 @@ class Routers {
           const NoteScreen(),
           beginOffset: right,
           name: noteScreen,
+          arguments: arguments,
+        );
+
+      case debtor:
+        return animRoute(
+          const DebtorScreen(),
+          beginOffset: right,
+          name: debtor,
           arguments: arguments,
         );
       
