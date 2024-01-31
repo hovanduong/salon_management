@@ -42,7 +42,7 @@ class DebtorViewModel extends BaseViewModel{
   Future<void> init() async{
     idUser = int.parse(await AppPref.getDataUSer('id') ?? '0');
     await fetchData();
-    await AppPref.getShowCase('showCaseDebit$idUser').then(
+    await AppPref.getShowCase('showCaseDebtor$idUser').then(
       (value) => isShowCase = value ?? true,
     );
     startShowCase();
@@ -58,7 +58,7 @@ class DebtorViewModel extends BaseViewModel{
   }
 
   Future<void> hideShowcase() async {
-    await AppPref.setShowCase('showCaseDebit$idUser', false);
+    await AppPref.setShowCase('showCaseDebtor$idUser', false);
     isShowCase = false;
     notifyListeners();
   }
