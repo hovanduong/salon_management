@@ -65,7 +65,8 @@ class _DebtorScreenState extends State<DebtorScreen> {
     return Container(
       color: AppColors.PRIMARY_GREEN,
       child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 30 : 40,
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 35 : 55,
           bottom: SizeToPadding.sizeVerySmall,
           left: SizeToPadding.sizeVerySmall,
         ),
