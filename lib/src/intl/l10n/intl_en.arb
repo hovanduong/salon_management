@@ -413,5 +413,7 @@
   "formatNoteContent":"Format note content",
   "likeNote":"Likes to take notes",
   "deleteNote":"Delete notes",
+  "showDebtor":"Show debtor",
+  "debtor":"Debtor",
   "lastLine": ""
 }

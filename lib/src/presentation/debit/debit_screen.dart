@@ -95,96 +95,6 @@ class _DebitScreenState extends State<DebitScreen> {
     );
   }
 
-  Widget buildSearch() {
-    return Showcase(
-      description: DebitLanguage.searchDebitCustomer,
-      key: _viewModel!.keySearch,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: SpaceBox.sizeMedium),
-        child: AppFormField(
-          textEditingController: _viewModel!.searchController,
-          iconButton: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-            color: AppColors.BLACK_300,
-          ),
-          hintText: DebitLanguage.search,
-          onChanged: (value) async {
-            await _viewModel!.onSearchDebit(value.trim());
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget buildCustomerDebit(int index) {
-    final id = _viewModel?.listCurrent[index].id;
-    final name = _viewModel?.listCurrent[index].fullName;
-    return InkWell(
-      onTap: () => _viewModel!.goToDebt(
-        myCustomerModel: _viewModel!.listCurrent[index],
-      ),
-      child: CardCustomerWidget(
-        name: name,
-        onTapDelete: (context) => _viewModel!.showWaningDiaglog(
-          onTapRight: () => _viewModel!.deleteDebit(id!),
-          title: DebitLanguage.waningDeleteCustomer,
-        ),
-        onTapUpdate: (context) => _viewModel!.showDialogAddDebit(
-          context,
-          idEdit: id,
-          name: name,
-        ),
-      ),
-    );
-  }
-
-  Widget buildIconEmpty() {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Padding(
-        padding: EdgeInsets.only(top: SizeToPadding.sizeBig * 7),
-        child: EmptyDataWidget(
-          title: DebitLanguage.debit,
-          content: DebitLanguage.notificationDebitEmpty,
-        ),
-      ),
-    );
-  }
-
-  Widget buildListDebit() {
-    return RefreshIndicator(
-      color: AppColors.PRIMARY_GREEN,
-      onRefresh: () async {
-        await _viewModel!.pullRefresh();
-      },
-      child: _viewModel!.listCurrent.isEmpty && !_viewModel!.isLoading
-          ? buildIconEmpty()
-          : Container(
-              padding: EdgeInsets.only(
-                left: SizeToPadding.sizeSmall,
-                right: SizeToPadding.sizeVerySmall,
-              ),
-              height: MediaQuery.of(context).size.height - 600,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                physics: const AlwaysScrollableScrollPhysics(),
-                controller: _viewModel!.scrollController,
-                itemCount: _viewModel!.loadingMore
-                    ? _viewModel!.listCurrent.length + 1
-                    : _viewModel!.listCurrent.length,
-                itemBuilder: (context, index) {
-                  if (index < _viewModel!.listCurrent.length) {
-                    return buildCustomerDebit(index);
-                  } else {
-                    return const CupertinoActivityIndicator();
-                  }
-                },
-              ),
-            ),
-    );
-  }
-
   Widget buildTotalMyDebit() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeSmall),
@@ -226,13 +136,20 @@ class _DebitScreenState extends State<DebitScreen> {
   }
 
   Widget buildBody() {
-    return Column(
-      children: [
-        buildTotalEveryoneDebit(),
-        buildTotalMyDebit(),
-        buildSearch(),
-        buildListDebit(),
-      ],
+    return RefreshIndicator(
+      color: AppColors.PRIMARY_GREEN,
+      onRefresh: () async {
+        await _viewModel!.pullRefresh();
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            buildTotalEveryoneDebit(),
+            buildTotalMyDebit(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -242,8 +159,8 @@ class _DebitScreenState extends State<DebitScreen> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: SizeToPadding.sizeLarge * 3),
         child: Showcase(
-          key: _viewModel!.keyAdd,
-          description: DebitLanguage.addDebitCustomer,
+          key: _viewModel!.keyShowDebtor,
+          description: DebitLanguage.showDebtor,
           targetBorderRadius: BorderRadius.all(
             Radius.circular(
               BorderRadiusSize.sizeLarge,
@@ -252,9 +169,9 @@ class _DebitScreenState extends State<DebitScreen> {
           child: FloatingActionButton(
             heroTag: 'addBooking',
             backgroundColor: AppColors.PRIMARY_GREEN,
-            onPressed: () => _viewModel!.showDialogAddDebit(context),
+            onPressed: () => _viewModel!.goToDebtor(),
             child: const Icon(
-              Icons.add,
+              Icons.arrow_forward,
               color: AppColors.COLOR_WHITE,
             ),
           ),

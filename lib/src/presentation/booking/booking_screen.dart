@@ -438,7 +438,7 @@ class _ServiceAddScreenState extends State<BookingScreen> {
       child: CupertinoDatePicker(
         initialDateTime: _viewModel!.time,
         mode: CupertinoDatePickerMode.time,
-        minimumDate: DateTime.now(),
+        // minimumDate: DateTime.now(),
         use24hFormat: true,
         onDateTimeChanged: (value) {
           _viewModel!.updateTime(value);

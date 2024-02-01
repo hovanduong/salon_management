@@ -413,5 +413,7 @@
     "formatNoteContent":"Định dạng nội dung ghi chú",
     "likeNote":"Thích ghi chú",
     "deleteNote":"Xóa ghi chú",
+    "showDebtor":"Xem người nợ",
+    "debtor":"Người nợ",
     "lastLine": ""
 }
