@@ -13,6 +13,7 @@ import '../base/base.dart';
 class CategoryAddViewModel extends BaseViewModel {
   bool enableButton = false;
   bool isButtonExpenses=false;
+  bool isShowButton= true;
   
   TextEditingController categoryController = TextEditingController();
 
@@ -26,6 +27,8 @@ class CategoryAddViewModel extends BaseViewModel {
 
   int? selectedCategory;
 
+  FocusNode focusNode= FocusNode();
+
   Future<void> init(CategoryModel? data) async {
     selectedCategory=0;
     if (data != null) {
@@ -35,7 +38,15 @@ class CategoryAddViewModel extends BaseViewModel {
       categoryController.text = categoryModel!.name.toString();
       enableButton = true;
     }
+    await setShowButton();
     notifyListeners();
+  }
+
+  Future<void> setShowButton() async {
+    focusNode.addListener(() {
+        isShowButton = !focusNode.hasFocus;
+        notifyListeners();
+    });
   }
 
   void setSelectIconCategory(int index){
