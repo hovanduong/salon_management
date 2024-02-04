@@ -52,15 +52,16 @@ class AppValid {
   static String? validateCategory(String? value) {
     if (value == null || value.isEmpty) {
       return S.current.validCategory;
-    } else if (value.length < 2) {
-      return S.current.validName;
     }
-    final regex = RegExp(
-      r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',
-    );
-    if (!regex.hasMatch(value)) {
-      return S.current.validFullName;
-    }
+    //  else if (value.length < 2) {
+    //   return S.current.validName;
+    // }
+    // final regex = RegExp(
+    //   r'^[a-z A-ZỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđỲỌÁẦẢẤỜỄÀẠẰỆẾÝỘẬỐŨỨĨÕÚỮỊỖÌỀỂẨỚẶÒÙỒỢÃỤỦÍỸẮẪỰỈỎỪỶỞÓÉỬỴẲẸÈẼỔẴẺỠƠÔƯĂÊÂĐ]+$',
+    // );
+    // if (!regex.hasMatch(value)) {
+    //   return S.current.validFullName;
+    // }
     return null;
   }
 
