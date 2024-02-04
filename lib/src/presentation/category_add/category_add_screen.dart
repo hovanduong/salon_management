@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../configs/configs.dart';
 import '../../configs/constants/app_space.dart';
 import '../../configs/language/category_language.dart';
-import '../../configs/widget/custom_clip_path/custom_clip_path.dart';
 import '../../resource/model/my_category_model.dart';
 import '../../utils/app_ic_category.dart';
 import '../base/base.dart';
@@ -33,40 +33,42 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
     );
   }
 
-  Widget buildAppBar() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeToPadding.sizeSmall,
-        vertical: Size.sizeMedium * 2,
-      ),
-      child: ListTile(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
+  Widget buildHeader() {
+    return Container(
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 40 : 60,
+          bottom: 10,
+          left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
+        ),
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
             color: AppColors.COLOR_WHITE,
           ),
-        ),
-        title: Paragraph(
-          content: _viewModel!.categoryModel != null
+          onTap: () {
+            Navigator.pop(context);
+          },
+          title: _viewModel!.categoryModel != null
               ? CategoryLanguage.editCategory
               : CategoryLanguage.addCategory,
-          style: STYLE_LARGE_BOLD.copyWith(
-            color: AppColors.COLOR_WHITE,
-          ),
         ),
-      ),
+      )
     );
   }
 
-  Widget background() {
-    return const CustomBackGround();
-  }
+  // Widget background() {
+  //   return const CustomBackGround();
+  // }
 
   Widget buildFieldCategory() {
     return Padding(
       padding: EdgeInsets.only(top: SizeToPadding.sizeBig),
       child: AppFormField(
+        focusNode: _viewModel!.focusNode,
         labelText: CategoryLanguage.category,
         textEditingController: _viewModel!.categoryController,
         hintText: CategoryLanguage.enterCategory,
@@ -172,63 +174,54 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
   }
 
   Widget buildButtonApp() {
-    return AppButton(
-      enableButton: _viewModel!.enableButton,
-      content: UpdateProfileLanguage.submit,
-      onTap: () {
-        _viewModel!.setSourceButton();
-      },
+    return Visibility(
+      visible: _viewModel!.isShowButton,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: SizeToPadding.sizeMedium),
+        child: AppButton(
+          enableButton: _viewModel!.enableButton,
+          content: UpdateProfileLanguage.submit,
+          onTap: () {
+            _viewModel!.setSourceButton();
+          },
+        ),
+      ),
     );
   }
 
   Widget buildCardField() {
-    return Positioned(
-      top: 150,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.BLACK_400,
-              blurRadius: SpaceBox.sizeVerySmall,
-            ),
-          ],
-          color: AppColors.COLOR_WHITE,
-          borderRadius: BorderRadius.all(
-            Radius.circular(SpaceBox.sizeLarge),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(SpaceBox.sizeLarge),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildFieldCategory(),
-              buildIconCategory(),
-              buildChooseButton(),
-              buildButtonApp(),
-            ],
-          ),
-        ),
+    return Container(
+      width: double.maxFinite,
+      height: MediaQuery.sizeOf(context).height-100,
+      padding: EdgeInsets.only(
+        bottom: SizeToPadding.sizeVeryVeryBig,
+        right: SizeToPadding.sizeMedium,
+        left: SizeToPadding.sizeMedium,
+      ),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          buildFieldCategory(),
+          buildChooseButton(),
+          buildIconCategory(),
+        ],
       ),
     );
   }
 
   Widget buildAddCategoriesScreen() {
-    return SingleChildScrollView(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [ 
-          SizedBox(
-            width: double.maxFinite,
-            height: MediaQuery.sizeOf(context).height,
-          ),
-          background(),
-          buildAppBar(),
-          buildCardField(),
-        ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Column(
+          children: [ 
+            buildHeader(),
+            buildCardField(),
+          ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: buildButtonApp(),
     );
   }
 }

@@ -72,26 +72,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget buildHeader() {
     return Container(
-        color: AppColors.PRIMARY_GREEN,
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: Platform.isAndroid ? 40 : 60,
-            bottom: 10,
-            left: SizeToPadding.sizeMedium,
-            right: SizeToPadding.sizeMedium,
-          ),
-          child: CustomerAppBar(
+      color: AppColors.PRIMARY_GREEN,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: Platform.isAndroid ? 40 : 60,
+          bottom: 10,
+          left: SizeToPadding.sizeMedium,
+          right: SizeToPadding.sizeMedium,
+        ),
+        child: CustomerAppBar(
+          color: AppColors.COLOR_WHITE,
+          style: STYLE_LARGE.copyWith(
+            fontWeight: FontWeight.w700,
             color: AppColors.COLOR_WHITE,
-            style: STYLE_LARGE.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.COLOR_WHITE,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-            title: CategoryLanguage.myCatalog,
           ),
-        ));
+          onTap: () {
+            Navigator.pop(context);
+          },
+          title: CategoryLanguage.myCatalog,
+        ),
+      ));
   }
 
   // Widget buildCardService(int index, int serviceIndex) {
