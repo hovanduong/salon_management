@@ -18,7 +18,7 @@ class RegisterTopic {
     // Success(value: final currentVersion) => currentVersion,
     // Failure(exception: final exception) => exception,
     final resultCheck = await VersionAppApi().checkAppVersion();
-    const currentVersion = 3;
+    const currentVersion = 4;
 
     final value = switch (resultCheck) {
       Success(value: final currentVersion) => currentVersion,
