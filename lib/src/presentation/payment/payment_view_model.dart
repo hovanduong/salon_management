@@ -30,14 +30,11 @@ class PaymentViewModel extends BaseViewModel {
   MyCustomerApi myCustomerApi = MyCustomerApi();
   MyBookingApi myBookingApi = MyBookingApi();
   InvoiceApi invoiceApi = InvoiceApi();
-  // MyServiceApi myServiceApi = MyServiceApi();
 
   List<int>? myServiceId = [];
   List<int> serviceId = [];
   List<int> listMoney = [];
 
-  // List<RadioModel> selectedService = [];
-  // List<MyServiceModel> myService = [];
   List<MyBookingModel> listMyBooking = [];
   List<CategoryModel> listCategory = [];
   List<CategoryModel> listCategoryIncome = [];
@@ -50,18 +47,11 @@ class PaymentViewModel extends BaseViewModel {
   int? categoryId;
   int? idUser;
 
-  // num totalCost = 0;
-  // num totalPrice = 0;
-  // num updatedTotalCost = 0;
-
   DateTime dateTime = DateTime.now();
   DateTime time = DateTime.now();
 
   MyBookingModel? dataMyBooking;
   MyCustomerModel? myCustomerModel;
-
-  // Map<int, String> mapService = {};
-  // Map<int, String> mapPhone = {};
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -69,17 +59,7 @@ class PaymentViewModel extends BaseViewModel {
   TextEditingController addressController = TextEditingController();
   TextEditingController moneyController = TextEditingController();
   DateRangePickerController dateController = DateRangePickerController();
-  // final totalController = TextEditingController();
-  // TextEditingController discountController = TextEditingController();
 
-  // DateRangePickerController dateController = DateRangePickerController();
-
-  // bool onAddress = true;
-  // bool onPhone = true;
-  // bool onTopic = true;
-  // bool onMoney = true;
-  // bool onTime = true;
-  // bool onDiscount = true;
   bool onNote = true;
   bool isListViewVisible = false;
   bool enableButton = false;
@@ -129,11 +109,6 @@ class PaymentViewModel extends BaseViewModel {
     categoryId = listCategory[0].id;
     isButtonSpending = false;
     await setDataMyBooking(myBookingModel);
-    // await setDataMyBooking(myBookingModel);
-    // await fetchService();
-    // await fetchCustomer();
-    // await initMapCustomer();
-    // await initMapService();
     await setShowButton();
     await AppPref.getShowCase('showCasePayment$idUser').then(
       (value) => isShowCase = value ?? true,
@@ -202,10 +177,6 @@ class PaymentViewModel extends BaseViewModel {
         ),
       );
       time = dateTime;
-      // setSelectedService();
-      // await setServiceId();
-      // await fetchService();
-      // await calculateTotalPriceByName();
       enableConfirmButton();
     }
     notifyListeners();
@@ -236,165 +207,6 @@ class PaymentViewModel extends BaseViewModel {
     enableConfirmButton();
     notifyListeners();
   }
-
-  // Future<void> goToAddMyCustomer(BuildContext context) async {
-  //   myCustomerModel=
-  //     await Navigator.pushNamed(context, Routers.myCustomerAdd, arguments: true)
-  //     as MyCustomerModel?;
-  //   await setDataCustomer();
-  // }
-
-  // Future<void> setDataCustomer() async{
-  //   nameController.text=myCustomerModel!.fullName ?? '';
-  //   phoneController.text=myCustomerModel!.phoneNumber ?? '';
-  //   await fetchCustomer();
-  //   myCustomerId= myCustomer.where((element) =>
-  //     element.phoneNumber==myCustomerModel!.phoneNumber,).first.id;
-  //   notifyListeners();
-  // }
-
-  // void setSelectedService() {
-  //   if (dataMyBooking!.myServices!.isNotEmpty) {
-  //     dataMyBooking?.myServices!.forEach((service) {
-  //       selectedService.add(RadioModel(
-  //         isSelected: true,
-  //         id: service.id,
-  //         name: '${service.name}/${AppCurrencyFormat.formatMoneyVND(service.money!)}',
-  //       ),);
-  //     });
-  //   }
-  // }
-
-  // Future<void> fetchService() async {
-  //   final result = await myServiceApi.getService();
-
-  //   final value = switch (result) {
-  //     Success(value: final accessToken) => accessToken,
-  //     Failure(exception: final exception) => exception,
-  //   };
-
-  //   if (!AppValid.isNetWork(value)) {
-  //   } else if (value is Exception) {
-  //   } else {
-  //     myService = value as List<MyServiceModel>;
-  //   }
-  //   notifyListeners();
-  // }
-
-  // Future<void> fetchCustomer() async {
-  //   final result = await myCustomerApi.getMyCustomer(getAll: true);
-
-  //   final value = switch (result) {
-  //     Success(value: final accessToken) => accessToken,
-  //     Failure(exception: final exception) => exception,
-  //   };
-
-  //   if (!AppValid.isNetWork(value)) {
-  //   } else if (value is Exception) {
-  //   } else {
-  //     myCustomer = value as List<MyCustomerModel>;
-  //   }
-  //   notifyListeners();
-  // }
-
-  // Future<void> changeValueService(List<RadioModel> value) async {
-  //   selectedService.clear();
-  //   selectedService = value;
-  //   notifyListeners();
-  // }
-
-  // Future<void> setServiceId() async {
-  //   serviceId.clear();
-  //   if (selectedService.isNotEmpty) {
-  //     selectedService.forEach((element) {
-  //       serviceId.add(element.id!);
-  //     });
-  //   }
-  //   notifyListeners();
-  // }
-
-  // Future<void> removeService(int index) async {
-  //   selectedService.removeAt(index);
-  //   notifyListeners();
-  // }
-
-  // Future<void> initMapCustomer() async {
-  //   myCustomer.forEach((element) {
-  //     mapPhone.addAll(
-  //       {element.id!: '${element.phoneNumber}/${element.fullName}'},
-  //     );
-  //   });
-  //   isLoading=false;
-  //   notifyListeners();
-  // }
-
-  // Future<void> setLoading()async{
-  //   isLoading=true;
-  //   notifyListeners();
-  // }
-
-  // Future<void> initMapService() async {
-  //   myService.forEach((element) {
-  //     mapService.addAll(
-  //       {
-  //         element.id!:
-  //             ' ${element.name}/${AppCurrencyFormat.formatMoneyVND(element.money!)} ',
-  //       },
-  //     );
-  //   });
-  //   notifyListeners();
-  // }
-
-  // Future<void> setNameCustomer(MapEntry<dynamic, dynamic> value) async {
-  //   phoneController.text = value.value;
-  //   nameController.text = myCustomer
-  //       .where((element) => element.id == value.key)
-  //       .first
-  //       .fullName
-  //       .toString();
-
-  //   myCustomerId = value.key;
-
-  //   notifyListeners();
-  // }
-
-  // Future<void> clearTotal() async {
-  //   updatedTotalCost = 0;
-  //   totalCost = 0;
-  //   totalController.clear();
-  //   notifyListeners();
-  // }
-
-  // Future<void> calculateTotalPriceByName({bool isCalculate = false}) async {
-  //   await clearTotal();
-  //   myService.forEach((element) {
-  //     serviceId.forEach((elementId) {
-  //       if (element.id == elementId) {
-  //         updatedTotalCost += element.money!;
-  //       }
-  //     });
-  //     totalCost = updatedTotalCost;
-  //     final totalPriceT = AppCurrencyFormat.formatMoneyVND(totalCost);
-  //     totalController.text = totalPriceT;
-  //     moneyController.text = totalPriceT;
-  //   });
-  //   totalDiscount();
-  //   notifyListeners();
-  // }
-
-  // void totalDiscount() {
-  //   final moneyText = discountController.text;
-
-  //   final moneyInt = moneyText != '' ? double.parse(moneyText) : 0;
-
-  //   final totalCostDiscount = totalCost - (totalCost * (moneyInt / 100));
-
-  //   final totalPriceT = AppCurrencyFormat.formatMoneyVND(totalCostDiscount);
-
-  //   totalController.text = totalPriceT;
-
-  //   notifyListeners();
-  // }
 
   Future<void> setShowButton() async {
     listFocus.forEach((node) {
@@ -446,30 +258,6 @@ class PaymentViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-
-  // void validAddress(String value) {
-  //   if (addressController.text.isEmpty) {
-  //     addressMsg = BookingLanguage.emptyAddress;
-  //   } else {
-  //     addressMsg = '';
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void checkDiscountInput(String value) {
-  //   final number = double.tryParse(value);
-
-  //   if (value.isEmpty) {
-  //     discountErrorMsg = '';
-  //   } else if (onlySpecialChars.hasMatch(value)) {
-  //     discountErrorMsg = BookingLanguage.onlySpecialChars;
-  //   } else if (number == null || number < 0 || number > 100) {
-  //     discountErrorMsg = BookingLanguage.numberBetween;
-  //   } else {
-  //     discountErrorMsg = '';
-  //   }
-  //   notifyListeners();
-  // }
 
   void enableConfirmButton() {
     if (messageErrorPrice == null &&
@@ -575,7 +363,7 @@ class PaymentViewModel extends BaseViewModel {
     addressController.text = '';
     noteController.text = '';
     moneyController.text = '';
-    updateDateTime(DateTime.now());
+    // updateDateTime(DateTime.now());
     listCategory = listCategoryIncome;
     notifyListeners();
   }

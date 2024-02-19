@@ -22,6 +22,7 @@ class TotalMoneyWidget extends StatelessWidget {
       children: [
         Paragraph(
           content: content ?? '',
+          textAlign: TextAlign.center,
           style: STYLE_MEDIUM.copyWith(fontWeight: FontWeight.w600),
         ),
         SizedBox(height: SpaceBox.sizeMedium,),

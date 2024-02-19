@@ -74,7 +74,7 @@ class CalendarWidget extends StatelessWidget {
           }
         },
         child: Container(
-          height: isTitle? 45 : 80,
+          height: isTitle? 45 : 62,
           padding: EdgeInsets.symmetric(
             vertical: SizeToPadding.sizeVerySmall,
             horizontal: isTitle?0: SizeToPadding.sizeVeryVerySmall,
