@@ -172,11 +172,19 @@ class CalendarViewModel extends BaseViewModel{
   }
 
   bool checkCurrentDay(num day){
-    final date= DateTime.now().toString();
-    if(day<10){
-      return date.contains('$year-$month-0$day');
+    final date= DateTime.now();
+    if(date.month<10){
+      if(day<10){
+        return date.toString().contains('$year-0$month-0$day');
+      }else{
+        return date.toString().contains('$year-0$month-$day');
+      }
     }else{
-      return date.contains('$year-$month-$day');
+      if(day<10){
+        return date.toString().contains('$year-0$month-0$day');
+      }else{
+        return date.toString().contains('$year-$month-$day');
+      }
     }
   }
 

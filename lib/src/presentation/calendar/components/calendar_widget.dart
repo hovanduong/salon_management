@@ -52,6 +52,7 @@ class CalendarWidget extends StatelessWidget {
                     content: listDay?[day-1].date ?? '',
                     revenueDay: listDay?[day-1].revenueDay,
                     isCurrentDay: listDay![day-1].isCurrentDay,
+                    weekend: (d%5==0 ? 1 : d%6==0 ? 0 : null),
                   );
                 }
               ),
@@ -63,7 +64,8 @@ class CalendarWidget extends StatelessWidget {
   }
 
   Widget buildTitleTop({String? content, bool isTitle = false, 
-    List<RevenueDayModel>? revenueDay, bool isCurrentDay=false,})
+    List<RevenueDayModel>? revenueDay, bool isCurrentDay=false,
+    int ? weekend,})
   {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
@@ -81,7 +83,7 @@ class CalendarWidget extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isTitle? AppColors.PRIMARY_GREEN 
-              : isCurrentDay? AppColors.COLOR_OLIVE.withOpacity(0.2) 
+              : isCurrentDay? AppColors.COLOR_OLIVE.withOpacity(0.13) 
               :AppColors.COLOR_WHITE,
           ),
           child: Column(
@@ -92,7 +94,10 @@ class CalendarWidget extends StatelessWidget {
                 content: content ?? '',
                 style: STYLE_MEDIUM.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isTitle ? AppColors.COLOR_WHITE : AppColors.BLACK_500,),
+                  color: weekend!=null?
+                    weekend==1? AppColors.PRIMARY_GREEN: AppColors.Red_Money
+                  :isTitle ? AppColors.COLOR_WHITE :
+                    AppColors.BLACK_500,),
               ),
               const Expanded(child: SizedBox()),
               if (revenueDay==[] || revenueDay==null) Container()
