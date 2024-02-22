@@ -545,7 +545,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerProfile.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
 				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
@@ -555,7 +555,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "vn.dhysolutions.management-spa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -741,7 +741,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
 				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.dev.plist";
@@ -751,7 +751,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "vn.dhysolutions.management-spa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -775,7 +775,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = GH5JTDDM48;
 				ENABLE_BITCODE = NO;
 				GOOGLE_SERVICE_INFO_PLIST_NAME = "GoogleService-Info.prod.plist";
@@ -785,7 +785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "vn.dhysolutions.management-spa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
