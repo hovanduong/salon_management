@@ -63,7 +63,7 @@ abstract class MyServiceFactory {
 
   static MyServiceModel _fromJson(Map<String, dynamic> json) {
     final myService = MyServiceModel()
-      ..id = json['id']
+      ..id = json['id']  
       ..name = json['name']
       ..userId = json['userId']
       ..money = json['money']

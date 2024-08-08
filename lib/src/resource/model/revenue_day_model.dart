@@ -47,7 +47,8 @@ abstract class RevenueDayModelFactory {
   static RevenueDayModel _fromJson(Map<String, dynamic> json) {
     final myBooking = RevenueDayModel()
       ..money = json['money']
-      ..income=json['income'];
+      ..income = json['income'];
+
     return myBooking;
   }
 }
